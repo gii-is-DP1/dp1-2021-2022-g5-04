@@ -31,7 +31,22 @@
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
-
+    <developers>
+        <developer>
+            <id>JC</id>
+            <name>Juan Carlos</name>
+            <email>juamorper2@alum.us.es</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>pawn</role>
+            </roles>
+            <properties>
+            <picUrl>
+                https://pbs.twimg.com/media/Eh4n9GhUMAAdO8x?format=jpg
+            </picUrl>
+            </properties>
+        <developer>
+    </developer>
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>
