@@ -45,6 +45,7 @@
                 https://pbs.twimg.com/media/Eh4n9GhUMAAdO8x?format=jpg
             </picUrl>
             </properties>
+        <developer>
     </developer>
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
