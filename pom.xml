@@ -60,7 +60,8 @@
             </picUrl>
             </properties>
         </developer>
-    </developers>
+          </developers>
+
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>
