@@ -7,8 +7,12 @@ INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');
 
 INSERT INTO users(username,password,enabled) VALUES ('antsermen','antsermen123',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (4,'antsermen','owner');
+
 INSERT INTO users(username,password,enabled) VALUES ('mancarver1','contraseña',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (5,'mancarver1','owner');
+
+INSERT INTO users(username,password,enabled) VALUES ('josariexp','contraseña',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (6,'josariexp','owner');
 
 -- One vet user, named vet1 with passwor v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
