@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.springframework.samples</groupId>
-    <artifactId>spring-petclinic</artifactId>
+    <artifactId>G5-04</artifactId>
     <version>2.2.0.BUILD-SNAPSHOT</version>
 
     <parent>
@@ -12,7 +12,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.2.4.RELEASE</version>
     </parent>
-    <name>petclinic</name>
+    <name>G5-04</name>
 
     <properties>
 
@@ -31,13 +31,13 @@
         <spring-format.version>0.0.19</spring-format.version>
 
     </properties>
-    
+
     <developers>
  <developer>
- <id>Leo</id>
- <name>Leonardo</name>
- <email>leo@tmht.com</email>
- <url>http://www.tmht.com/leo</url>
+ <id>Pablo</id>
+ <name>Pablo</name>
+ <email>pablo@tmht.com</email>
+ <url>http://www.tmht.com/pablo</url>
  <roles>
  <role>leader</role>
  </roles>
@@ -61,9 +61,73 @@ https://pbs.twimg.com/media/Eh4n9GgUYAAan80?format=jpg&name=large
 </picUrl>
  </properties>
  </developer>
- <!-- More developers ...-->
-</developers>
-
+ <developer>
+            <id>JC</id>
+            <name>Juan Carlos</name>
+            <email>juamorper2@alum.us.es</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>pawn</role>
+            </roles>
+            <properties>
+            <picUrl>
+                https://pbs.twimg.com/media/Eh4n9GhUMAAdO8x?format=jpg
+            </picUrl>
+            </properties>
+    </developer>
+        <developer>
+            <id>AR</id>
+            <name>Antonio Roberto</name>
+            <email>robertoserranomena@gmail.com</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>pawn</role>
+            </roles>
+            <properties>
+            <picUrl>
+                https://pbs.twimg.com/media/Eh4n9GhUMAAdO8x?format=jpg
+            </picUrl>
+            </properties>
+        </developer>
+        <developer>
+            <id>D</id>
+            <name>David</name>
+            <email>davsabtro@alum.us.es</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>pawn</role>
+            </roles>
+            <properties>
+            <picUrl>
+                https://pbs.twimg.com/media/Eh4n9GhUMAAdO8x?format=jpg
+            </picUrl>
+            </properties>
+        </developer>
+        <developer>
+        <id>JR</id>
+            <name>Jose Ramon</name>
+            <email>jrae1112jrae@gmail.es</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>pawn</role>
+            </roles>
+            <properties>
+            <picUrl>
+                https://pbs.twimg.com/media/Eh4n9GhUMAAdO8x?format=jpg
+            </picUrl>
+            </properties>
+        </developer>
+        <developer>
+ 			<id>mancarver1</id>
+ 			<name>Manuel</name>
+ 			<email>mancarver1@alum.us.es</email>
+ 			<roles>
+ 			<role></role>
+ 			</roles>
+ 			<properties>
+ 			</properties>
+ 		</developer>
+        </developers>
     <dependencies>
         <!-- Spring and Spring Boot dependencies -->
         <dependency>
