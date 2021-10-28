@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.user;
 
+
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -20,6 +21,8 @@ public class User{
 	String username;
 	
 	String password;
+	
+	String email;
 	
 	boolean enabled;
 	
