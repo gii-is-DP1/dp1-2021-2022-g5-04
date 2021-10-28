@@ -90,6 +90,22 @@ https://pbs.twimg.com/media/Eh4n9GgUYAAan80?format=jpg
             </properties>
         </developer>
         <developer>
+
+            <id>DS</id>
+            <name>David</name>
+            <email>davsabtro@alum.us.es</email>
+            <url>http://www.tmht.com/leo</url>
+            <roles>
+                <role>pawn</role>
+            </roles>
+            <properties>
+            <picUrl>
+                https://pbs.twimg.com/media/Eh4n9GhUMAAdO8x?format=jpg
+            </picUrl>
+            </properties>
+        </developer>
+        <developer>
+
         <id>JR</id>
             <name>Jose Ramon</name>
             <email>jrae1112jrae@gmail.es</email>
