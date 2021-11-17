@@ -32,39 +32,7 @@
 
     </properties>
     <developers>
-
- <developer>
- <id>Pablo</id>
- <name>Pablo</name>
- <email>pablo@tmht.com</email>
- <url>http://www.tmht.com/pablo</url>
- <roles>
- <role>leader</role>
- </roles>
- <properties>
- <picUrl>
-https://pbs.twimg.com/media/Eh4n9GhUMAAdO8x?format=jpgname=large
-</picUrl>
- </properties>
- </developer>
-<developer>
- <id>Donnie</id>
- <name>Donatello</name>
- <email>donnie@tmht.com</email>
- <url>http://www.tmht.com/donnie</url>
- <roles>
- <role>tech master</role>
- </roles>
- <properties>
- <picUrl>
-https://pbs.twimg.com/media/Eh4n9GgUYAAan80?format=jpgname=large
-</picUrl>
- </properties>
- </developer>
- <developer>
-
         <developer>
-
             <id>JC</id>
             <name>Juan Carlos</name>
             <email>juamorper2@alum.us.es</email>
