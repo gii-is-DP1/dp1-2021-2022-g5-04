@@ -6,18 +6,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="player">
+<IdusMartii:layout pageName="player">
     <h2>
         <c:if test="${player['new']}">New </c:if> Player
     </h2>
     <form:form modelAttribute="player" class="form-horizontal" id="add-player-form">
         <div class="form-group has-feedback">
-            <petclinic:inputField label="Name" name="Name"/>
-            <petclinic:inputField label="Card1" name="Card1"/>
-            <petclinic:inputField label="Card2" name="Card2"/>
-            <petclinic:inputField label="Role" name="Role"/>
+            <IdusMartii:inputField label="Name" name="Name"/>
+            <IdusMartii:inputField label="Card1" name="Card1"/>
+            <IdusMartii:inputField label="Card2" name="Card2"/>
+            <IdusMartii:inputField label="Role" name="Role"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
@@ -29,4 +29,4 @@
             </div>
         </div>
     </form:form>
-</petclinic:layout>
+</IdusMartii:layout>

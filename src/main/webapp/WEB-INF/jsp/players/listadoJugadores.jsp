@@ -5,9 +5,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="players">
+<IdusMartii:layout pageName="players">
     <h2>Players</h2>
 
     <table id="playersTable" class="table table-striped">
@@ -43,4 +43,4 @@
         </c:forEach>
         </tbody>
     </table>
-</petclinic:layout>
+</IdusMartii:layout>
