@@ -15,6 +15,7 @@ public class Player extends NamedEntity{
 		private String card2;
 		private Vote vote;
 		private Role role;
-		
+		private Integer idm;
+
 	
 }

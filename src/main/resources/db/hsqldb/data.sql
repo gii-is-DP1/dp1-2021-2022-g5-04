@@ -1,3 +1,5 @@
+
+
 -- One admin user, named admin1 with passwor 4dm1n and authority admin
 INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
@@ -9,7 +11,7 @@ INSERT INTO users(username,password,enabled) VALUES ('antsermen','antsermen123',
 INSERT INTO authorities(id,username,authority) VALUES (4,'antsermen','owner');
 
 INSERT INTO users(username,password,enabled) VALUES ('mancarver1','contraseña',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (5,'mancarver1','owner');
+INSERT INTO authorities(id,username,authority) VALUES (5,'mancarver1','admin');
 
 INSERT INTO users(username,password,enabled) VALUES ('josariexp','contraseña',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (6,'josariexp','owner');
@@ -86,5 +88,10 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
+INSERT INTO match(id, contador) VALUES (2,0);
+INSERT INTO match(id, contador) VALUES (7, 0);
 
-
+INSERT INTO player(id,name, card1,card2,  vote, role, idm) VALUES (4, ' sd', 'wdw', 'wadawd', 0,1, 2);
+INSERT INTO player(id,name, card1,card2,  vote, role, idm) VALUES (5, ' sd', 'wdw', 'wadawd', 0,1, 3);
+INSERT INTO player(id,name, card1,card2,  vote, role, idm) VALUES (6, ' sd', 'wdw', 'wadawd', 0,1, 2);
+INSERT INTO player(id,name, card1,card2,  vote, role, idm) VALUES (7, ' sd', 'wdw', 'wadawd', 0,1, 7);

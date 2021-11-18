@@ -25,6 +25,7 @@ public class PlayerController {
 		return vista;
 	}
 	
+	
 	@GetMapping(path="/new")
 	public String crearJugador(ModelMap modelMap) {
 		String vista = "players/editarJugador";
