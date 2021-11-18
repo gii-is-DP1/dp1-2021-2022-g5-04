@@ -14,10 +14,10 @@
     </h2>
     <form:form modelAttribute="player" class="form-horizontal" id="add-player-form">
         <div class="form-group has-feedback">
-            <IdusMartii:inputField label="Name" name="Name"/>
-            <IdusMartii:inputField label="Card1" name="Card1"/>
-            <IdusMartii:inputField label="Card2" name="Card2"/>
-            <IdusMartii:inputField label="Role" name="Role"/>
+            <IdusMartii:inputField label="Name" name="name"/>
+            <IdusMartii:inputField label="Card1" name="card1"/>
+            <IdusMartii:inputField label="Card2" name="card2"/>
+            <IdusMartii:inputField label="Role" name="role"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

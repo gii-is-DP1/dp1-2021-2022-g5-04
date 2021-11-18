@@ -1,8 +1,13 @@
 package org.springframework.samples.IdusMartii.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import org.springframework.samples.IdusMartii.enumerates.*;
+import org.springframework.samples.IdusMartii.user.User;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,10 +16,13 @@ import lombok.Setter;
 @Entity
 public class Player extends NamedEntity{
 	
-		private String card1;
-		private String card2;
+		private Faction card1;
+		private Faction card2;
 		private Vote vote;
 		private Role role;
 		
+		@OneToOne(cascade = CascadeType.ALL)
+	    @JoinColumn(name = "username", referencedColumnName = "username")
+		private User user;
 	
 }

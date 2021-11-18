@@ -87,4 +87,4 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
 
-
+INSERT INTO player VALUES (1, 'player1', '1', '2', '1', '1', 'antsermen');
