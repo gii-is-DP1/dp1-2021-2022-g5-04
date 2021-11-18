@@ -1,4 +1,4 @@
-package org.springframework.samples.IdusMartii.model;
+package org.springframework.samples.IdusMartii.player;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -6,6 +6,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import org.springframework.samples.IdusMartii.enumerates.*;
+import org.springframework.samples.IdusMartii.model.NamedEntity;
 import org.springframework.samples.IdusMartii.user.User;
 
 import lombok.Getter;

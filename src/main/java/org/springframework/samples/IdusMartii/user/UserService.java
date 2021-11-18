@@ -18,6 +18,7 @@ package org.springframework.samples.IdusMartii.user;
 
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,11 @@ public class UserService {
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
-
+	@Transactional
+	public Iterable<User> findAll(){
+		return userRepository.findAll();
+	}
+	
 	@Transactional
 	public void saveUser(User user) throws DataAccessException {
 		user.setEnabled(true);

@@ -1,4 +1,4 @@
-package org.springframework.samples.IdusMartii.model;
+package org.springframework.samples.IdusMartii.player;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
