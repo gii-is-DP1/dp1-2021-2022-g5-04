@@ -13,7 +13,7 @@
     <form:form modelAttribute="user" class="form-horizontal" id="add-user-form">
         <div class="form-group has-feedback">
             <IdusMartii:inputField label="Username" name="username"/>
-            <IdusMartii:PasswordInputTag label="Password" name="password"/>
+            <IdusMartii:inputField label="Password" name="password"/>
             <IdusMartii:inputField label="Email" name="email"/>
         </div>
         <div class="form-group">
