@@ -6,7 +6,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import org.springframework.samples.IdusMartii.enumerates.*;
-import org.springframework.samples.IdusMartii.user.User;
+// import org.springframework.samples.IdusMartii.model.User;
 
 import lombok.Getter;
 import lombok.Setter;
