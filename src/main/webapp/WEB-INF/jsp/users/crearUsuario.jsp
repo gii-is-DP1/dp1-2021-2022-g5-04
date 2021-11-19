@@ -22,9 +22,6 @@
                     <c:when test="${users['new']}">
                         <button class="btn btn-default" type="submit">Add User</button>
                     </c:when>
-                    <c:otherwise>
-                        <button class="btn btn-default" type="submit">Update User</button>
-                    </c:otherwise>
                 </c:choose>
             </div>
         </div>
