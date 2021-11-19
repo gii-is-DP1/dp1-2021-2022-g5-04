@@ -57,17 +57,17 @@ public class UserController {
 	
 	@GetMapping(path="/new")
 	public String crearJugador(ModelMap modelMap) {
-		String vista = "users/createUserForm";
+		String vista = "users/crearUsuario";
 		modelMap.addAttribute("user", new User());
 		return vista;
 	}
 
-	@PostMapping(path="/save")
+	@PostMapping(path="/new")
 	public String guardarJugador(@Valid User user, BindingResult result, ModelMap modelMap) {
 		String vista = "users/listadoUsuarios";
 		if (result.hasErrors()) {
 			modelMap.addAttribute("users", user);
-			return "users/createUserForm";
+			return "users/crearUsuario";
 		} else {
 			userService.saveUser(user);
 			modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
