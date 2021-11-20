@@ -17,7 +17,6 @@
             <th style="width: 200px;">Card1</th>
             <th style="width: 200px;">Card2</th>
             <th>Role</th>
-            <th>Vote</th>
         </tr>
         </thead>
         <tbody>
@@ -34,9 +33,6 @@
                 </td>
                 <td>
                     <c:out value="${player.role}"/>
-                </td>  
-                <td>
-                    <c:out value="${player.vote}"/>
                 </td>  
                 <td>
                 	<spring:url value="/players/new" var="playerUrl">

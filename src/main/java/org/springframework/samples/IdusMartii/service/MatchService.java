@@ -15,6 +15,11 @@ public class MatchService {
     @Autowired 
 	MatchRepository matchRepo;
 
+	@Transactional
+	public Iterable<Match> findAll(){
+		return matchRepo.findAll();
+	}
+
  
     
 	@Transactional(readOnly = true)
