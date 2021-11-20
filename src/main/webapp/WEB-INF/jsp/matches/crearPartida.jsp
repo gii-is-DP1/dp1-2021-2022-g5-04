@@ -12,7 +12,8 @@
     <h2>
         <c:if test="${match['new']}">New </c:if> Owner
     </h2>
-    <form:form modelAttribute="match" class="form-horizontal" id="add-match-form">
+    <c:if test="${match['new']}">
+    <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/save" >
         <div class="form-group has-feedback">
             <IdusMartii:inputField label="Name" name="name"/>
             <IdusMartii:inputField label="Round" name="round"/>
@@ -31,4 +32,8 @@
             </div>
         </div>
     </form:form>
+    </c:if>
+
+    
+    
 </IdusMartii:layout>

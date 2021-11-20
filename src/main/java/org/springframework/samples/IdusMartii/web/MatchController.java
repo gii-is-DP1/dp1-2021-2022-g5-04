@@ -35,17 +35,14 @@ public class MatchController {
 		modelMap.addAttribute("match", new Match());
 		return vista;
 	}
-	// @PostMapping(path="/new")
-	// public String guardarJugador(@Valid Player player, BindingResult result, ModelMap modelMap) {
-	// 	String vista = "players/listadoJugadores";
-	// 	if (result.hasErrors()) {
-	// 		modelMap.addAttribute("players", player);
-	// 		return "players/editarJugador";
-	// 	} else {
-	// 		playerService.savePlayer(player);
-	// 		modelMap.addAttribute("message", "¡Jugador guardado correctamente!");
-	// 	}
-	// 	return vista;
-	// }
+	@PostMapping(path="/save")
+	public String guardarJugador1(@Valid Match player, BindingResult result, ModelMap modelMap) {
+		String vista = "matches/listadoPartidas";
+	
+			matchService.saveMatch(player);
+			modelMap.addAttribute("message", "¡Jugador guardado correctamente!");
+		
+		return "redirect:/matches";
+	}
 	
 }
