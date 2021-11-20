@@ -1,11 +1,11 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 <!--  >%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%-->
 <%@ attribute name="name" required="true" rtexprvalue="true"
-	description="Name of the active menu: home, owners, vets or error"%>
+	description="Name of the active menu: home, owners, vets, users or error "%>
 
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container">
@@ -22,29 +22,35 @@
 		<div class="navbar-collapse collapse" id="main-navbar">
 			<ul class="nav navbar-nav">
 
-				<petclinic:menuItem active="${name eq 'home'}" url="/"
+				<IdusMartii:menuItem active="${name eq 'home'}" url="/"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
 					<span>Home</span>
-				</petclinic:menuItem>
-
-				<petclinic:menuItem active="${name eq 'owners'}" url="/owners/find"
+				</IdusMartii:menuItem>
+				
+				<IdusMartii:menuItem active="${name eq 'users'}" url="/users/new"
+					title="createUser">
+					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+					<span>Users</span>
+				</IdusMartii:menuItem>
+				
+				<IdusMartii:menuItem active="${name eq 'owners'}" url="/owners/find"
 					title="find owners">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Find owners</span>
-				</petclinic:menuItem>
+				</IdusMartii:menuItem>
 
-				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
+				<IdusMartii:menuItem active="${name eq 'vets'}" url="/vets"
 					title="veterinarians">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Veterinarians</span>
-				</petclinic:menuItem>
+				</IdusMartii:menuItem>
 
-				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
+				<IdusMartii:menuItem active="${name eq 'error'}" url="/oups"
 					title="trigger a RuntimeException to see how it is handled">
 					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 					<span>Error</span>
-				</petclinic:menuItem>
+				</IdusMartii:menuItem>
 
 			</ul>
 
