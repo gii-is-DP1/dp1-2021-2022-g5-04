@@ -2,7 +2,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
-<!-- %@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %-->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 
 <IdusMartii:layout pageName="home">
     <h2><fmt:message key="welcome"/></h2>
@@ -10,21 +11,27 @@
     <h2> Project ${title}</h2>
    <p><h2> Group ${group}</h2></p>
    <p><ul>
-   <!-- <c:forEach var="x" items="${persons}"> -->
-        <li>${persons[0].firstName} ${persons[0].lastName}</li>
-        <li>${persons[1].firstName} ${persons[1].lastName}</li>
-        <li>${persons[2].firstName} ${persons[2].lastName}</li>
-        <li>${persons[3].firstName} ${persons[3].lastName}</li>
-        <li>${persons[4].firstName} ${persons[4].lastName}</li>
-        <li>${persons[5].firstName} ${persons[5].lastName}</li>
-   <!-- </c:forEach> -->
+   <c:forEach var="x" items="${persons}">
+        <li>${x.firstName} ${x.lastName}</li>
+   </c:forEach>
    </ul></p>
    </div>
    <h2>${now}></h2>
-    <div class="row">
-        <div class="col-md-12">
-            <spring:url value="/resources/images/logoPNG_3.png" htmlEscape="true" var="petsImage"/>
+    <div class="row" style="background-image:url()">
+        <div class="col-md-12" ">
+            <!-- <IdusMartii:board chessBoard="${chessBoard}"/> -->
+            <a href="http://localhost:8080/players">
+                <button style="width:600px;height:100px;FONT-SIZE: 36pt;">Crear una partida</button>
+              </a> 
+            <!-- <c:forEach items="${chessBoard.pieces}" var="piece">
+            	<IdusMartii:piece size="100" piece="${piece}"/>
+            	
+            </c:forEach>  -->
+        <!-- </div>
+        <div class="col-md-12"> -->
+            <spring:url value="/resources/images/icon-idus.png" htmlEscape="true" var="petsImage"/>
             <img class="img-responsive" src="${petsImage}"/>
         </div>
     </div>
+    
 </IdusMartii:layout>

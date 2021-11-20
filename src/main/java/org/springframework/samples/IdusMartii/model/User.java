@@ -2,7 +2,6 @@ package org.springframework.samples.IdusMartii.model;
 
 
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -23,11 +22,12 @@ public class User{
 	String password;
 	
 	String email;
+
+	// List<String> friends;
 	
 	boolean enabled;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
-	
 	
 }

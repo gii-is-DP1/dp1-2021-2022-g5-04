@@ -3,19 +3,22 @@ INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 -- One owner user, named owner1 with passwor 0wn3r
 INSERT INTO users(username,password,enabled) VALUES ('owner1','0wn3r',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','owner');
+INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','admin');
 
 INSERT INTO users(username,password,enabled) VALUES ('antsermen','antsermen123',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (4,'antsermen','owner');
+INSERT INTO authorities(id,username,authority) VALUES (4,'antsermen','admin');
 
 INSERT INTO users(username,password,enabled) VALUES ('mancarver1','contraseña',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (5,'mancarver1','owner');
+INSERT INTO authorities(id,username,authority) VALUES (5,'mancarver1','admin');
 
 INSERT INTO users(username,password,enabled) VALUES ('josariexp','contraseña',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (6,'josariexp','owner');
+INSERT INTO authorities(id,username,authority) VALUES (6,'josariexp','admin');
 
 INSERT INTO users(username,password,enabled) VALUES ('juamorper','juamorper2',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (7,'juamorper','owner');
+INSERT INTO authorities(id,username,authority) VALUES (7,'juamorper','admin');
+
+INSERT INTO users(username,password,enabled) VALUES ('pabsanper','robe',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (8,'pabsanper','admin');
 
 -- One vet user, named vet1 with passwor v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
@@ -86,5 +89,10 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
-
-INSERT INTO player VALUES (1, 'player1', '1', '2', '1', '1', 'antsermen');
+INSERT INTO matches VALUES (1, '1', '1');
+INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (1, 'player1', '1', '1', '1', '1', 'antsermen','1');
+INSERT INTO chess_board(id,background,height,width) VALUES (1,'resources/images/fondo.jpg',800,800);
+INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (1,'BLACK','HORSE',1,1,1);
+INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (2,'BLACK','KING',5,1,1);
+INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (3,'WHITE','KING',7,5,1);
+INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (4,'BLACK','HORSE',6,1,1);
