@@ -11,8 +11,7 @@
 <IdusMartii:layout pageName="matches">
     <h2>
     </h2>
-   
-    <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/save" >
+    <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/${id}/save" >
         <div class="form-group has-feedback">
             <IdusMartii:inputField label="Name" name="name"/>
             <IdusMartii:inputField label="Round" name="round"/>
@@ -20,18 +19,12 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <c:choose>
-                    <c:when test="${match['new']}">
-                        <button class="btn btn-default" type="submit">Add Owner</button>
-                    </c:when>
-                    <c:otherwise>
+               
                         <button class="btn btn-default" type="submit">Update Owner</button>
-                    </c:otherwise>
-                </c:choose>
+                 
             </div>
         </div>
     </form:form>
-  
 
     
     

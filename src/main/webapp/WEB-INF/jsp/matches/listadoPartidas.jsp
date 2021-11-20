@@ -40,9 +40,20 @@
                    <c:out value="${owner.user.password}"/> 
                 </td> 
 -->
-
+   <td>
+                	<spring:url value="/matches/{id}/new" var="playerUrl">
+                	         <spring:param name="id" value="${match.id}"/>
+                	
+                    </spring:url>
+                	<a href= "${fn:escapeXml(playerUrl)}">Editar</a>
+                </td>
             </tr>
         </c:forEach>
+        
+                	<spring:url value="/matches/new" var="playerUrl">
+                	
+                    </spring:url>
+                	<a href= "${fn:escapeXml(playerUrl)}">Crear</a>
         </tbody>
     </table>
 </IdusMartii:layout>
