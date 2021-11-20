@@ -35,7 +35,9 @@
                     <c:out value="${player.role}"/>
                 </td>  
                 <td>
-                	<spring:url value="/players/new" var="playerUrl">
+                	<spring:url value="/players2/{id}/new" var="playerUrl">
+                	         <spring:param name="id" value="${player.id}"/>
+                	
                     </spring:url>
                 	<a href= "${fn:escapeXml(playerUrl)}">Create</a>
                 </td>

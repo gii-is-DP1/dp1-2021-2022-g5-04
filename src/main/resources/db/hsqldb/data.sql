@@ -89,7 +89,9 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
 INSERT INTO match(id, contador) VALUES (2,0);
-INSERT INTO match(id, contador) VALUES (7, 0);
+INSERT INTO match(id, contador) VALUES (7, 23);
+INSERT INTO player2(id,name, card1,card2,  vote, role, idm) VALUES (4, ' sd', 'wdw', 'wadawd', 0,1, 2);
+INSERT INTO player2(id,name, card1,card2,  vote, role, idm) VALUES (6, ' wewewewewew', 'wdw', 'wadawd', 0,1, 2);
 
 INSERT INTO player(id,name, card1,card2,  vote, role, idm) VALUES (4, ' sd', 'wdw', 'wadawd', 0,1, 2);
 INSERT INTO player(id,name, card1,card2,  vote, role, idm) VALUES (5, ' sd', 'wdw', 'wadawd', 0,1, 3);

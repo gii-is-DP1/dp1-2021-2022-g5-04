@@ -8,23 +8,20 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 
-<IdusMartii:layout pageName="player">
+<IdusMartii:layout pageName="matches">
     <h2>
-        <c:if test="${player['new']}">New </c:if> Player
+        <c:if test="${match['new']}">New </c:if> match
     </h2>
-    <form:form modelAttribute="player" class="form-horizontal" id="add-player-form" action="/players2/${id}/save">
+    <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" >
         <div class="form-group has-feedback">
-            <IdusMartii:inputField label="Name" name="Name"/>
-            <IdusMartii:inputField label="Card1" name="Card1"/>
-            <IdusMartii:inputField label="Card2" name="Card2"/>
-            <IdusMartii:inputField label="Role" name="Role"/>
+            <IdusMartii:inputField label="contador" name="contador"/>
+            
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <c:choose>
-                    <c:when test="${player['new']}">
-                              
-                        <button class="btn btn-default" type="submit">Add Player</button>
+                    <c:when test="${match['new']}">
+                        <button class="btn btn-default" type="submit">Add Match</button>
                     </c:when>
                 </c:choose>
             </div>

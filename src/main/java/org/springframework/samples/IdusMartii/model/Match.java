@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.samples.IdusMartii.pet.PetType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,7 +22,13 @@ import lombok.Setter;
 
 public class Match extends BaseEntity{
 
-	private Integer contador;
+	private String contador;
+	
+
+
+	public void setContador(String contador) {
+		this.contador = contador;
+	}
 	
 
 }
