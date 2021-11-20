@@ -29,16 +29,16 @@ public class PlayerController {
 	
 	@GetMapping(path="/new")
 	public String crearJugador(ModelMap modelMap) {
-		String vista = "players/crearJugador";
+		String vista = "players/editarJugador";
 		modelMap.addAttribute("player", new Player());
 		return vista;
 	}
 	@PostMapping(path="/new")
 	public String guardarJugador(@Valid Player player, BindingResult result, ModelMap modelMap) {
 		String vista = "players/listadoJugadores";
-		if (!result.hasErrors()) {
+		if (result.hasErrors()) {
 			modelMap.addAttribute("players", player);
-			return "players/crearJugador";
+			return "players/editarJugador";
 		} else {
 			playerService.savePlayer(player);
 			modelMap.addAttribute("message", "¡Jugador guardado correctamente!");

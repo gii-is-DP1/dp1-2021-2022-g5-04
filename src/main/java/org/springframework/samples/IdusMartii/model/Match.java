@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "matches")
-public class Match extends BaseEntity{
+public class Match extends NamedEntity{
  
 		private int round;
 		private int turn;

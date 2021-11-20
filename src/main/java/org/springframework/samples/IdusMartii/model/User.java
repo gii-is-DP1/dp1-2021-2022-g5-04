@@ -20,8 +20,8 @@ import lombok.Setter;
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity{
-	@Column(name = "username")
-	@UniqueElements
+	// @Column(name = "username")
+	// @UniqueElements
 	String username;
 	
 	String password;

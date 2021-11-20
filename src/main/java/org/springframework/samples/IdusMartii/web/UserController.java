@@ -39,41 +39,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/users")
 public class UserController {
 
-	@Autowired
-	private UserService userService;
-	
-	@InitBinder
+    @Autowired
+    private UserService userService;
+    
+    @InitBinder
     public void setAllowedFields(WebDataBinder dataBinder) {
         dataBinder.setDisallowedFields("id");
     }
-	
-	@GetMapping()
-	public String listadoJugadores(ModelMap modelMap) {
+    
+    @GetMapping()
+	public String listadoUsuario(ModelMap modelMap) {
 		String vista = "users/listadoUsuarios";
 		Iterable<User> users = userService.findAll();
 		modelMap.addAttribute("users", users);
 		return vista;
 	}
-	
-	@GetMapping(path="/new")
-	public String crearJugador(ModelMap modelMap) {
-		String vista = "users/crearUsuario";
-		modelMap.addAttribute("user", new User());
-		return vista;
-	}
+    
+    @GetMapping(path="/new")
+    public String crearJugador(ModelMap modelMap) {
+        String vista = "users/crearUsuario";
+        modelMap.addAttribute("user", new User());
+        return vista;
+    }
 
-	@PostMapping(path="/new")
-	public String guardarJugador(@Valid User user, BindingResult result, ModelMap modelMap) {
-		String vista = "users/listadoUsuarios";
-		if (result.hasErrors()) {
-			modelMap.addAttribute("users", user);
-			return "users/crearUsuario";
-		} else {
-			userService.saveUser(user);
-			modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
-		}
-		return vista;
-	}
+    @PostMapping(path="/save")
+    public String guardarJugador(@Valid User user, BindingResult result, ModelMap modelMap) {
+        String vista = "users/listadoUsuarios";
+        if (result.hasErrors()) {
+            modelMap.addAttribute("users", user);
+            return "users/crearUsuario";
+        } else {
+            userService.saveUser(user);
+            modelMap.addAttribute("message", "Â¡Usuario guardado correctamente!");
+        }
+        return "redirect:/users";
+    }
 
 }
-

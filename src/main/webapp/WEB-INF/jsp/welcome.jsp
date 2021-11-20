@@ -20,7 +20,7 @@
     <div class="row" style="background-image:url()">
         <div class="col-md-12" ">
             <!-- <IdusMartii:board chessBoard="${chessBoard}"/> -->
-            <a href="http://localhost:8080/players">
+            <a href="http://localhost:8080/matches/new">
                 <button style="width:600px;height:100px;FONT-SIZE: 36pt;">Crear una partida</button>
               </a> 
             <!-- <c:forEach items="${chessBoard.pieces}" var="piece">

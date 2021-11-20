@@ -10,7 +10,7 @@
     <h2>
         <c:if test="${user['new']}">New </c:if> User
     </h2>
-    <form:form modelAttribute="user" class="form-horizontal" id="add-user-form">
+    <form:form modelAttribute="user" class="form-horizontal" id="add-user-form" action="/users/save">
         <div class="form-group has-feedback">
             <IdusMartii:inputField label="Username" name="username"/>
             <IdusMartii:inputField label="Password" name="password"/>
