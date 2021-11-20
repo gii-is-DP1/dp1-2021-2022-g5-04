@@ -1,29 +1,3 @@
--- One admin user, named admin1 with passwor 4dm1n and authority admin
-INSERT INTO users(username,password,enabled) VALUES ('admin1','4dm1n',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
--- One owner user, named owner1 with passwor 0wn3r
-INSERT INTO users(username,password,enabled) VALUES ('owner1','0wn3r',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (2,'owner1','admin');
-
-INSERT INTO users(username,password,enabled) VALUES ('antsermen','antsermen123',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (4,'antsermen','admin');
-
-INSERT INTO users(username,password,enabled) VALUES ('mancarver1','contraseña',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (5,'mancarver1','admin');
-
-INSERT INTO users(username,password,enabled) VALUES ('josariexp','contraseña',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (6,'josariexp','admin');
-
-INSERT INTO users(username,password,enabled) VALUES ('juamorper','juamorper2',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (7,'juamorper','admin');
-
-INSERT INTO users(username,password,enabled) VALUES ('pabsanper','robe',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (8,'pabsanper','admin');
-
--- One vet user, named vet1 with passwor v3t
-INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (3,'vet1','veterinarian');
-
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');
 INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
@@ -96,3 +70,10 @@ INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (1,
 INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (2,'BLACK','KING',5,1,1);
 INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (3,'WHITE','KING',7,5,1);
 INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (4,'BLACK','HORSE',6,1,1);
+
+INSERT INTO users(id,username,password,email,enabled) VALUES (1,'admin1','4dm1n','admin1@gmail.com',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (1,1,'admin');
+
+INSERT INTO users(id,username,password,email,enabled) VALUES (2, 'antsermen','antsermen1','antsermen@gmail.com', TRUE);
+INSERT INTO player VALUES (1, 'player1', '1', '2', '1', '1', 'antsermen');
+

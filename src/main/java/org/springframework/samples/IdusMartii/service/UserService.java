@@ -18,12 +18,13 @@ package org.springframework.samples.IdusMartii.service;
 
 import java.util.Optional;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.IdusMartii.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.samples.IdusMartii.repository.UserRepository;
-import org.springframework.samples.IdusMartii.model.User;
 
 /**
  * Mostly used as a facade for all Petclinic controllers Also a placeholder
@@ -40,7 +41,11 @@ public class UserService {
 	public UserService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
-
+	@Transactional
+	public Iterable<User> findAll(){
+		return userRepository.findAll();
+	}
+	
 	@Transactional
 	public void saveUser(User user) throws DataAccessException {
 		user.setEnabled(true);
