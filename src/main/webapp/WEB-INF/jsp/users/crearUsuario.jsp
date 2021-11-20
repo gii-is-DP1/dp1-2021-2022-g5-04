@@ -8,7 +8,7 @@
 
 <IdusMartii:layout pageName="usersCreation">
     <h2>
-        <c:if test="${users['new']}">New </c:if> User
+        <c:if test="${user['new']}">New </c:if> User
     </h2>
     <form:form modelAttribute="user" class="form-horizontal" id="add-user-form">
         <div class="form-group has-feedback">
@@ -19,7 +19,7 @@
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <c:choose>
-                    <c:when test="${users['new']}">
+                    <c:when test="${user['new']}">
                         <button class="btn btn-default" type="submit">Add User</button>
                     </c:when>
                 </c:choose>
