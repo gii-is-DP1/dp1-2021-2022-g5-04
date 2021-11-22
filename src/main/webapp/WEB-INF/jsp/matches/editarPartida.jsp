@@ -13,18 +13,43 @@
     </h2>
     <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/${id}/save" >
         <div class="form-group has-feedback">
-            <IdusMartii:inputField label="Name" name="name"/>
-            <IdusMartii:inputField label="Round" name="round"/>
-            <IdusMartii:inputField label="Tuen" name="turn"/>
+           <p> Turno: ${match.turn}</p>
+            <p> Ronda: ${match.round}</p>
+            
+             <p> Votos a favor: ${match.votoaFavor}</p>
+            <p> votos en Contra: ${match.votoenContra}</p>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                
-                        <button class="btn btn-default" type="submit">Update Owner</button>
-                 
+                        <button class="btn btn-default" type="submit">A favor</button>
             </div>
         </div>
     </form:form>
+    <c:if test= "${match.round==1}" >
+    <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form" action="/matches/${id}/saven" >
+        <div class="form-group has-feedback">
+          
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+               
+                        <button class="btn btn-default" type="submit">Nulo</button>
+    
+      </form:form>
+</c:if>
+    
+     <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form" action="/matches/${id}/saver" >
+        <div class="form-group has-feedback">
+          
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+               
+                        <button class="btn btn-default" type="submit">En contra</button>
+    
+      </form:form>
+  
 
     
     

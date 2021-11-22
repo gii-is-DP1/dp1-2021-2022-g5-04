@@ -22,7 +22,11 @@
             <tr>
                 <td>
                     <spring:url value="/matches/{matchId}" var="matchUrl">
-                        <spring:param name="matchId" value="${match.id}"/>
+   <spring:param name="id" value="${match.id}"/>
+                	     <input type="hidden" id="a" name="a" value="${match.turn}">
+                	                     	     <input type="hidden" id="b" name="b" value="${match.round}">
+                	     
+
                     </spring:url>
                     <a href="${fn:escapeXml(matchUrl)}"><c:out value="${match.name}"/></a>
                 </td>
@@ -42,7 +46,9 @@
 -->
    <td>
                 	<spring:url value="/matches/{id}/new" var="playerUrl">
-                	         <spring:param name="id" value="${match.id}"/>
+                	        <spring:param name="id" value="${match.id}"/>
+                	     <input type="hidden" id="a" name="a" value="${match.turn}">
+                	                     	     <input type="hidden" id="b" name="b" value="${match.round}">
                 	
                     </spring:url>
                 	<a href= "${fn:escapeXml(playerUrl)}">Editar</a>
