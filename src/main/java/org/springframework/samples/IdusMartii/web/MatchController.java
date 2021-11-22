@@ -131,6 +131,40 @@ public class MatchController {
 		}
 	
 	
+	@GetMapping(path="/{id}/saven")
+	public String guardarJugador212(  @PathVariable("id") int id, ModelMap modelMap) {
+		String vista = "matches/listadoPartida";
+	
+		Match owner = this.matchService.findById(id);
+		modelMap.addAttribute(owner);
+		
+		return vista;
+	}
+	@PostMapping(path="/{id}/saven")
+	public String guardarJugador5(  ModelMap modelMap, @PathVariable("id") int id) {
+	
+			// String vista = "matches/listadoPartida";
+ 
+		
+				//match.setId(id);
+			Match owner = this.matchService.findById(id);
+			owner.setTurn(owner.getTurn()+1);
+
+			if (owner.getTurn() == 5) {
+				owner.setTurn(0);
+				owner.setRound(owner.getRound()+1);
+
+			}
+			
+			if(owner.getRound() == 2) {
+				owner.setTurn(0);
+				owner.setRound(0);
+
+			}
+				this.matchService.saveMatch(owner);
+				return "redirect:/matches/" + id + "/new" ;
+			
+		}
 	
 	
 	
