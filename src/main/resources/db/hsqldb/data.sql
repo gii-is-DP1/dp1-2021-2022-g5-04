@@ -90,7 +90,7 @@ INSERT INTO types VALUES (6, 'hamster');
 INSERT INTO users(id,email,username,password,enabled) VALUES (1, 'admin@gmail.com','admin1','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 
-INSERT INTO matches (id,name,round,turn)VALUES (1, 'partida1', '1', '1');
+INSERT INTO matches (id,name,round,turn,votoa_favor,votoen_contra)VALUES (1, 'partida1', '0', '0', '0', '0');
 -- INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (1, 'player1', '1', '1', '1', '1', 'admin1','1');
 INSERT INTO chess_board(id,background,height,width) VALUES (1,'resources/images/fondo.jpg',800,800);
 INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (1,'BLACK','HORSE',1,1,1);

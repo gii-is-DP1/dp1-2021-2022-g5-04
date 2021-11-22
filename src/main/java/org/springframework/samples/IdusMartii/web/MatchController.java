@@ -51,12 +51,14 @@ public class MatchController {
 	@GetMapping(path="/{id}/new")
 	public String crearJugador1(ModelMap modelMap, @PathVariable("id") int id) {
 		String vista = "matches/editarPartida";
-		modelMap.addAttribute("match", new Match());
+		Match owner = this.matchService.findById(id);
+
+		modelMap.addAttribute("match", owner);
 		return vista;
 	}
 	
 	@GetMapping(path="/{id}/save")
-	public String guardarJugador2( BindingResult result, @PathVariable("id") int id, ModelMap modelMap) {
+	public String guardarJugador2(  @PathVariable("id") int id, ModelMap modelMap) {
 		String vista = "matches/listadoPartida";
 	
 		Match owner = this.matchService.findById(id);
@@ -65,19 +67,68 @@ public class MatchController {
 		return vista;
 	}
 	@PostMapping(path="/{id}/save")
-	public String guardarJugador(@Valid Match match, BindingResult result, ModelMap modelMap, @PathVariable("id") int id) {
+	public String guardarJugador(  ModelMap modelMap, @PathVariable("id") int id) {
 	
 			// String vista = "matches/listadoPartida";
-
+ 
 		
-				match.setId(id);
-				this.matchService.saveMatch(match);
-				return "redirect:/matches";
+				//match.setId(id);
+			Match owner = this.matchService.findById(id);
+			owner.setTurn(owner.getTurn()+1);
+			owner.setVotoaFavor(owner.getVotoaFavor()+1);
+
+			if (owner.getTurn() == 5) {
+				owner.setTurn(0);
+				owner.setRound(owner.getRound()+1);
+
+			}
+			
+			if(owner.getRound() == 2) {
+				owner.setTurn(0);
+				owner.setRound(0);
+
+			}
+				this.matchService.saveMatch(owner);
+				return "redirect:/matches/" + id + "/new" ;
 			
 		}
 	
 	
+	@GetMapping(path="/{id}/saver")
+	public String guardarJugador21(  @PathVariable("id") int id, ModelMap modelMap) {
+		String vista = "matches/listadoPartida";
 	
+		Match owner = this.matchService.findById(id);
+		modelMap.addAttribute(owner);
+		
+		return vista;
+	}
+	@PostMapping(path="/{id}/saver")
+	public String guardarJugador1(  ModelMap modelMap, @PathVariable("id") int id) {
+	
+			// String vista = "matches/listadoPartida";
+ 
+		
+				//match.setId(id);
+			Match owner = this.matchService.findById(id);
+			owner.setTurn(owner.getTurn()+1);
+			owner.setVotoenContra(owner.getVotoenContra()+1);
+
+			if (owner.getTurn() == 5) {
+				owner.setTurn(0);
+				owner.setRound(owner.getRound()+1);
+
+			}
+			
+			if(owner.getRound() == 2) {
+				owner.setTurn(0);
+				owner.setRound(0);
+
+			}
+				this.matchService.saveMatch(owner);
+				return "redirect:/matches/" + id + "/new" ;
+			
+		}
 	
 	
 	

@@ -23,7 +23,14 @@ public class Match extends NamedEntity{
  
 		private int round;
 		private int turn;
+		
+		private int votoaFavor;
+		private int votoenContra;
+
+		
         @OneToMany(cascade = CascadeType.ALL, mappedBy = "match")
 	    private Set<Player> players;
     
 }
+
+

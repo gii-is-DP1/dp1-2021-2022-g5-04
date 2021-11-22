@@ -17,6 +17,8 @@
             <IdusMartii:inputField label="Name" name="name"/>
             <IdusMartii:inputField label="Round" name="round"/>
             <IdusMartii:inputField label="Tuen" name="turn"/>
+              <IdusMartii:inputField label="votoaFavor" name="votoaFavor"/>
+            <IdusMartii:inputField label="votoenContra" name="votoenContra"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
