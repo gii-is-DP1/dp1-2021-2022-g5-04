@@ -26,6 +26,19 @@
             </div>
         </div>
     </form:form>
+    <c:if test= "${match.round==1}" >
+    <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form" action="/matches/${id}/saven" >
+        <div class="form-group has-feedback">
+          
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+               
+                        <button class="btn btn-default" type="submit">Nulo</button>
+    
+      </form:form>
+</c:if>
+    
      <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form" action="/matches/${id}/saver" >
         <div class="form-group has-feedback">
           

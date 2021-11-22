@@ -82,15 +82,32 @@ public class MatchController {
 				owner.setRound(owner.getRound()+1);
 
 			}
-			
 			if(owner.getRound() == 2) {
-				owner.setTurn(0);
-				owner.setRound(0);
+				if(owner.getVotoaFavor()==((owner.getVotoenContra()-1) )) {
+					return "matches/victoriaF" ;}
+				else if(owner.getVotoaFavor()==((owner.getVotoenContra()-2) )) {
+					return "matches/victoriaF" ;}
+				else if(owner.getVotoaFavor()-1==((owner.getVotoenContra()) )) {
+					return "matches/victoriaC" ;}	
+				else if(owner.getVotoaFavor()-2==((owner.getVotoenContra()) )) {
+						return "matches/victoriaC" ;}
+				else {
+					return "matches/victoriaM" ;
+				}
+
+			}
+			if(owner.getVotoaFavor()==5) {
+				return "matches/victoriaF" ;
+
+			}else if(owner.getVotoenContra()==5) {
+				return "matches/victoriaC" ;
 
 			}
 				this.matchService.saveMatch(owner);
 				return "redirect:/matches/" + id + "/new" ;
 			
+		
+	
 		}
 	
 	
@@ -121,18 +138,34 @@ public class MatchController {
 			}
 			
 			if(owner.getRound() == 2) {
-				owner.setTurn(0);
-				owner.setRound(0);
+				if(owner.getVotoaFavor()==((owner.getVotoenContra()-1) )) {
+					return "matches/victoriaF" ;}
+				else if(owner.getVotoaFavor()==((owner.getVotoenContra()-2) )) {
+					return "matches/victoriaF" ;}
+				else if(owner.getVotoaFavor()-1==((owner.getVotoenContra()) )) {
+					return "matches/victoriaC" ;}	
+				else if(owner.getVotoaFavor()-2==((owner.getVotoenContra()) )) {
+						return "matches/victoriaC" ;}
+				else {
+					return "matches/victoriaM" ;
+				}
+
+			}
+			if(owner.getVotoaFavor()==5) {
+				return "matches/victoriaF" ;
+
+			}else if(owner.getVotoenContra()==5) {
+				return "matches/victoriaC" ;
 
 			}
 				this.matchService.saveMatch(owner);
 				return "redirect:/matches/" + id + "/new" ;
 			
+		
+	
 		}
-	
-	
 	@GetMapping(path="/{id}/saven")
-	public String guardarJugador212(  @PathVariable("id") int id, ModelMap modelMap) {
+	public String guardarJugador2w21(  @PathVariable("id") int id, ModelMap modelMap) {
 		String vista = "matches/listadoPartida";
 	
 		Match owner = this.matchService.findById(id);
@@ -141,7 +174,7 @@ public class MatchController {
 		return vista;
 	}
 	@PostMapping(path="/{id}/saven")
-	public String guardarJugador5(  ModelMap modelMap, @PathVariable("id") int id) {
+	public String guardarJugador12(  ModelMap modelMap, @PathVariable("id") int id) {
 	
 			// String vista = "matches/listadoPartida";
  
@@ -157,14 +190,31 @@ public class MatchController {
 			}
 			
 			if(owner.getRound() == 2) {
-				owner.setTurn(0);
-				owner.setRound(0);
+				if(owner.getVotoaFavor()==((owner.getVotoenContra()-1) )) {
+					return "matches/victoriaF" ;}
+				else if(owner.getVotoaFavor()==((owner.getVotoenContra()-2) )) {
+					return "matches/victoriaF" ;}
+				else if(owner.getVotoaFavor()-1==((owner.getVotoenContra()) )) {
+					return "matches/victoriaC" ;}	
+				else if(owner.getVotoaFavor()-2==((owner.getVotoenContra()) )) {
+						return "matches/victoriaC" ;}
+				else {
+					return "matches/victoriaM" ;
+				}
+
+			}
+			if(owner.getVotoaFavor()==5) {
+				return "matches/victoriaF" ;
+
+			}else if(owner.getVotoenContra()==5) {
+				return "matches/victoriaC" ;
 
 			}
 				this.matchService.saveMatch(owner);
 				return "redirect:/matches/" + id + "/new" ;
 			
 		}
+	
 	
 	
 	
