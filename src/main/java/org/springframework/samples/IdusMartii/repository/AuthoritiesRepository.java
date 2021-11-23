@@ -5,6 +5,8 @@ import org.springframework.samples.IdusMartii.model.Authorities;
 
 
 
-public interface AuthoritiesRepository extends  CrudRepository<Authorities, String>{
+public interface AuthoritiesRepository extends  CrudRepository<Authorities, Integer>{
+
+	
 	
 }

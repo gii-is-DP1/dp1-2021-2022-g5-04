@@ -21,10 +21,10 @@
         <c:forEach items="${matches}" var="match">
             <tr>
                 <td>
-                    <spring:url value="/matches/{matchId}" var="matchUrl">
-   <spring:param name="id" value="${match.id}"/>
+                    <spring:url value="/matches/{id}/new" var="matchUrl">
+   					<spring:param name="id" value="${match.id}"/>
                 	     <input type="hidden" id="a" name="a" value="${match.turn}">
-                	                     	     <input type="hidden" id="b" name="b" value="${match.round}">
+                	     <input type="hidden" id="b" name="b" value="${match.round}">
                 	     
 
                     </spring:url>
@@ -36,30 +36,19 @@
                 <td>
                     <c:out value="${match.round}"/>
                 </td>
-<!--
-                <td> 
-                    <c:out value="${owner.user.username}"/> 
-                </td>
-                <td> 
-                   <c:out value="${owner.user.password}"/> 
-                </td> 
--->
-   <td>
-                	<spring:url value="/matches/{id}/new" var="playerUrl">
-                	        <spring:param name="id" value="${match.id}"/>
+   				<td>
+                	<spring:url value="/matches/{id}/new" var="matchUrl">
+                	     <spring:param name="id" value="${match.id}"/>
                 	     <input type="hidden" id="a" name="a" value="${match.turn}">
-                	                     	     <input type="hidden" id="b" name="b" value="${match.round}">
-                	
+                	     <input type="hidden" id="b" name="b" value="${match.round}">
                     </spring:url>
-                	<a href= "${fn:escapeXml(playerUrl)}">Editar</a>
+                	<a href= "${fn:escapeXml(matchUrl)}">Editar</a>
                 </td>
             </tr>
         </c:forEach>
-        
-                	<spring:url value="/matches/new" var="playerUrl">
-                	
-                    </spring:url>
-                	<a href= "${fn:escapeXml(playerUrl)}">Crear</a>
+                <spring:url value="/matches/new" var="matchUrl">
+                </spring:url>
+                <a href= "${fn:escapeXml(matchUrl)}">Crear</a>
         </tbody>
     </table>
 </IdusMartii:layout>

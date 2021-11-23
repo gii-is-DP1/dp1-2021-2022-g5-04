@@ -11,13 +11,31 @@
 <IdusMartii:layout pageName="matches">
     <h2>
     </h2>
+    <table class="table table-striped">
+        <tr>
+            <th>Name</th>
+            <td><b><c:out value="${match.name} "/></b></td>
+        </tr>
+        <tr>
+            <th>Turn</th>
+            <td><c:out value="${match.turn}"/></td>
+        </tr>
+        <tr>
+            <th>Round</th>
+            <td><c:out value="${match.round}"/></td>
+        </tr>
+        <tr>
+            <th>Players</th>
+            <td><c:out value="${match.players[0].user.username}"/></td>
+        </tr>
+
+    </table>
     <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/${id}/save" >
         <div class="form-group has-feedback">
            <p> Turno: ${match.turn}</p>
             <p> Ronda: ${match.round}</p>
-            
              <p> Votos a favor: ${match.votoaFavor}</p>
-            <p> votos en Contra: ${match.votoenContra}</p>
+            <p> Votos en Contra: ${match.votoenContra}</p>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

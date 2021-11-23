@@ -16,20 +16,13 @@
         <div class="form-group has-feedback">
             <IdusMartii:inputField label="Name" name="name"/>
             <IdusMartii:inputField label="Round" name="round"/>
-            <IdusMartii:inputField label="Tuen" name="turn"/>
-              <IdusMartii:inputField label="votoaFavor" name="votoaFavor"/>
+            <IdusMartii:inputField label="Turn" name="turn"/>
+            <IdusMartii:inputField label="votoaFavor" name="votoaFavor"/>
             <IdusMartii:inputField label="votoenContra" name="votoenContra"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <c:choose>
-                    <c:when test="${match['new']}">
-                        <button class="btn btn-default" type="submit">Add Owner</button>
-                    </c:when>
-                    <c:otherwise>
-                        <button class="btn btn-default" type="submit">Update Owner</button>
-                    </c:otherwise>
-                </c:choose>
+                   <button class="btn btn-default" type="submit">Add Match</button>
             </div>
         </div>
     </form:form>

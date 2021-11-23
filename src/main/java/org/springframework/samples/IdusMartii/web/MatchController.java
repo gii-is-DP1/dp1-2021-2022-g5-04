@@ -3,6 +3,7 @@ package org.springframework.samples.IdusMartii.web;
 
 import javax.validation.Valid;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.model.Match;
-import org.springframework.samples.IdusMartii.model.Player;
-
 
 @Controller
 @RequestMapping("/matches")
@@ -39,12 +38,9 @@ public class MatchController {
 	}
 	@PostMapping(path="/save")
 	public String guardarJugador1(@Valid Match player, BindingResult result, ModelMap modelMap) {
-		String vista = "matches/listadoPartida";
-	
 			matchService.saveMatch(player);
 			modelMap.addAttribute("message", "¡Jugador guardado correctamente!");
-		
-		return "redirect:/matches";
+			return "redirect:/matches/" + player.getId() + "/new";
 	}
 
 
