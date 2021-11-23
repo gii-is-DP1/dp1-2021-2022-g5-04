@@ -1,16 +1,14 @@
 package org.springframework.samples.IdusMartii.model;
 
 
+import java.io.Serializable;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-
-import org.hibernate.validator.constraints.UniqueElements;
+import javax.validation.constraints.Email;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,13 +17,11 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity{
-	// @Column(name = "username")
-	// @UniqueElements
+public class User extends BaseEntity implements Serializable{
 	String username;
 	
 	String password;
-	
+	@Email
 	String email;
 
 	// List<String> friends;

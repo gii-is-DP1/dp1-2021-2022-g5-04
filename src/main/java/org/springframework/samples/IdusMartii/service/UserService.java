@@ -18,6 +18,8 @@ package org.springframework.samples.IdusMartii.service;
 
 import java.util.Optional;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -41,14 +43,15 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 
+	
 	@Transactional
 	public void saveUser(User user) throws DataAccessException {
 		user.setEnabled(true);
 		userRepository.save(user);
 	}
 	@Transactional
-	public Optional<User> findUser(String username) {
-		return userRepository.findById(username);
+	public Optional<User> findUser(Integer userId) {
+		return userRepository.findById(userId);
 	}
 	@Transactional
 	public Iterable<User> findAll(){

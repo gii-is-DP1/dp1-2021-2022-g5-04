@@ -17,8 +17,10 @@ package org.springframework.samples.IdusMartii.web;
 
 import javax.validation.Valid;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -42,6 +44,9 @@ public class UserController {
     @Autowired
     private UserService userService;
     
+    @Autowired
+    private AuthoritiesService authoritiesService;
+    
     @InitBinder
     public void setAllowedFields(WebDataBinder dataBinder) {
         dataBinder.setDisallowedFields("id");
@@ -64,13 +69,13 @@ public class UserController {
 
     @PostMapping(path="/save")
     public String guardarJugador(@Valid User user, BindingResult result, ModelMap modelMap) {
-        String vista = "users/listadoUsuarios";
         if (result.hasErrors()) {
             modelMap.addAttribute("users", user);
             return "users/crearUsuario";
         } else {
             userService.saveUser(user);
-            modelMap.addAttribute("message", "Â¡Usuario guardado correctamente!");
+            authoritiesService.saveAuthorities(user.getId(), "user");
+            modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
         }
         return "redirect:/users";
     }
