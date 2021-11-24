@@ -5,6 +5,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.samples.IdusMartii.repository.PlayerRepository;
+import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 
 @Service
@@ -25,5 +26,11 @@ public class PlayerService {
 	@Transactional
 	public void savePlayer(Player player) throws DataAccessException {
 		playerRepository.save(player);
+	}
+	
+    
+	@Transactional
+	public Player findbyId(Integer ID) throws DataAccessException {
+		return playerRepository.findById(ID).get();
 	}
 }
