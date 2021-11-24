@@ -74,7 +74,7 @@ public class UserController {
             return "users/crearUsuario";
         } else {
             userService.saveUser(user);
-            authoritiesService.saveAuthorities(user.getId(), "user");
+            authoritiesService.saveAuthorities(user.getUsername(), "user");
             modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
         }
         return "redirect:/users";

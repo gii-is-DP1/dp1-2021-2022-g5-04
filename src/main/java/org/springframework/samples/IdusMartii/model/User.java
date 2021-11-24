@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Id;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -17,7 +18,8 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity implements Serializable{
+public class User implements Serializable{
+	@Id
 	String username;
 	
 	String password;
@@ -27,6 +29,10 @@ public class User extends BaseEntity implements Serializable{
 	// List<String> friends;
 	
 	boolean enabled;
+
+	public boolean isNew() {
+		return this.username == null;
+	}
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;

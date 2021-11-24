@@ -50,8 +50,8 @@ public class UserService {
 		userRepository.save(user);
 	}
 	@Transactional
-	public Optional<User> findUser(Integer userId) {
-		return userRepository.findById(userId);
+	public Optional<User> findUser(String username) {
+		return userRepository.findById(username);
 	}
 	@Transactional
 	public Iterable<User> findAll(){
