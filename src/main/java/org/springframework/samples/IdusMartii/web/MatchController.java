@@ -16,6 +16,7 @@ import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
+import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.repository.PlayerRepository;
@@ -37,8 +38,6 @@ public class MatchController {
 	public String listadoPartida(ModelMap modelMap) {
 		String vista = "matches/listadoPartida";
 		Iterable<Match> matches = matchService.findAll();
-		// String a = currentUserService.showCurrentUser();
-		// System.out.println(a);
 		modelMap.addAttribute("matches", matches);
 		return vista;
 	}
@@ -50,25 +49,26 @@ public class MatchController {
 		return vista;
 	}
 	@PostMapping(path="/save")
-	public String guardarJugador1(@Valid Match match, BindingResult result, ModelMap modelMap) {
+	public String guardarPartida(@Valid Match match, BindingResult result, ModelMap modelMap) {
 			Player host = new Player();
 			host.setMatch(match);
 			host.setUser(userService.findUser(currentUserService.showCurrentUser()).get());
 			host.setName("host");
+			host.setRole(Role.CONSUL);
 			matchService.saveMatch(match);
 			playerService.savePlayer(host);
-			currentUserService.showCurrentUser();
 			modelMap.addAttribute("message", "¡Jugador guardado correctamente!");
 			return "redirect:/matches/" + match.getId() + "/new";
 	}
 
 
 	@GetMapping(path="/{id}/new")
-	public String crearJugador1(ModelMap modelMap, @PathVariable("id") int id) {
+	public String editarPartida(ModelMap modelMap, @PathVariable("id") int id) {
 		String vista = "matches/editarPartida";
-		Match owner = this.matchService.findById(id);
-
-		modelMap.addAttribute("match", owner);
+		Match match = this.matchService.findById(id);
+		String currentuser = currentUserService.showCurrentUser();
+		modelMap.addAttribute("current", currentuser);
+		modelMap.addAttribute("match", match);
 		return vista;
 	}
 	
@@ -76,8 +76,8 @@ public class MatchController {
 	public String guardarJugador2(  @PathVariable("id") int id, ModelMap modelMap) {
 		String vista = "matches/listadoPartida";
 	
-		Match owner = this.matchService.findById(id);
-		modelMap.addAttribute(owner);
+		Match match = this.matchService.findById(id);
+		modelMap.addAttribute(match);
 		
 		return vista;
 	}
@@ -88,37 +88,37 @@ public class MatchController {
  
 		
 				//match.setId(id);
-			Match owner = this.matchService.findById(id);
-			owner.setTurn(owner.getTurn()+1);
-			owner.setVotoaFavor(owner.getVotoaFavor()+1);
+			Match match = this.matchService.findById(id);
+			match.setTurn(match.getTurn()+1);
+			match.setVotoaFavor(match.getVotoaFavor()+1);
 
-			if (owner.getTurn() == 5) {
-				owner.setTurn(0);
-				owner.setRound(owner.getRound()+1);
+			if (match.getTurn() == 5) {
+				match.setTurn(0);
+				match.setRound(match.getRound()+1);
 
 			}
-			if(owner.getRound() == 2) {
-				if(owner.getVotoaFavor()==((owner.getVotoenContra()-1) )) {
+			if(match.getRound() == 2) {
+				if(match.getVotoaFavor()==((match.getVotoenContra()-1) )) {
 					return "matches/victoriaF" ;}
-				else if(owner.getVotoaFavor()==((owner.getVotoenContra()-2) )) {
+				else if(match.getVotoaFavor()==((match.getVotoenContra()-2) )) {
 					return "matches/victoriaF" ;}
-				else if(owner.getVotoaFavor()-1==((owner.getVotoenContra()) )) {
+				else if(match.getVotoaFavor()-1==((match.getVotoenContra()) )) {
 					return "matches/victoriaC" ;}	
-				else if(owner.getVotoaFavor()-2==((owner.getVotoenContra()) )) {
+				else if(match.getVotoaFavor()-2==((match.getVotoenContra()) )) {
 						return "matches/victoriaC" ;}
 				else {
 					return "matches/victoriaM" ;
 				}
 
 			}
-			if(owner.getVotoaFavor()==5) {
+			if(match.getVotoaFavor()==5) {
 				return "matches/victoriaF" ;
 
-			}else if(owner.getVotoenContra()==5) {
+			}else if(match.getVotoenContra()==5) {
 				return "matches/victoriaC" ;
 
 			}
-				this.matchService.saveMatch(owner);
+				this.matchService.saveMatch(match);
 				return "redirect:/matches/" + id + "/new" ;
 			
 		
@@ -130,8 +130,8 @@ public class MatchController {
 	public String guardarJugador21(  @PathVariable("id") int id, ModelMap modelMap) {
 		String vista = "matches/listadoPartida";
 	
-		Match owner = this.matchService.findById(id);
-		modelMap.addAttribute(owner);
+		Match match = this.matchService.findById(id);
+		modelMap.addAttribute(match);
 		
 		return vista;
 	}
@@ -142,38 +142,38 @@ public class MatchController {
  
 		
 				//match.setId(id);
-			Match owner = this.matchService.findById(id);
-			owner.setTurn(owner.getTurn()+1);
-			owner.setVotoenContra(owner.getVotoenContra()+1);
+			Match match = this.matchService.findById(id);
+			match.setTurn(match.getTurn()+1);
+			match.setVotoenContra(match.getVotoenContra()+1);
 
-			if (owner.getTurn() == 5) {
-				owner.setTurn(0);
-				owner.setRound(owner.getRound()+1);
+			if (match.getTurn() == 5) {
+				match.setTurn(0);
+				match.setRound(match.getRound()+1);
 
 			}
 			
-			if(owner.getRound() == 2) {
-				if(owner.getVotoaFavor()==((owner.getVotoenContra()-1) )) {
+			if(match.getRound() == 2) {
+				if(match.getVotoaFavor()==((match.getVotoenContra()-1) )) {
 					return "matches/victoriaF" ;}
-				else if(owner.getVotoaFavor()==((owner.getVotoenContra()-2) )) {
+				else if(match.getVotoaFavor()==((match.getVotoenContra()-2) )) {
 					return "matches/victoriaF" ;}
-				else if(owner.getVotoaFavor()-1==((owner.getVotoenContra()) )) {
+				else if(match.getVotoaFavor()-1==((match.getVotoenContra()) )) {
 					return "matches/victoriaC" ;}	
-				else if(owner.getVotoaFavor()-2==((owner.getVotoenContra()) )) {
+				else if(match.getVotoaFavor()-2==((match.getVotoenContra()) )) {
 						return "matches/victoriaC" ;}
 				else {
 					return "matches/victoriaM" ;
 				}
 
 			}
-			if(owner.getVotoaFavor()==5) {
+			if(match.getVotoaFavor()==5) {
 				return "matches/victoriaF" ;
 
-			}else if(owner.getVotoenContra()==5) {
+			}else if(match.getVotoenContra()==5) {
 				return "matches/victoriaC" ;
 
 			}
-				this.matchService.saveMatch(owner);
+				this.matchService.saveMatch(match);
 				return "redirect:/matches/" + id + "/new" ;
 			
 		
@@ -183,8 +183,8 @@ public class MatchController {
 	public String guardarJugador2w21(  @PathVariable("id") int id, ModelMap modelMap) {
 		String vista = "matches/listadoPartida";
 	
-		Match owner = this.matchService.findById(id);
-		modelMap.addAttribute(owner);
+		Match match = this.matchService.findById(id);
+		modelMap.addAttribute(match);
 		
 		return vista;
 	}
@@ -195,39 +195,90 @@ public class MatchController {
  
 		
 				//match.setId(id);
-			Match owner = this.matchService.findById(id);
-			owner.setTurn(owner.getTurn()+1);
+			Match match = this.matchService.findById(id);
+			match.setTurn(match.getTurn()+1);
 
-			if (owner.getTurn() == 5) {
-				owner.setTurn(0);
-				owner.setRound(owner.getRound()+1);
+			if (match.getTurn() == 5) {
+				match.setTurn(0);
+				match.setRound(match.getRound()+1);
 
 			}
 			
-			if(owner.getRound() == 2) {
-				if(owner.getVotoaFavor()==((owner.getVotoenContra()-1) )) {
+			if(match.getRound() == 2) {
+				if(match.getVotoaFavor()==((match.getVotoenContra()-1) )) {
 					return "matches/victoriaF" ;}
-				else if(owner.getVotoaFavor()==((owner.getVotoenContra()-2) )) {
+				else if(match.getVotoaFavor()==((match.getVotoenContra()-2) )) {
 					return "matches/victoriaF" ;}
-				else if(owner.getVotoaFavor()-1==((owner.getVotoenContra()) )) {
+				else if(match.getVotoaFavor()-1==((match.getVotoenContra()) )) {
 					return "matches/victoriaC" ;}	
-				else if(owner.getVotoaFavor()-2==((owner.getVotoenContra()) )) {
+				else if(match.getVotoaFavor()-2==((match.getVotoenContra()) )) {
 						return "matches/victoriaC" ;}
 				else {
 					return "matches/victoriaM" ;
 				}
 
 			}
-			if(owner.getVotoaFavor()==5) {
+			if(match.getVotoaFavor()==5) {
 				return "matches/victoriaF" ;
 
-			}else if(owner.getVotoenContra()==5) {
+			}else if(match.getVotoenContra()==5) {
 				return "matches/victoriaC" ;
 
 			}
-				this.matchService.saveMatch(owner);
+				this.matchService.saveMatch(match);
 				return "redirect:/matches/" + id + "/new" ;
 			
+		}
+		@GetMapping(path="/{id}/game")
+		public String empezarPartida(ModelMap modelMap, @PathVariable("id") int id) {
+		String vista = "matches/listadoPartida";
+		Match match = this.matchService.findById(id);
+
+		modelMap.addAttribute("match", match);
+		return vista;
+	}
+	@PostMapping(path="/{id}/game/save")
+	public String guardarPartidaEmpezada(  ModelMap modelMap, @PathVariable("id") int id) {
+	
+			// String vista = "matches/listadoPartida";
+ 
+		
+				//match.setId(id);
+			// Match match = this.matchService.findById(id);
+			// match.setTurn(match.getTurn()+1);
+			// match.setVotoaFavor(match.getVotoaFavor()+1);
+
+			// if (match.getTurn() == 5) {
+			// 	match.setTurn(0);
+			// 	match.setRound(match.getRound()+1);
+
+			// }
+			// if(match.getRound() == 2) {
+			// 	if(match.getVotoaFavor()==((match.getVotoenContra()-1) )) {
+			// 		return "matches/victoriaF" ;}
+			// 	else if(match.getVotoaFavor()==((match.getVotoenContra()-2) )) {
+			// 		return "matches/victoriaF" ;}
+			// 	else if(match.getVotoaFavor()-1==((match.getVotoenContra()) )) {
+			// 		return "matches/victoriaC" ;}	
+			// 	else if(match.getVotoaFavor()-2==((match.getVotoenContra()) )) {
+			// 			return "matches/victoriaC" ;}
+			// 	else {
+			// 		return "matches/victoriaM" ;
+			// 	}
+
+			// }
+			// if(match.getVotoaFavor()==5) {
+			// 	return "matches/victoriaF" ;
+
+			// }else if(match.getVotoenContra()==5) {
+			// 	return "matches/victoriaC" ;
+
+			// }
+			// 	this.matchService.saveMatch(match);
+				return "redirect:/matches" ;
+			
+		
+	
 		}
 	
 	
