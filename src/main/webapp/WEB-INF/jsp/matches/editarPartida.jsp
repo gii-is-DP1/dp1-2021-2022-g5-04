@@ -48,4 +48,21 @@
         </form:form>  
     </c:if>
 
+	<c:if test= "${match.round eq 2}">
+		<c:forEach items="${match.players}" var="player">
+			<c:if test="${player.role eq 'CONSUL'}">
+				<c:if test="${player.user.username eq current}">
+					<form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/${id}/game/save" >
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                   
+                            <button class="btn btn-default" type="submit">Elegir roles turno</button>
+                </div>
+            </div>
+        </form:form>
+				</c:if>
+			</c:if>
+		</c:forEach>		
+	</c:if>
+
 </IdusMartii:layout>
