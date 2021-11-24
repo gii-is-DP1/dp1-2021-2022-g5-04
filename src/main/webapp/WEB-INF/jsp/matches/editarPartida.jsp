@@ -25,50 +25,27 @@
             <td><c:out value="${match.round}"/></td>
         </tr>
         <tr>
-            <th>Players</th>
+            <th>Host</th>
             <td><c:out value="${match.players[0].user.username}"/></td>
         </tr>
-
-    </table>
-    <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/${id}/save" >
-        <div class="form-group has-feedback">
-           <p> Turno: ${match.turn}</p>
-            <p> Ronda: ${match.round}</p>
-             <p> Votos a favor: ${match.votoaFavor}</p>
-            <p> Votos en Contra: ${match.votoenContra}</p>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-               
-                        <button class="btn btn-default" type="submit">A favor</button>
+        <tr>
+            <th>Players</th>
+            <td><c:forEach var="x" items="${match.players}">
+                <li>${x.user.username} </li>
+                </c:forEach></td>
+        </tr>
+        
+        
+    </table> 
+    <c:if test= "${match.players[0].user.username eq current}" >
+    <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/${id}/game/save" >
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                   
+                            <button class="btn btn-default" type="submit">Comenzar partida</button>
+                </div>
             </div>
-        </div>
-    </form:form>
-    <c:if test= "${match.round==1}" >
-    <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form" action="/matches/${id}/saven" >
-        <div class="form-group has-feedback">
-          
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-               
-                        <button class="btn btn-default" type="submit">Nulo</button>
-    
-      </form:form>
-</c:if>
-    
-     <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form" action="/matches/${id}/saver" >
-        <div class="form-group has-feedback">
-          
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-               
-                        <button class="btn btn-default" type="submit">En contra</button>
-    
-      </form:form>
-  
+        </form:form>  
+    </c:if>
 
-    
-    
 </IdusMartii:layout>
