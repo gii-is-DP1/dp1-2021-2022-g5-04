@@ -60,19 +60,9 @@ public class PlayerController {
 		return vista;
 	}
 	
-	@GetMapping(path="/{id}/savef")
-	public String votoGreeno(  @PathVariable("id") int id, ModelMap modelMap) {
-		String vista = "redirect:/matches/" + id + "/match";;
-	
-		Player player = playerService.findbyId(id);
-		modelMap.addAttribute(player);
-		
-		return vista;
-	}
-	
-	
 
-	@PostMapping(path="/{id}/{idMatch}/saver")
+
+	@PostMapping(path="/{id}/{idMatch}/guardarVotoEnContra")
 	public String votoRed(  ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
 	
 			// String vista = "matches/listadoPartida";
@@ -83,11 +73,14 @@ public class PlayerController {
 			Player player = playerService.findbyId(id);
 			
 				player.setVote(Vote.RED);
+				playerService.savePlayer(player);
+
 			return "redirect:/matches/" + idMatch + "/match";}
 
 	
-
-@PostMapping(path="/{id}/{idMatch}/saven")
+	
+	
+@PostMapping(path="/{id}/{idMatch}/guardarVotoNulo")
 public String votoYellow(  ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
 
 		// String vista = "matches/listadoPartida";
@@ -97,9 +90,13 @@ public String votoYellow(  ModelMap modelMap, @PathVariable("id") int id, @PathV
 	
 		Player player = playerService.findbyId(id);
 		player.setVote(Vote.YELLOW);
+		playerService.savePlayer(player);
+
 		return "redirect:/matches/" + idMatch + "/match";}
 
-@PostMapping(path="/{id}/{idMatch}/savef")
+
+
+@PostMapping(path="/{id}/{idMatch}/guardarVotoAFavor")
 public String votoGreen(  ModelMap modelMap, @PathVariable("id") int id,@PathVariable("idMatch") int idMatch) {
 
 		// String vista = "matches/listadoPartida";
@@ -109,6 +106,7 @@ public String votoGreen(  ModelMap modelMap, @PathVariable("id") int id,@PathVar
 	
 		Player player = playerService.findbyId(id);
 		player.setVote(Vote.GREEN);
+		playerService.savePlayer(player);
 		return "redirect:/matches/" + idMatch + "/match";}
 
 
