@@ -52,16 +52,16 @@ public class AuthoritiesService {
 	}
 	
 	@Transactional
-	public void saveAuthorities(Integer userId, String role) throws DataAccessException {
+	public void saveAuthorities(String username, String role) throws DataAccessException {
 		Authorities authority = new Authorities();
-		Optional<User> user = userService.findUser(userId);
+		Optional<User> user = userService.findUser(username);
 		if(user.isPresent()) {
 			authority.setUser(user.get());
 			authority.setAuthority(role);
 			//user.get().getAuthorities().add(authority);
 			authoritiesRepository.save(authority);
 		}else
-			throw new DataAccessException("User '"+userService.findUser(userId).get().getUsername()+"' not found!") {};
+			throw new DataAccessException("User '"+userService.findUser(username).get().getUsername()+"' not found!") {};
 	}
 
 

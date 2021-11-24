@@ -13,7 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.samples.IdusMartii.service.MatchService;
+import org.springframework.samples.IdusMartii.service.UserService;
+import org.springframework.samples.IdusMartii.service.PlayerService;
+import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.model.Match;
+import org.springframework.samples.IdusMartii.model.Player;
+import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 
 @Controller
 @RequestMapping("/matches")
@@ -21,11 +26,19 @@ public class MatchController {
 	
 	@Autowired
 	private MatchService matchService;
+	@Autowired
+	private CurrentUserService currentUserService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private PlayerService playerService;
 	
 	@GetMapping()
 	public String listadoPartida(ModelMap modelMap) {
 		String vista = "matches/listadoPartida";
 		Iterable<Match> matches = matchService.findAll();
+		// String a = currentUserService.showCurrentUser();
+		// System.out.println(a);
 		modelMap.addAttribute("matches", matches);
 		return vista;
 	}
@@ -37,10 +50,16 @@ public class MatchController {
 		return vista;
 	}
 	@PostMapping(path="/save")
-	public String guardarJugador1(@Valid Match player, BindingResult result, ModelMap modelMap) {
-			matchService.saveMatch(player);
+	public String guardarJugador1(@Valid Match match, BindingResult result, ModelMap modelMap) {
+			Player host = new Player();
+			host.setMatch(match);
+			host.setUser(userService.findUser(currentUserService.showCurrentUser()).get());
+			host.setName("host");
+			matchService.saveMatch(match);
+			playerService.savePlayer(host);
+			currentUserService.showCurrentUser();
 			modelMap.addAttribute("message", "¡Jugador guardado correctamente!");
-			return "redirect:/matches/" + player.getId() + "/new";
+			return "redirect:/matches/" + match.getId() + "/new";
 	}
 
 
