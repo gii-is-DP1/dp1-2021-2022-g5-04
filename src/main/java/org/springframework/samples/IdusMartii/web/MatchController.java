@@ -71,6 +71,16 @@ public class MatchController {
 		modelMap.addAttribute("match", match);
 		return vista;
 	}
+
+	@GetMapping(path="/{id}/match")
+	public String comenxarPartida(ModelMap modelMap, @PathVariable("id") int id) {
+		String vista = "matches/partidaEnCurso";
+		Match match = this.matchService.findById(id);
+		String currentuser = currentUserService.showCurrentUser();
+		modelMap.addAttribute("current", currentuser);
+		modelMap.addAttribute("match", match);
+		return vista;
+	}
 	
 	@GetMapping(path="/{id}/save")
 	public String guardarJugador2(  @PathVariable("id") int id, ModelMap modelMap) {
@@ -127,7 +137,7 @@ public class MatchController {
 	
 	
 	@GetMapping(path="/{id}/saver")
-	public String guardarJugador21(  @PathVariable("id") int id, ModelMap modelMap) {
+	public String VotoEnContraEx(  @PathVariable("id") int id, ModelMap modelMap) {
 		String vista = "matches/listadoPartida";
 	
 		Match match = this.matchService.findById(id);
@@ -136,7 +146,7 @@ public class MatchController {
 		return vista;
 	}
 	@PostMapping(path="/{id}/saver")
-	public String guardarJugador1(  ModelMap modelMap, @PathVariable("id") int id) {
+	public String VotoEnContra(  ModelMap modelMap, @PathVariable("id") int id) {
 	
 			// String vista = "matches/listadoPartida";
  
@@ -174,13 +184,67 @@ public class MatchController {
 
 			}
 				this.matchService.saveMatch(match);
-				return "redirect:/matches/" + id + "/new" ;
+				return "redirect:/matches/" + id + "/match" ;
+			
+		
+	
+		}
+	
+	@GetMapping(path="/{id}/savef")
+	public String votoAFavorEx(  @PathVariable("id") int id, ModelMap modelMap) {
+		String vista = "matches/listadoPartida";
+	
+		Match match = this.matchService.findById(id);
+		modelMap.addAttribute(match);
+		
+		return vista;
+	}
+	@PostMapping(path="/{id}/savef")
+	public String votarAFavor(  ModelMap modelMap, @PathVariable("id") int id) {
+	
+			// String vista = "matches/listadoPartida";
+ 
+		
+				//match.setId(id);
+			Match match = this.matchService.findById(id);
+			match.setTurn(match.getTurn()+1);
+			match.setVotoaFavor(match.getVotoaFavor()+1);
+
+			if (match.getTurn() == 5) {
+				match.setTurn(0);
+				match.setRound(match.getRound()+1);
+
+			}
+			
+			if(match.getRound() == 2) {
+				if(match.getVotoaFavor()==((match.getVotoenContra()-1) )) {
+					return "matches/victoriaF" ;}
+				else if(match.getVotoaFavor()==((match.getVotoenContra()-2) )) {
+					return "matches/victoriaF" ;}
+				else if(match.getVotoaFavor()-1==((match.getVotoenContra()) )) {
+					return "matches/victoriaC" ;}	
+				else if(match.getVotoaFavor()-2==((match.getVotoenContra()) )) {
+						return "matches/victoriaC" ;}
+				else {
+					return "matches/victoriaM" ;
+				}
+
+			}
+			if(match.getVotoaFavor()==5) {
+				return "matches/victoriaF" ;
+
+			}else if(match.getVotoenContra()==5) {
+				return "matches/victoriaC" ;
+
+			}
+				this.matchService.saveMatch(match);
+				return "redirect:/matches/" + id + "/match" ;
 			
 		
 	
 		}
 	@GetMapping(path="/{id}/saven")
-	public String guardarJugador2w21(  @PathVariable("id") int id, ModelMap modelMap) {
+	public String votoNulo(  @PathVariable("id") int id, ModelMap modelMap) {
 		String vista = "matches/listadoPartida";
 	
 		Match match = this.matchService.findById(id);
@@ -189,7 +253,7 @@ public class MatchController {
 		return vista;
 	}
 	@PostMapping(path="/{id}/saven")
-	public String guardarJugador12(  ModelMap modelMap, @PathVariable("id") int id) {
+	public String votoNulo(  ModelMap modelMap, @PathVariable("id") int id) {
 	
 			// String vista = "matches/listadoPartida";
  
@@ -226,7 +290,7 @@ public class MatchController {
 
 			}
 				this.matchService.saveMatch(match);
-				return "redirect:/matches/" + id + "/new" ;
+				return "redirect:/matches/" + id + "/match" ;
 			
 		}
 		@GetMapping(path="/{id}/game")
@@ -275,7 +339,8 @@ public class MatchController {
 
 			// }
 			// 	this.matchService.saveMatch(match);
-				return "redirect:/matches" ;
+				return  "redirect:/matches/" + id + "/match";
+ 
 			
 		
 	
@@ -283,7 +348,6 @@ public class MatchController {
 	
 	
 	
-	
-	
+	 
 	
 }
