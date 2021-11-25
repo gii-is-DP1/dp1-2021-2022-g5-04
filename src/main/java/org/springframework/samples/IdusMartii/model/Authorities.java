@@ -1,7 +1,8 @@
 package org.springframework.samples.IdusMartii.model;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
+
+
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;

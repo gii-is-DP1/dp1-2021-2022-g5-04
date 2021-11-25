@@ -78,7 +78,7 @@ public class MatchController {
 	}
 
 	@GetMapping(path="/{id}/match")
-	public String comenxarPartida(ModelMap modelMap, @PathVariable("id") int id) {
+	public String comenzarPartida(ModelMap modelMap, @PathVariable("id") int id) {
 		String vista = "matches/partidaEnCurso";
 		Match match = this.matchService.findById(id);
 		String currentuser = currentUserService.showCurrentUser();
@@ -249,7 +249,7 @@ public class MatchController {
 	
 		}
 	@GetMapping(path="/{id}/saven")
-	public String votoNulo(  @PathVariable("id") int id, ModelMap modelMap) {
+	public String votoNulo(@PathVariable("id") int id, ModelMap modelMap) {
 		String vista = "matches/listadoPartida";
 	
 		Match match = this.matchService.findById(id);
@@ -258,7 +258,7 @@ public class MatchController {
 		return vista;
 	}
 	@PostMapping(path="/{id}/saven")
-	public String votoNulo(  ModelMap modelMap, @PathVariable("id") int id) {
+	public String votoNulo(ModelMap modelMap, @PathVariable("id") int id) {
 	
 			// String vista = "matches/listadoPartida";
  

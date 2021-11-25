@@ -35,4 +35,5 @@ public class PlayerService {
 	public Player findbyId(Integer ID) throws DataAccessException {
 		return playerRepository.findById(ID).get();
 	}
+
 }
