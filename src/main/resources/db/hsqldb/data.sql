@@ -87,15 +87,36 @@ INSERT INTO types VALUES (6, 'hamster');
 -- INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02', 'rabies shot');
 -- INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 -- INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
+INSERT INTO matches (id,name,round,turn,votoa_favor,votoen_contra)VALUES (1, 'partida1', 1, '0', '0', '0');
+
 INSERT INTO users(email,username,password,enabled) VALUES ('admin@gmail.com','admin1','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
+INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (1, 'player1', '1', '2', null, 0, 'admin1',1);
 
 INSERT INTO users(email,username,password,enabled) VALUES ('ppp@gmail.com','ppp','ppp',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (2,'ppp','admin');
 
-INSERT INTO matches (id,name,round,turn,votoa_favor,votoen_contra)VALUES (1, 'partida1', '0', '0', '0', '0');
-INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (1, 'player1', '1', '1', null, '0', 'admin1','1');
-INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (2, 'player2', '1', '1', null, '1', 'ppp','1');
+INSERT INTO users(email,username,password,enabled) VALUES ('friend1@gmail.com','friend1','friend1',TRUE);
+INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (2, 'player2', '1', '1', null, 1, 'friend1',1);
+INSERT INTO authorities(id,username,authority) VALUES (3,'friend1','user');
+
+INSERT INTO users(email,username,password,enabled) VALUES ('friend2@gmail.com','friend2','friend2',TRUE);
+INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (3, 'player3', '0', '1', 2, 2, 'friend2',1);
+INSERT INTO authorities(id,username,authority) VALUES (4,'friend2','user');
+
+INSERT INTO users(email,username,password,enabled) VALUES ('friend3@gmail.com','friend3','friend3',TRUE);
+INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (4, 'player4', '2', '0', 0, 2, 'friend3',1);
+INSERT INTO authorities(id,username,authority) VALUES (5,'friend3','user');
+
+INSERT INTO users(email,username,password,enabled) VALUES ('friend4@gmail.com','friend4','friend4',TRUE);
+INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (5, 'player5', '1', '0', null, 3, 'friend4',1);
+INSERT INTO authorities(id,username,authority) VALUES (6,'friend4','user');
+
+INSERT INTO users(email,username,password,enabled) VALUES ('friend5@gmail.com','friend5','friend5',TRUE);
+INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (6, 'player6', '2', '2', null, 3, 'friend5',1);
+INSERT INTO authorities(id,username,authority) VALUES (7,'friend5','user');
+
+
 INSERT INTO chess_board(id,background,height,width) VALUES (1,'resources/images/fondo.jpg',800,800);
 INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (1,'BLACK','HORSE',1,1,1);
 INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (2,'BLACK','KING',5,1,1);

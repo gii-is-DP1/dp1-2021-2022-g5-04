@@ -1,15 +1,14 @@
 package org.springframework.samples.IdusMartii.model;
 
 import javax.persistence.CascadeType;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.ManyToOne;
 
 import org.springframework.samples.IdusMartii.enumerates.*;
-// import org.springframework.samples.IdusMartii.model.User;
 import javax.persistence.Table;
-import javax.persistence.Id;
 
 
 import lombok.Getter;

@@ -1,6 +1,7 @@
 package org.springframework.samples.IdusMartii.web;
 
-import javax.persistence.EnumType;
+
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
+import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
-import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 
 @Controller
@@ -49,6 +50,15 @@ public class PlayerController {
 		modelMap.addAttribute("player", new Player());
 		return vista;
 	}
+	@GetMapping(path="/{id}/{idMatch}/revisar")
+    public String revisarVoto(@PathVariable("id") int id, @PathVariable("idMatch") int idMatch, ModelMap modelMap) {
+        String vista = "players/revisadoVoto";
+        Player player = playerService.findbyId(id);
+        modelMap.addAttribute("idMatch", idMatch);
+        modelMap.addAttribute("player", player);
+        return vista;
+    }
+	
 	@PostMapping(path="/new")
 	public String guardarJugador(@Valid Player player, BindingResult result, ModelMap modelMap) {
 		String vista = "players/listadoJugadores";
@@ -65,7 +75,7 @@ public class PlayerController {
 
 
 	@PostMapping(path="/{id}/{idMatch}/guardarVotoEnContra")
-	public String votoRed(  ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+	public String votoRed(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
 	
 			// String vista = "matches/listadoPartida";
  
@@ -77,13 +87,14 @@ public class PlayerController {
 				player.setVote(Vote.RED);
 				playerService.savePlayer(player);
 
-			return "redirect:/matches/" + idMatch + "/match";}
+			return "redirect:/matches/" + idMatch + "/match";
+	}
 
 	
 	
 	
-@PostMapping(path="/{id}/{idMatch}/guardarVotoNulo")
-public String votoYellow(  ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+	@PostMapping(path="/{id}/{idMatch}/guardarVotoNulo")
+	public String votoYellow(  ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
 
 		// String vista = "matches/listadoPartida";
 
@@ -94,12 +105,13 @@ public String votoYellow(  ModelMap modelMap, @PathVariable("id") int id, @PathV
 		player.setVote(Vote.YELLOW);
 		playerService.savePlayer(player);
 
-		return "redirect:/matches/" + idMatch + "/match";}
+		return "redirect:/matches/" + idMatch + "/match";
+	}
 
 
 
-@PostMapping(path="/{id}/{idMatch}/guardarVotoAFavor")
-public String votoGreen(  ModelMap modelMap, @PathVariable("id") int id,@PathVariable("idMatch") int idMatch) {
+	@PostMapping(path="/{id}/{idMatch}/guardarVotoAFavor")
+	public String votoGreen(  ModelMap modelMap, @PathVariable("id") int id,@PathVariable("idMatch") int idMatch) {
 
 		// String vista = "matches/listadoPartida";
 
@@ -110,14 +122,14 @@ public String votoGreen(  ModelMap modelMap, @PathVariable("id") int id,@PathVar
 		player.setVote(Vote.GREEN);
 		playerService.savePlayer(player);
 		return "redirect:/matches/" + idMatch + "/match";
-		}
+	}
 
 
 
 
 
-@PostMapping(path="/{id}/{idMatch}/{card1}/ElegirCartaFacción1")
-public String elecciónCarta1(  ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch,@PathVariable("card1") Faction card1) {
+	@PostMapping(path="/{id}/{idMatch}/{card1}/ElegirCartaFacción1")
+	public String elecciónCarta1(  ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch,@PathVariable("card1") Faction card1) {
 
 		// String vista = "matches/listadoPartida";
 
@@ -130,12 +142,14 @@ public String elecciónCarta1(  ModelMap modelMap, @PathVariable("id") int id, @
 
 		playerService.savePlayer(player);
 
-		return "redirect:/matches/" + idMatch + "/match";}
+		return "redirect:/matches/" + idMatch + "/match";
+		
+	}
 
 
 
-@PostMapping(path="/{id}/{idMatch}/{card2}/ElegirCartaFacción2")
-public String elecciónCarta2(  ModelMap modelMap, @PathVariable("id") int id,@PathVariable("idMatch") int idMatch ,@PathVariable("card2") Faction card2) {
+	@PostMapping(path="/{id}/{idMatch}/{card2}/ElegirCartaFacción2")
+	public String elecciónCarta2(  ModelMap modelMap, @PathVariable("id") int id,@PathVariable("idMatch") int idMatch ,@PathVariable("card2") Faction card2) {
 
 		// String vista = "matches/listadoPartida";
 
@@ -148,11 +162,48 @@ public String elecciónCarta2(  ModelMap modelMap, @PathVariable("id") int id,@P
 		player.setCard2(Faction.DROPPED);
 
 		playerService.savePlayer(player);
-		return "redirect:/matches/" + idMatch + "/match";}
-
-  
-
-
+		return "redirect:/matches/" + idMatch + "/match";
+		
+	}
+	@PostMapping(path="/{id}/{idMatch}/cambiarVoto")
+	public String cambiarVoto(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+		
+		Player player = playerService.findbyId(id);
+		if (player.getVote() == Vote.RED) {
+			player.setVote(Vote.GREEN);
+		} else {
+			player.setVote(Vote.RED);
+		}
+		playerService.savePlayer(player);
+		
+		return "redirect:/matches/" +idMatch + "/match";
+	}
+	@PostMapping(path="/{id}/{idMatch}/noCambiarVoto")
+	public String noCambiarVoto(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+		
+		return "redirect:/matches/" +idMatch + "/match";
+	}
+	@PostMapping(path="/{id}/{idMatch}/asignarEdil")
+	public String asignarEdil(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+		
+		Player player = playerService.findbyId(id);
+		player.setRole(Role.EDIL);
+		playerService.savePlayer(player);
+		
+		return "redirect:/matches/" + idMatch + "/match";
+		
+	}
+	
+	@PostMapping(path="/{id}/{idMatch}/asignarPretor")
+	public String asignarPretor(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+		
+		Player player = playerService.findbyId(id);
+		player.setRole(Role.PRETOR);
+		playerService.savePlayer(player);
+		
+		return "redirect:/matches/" + idMatch + "/match";
+		
+	}
 }
 
 
