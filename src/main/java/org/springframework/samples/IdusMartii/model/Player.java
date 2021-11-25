@@ -31,6 +31,7 @@ public class Player extends NamedEntity{
 		private Role role;
 		
 		
+		
 		@OneToOne(cascade = CascadeType.ALL)
 	    @JoinColumn(name = "username", referencedColumnName = "username")
 		User user;

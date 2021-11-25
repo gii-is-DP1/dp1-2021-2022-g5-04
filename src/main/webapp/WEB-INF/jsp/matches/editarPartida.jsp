@@ -38,6 +38,7 @@
         
     </table> 
     <c:if test= "${match.players[0].user.username eq current}" >
+   
     <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/${id}/game/save" >
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">

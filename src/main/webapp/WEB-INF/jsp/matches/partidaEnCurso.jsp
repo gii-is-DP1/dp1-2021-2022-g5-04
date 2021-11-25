@@ -25,35 +25,29 @@
             <td><c:out value="${match.round}"/></td>
         </tr>
         <tr>
-            <th>Host</th>
-            <td><c:out value="${match.players[0].user.username}"/></td>
+            <th>Votos a favor</th>
+            <td><c:out value="${match.votoaFavor}"/></td>
+                        <th>Votos en Contra</th>
+            
+            <td><c:out value="${match.votoenContra}"/></td>
+                    <td><c:out value="${match.players[0].vote} "/></td>
         </tr>
+        
         <tr>
             <th>Players</th>
-            <td>${match.players[0].user.username}</td>
+            <td><c:forEach var="x" items="${match.players}">
+                <li>${x.user.username} </li>
+                </c:forEach></td>
         </tr>
-        <tr>
-            <th></th>
-            <td>${match.players[0].user.username}</td>
-        </tr>
-
-    </table>
-    <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/${id}/game/save" >
-        <!-- <div class="form-group has-feedback">
-           <p> Turno: ${match.turn}</p>
-            <p> Ronda: ${match.round}</p>
-             <p> Votos a favor: ${match.votoaFavor}</p>
-            <p> Votos en Contra: ${match.votoenContra}</p>
-        </div> -->
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-               
-                        <button class="btn btn-default" type="submit">Comenzar partida</button>
-            </div>
-        </div>
-    </form:form>
+      </table>
+  
+<c:forEach items="${match.players}" var="player">
+         <c:if test= "${player.user.username eq current}" >
+     	         <c:if test= "${player.role eq 'CONSUL'}" >     
+     	                 
+     	                     
     <c:if test= "${match.round==1}" >
-    <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form" action="/matches/${id}/saven" >
+    <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"   action="/players/${player.id}/${id}/guardarVotoNulo" >
         <div class="form-group has-feedback">
           
         </div>
@@ -65,7 +59,7 @@
       </form:form>
 </c:if>
     
-     <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form" action="/matches/${id}/saver" >
+     <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/guardarVotoEnContra" >
         <div class="form-group has-feedback">
           
         </div>
@@ -75,9 +69,20 @@
                         <button class="btn btn-default" type="submit">En contra</button>
     
       </form:form>
+         <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/guardarVotoAFavor" >
+        <div class="form-group has-feedback">
+          
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+               
+                        <button class="btn btn-default" type="submit">A favor</button>
+    
+      </form:form>
       
-  
-
+  </c:if>
+  </c:if>
+</c:forEach>
     
     
 </IdusMartii:layout>
