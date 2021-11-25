@@ -141,12 +141,38 @@
       						</form:form>
    						</c:if>
    					</c:if>
+   						<c:if test = "${match.round eq 1}">
+   								<c:forEach var="pla" items="${match.players}">
+   									<c:if test = "${current != pla.user.username}">
+   									<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${pla.id}/${id}/asignarEdil">
+                                	<div class="form-group has-feedback">
+
+                                	</div>
+                                	<div class="form-group">
+                                    	<div class="col-sm-offset-2 col-sm-10">
+                                           	<button class="btn btn-default" type="submit">Asignar a ${pla.user.username} como Edil</button>
+                                    	</div>
+                               		</div>
+									</form:form>
+									<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${pla.id}/${id}/asignarPretor">
+                                		<div class="form-group has-feedback">
+
+                                		</div>
+                                		<div class="form-group">
+                                    		<div class="col-sm-offset-2 col-sm-10">
+                                           		<button class="btn btn-default" type="submit">Asignar a ${pla.user.username} como Pretor</button>
+                                    		</div>
+                               			</div>
+									</form:form>
+									</c:if>
+   								</c:forEach>
+   						</c:if>
       			</c:if>
       			
       			<c:if test = "${player.role eq 'PRETOR'}">
       				<c:forEach var="p" items="${match.players}">
       					<c:if test = "${p.role eq 'EDIL'}">
-      						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${p.id}/${id}/revisar">
+      						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${p.id}/${id}/revisar" method="GET">
                                 <div class="form-group has-feedback">
 
                                 </div>

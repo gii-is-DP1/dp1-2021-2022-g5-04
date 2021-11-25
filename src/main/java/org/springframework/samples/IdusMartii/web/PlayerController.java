@@ -17,6 +17,7 @@ import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
+import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Player;
 
@@ -164,16 +165,45 @@ public class PlayerController {
 		return "redirect:/matches/" + idMatch + "/match";
 		
 	}
-	@PostMapping(path="/{id}/{idMatch}/revisar")
-	public String revisarVoto(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
-
-		return "redirect:/players/" + id + "/" + idMatch + "/revisar";
+	@PostMapping(path="/{id}/{idMatch}/cambiarVoto")
+	public String cambiarVoto(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+		
+		Player player = playerService.findbyId(id);
+		if (player.getVote() == Vote.RED) {
+			player.setVote(Vote.GREEN);
+		} else {
+			player.setVote(Vote.RED);
+		}
+		playerService.savePlayer(player);
+		
+		return "redirect:/matches/" +idMatch + "/match";
+	}
+	@PostMapping(path="/{id}/{idMatch}/noCambiarVoto")
+	public String noCambiarVoto(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+		
+		return "redirect:/matches/" +idMatch + "/match";
+	}
+	@PostMapping(path="/{id}/{idMatch}/asignarEdil")
+	public String asignarEdil(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+		
+		Player player = playerService.findbyId(id);
+		player.setRole(Role.EDIL);
+		playerService.savePlayer(player);
+		
+		return "redirect:/matches/" + idMatch + "/match";
 		
 	}
-
-  
-
-
+	
+	@PostMapping(path="/{id}/{idMatch}/asignarPretor")
+	public String asignarPretor(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+		
+		Player player = playerService.findbyId(id);
+		player.setRole(Role.PRETOR);
+		playerService.savePlayer(player);
+		
+		return "redirect:/matches/" + idMatch + "/match";
+		
+	}
 }
 
 

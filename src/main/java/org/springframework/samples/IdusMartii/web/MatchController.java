@@ -142,7 +142,7 @@ public class MatchController {
 	
 	
 	@GetMapping(path="/{id}/saver")
-	public String VotoEnContraEx(  @PathVariable("id") int id, ModelMap modelMap) {
+	public String VotoEnContraEx(@PathVariable("id") int id, ModelMap modelMap) {
 		String vista = "matches/listadoPartida";
 	
 		Match match = this.matchService.findById(id);
@@ -151,7 +151,7 @@ public class MatchController {
 		return vista;
 	}
 	@PostMapping(path="/{id}/saver")
-	public String VotoEnContra(  ModelMap modelMap, @PathVariable("id") int id) {
+	public String VotoEnContra(ModelMap modelMap, @PathVariable("id") int id) {
 	
 			// String vista = "matches/listadoPartida";
  
@@ -275,13 +275,17 @@ public class MatchController {
 			
 			if(match.getRound() == 2) {
 				if(match.getVotoaFavor()==((match.getVotoenContra()-1) )) {
-					return "matches/victoriaF" ;}
+					return "matches/victoriaF" ;
+					}
 				else if(match.getVotoaFavor()==((match.getVotoenContra()-2) )) {
-					return "matches/victoriaF" ;}
+					return "matches/victoriaF" ;
+					}
 				else if(match.getVotoaFavor()-1==((match.getVotoenContra()) )) {
-					return "matches/victoriaC" ;}	
+					return "matches/victoriaC" ;
+					}	
 				else if(match.getVotoaFavor()-2==((match.getVotoenContra()) )) {
-						return "matches/victoriaC" ;}
+						return "matches/victoriaC" ;
+					}
 				else {
 					return "matches/victoriaM" ;
 				}
@@ -307,7 +311,7 @@ public class MatchController {
 		return vista;
 	}
 	@PostMapping(path="/{id}/game/save")
-	public String guardarPartidaEmpezada(  ModelMap modelMap, @PathVariable("id") int id) {
+	public String guardarPartidaEmpezada(ModelMap modelMap, @PathVariable("id") int id) {
 	
 			// String vista = "matches/listadoPartida";
  
