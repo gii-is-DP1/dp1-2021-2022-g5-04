@@ -41,12 +41,16 @@
         </tr>
         
       </table>
-  
 <c:forEach items="${match.players}" var="player">
          <c:if test= "${player.user.username eq current}" >
             
                 <tr>
                     <h1>Tu rol actual es:  ${player.role}</h1>
+                 
+                </tr>
+           <tr>
+                    <h1>Tu carta de facción1 actual es:  ${player.card1}</h1>
+                    <h1>Tu carta de facción2 actual es:  ${player.card2}</h1>
                  
                 </tr>
            
@@ -87,7 +91,32 @@
     
       </form:form>
       
-  </c:if>
+  				</c:if>
+        <c:if test= "${player.role eq 'CONSUL'}" >     
+   			 <c:if test= "${player.card2 != 'DROPPED'}" >     
+    <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFacción1" >
+        <div class="form-group has-feedback">
+          
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+               
+                        <button class="btn btn-default" type="submit">Elegir ${player.card1} </button>
+    
+      </form:form>
+         <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFacción2" >
+        <div class="form-group has-feedback">
+          
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+               
+                        <button class="btn btn-default" type="submit">Elegir ${player.card2}</button>
+    
+      </form:form>
+   </c:if>
+      </c:if>
+   
   </c:if>
 </c:forEach>
     

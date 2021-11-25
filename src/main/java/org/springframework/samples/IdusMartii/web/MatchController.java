@@ -1,6 +1,10 @@
 package org.springframework.samples.IdusMartii.web;
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import javax.validation.Valid;
 
 
@@ -16,6 +20,7 @@ import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
+import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
@@ -339,6 +344,23 @@ public class MatchController {
 
 			// }
 			// 	this.matchService.saveMatch(match);
+		
+		
+		Iterable<Player> g = playerService.findAll();
+		
+		Random r = new Random();
+		List<Faction> lista = new ArrayList<>();
+		for (int i = 0; i<Math.floor(( playerService.playerCount())-1);i++) {
+			lista.add(Faction.LOYAL);
+			lista.add(Faction.TRAITOR);
+		}
+		lista.add(Faction.MERCHANT);
+		lista.add(Faction.MERCHANT);
+
+		g.forEach(p ->p.setCard1(lista.get(r.nextInt((int) playerService.playerCount())))) ;
+		g.forEach(p ->p.setCard2(lista.get(r.nextInt((int)  playerService.playerCount()))));
+		g.forEach(p-> playerService.savePlayer(p));
+				
 				return  "redirect:/matches/" + id + "/match";
  
 			

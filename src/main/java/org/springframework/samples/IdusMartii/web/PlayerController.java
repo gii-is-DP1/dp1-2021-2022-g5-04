@@ -1,5 +1,6 @@
 package org.springframework.samples.IdusMartii.web;
 
+import javax.persistence.EnumType;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.UserService;
+import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
@@ -107,9 +109,51 @@ public String votoGreen(  ModelMap modelMap, @PathVariable("id") int id,@PathVar
 		Player player = playerService.findbyId(id);
 		player.setVote(Vote.GREEN);
 		playerService.savePlayer(player);
+		return "redirect:/matches/" + idMatch + "/match";
+		}
+
+
+
+
+
+@PostMapping(path="/{id}/{idMatch}/{card1}/ElegirCartaFacción1")
+public String elecciónCarta1(  ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch,@PathVariable("card1") Faction card1) {
+
+		// String vista = "matches/listadoPartida";
+
+	
+			//match.setId(id);
+	
+		Player player = playerService.findbyId(id);
+		player.setCard1(card1);
+		player.setCard2(Faction.DROPPED);
+
+		playerService.savePlayer(player);
+
 		return "redirect:/matches/" + idMatch + "/match";}
 
 
+
+@PostMapping(path="/{id}/{idMatch}/{card2}/ElegirCartaFacción2")
+public String elecciónCarta2(  ModelMap modelMap, @PathVariable("id") int id,@PathVariable("idMatch") int idMatch ,@PathVariable("card2") Faction card2) {
+
+		// String vista = "matches/listadoPartida";
+
+	
+			//match.setId(id);
+	
+	
+		Player player = playerService.findbyId(id);
+		player.setCard1(card2);
+		player.setCard2(Faction.DROPPED);
+
+		playerService.savePlayer(player);
+		return "redirect:/matches/" + idMatch + "/match";}
+
+  
+
+
 }
+
 
 
