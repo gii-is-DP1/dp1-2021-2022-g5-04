@@ -25,9 +25,9 @@ public class PlayerServiceTests {
 	private PlayerService playerService;
 	
 	@Test
-	public void testCountWithInitialData() {
+	public void testCount() {
 		int count=playerService.playerCount();
-		assertEquals(count,2);
+		assertEquals(count,6);
 	}
 	
 	@Test
@@ -37,7 +37,11 @@ public class PlayerServiceTests {
 		players.forEach(p -> nombres.add(p.getName()));
 		assertEquals(nombres.get(0),"player1");
 		assertEquals(nombres.get(1),"player2");
-		
+		assertEquals(nombres.get(2),"player3");
+		assertEquals(nombres.get(3),"player4");
+		assertEquals(nombres.get(4),"player5");
+		assertEquals(nombres.get(5),"player6");
+	
 	}
 	
 	@Test

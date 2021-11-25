@@ -12,12 +12,10 @@ import java.util.List;
 import org.springframework.samples.IdusMartii.model.Person;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.samples.IdusMartii.service.ChessBoardService;
+
 
 @Controller
 public class WelcomeController {
-  @Autowired
-	ChessBoardService chessService;
 
 
       @GetMapping({"/","/welcome"})
@@ -53,7 +51,7 @@ public class WelcomeController {
         model.put("persons", persons);
         model.put("title", "Idus Martii"); 
         model.put("group", "L5-4");
-        model.put("chessBoard",chessService.findById(1).get());
+        
 
        
         return "welcome";

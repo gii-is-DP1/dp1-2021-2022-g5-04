@@ -117,8 +117,3 @@ INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (6, 
 INSERT INTO authorities(id,username,authority) VALUES (7,'friend5','user');
 
 
-INSERT INTO chess_board(id,background,height,width) VALUES (1,'resources/images/fondo.jpg',800,800);
-INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (1,'BLACK','HORSE',1,1,1);
-INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (2,'BLACK','KING',5,1,1);
-INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (3,'WHITE','KING',7,5,1);
-INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (4,'BLACK','HORSE',6,1,1);
