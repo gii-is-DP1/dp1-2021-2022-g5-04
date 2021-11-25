@@ -1,5 +1,7 @@
 package org.springframework.samples.IdusMartii.service;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
