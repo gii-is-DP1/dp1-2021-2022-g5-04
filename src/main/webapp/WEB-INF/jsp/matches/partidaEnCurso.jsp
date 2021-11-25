@@ -39,25 +39,32 @@
                 <li>${x.user.username} </li>
                 </c:forEach></td>
         </tr>
+        
       </table>
   
 <c:forEach items="${match.players}" var="player">
          <c:if test= "${player.user.username eq current}" >
-     	         <c:if test= "${player.role eq 'CONSUL'}" >     
+            
+                <tr>
+                    <h1>Tu rol actual es:  ${player.role}</h1>
+                 
+                </tr>
+           
+     	         <c:if test= "${player.role eq 'EDIL'}" >     
      	                 
      	                     
     <c:if test= "${match.round==1}" >
-    <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"   action="/players/${player.id}/${id}/guardarVotoNulo" >
-        <div class="form-group has-feedback">
-          
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-               
-                        <button class="btn btn-default" type="submit">Nulo</button>
-    
-      </form:form>
-</c:if>
+        <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"   action="/players/${player.id}/${id}/guardarVotoNulo" >
+            <div class="form-group has-feedback">
+            
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                
+                            <button class="btn btn-default" type="submit">Nulo</button>
+        
+        </form:form>
+    </c:if>
     
      <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/guardarVotoEnContra" >
         <div class="form-group has-feedback">

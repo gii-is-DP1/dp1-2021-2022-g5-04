@@ -94,8 +94,8 @@ INSERT INTO users(email,username,password,enabled) VALUES ('ppp@gmail.com','ppp'
 INSERT INTO authorities(id,username,authority) VALUES (2,'ppp','admin');
 
 INSERT INTO matches (id,name,round,turn,votoa_favor,votoen_contra)VALUES (1, 'partida1', '0', '0', '0', '0');
-INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (1, 'player1', '1', '1', '1', '1', 'admin1','1');
-INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (2, 'player2', '1', '1', '1', '1', 'ppp','1');
+INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (1, 'player1', '1', '1', null, '0', 'admin1','1');
+INSERT INTO players(id,name,card1,card2,vote,role,username,match_id) VALUES (2, 'player2', '1', '1', null, '1', 'ppp','1');
 INSERT INTO chess_board(id,background,height,width) VALUES (1,'resources/images/fondo.jpg',800,800);
 INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (1,'BLACK','HORSE',1,1,1);
 INSERT INTO chess_piece(id,color,type,x_position,y_position,board_id) VALUES (2,'BLACK','KING',5,1,1);
