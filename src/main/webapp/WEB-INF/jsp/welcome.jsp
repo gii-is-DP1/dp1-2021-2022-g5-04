@@ -19,16 +19,13 @@
    <h2>${now}></h2>
     <div class="row" style="background-image:url()">
         <div class="col-md-12" ">
-            <!-- <IdusMartii:board chessBoard="${chessBoard}"/> -->
+            
             <a href="http://localhost:8080/matches/new">
                 <button style="width:600px;height:100px;FONT-SIZE: 36pt;">Crear una partida</button>
               </a> 
-            <!-- <c:forEach items="${chessBoard.pieces}" var="piece">
-            	<IdusMartii:piece size="100" piece="${piece}"/>
-            	
-            </c:forEach>  -->
-        <!-- </div>
-        <div class="col-md-12"> -->
+            
+        </div>
+        <div class="col-md-12">
             <spring:url value="/resources/images/icon-idus.png" htmlEscape="true" var="petsImage"/>
             <img class="img-responsive" src="${petsImage}"/>
         </div>

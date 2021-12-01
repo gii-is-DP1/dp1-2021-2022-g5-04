@@ -20,6 +20,7 @@ import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Player;
+import org.springframework.samples.IdusMartii.model.Match;
 
 @Controller
 @RequestMapping("/players")
@@ -33,7 +34,7 @@ public class PlayerController {
 	private UserService userService;
 
 	@Autowired
-	private MatchService matchesService;
+	private MatchService matchService;
 
 		
 	@GetMapping()
@@ -71,63 +72,13 @@ public class PlayerController {
 		}
 		return vista;
 	}
-	
 
-
-	@PostMapping(path="/{id}/{idMatch}/guardarVotoEnContra")
-	public String votoRed(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
-	
-			// String vista = "matches/listadoPartida";
- 
-		
-				//match.setId(id);
-		
-			Player player = playerService.findbyId(id);
-			
-				player.setVote(Vote.RED);
-				playerService.savePlayer(player);
+	@PostMapping(path="/{id}/{idMatch}/guardarVoto")
+	public String guardarVoto(@Valid Player player, BindingResult result, @PathVariable("idMatch") int idMatch) {
+				this.playerService.savePlayer(player);
 
 			return "redirect:/matches/" + idMatch + "/match";
 	}
-
-	
-	
-	
-	@PostMapping(path="/{id}/{idMatch}/guardarVotoNulo")
-	public String votoYellow(  ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
-
-		// String vista = "matches/listadoPartida";
-
-	
-			//match.setId(id);
-	
-		Player player = playerService.findbyId(id);
-		player.setVote(Vote.YELLOW);
-		playerService.savePlayer(player);
-
-		return "redirect:/matches/" + idMatch + "/match";
-	}
-
-
-
-	@PostMapping(path="/{id}/{idMatch}/guardarVotoAFavor")
-	public String votoGreen(  ModelMap modelMap, @PathVariable("id") int id,@PathVariable("idMatch") int idMatch) {
-
-		// String vista = "matches/listadoPartida";
-
-	
-			//match.setId(id);
-	
-		Player player = playerService.findbyId(id);
-		player.setVote(Vote.GREEN);
-		playerService.savePlayer(player);
-		return "redirect:/matches/" + idMatch + "/match";
-	}
-
-
-
-
-
 	@PostMapping(path="/{id}/{idMatch}/{card1}/ElegirCartaFacción1")
 	public String elecciónCarta1(  ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch,@PathVariable("card1") Faction card1) {
 

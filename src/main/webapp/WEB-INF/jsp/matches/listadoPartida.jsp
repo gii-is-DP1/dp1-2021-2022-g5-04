@@ -24,10 +24,6 @@
                 <td>
                     <spring:url value="/matches/{id}/new" var="matchUrl">
    					<spring:param name="id" value="${match.id}"/>
-                	     <input type="hidden" id="a" name="a" value="${match.turn}">
-                	     <input type="hidden" id="b" name="b" value="${match.round}">
-                	     
-
                     </spring:url>
                     <a href="${fn:escapeXml(matchUrl)}"><c:out value="${match.name}"/></a>
                 </td>
@@ -37,19 +33,12 @@
                 <td>
                     <c:out value="${match.round}"/>
                 </td>
-   				<td>
-                	<spring:url value="/matches/{id}/new" var="matchUrl">
-                	     <spring:param name="id" value="${match.id}"/>
-                	     <input type="hidden" id="a" name="a" value="${match.turn}">
-                	     <input type="hidden" id="b" name="b" value="${match.round}">
-                    </spring:url>
-                	<a href= "${fn:escapeXml(matchUrl)}">Editar</a>
-                </td>
             </tr>
         </c:forEach>
-                <spring:url value="/matches/new" var="matchUrl">
-                </spring:url>
-                <a href= "${fn:escapeXml(matchUrl)}">Crear</a>
+               
         </tbody>
     </table>
+    <spring:url value="/matches/new" var="matchUrl">
+    </spring:url>
+    <a href= "${fn:escapeXml(matchUrl)}">Crear</a>
 </IdusMartii:layout>

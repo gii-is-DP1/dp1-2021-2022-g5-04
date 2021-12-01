@@ -12,7 +12,7 @@
     <h2>
         <c:if test="${player['new']}">New </c:if> Player
     </h2>
-    <form:form modelAttribute="player" class="form-horizontal" id="add-player-form">
+    <form:form modelAttribute="player" class="form-horizontal" id="add-player-form" action="/players/${player.id}/${id}/guardarVoto">
         <div class="form-group has-feedback">
             <IdusMartii:inputField label="Name" name="name"/>
             <IdusMartii:inputField label="Card1" name="card1"/>

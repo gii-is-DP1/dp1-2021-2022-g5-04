@@ -24,6 +24,7 @@ import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
+import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 
 @Controller
@@ -82,6 +83,11 @@ public class MatchController {
 		String vista = "matches/partidaEnCurso";
 		Match match = this.matchService.findById(id);
 		String currentuser = currentUserService.showCurrentUser();
+		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
+		Player player = playerService.findByMatchAndUsername(match, usuario);
+		System.out.println("ppp");
+		System.out.println(player.toString());
+		modelMap.addAttribute("player_actual", player);
 		modelMap.addAttribute("current", currentuser);
 		modelMap.addAttribute("match", match);
 		return vista;
@@ -97,7 +103,7 @@ public class MatchController {
 		return vista;
 	}
 	@PostMapping(path="/{id}/save")
-	public String guardarJugador(  ModelMap modelMap, @PathVariable("id") int id) {
+	public String guardarJugador(ModelMap modelMap, @PathVariable("id") int id) {
 	
 			// String vista = "matches/listadoPartida";
  

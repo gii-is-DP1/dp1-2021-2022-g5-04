@@ -50,52 +50,33 @@
                  
                 </tr>
            		<tr>
-                    <h1>Tu carta de facción1 actual es:  ${player.card1}</h1>
-                    <h1>Tu carta de facción2 actual es:  ${player.card2}</h1>
+                    <h1>Tu carta de faccion1 actual es:  ${player.card1}</h1>
+                    <h1>Tu carta de faccion2 actual es:  ${player.card2}</h1>
                 </tr>
            
-     	         <c:if test= "${player.role eq 'EDIL'}" >     
-     	                 
-     	                     
-    				<c:if test= "${match.round eq 1}" >
-        				<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"   action="/players/${player.id}/${id}/guardarVotoNulo" >
+        				<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/guardarVoto">
             				<div class="form-group has-feedback">
+								<IdusMartii:inputField label="Name" name="name"/>
+           				 		<IdusMartii:inputField label="Card1" name="card1"/>
+								<IdusMartii:inputField label="Card2" name="card2"/>
+								
             
             				</div>
            					<div class="form-group">
                 				<div class="col-sm-offset-2 col-sm-10">
-                
+									
+									
+									<button class="btn btn-default" type="submit">En contra</button>
+								
                             		<button class="btn btn-default" type="submit">Nulo</button>
+									<button class="btn btn-default" type="submit">A favor</button>
         
         				</form:form>
-    				</c:if>
-    
-    				<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/guardarVotoEnContra" >
-        				<div class="form-group has-feedback">
-          
-        				</div>
-        				<div class="form-group">
-            				<div class="col-sm-offset-2 col-sm-10">
-               
-                        		<button class="btn btn-default" type="submit">En contra</button>
-    
-      				</form:form>
-         			<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/guardarVotoAFavor" >
-        				<div class="form-group has-feedback">
-          
-        				</div>
-        				<div class="form-group">
-            				<div class="col-sm-offset-2 col-sm-10">
-               
-                        		<button class="btn btn-default" type="submit">A favor</button>
-    
-      				</form:form>
-      
-  				</c:if>
-        		<c:if test= "${player.role eq 'CONSUL'}" > 
+    			
+        		<c:if test= "${player.role eq 'PRETOR'}" > 
         			<c:if test = "${match.round eq 0} && ${current != match.players[0].user.username}">    
    			 			<c:if test= "${player.card2 != 'DROPPED'}" >     
-    						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFacción1" >
+    						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFacciï¿½n1" >
         						<div class="form-group has-feedback">
           
         						</div>
@@ -105,7 +86,7 @@
                         				<button class="btn btn-default" type="submit">Elegir ${player.card1} </button>
     
       						</form:form>
-         					<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFacción2" >
+         					<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFacciï¿½n2" >
         						<div class="form-group has-feedback">
           
         						</div>
@@ -119,7 +100,7 @@
    					</c:if>
    					<c:if test = "${match.round eq 1} && ${current eq match.players[0].user.username}">
         				<c:if test= "${player.card2 != 'DROPPED'}" >     
-    						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFacción1" >
+    						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFacciï¿½n1" >
         						<div class="form-group has-feedback">
           
         						</div>
@@ -129,7 +110,7 @@
                         				<button class="btn btn-default" type="submit">Elegir ${player.card1} </button>
     
       						</form:form>
-         					<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFacción2" >
+         					<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFacciï¿½n2" >
         						<div class="form-group has-feedback">
           
         						</div>

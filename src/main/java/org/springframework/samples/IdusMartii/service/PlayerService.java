@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import org.springframework.samples.IdusMartii.model.Match;
+import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.model.Player;
+import java.util.List;
 
 @Service
 public class PlayerService {
@@ -35,5 +37,11 @@ public class PlayerService {
 	public Player findbyId(Integer ID) throws DataAccessException {
 		return playerRepository.findById(ID).get();
 	}
+	@Transactional
+	public Player findByMatchAndUsername(Match match, User user) throws DataAccessException {
+		return playerRepository.findByMatchAndUsername(match, user);
+	}
+	
+	
 
 }
