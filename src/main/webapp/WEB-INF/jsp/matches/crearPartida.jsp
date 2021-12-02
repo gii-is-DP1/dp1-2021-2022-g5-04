@@ -15,10 +15,6 @@
     <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/save" >
         <div class="form-group has-feedback">
             <IdusMartii:inputField label="Name" name="name"/>
-            <IdusMartii:inputField label="Round" name="round"/>
-            <IdusMartii:inputField label="Turn" name="turn"/>
-            <IdusMartii:inputField label="votoaFavor" name="votoaFavor"/>
-            <IdusMartii:inputField label="votoenContra" name="votoenContra"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

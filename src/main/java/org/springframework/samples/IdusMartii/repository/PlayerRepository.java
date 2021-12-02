@@ -12,6 +12,7 @@ import java.util.List;
 
 
 public interface PlayerRepository extends CrudRepository<Player, Integer>{
+	
     @Query("SELECT p FROM Player p where p.match = :match AND p.user = :user")
     public Player findByMatchAndUsername(@Param("match") Match match, @Param("user") User user);
 

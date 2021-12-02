@@ -22,6 +22,7 @@ import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Role;
+import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
@@ -56,11 +57,16 @@ public class MatchController {
 	}
 	@PostMapping(path="/save")
 	public String guardarPartida(@Valid Match match, BindingResult result, ModelMap modelMap) {
+			match.setRound(0);
+			match.setTurn(0);
+			match.setVotoaFavor(0);
+			match.setVotoenContra(0);
+			match.setC(0);
 			Player host = new Player();
-			host.setMatch(match);
 			host.setUser(userService.findUser(currentUserService.showCurrentUser()).get());
 			host.setName("host");
 			host.setRole(Role.CONSUL);
+			host.setMatch(match);
 			matchService.saveMatch(match);
 			playerService.savePlayer(host);
 			modelMap.addAttribute("message", "¡Jugador guardado correctamente!");
@@ -87,9 +93,15 @@ public class MatchController {
 		Player player = playerService.findByMatchAndUsername(match, usuario);
 		System.out.println("ppp");
 		System.out.println(player.toString());
+		List<Vote> votos = new ArrayList<>();
+		votos.add(Vote.GREEN); votos.add(Vote.RED);
+		if (match.getRound() == 1) {
+			votos.add(Vote.YELLOW);
+		}
 		modelMap.addAttribute("player_actual", player);
 		modelMap.addAttribute("current", currentuser);
 		modelMap.addAttribute("match", match);
+		modelMap.addAttribute("votos", votos);
 		return vista;
 	}
 	

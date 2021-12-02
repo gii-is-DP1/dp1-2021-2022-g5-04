@@ -29,10 +29,7 @@ public class PlayerService {
 	public void savePlayer(Player player) throws DataAccessException {
 		playerRepository.save(player);
 	}
-	
-	
-	
-    
+
 	@Transactional
 	public Player findbyId(Integer ID) throws DataAccessException {
 		return playerRepository.findById(ID).get();

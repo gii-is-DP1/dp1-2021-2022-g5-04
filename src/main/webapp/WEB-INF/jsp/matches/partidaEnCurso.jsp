@@ -29,7 +29,7 @@
             <td><c:out value="${match.votoaFavor}"/></td>
             <th>Votos en Contra</th>
             <td><c:out value="${match.votoenContra}"/></td>
-            <td><c:out value="Tu voto: ${match.players[0].vote}"/></td>
+            <td><c:out value="Tu voto: ${player_actual.vote}"/></td>
         </tr>
         <tr>
             <th>Host</th>
@@ -53,54 +53,70 @@
                     <h1>Tu carta de faccion1 actual es:  ${player.card1}</h1>
                     <h1>Tu carta de faccion2 actual es:  ${player.card2}</h1>
                 </tr>
-           
-        				<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/guardarVoto">
-            				<div class="form-group has-feedback">
-								<IdusMartii:inputField label="Name" name="name"/>
-           				 		<IdusMartii:inputField label="Card1" name="card1"/>
-								<IdusMartii:inputField label="Card2" name="card2"/>
-								
-            
-            				</div>
-           					<div class="form-group">
-                				<div class="col-sm-offset-2 col-sm-10">
+                
+                <h2>${usuario_votado}</h2>
+                
+                <c:if test="${match.c eq 0}">
+           			<c:if test="${player.role eq 'EDIL'}">
+           				<c:if test="${usuario_votado != current}">
+           					<div class="col-sm-offset-2 col-sm-10">
+        						<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/${votos[0]}">
+            				
+           							<div class="form-group">
+                						<div class="col-sm-offset-2 col-sm-10">
 									
 									
-									<button class="btn btn-default" type="submit">En contra</button>
-								
-                            		<button class="btn btn-default" type="submit">Nulo</button>
-									<button class="btn btn-default" type="submit">A favor</button>
-        
-        				</form:form>
-    			
-        		<c:if test= "${player.role eq 'PRETOR'}" > 
-        			<c:if test = "${match.round eq 0} && ${current != match.players[0].user.username}">    
-   			 			<c:if test= "${player.card2 != 'DROPPED'}" >     
-    						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFacciï¿½n1" >
-        						<div class="form-group has-feedback">
-          
-        						</div>
-        						<div class="form-group">
-            						<div class="col-sm-offset-2 col-sm-10">
-               
-                        				<button class="btn btn-default" type="submit">Elegir ${player.card1} </button>
-    
-      						</form:form>
-         					<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFacciï¿½n2" >
-        						<div class="form-group has-feedback">
-          
-        						</div>
-        						<div class="form-group">
-            						<div class="col-sm-offset-2 col-sm-10">
-               
-                       					<button class="btn btn-default" type="submit">Elegir ${player.card2}</button>
-    
-      						</form:form>
-   						</c:if>
-   					</c:if>
-   					<c:if test = "${match.round eq 1} && ${current eq match.players[0].user.username}">
+											<button class="btn btn-default" type="submit">Votar a favor</button>
+										</div>
+									</div>
+        							
+        						</form:form>
+        						<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/${votos[1]}">
+            				
+           							<div class="form-group">
+                						<div class="col-sm-offset-2 col-sm-10">
+									
+									
+											<button class="btn btn-default" type="submit">Votar en contra</button>
+										</div>
+									</div>
+        						</form:form>
+        						<c:if test="${votos[2] eq 'YELLOW'}">
+        							<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/${votos[2]}">
+            				
+           							<div class="form-group">
+                						<div class="col-sm-offset-2 col-sm-10">
+									
+									
+											<button class="btn btn-default" type="submit">Votar nulo</button>
+										</div>
+									</div>
+        							
+        						</form:form>
+        						</c:if>
+        					</div>
+        				</c:if>
+    				</c:if>
+    			</c:if>
+    			<c:if test="${match.c eq 1}">
+        			<c:if test="${player.role eq 'PRETOR'}" >
+        				<c:forEach var="p" items="${match.players}">
+        					<c:if test="${p.role eq 'EDIL'}">
+        						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${p.id}/${id}/revisar" method="GET">
+                    				<div class="form-group has-feedback"></div>
+                        			<div class="form-group">
+                        				<div class="col-sm-offset-2 col-sm-10">
+                            				<button class="btn btn-default" type="submit">Revisar voto de ${p.user.username}</button>
+                           			</div>
+                       			</div>
+								</form:form>
+							</c:if>
+						</c:forEach>
+					</c:if>
+				</c:if>
+   				<c:if test = "${match.round eq 1} && ${current eq match.players[0].user.username}">
         				<c:if test= "${player.card2 != 'DROPPED'}" >     
-    						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFacciï¿½n1" >
+    						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFacción1" >
         						<div class="form-group has-feedback">
           
         						</div>
@@ -110,7 +126,7 @@
                         				<button class="btn btn-default" type="submit">Elegir ${player.card1} </button>
     
       						</form:form>
-         					<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFacciï¿½n2" >
+         					<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFacción2" >
         						<div class="form-group has-feedback">
           
         						</div>
@@ -149,24 +165,5 @@
    								</c:forEach>
    						</c:if>
       			</c:if>
-      			
-      			<c:if test = "${player.role eq 'PRETOR'}">
-      				<c:forEach var="p" items="${match.players}">
-      					<c:if test = "${p.role eq 'EDIL'}">
-      						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${p.id}/${id}/revisar" method="GET">
-                                <div class="form-group has-feedback">
-
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                           <button class="btn btn-default" type="submit">Revisar voto de ${p.user.username}</button>
-                                    </div>
-                               </div>
-							</form:form>
-      					</c:if>
-      				</c:forEach>
-      			</c:if>
-  			</c:if>
-  			
 </c:forEach> 
 </IdusMartii:layout>

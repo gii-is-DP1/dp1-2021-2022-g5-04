@@ -10,23 +10,23 @@ import org.springframework.dao.DataAccessException;
 @Service
 public class MatchService {
     @Autowired 
-	MatchRepository matchRepo;
+	MatchRepository matchRepository;
 
 	@Transactional
 	public Iterable<Match> findAll(){
-		return matchRepo.findAll();
+		return matchRepository.findAll();
 	}
 
  
     
 	@Transactional(readOnly = true)
 	public Match findById(Integer id) throws DataAccessException{
-		return matchRepo.findById(id).get();
+		return matchRepository.findById(id).get();
 	}
 	
 	@Transactional
 	public void saveMatch(Match player) throws DataAccessException {
-		matchRepo.save(player);
+		matchRepository.save(player);
 	}
 	
 	

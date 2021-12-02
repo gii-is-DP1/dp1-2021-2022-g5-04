@@ -2,6 +2,9 @@ package org.springframework.samples.IdusMartii.web;
 
 
 
+import java.util.List;
+
+import javax.servlet.jsp.jstl.sql.Result;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +14,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
@@ -60,6 +65,24 @@ public class PlayerController {
         return vista;
     }
 	
+	@GetMapping(path="{id}/{idMatch}/votacion")
+	public String usuarioVotado(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+		Match match = matchService.findById(idMatch);
+		List<Player> jugadores = match.getPlayers();
+		int i = 0;
+		for (Player j: jugadores) {
+			if (j.getVote() != null) {
+				String nombre = j.getUser().getUsername();
+				modelMap.addAttribute("usuario_votado", nombre);
+				i += 1;
+			}
+		}
+		if (i == 2) {
+			match.setC(match.getC() + 1);
+			matchService.saveMatch(match);
+		}
+		return "redirect:/matches/" + idMatch + "/match";
+	}
 	@PostMapping(path="/new")
 	public String guardarJugador(@Valid Player player, BindingResult result, ModelMap modelMap) {
 		String vista = "players/listadoJugadores";
@@ -73,14 +96,15 @@ public class PlayerController {
 		return vista;
 	}
 
-	@PostMapping(path="/{id}/{idMatch}/guardarVoto")
-	public String guardarVoto(@Valid Player player, BindingResult result, @PathVariable("idMatch") int idMatch) {
-				this.playerService.savePlayer(player);
-
-			return "redirect:/matches/" + idMatch + "/match";
+	@PostMapping(path="/{id}/{idMatch}/{voto}")
+	public String guardarVoto(ModelMap modelMap, @PathVariable("id")int id, @PathVariable("idMatch") int idMatch, @PathVariable("voto") Vote voto) {
+			Player player = playerService.findbyId(id);
+			player.setVote(voto);
+			playerService.savePlayer(player);
+			return "redirect:/players/" + id + "/" + idMatch + "/votacion";
 	}
 	@PostMapping(path="/{id}/{idMatch}/{card1}/ElegirCartaFacción1")
-	public String elecciónCarta1(  ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch,@PathVariable("card1") Faction card1) {
+	public String elecciónCarta1(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch,@PathVariable("card1") Faction card1) {
 
 		// String vista = "matches/listadoPartida";
 
@@ -100,7 +124,7 @@ public class PlayerController {
 
 
 	@PostMapping(path="/{id}/{idMatch}/{card2}/ElegirCartaFacción2")
-	public String elecciónCarta2(  ModelMap modelMap, @PathVariable("id") int id,@PathVariable("idMatch") int idMatch ,@PathVariable("card2") Faction card2) {
+	public String elecciónCarta2(ModelMap modelMap, @PathVariable("id") int id,@PathVariable("idMatch") int idMatch ,@PathVariable("card2") Faction card2) {
 
 		// String vista = "matches/listadoPartida";
 
@@ -126,6 +150,8 @@ public class PlayerController {
 			player.setVote(Vote.RED);
 		}
 		playerService.savePlayer(player);
+		
+		
 		
 		return "redirect:/matches/" +idMatch + "/match";
 	}
