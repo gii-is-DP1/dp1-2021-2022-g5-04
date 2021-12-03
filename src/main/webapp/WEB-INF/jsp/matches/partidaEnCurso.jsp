@@ -114,8 +114,26 @@
 						</c:forEach>
 					</c:if>
 				</c:if>
-   				<c:if test = "${match.round eq 1} && ${current eq match.players[0].user.username}">
-        				<c:if test= "${player.card2 != 'DROPPED'}" >     
+				<c:if test="${match.c eq 2}">
+				
+				
+				
+   				
+   					<c:if test ="${player.role eq 'CONSUL'}">
+   					
+   					<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/NuevoTurno" >
+        						<div class="form-group has-feedback">
+          
+        						</div>
+        						<div class="form-group">
+            						<div class="col-sm-offset-2 col-sm-10">
+               
+                        				<button class="btn btn-default" type="submit">Contar Votos (Aun no los cuenta, solo pasa el turno) </button>
+    
+      						</form:form>
+   				   				<c:if test = "${match.round eq 1}">
+   				
+        				<c:if test= "${player_actual.card2 != 'DROPPED'}" >     
     						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFacción1" >
         						<div class="form-group has-feedback">
           
@@ -138,7 +156,13 @@
       						</form:form>
    						</c:if>
    					</c:if>
-   						<c:if test = "${match.round eq 1}">
+   							   					</c:if>
+   									
+   									
+   									
+   									
+   					
+   						<c:if test = "${match.round eq 1} && ${ player_actual.role eq 'CONSUL'}">
    								<c:forEach var="pla" items="${match.players}">
    									<c:if test = "${current != pla.user.username}">
    									<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${pla.id}/${id}/asignarEdil">
@@ -163,7 +187,9 @@
 									</form:form>
 									</c:if>
    								</c:forEach>
+   								   					</c:if>
+   								   					</c:if>
+   								
    						</c:if>
-      			</c:if>
 </c:forEach> 
 </IdusMartii:layout>

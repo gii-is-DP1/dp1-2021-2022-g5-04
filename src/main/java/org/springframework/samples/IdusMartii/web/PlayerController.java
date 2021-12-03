@@ -74,7 +74,7 @@ public class PlayerController {
 			if (j.getVote() != null) {
 				String nombre = j.getUser().getUsername();
 				modelMap.addAttribute("usuario_votado", nombre);
-				i += 1;
+				i += 1 ;
 			}
 		}
 		if (i == 2) {
@@ -142,7 +142,7 @@ public class PlayerController {
 	}
 	@PostMapping(path="/{id}/{idMatch}/cambiarVoto")
 	public String cambiarVoto(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
-		
+		Match match = matchService.findById(idMatch);
 		Player player = playerService.findbyId(id);
 		if (player.getVote() == Vote.RED) {
 			player.setVote(Vote.GREEN);
@@ -150,6 +150,8 @@ public class PlayerController {
 			player.setVote(Vote.RED);
 		}
 		playerService.savePlayer(player);
+		match.setC(match.getC() + 1);
+		matchService.saveMatch(match);
 		
 		
 		
@@ -157,6 +159,19 @@ public class PlayerController {
 	}
 	@PostMapping(path="/{id}/{idMatch}/noCambiarVoto")
 	public String noCambiarVoto(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+		Match match = matchService.findById(idMatch);
+		match.setC(match.getC() + 1);
+		matchService.saveMatch(match);
+		
+		return "redirect:/matches/" +idMatch + "/match";
+	}
+	
+	@PostMapping(path="/{id}/{idMatch}/NuevoTurno")
+	public String NuevoTurno(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+		Match match = matchService.findById(idMatch);
+		match.setC(0);
+		match.setTurn(match.getTurn()+1);
+		matchService.saveMatch(match);
 		
 		return "redirect:/matches/" +idMatch + "/match";
 	}
