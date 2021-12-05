@@ -27,6 +27,7 @@ import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.repository.PlayerRepository;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/matches")
@@ -85,8 +86,10 @@ public class MatchController {
 	}
 
 	@GetMapping(path="/{id}/match")
-	public String comenzarPartida(ModelMap modelMap, @PathVariable("id") int id) {
+	public String comenzarPartida(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
+		
 		String vista = "matches/partidaEnCurso";
+		response.addHeader("Refresh","1"); 
 		Match match = this.matchService.findById(id);
 		String currentuser = currentUserService.showCurrentUser();
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();

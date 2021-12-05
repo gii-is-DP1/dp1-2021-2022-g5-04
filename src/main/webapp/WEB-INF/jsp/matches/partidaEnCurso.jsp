@@ -99,7 +99,7 @@
     				</c:if>
     			</c:if>
     			<c:if test="${match.c eq 1}">
-        			<c:if test="${player.role eq 'PRETOR'}" >
+        			<c:if test="${player.role eq 'CONSUL'}" >
         				<c:forEach var="p" items="${match.players}">
         					<c:if test="${p.role eq 'EDIL'}">
         						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${p.id}/${id}/revisar" method="GET">
@@ -134,7 +134,7 @@
    				   				<c:if test = "${match.round eq 1}">
    				
         				<c:if test= "${player_actual.card2 != 'DROPPED'}" >     
-    						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFacción1" >
+    						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFacciï¿½n1" >
         						<div class="form-group has-feedback">
           
         						</div>
@@ -144,7 +144,7 @@
                         				<button class="btn btn-default" type="submit">Elegir ${player.card1} </button>
     
       						</form:form>
-         					<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFacción2" >
+         					<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFacciï¿½n2" >
         						<div class="form-group has-feedback">
           
         						</div>
