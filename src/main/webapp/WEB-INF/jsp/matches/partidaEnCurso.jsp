@@ -111,40 +111,45 @@
 							</c:if>
 						</c:forEach>
 				</c:if>
-   				<c:if test="${elegirFaccion}">     
-    				<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFaccion1" >
-        				<div class="form-group has-feedback">
+				<c:if test="${ronda1}">
+   					<c:if test="${elegirFaccion}">     
+    					<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFaccion1" >
+        					<div class="form-group has-feedback">
           
-        				</div>
-        				<div class="form-group">
-            				<div class="col-sm-offset-2 col-sm-10">
+        					</div>
+        					<div class="form-group">
+            					<div class="col-sm-offset-2 col-sm-10">
                
-                        		<button class="btn btn-default" type="submit">Elegir ${player.card1} </button>
+                        			<button class="btn btn-default" type="submit">Elegir ${player.card1} y contar votos</button>
     
-      				</form:form>
-      				<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFaccion2" >
-        				<div class="form-group has-feedback">
+      					</form:form>
+      					<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFaccion2" >
+        					<div class="form-group has-feedback">
           
-        				</div>
-        				<div class="form-group">
-            				<div class="col-sm-offset-2 col-sm-10">
+        					</div>
+        					<div class="form-group">
+            					<div class="col-sm-offset-2 col-sm-10">
                
-                       			<button class="btn btn-default" type="submit">Elegir ${player.card2}</button>
+                       			<button class="btn btn-default" type="submit">Elegir ${player.card2} y contar votos</button>
     
-      				</form:form>
+      					</form:form>
+         			</c:if>
+         			<c:if test="${elegirFaccion eq false}">
+         				<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${id}/NuevoTurno" >
+        					<div class="form-group has-feedback">
+          
+        					</div>
+        					<div class="form-group">
+            					<div class="col-sm-offset-2 col-sm-10">
+               
+                        			<button class="btn btn-default" type="submit">Contar Votos</button>
+    
+      					</form:form>
+         			</c:if> 
          		</c:if>
-         		<c:if test="${elegirFaccion eq false}">
-         			<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${id}/NuevoTurno" >
-        				<div class="form-group has-feedback">
-          
-        				</div>
-        				<div class="form-group">
-            				<div class="col-sm-offset-2 col-sm-10">
-               
-                        		<button class="btn btn-default" type="submit">Contar Votos</button>
-    
-      				</form:form>
-         		</c:if> 
+         		<c:if test="${ronda1 eq false}">
+         			
+         		</c:if>
    		</c:if>
  
 </c:forEach> 

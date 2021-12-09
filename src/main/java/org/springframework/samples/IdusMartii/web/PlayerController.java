@@ -2,6 +2,7 @@ package org.springframework.samples.IdusMartii.web;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.jsp.jstl.sql.Result;
@@ -140,42 +141,14 @@ public class PlayerController {
 			}
 		}
 		jugadoresConVoto.get(0).setVote(null);
-		playerService.savePlayer(jugadoresConVoto.get(0));
 		jugadoresConVoto.get(1).setVote(null);
-		playerService.savePlayer(jugadoresConVoto.get(1));
 		List<Player> jugadores = match.getPlayers();
-		int i = 0;
-		for (int j = 0; j == jugadores.size() - 1; j++) {
-			if (jugadores.get(j).getRole() == Role.CONSUL) {
-				i = j;
-			}
-			if (jugadores.get(j).getRole() != Role.NO_ROL) {
-				Player jugador = jugadores.get(j);
-				jugador.setRole(Role.NO_ROL);
-				playerService.savePlayer(jugador);
-			}
+		List<Role> roles = new ArrayList<Role>();
+		for (int i = 0; i <= jugadores.size() - 1; i++){
+		    roles.add(jugadores.get((i)).getRole());
 		}
-		for (int k = 1; k == 4; k++){
-			if ((i + k) >= jugadores.size()) {
-				i = 0;
-			}
-			if (k == 1) {
-				Player jugador = jugadores.get(i+k);
-				jugador.setRole(Role.CONSUL);
-				playerService.savePlayer(jugador);
-			} else if (k == 2) {
-				Player jugador = jugadores.get(i+k);
-				jugador.setRole(Role.PRETOR);
-				playerService.savePlayer(jugador);
-			} else if (k == 3) {
-				Player jugador = jugadores.get(i+k);
-				jugador.setRole(Role.EDIL);
-				playerService.savePlayer(jugador);
-			} else if (k == 4) {
-				Player jugador = jugadores.get(i+k);
-				jugador.setRole(Role.EDIL);
-				playerService.savePlayer(jugador);
-			}
+		for (int i = 0; i <= jugadores.size() - 1; i++){
+		    jugadores.get((i+1)%jugadores.size()).setRole(roles.get(i));
 		}
 		if ((match.getTurn() + 1) >= jugadores.size()){
 			match.setRound(match.getRound() + 1);
@@ -206,42 +179,14 @@ public class PlayerController {
 			}
 		}
 		jugadoresConVoto.get(0).setVote(null);
-		playerService.savePlayer(jugadoresConVoto.get(0));
 		jugadoresConVoto.get(1).setVote(null);
-		playerService.savePlayer(jugadoresConVoto.get(1));
 		List<Player> jugadores = match.getPlayers();
-		int i = 0;
-		for (int j = 0; j == jugadores.size() - 1; j++) {
-			if (jugadores.get(j).getRole() == Role.CONSUL) {
-				i = j;
-			}
-			if (jugadores.get(j).getRole() != Role.NO_ROL) {
-				Player jugador = jugadores.get(j);
-				jugador.setRole(Role.NO_ROL);
-				playerService.savePlayer(jugador);
-			}
+		List<Role> roles = new ArrayList<Role>();
+		for (int i = 0; i <= jugadores.size() - 1; i++){
+		    roles.add(jugadores.get((i)).getRole());
 		}
-		for (int k = 1; k == 4; k++){
-			if ((i + k) >= jugadores.size()) {
-				i = 0;
-			}
-			if (k == 1) {
-				Player jugador = jugadores.get(i+k);
-				jugador.setRole(Role.CONSUL);
-				playerService.savePlayer(jugador);
-			} else if (k == 2) {
-				Player jugador = jugadores.get(i+k);
-				jugador.setRole(Role.PRETOR);
-				playerService.savePlayer(jugador);
-			} else if (k == 3) {
-				Player jugador = jugadores.get(i+k);
-				jugador.setRole(Role.EDIL);
-				playerService.savePlayer(jugador);
-			} else if (k == 4) {
-				Player jugador = jugadores.get(i+k);
-				jugador.setRole(Role.EDIL);
-				playerService.savePlayer(jugador);
-			}
+		for (int i = 0; i <= jugadores.size() - 1; i++){
+		    jugadores.get((i+1)%jugadores.size()).setRole(roles.get(i));
 		}
 		if ((match.getTurn() + 1) >= jugadores.size()){
 			match.setRound(match.getRound() + 1);
