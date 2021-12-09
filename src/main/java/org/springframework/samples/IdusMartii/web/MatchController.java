@@ -89,19 +89,46 @@ public class MatchController {
 	public String comenzarPartida(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
 		
 		String vista = "matches/partidaEnCurso";
-		response.addHeader("Refresh","1"); 
+		response.addHeader("Refresh","5");
 		Match match = this.matchService.findById(id);
 		String currentuser = currentUserService.showCurrentUser();
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
-		Player player = playerService.findByMatchAndUsername(match, usuario);
-		System.out.println("ppp");
-		System.out.println(player.toString());
+		Player player_actual = playerService.findByMatchAndUser(match, usuario);
 		List<Vote> votos = new ArrayList<>();
 		votos.add(Vote.GREEN); votos.add(Vote.RED);
 		if (match.getRound() == 1) {
 			votos.add(Vote.YELLOW);
 		}
-		modelMap.addAttribute("player_actual", player);
+		List<Player> jugadores = match.getPlayers();
+		for (Player j: jugadores) {
+			if (j.getVote() != null) {
+				modelMap.addAttribute("usuario_votado", j.getUser().getUsername());
+			}
+		}
+		if (player_actual.getVote() == null && player_actual.getRole() == Role.EDIL && match.getC() == 0) {
+			modelMap.addAttribute("votar", true);
+		} else {
+			modelMap.addAttribute("votar", false);
+		}
+		if (player_actual.getCard2() == Faction.DROPPED) {
+			modelMap.addAttribute("enseñarCartas", false);
+		} else if (!modelMap.containsAttribute("enseñarCartas")){
+			modelMap.addAttribute("enseñarCartas", true);
+		}
+		if (player_actual.getRole() == Role.CONSUL && player_actual.getCard2() == Faction.DROPPED) {
+			modelMap.addAttribute("elegirFaccion", false);
+		} else if (player_actual.getRole() == Role.CONSUL && player_actual != jugadores.get(0) && match.getRound() == 0 && match.getC() == 2) {
+			modelMap.addAttribute("elegirFaccion", true);
+		} else if (player_actual.getRole() == Role.CONSUL && player_actual == jugadores.get(0) && match.getRound() == 1 && match.getC() == 2) {
+			modelMap.addAttribute("elegirFaccion", true);
+		} else if (player_actual.getRole() == Role.CONSUL && player_actual == jugadores.get(0) && match.getRound() == 0 && match.getC() == 2) {
+			modelMap.addAttribute("elegirFaccion", false);
+		}
+		if (player_actual.getRole() == Role.PRETOR && match.getC() == 1) {
+			modelMap.addAttribute("revisarVoto", true);
+		} else {
+			modelMap.addAttribute("revisarVoto", false);
+		}
 		modelMap.addAttribute("current", currentuser);
 		modelMap.addAttribute("match", match);
 		modelMap.addAttribute("votos", votos);
@@ -120,10 +147,6 @@ public class MatchController {
 	@PostMapping(path="/{id}/save")
 	public String guardarJugador(ModelMap modelMap, @PathVariable("id") int id) {
 	
-			// String vista = "matches/listadoPartida";
- 
-		
-				//match.setId(id);
 			Match match = this.matchService.findById(id);
 			match.setTurn(match.getTurn()+1);
 			match.setVotoaFavor(match.getVotoaFavor()+1);

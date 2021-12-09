@@ -19,9 +19,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "players")
 public class Player extends NamedEntity{
-
-		
-		// 	@Id
 		
 	
 		private Faction card1;

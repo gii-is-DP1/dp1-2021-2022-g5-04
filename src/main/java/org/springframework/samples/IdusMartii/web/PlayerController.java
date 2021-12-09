@@ -25,6 +25,7 @@ import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Player;
+import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import org.springframework.samples.IdusMartii.model.Match;
 
 @Controller
@@ -65,24 +66,7 @@ public class PlayerController {
         return vista;
     }
 	
-	@GetMapping(path="{id}/{idMatch}/votacion")
-	public String usuarioVotado(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
-		Match match = matchService.findById(idMatch);
-		List<Player> jugadores = match.getPlayers();
-		int i = 0;
-		for (Player j: jugadores) {
-			if (j.getVote() != null) {
-				String nombre = j.getUser().getUsername();
-				modelMap.addAttribute("usuario_votado", nombre);
-				i += 1 ;
-			}
-		}
-		if (i == 2) {
-			match.setC(match.getC() + 1);
-			matchService.saveMatch(match);
-		}
-		return "redirect:/matches/" + idMatch + "/match";
-	}
+
 	@PostMapping(path="/new")
 	public String guardarJugador(@Valid Player player, BindingResult result, ModelMap modelMap) {
 		String vista = "players/listadoJugadores";
@@ -101,15 +85,23 @@ public class PlayerController {
 			Player player = playerService.findbyId(id);
 			player.setVote(voto);
 			playerService.savePlayer(player);
-			return "redirect:/players/" + id + "/" + idMatch + "/votacion";
+			Match match = matchService.findById(idMatch);
+			List<Player> jugadores = match.getPlayers();
+			int i = 0;
+			for (Player j: jugadores) {
+				if (j.getVote() != null) {
+					i += 1;
+				}
+			}
+			if (i == 2) {
+				match.setC(match.getC() + 1);
+				matchService.saveMatch(match);
+			}
+			
+			return "redirect:/matches/" + idMatch + "/match";
 	}
-	@PostMapping(path="/{id}/{idMatch}/{card1}/ElegirCartaFacción1")
+	@PostMapping(path="/{id}/{idMatch}/{card1}/ElegirCartaFaccion1")
 	public String elecciónCarta1(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch,@PathVariable("card1") Faction card1) {
-
-		// String vista = "matches/listadoPartida";
-
-	
-			//match.setId(id);
 	
 		Player player = playerService.findbyId(id);
 		player.setCard1(card1);
@@ -117,28 +109,155 @@ public class PlayerController {
 
 		playerService.savePlayer(player);
 
-		return "redirect:/matches/" + idMatch + "/match";
 		
+		return "redirect:/players/" + idMatch + "/NuevoTurno";
 	}
 
 
 
-	@PostMapping(path="/{id}/{idMatch}/{card2}/ElegirCartaFacción2")
+	@PostMapping(path="/{id}/{idMatch}/{card2}/ElegirCartaFaccion2")
 	public String elecciónCarta2(ModelMap modelMap, @PathVariable("id") int id,@PathVariable("idMatch") int idMatch ,@PathVariable("card2") Faction card2) {
-
-		// String vista = "matches/listadoPartida";
-
-	
-			//match.setId(id);
-	
 	
 		Player player = playerService.findbyId(id);
 		player.setCard1(card2);
 		player.setCard2(Faction.DROPPED);
 
 		playerService.savePlayer(player);
-		return "redirect:/matches/" + idMatch + "/match";
 		
+		return "redirect:/players/" + idMatch + "/NuevoTurno";
+		
+	}
+	@GetMapping(path="/{idMatch}/NuevoTurno")
+	public String nuevoTurno(ModelMap modelMap, @PathVariable("idMatch") int idMatch) {
+		Match match = matchService.findById(idMatch);
+		
+		List<Player> jugadoresConVoto = playerService.findByRole(Role.EDIL);
+		for (Player j: jugadoresConVoto) {
+			if(j.getVote() == Vote.GREEN) {
+				match.setVotoaFavor(match.getVotoaFavor() + 1);
+			} else if (j.getVote() == Vote.RED) {
+				match.setVotoenContra(match.getVotoenContra() + 1);
+			}
+		}
+		jugadoresConVoto.get(0).setVote(null);
+		playerService.savePlayer(jugadoresConVoto.get(0));
+		jugadoresConVoto.get(1).setVote(null);
+		playerService.savePlayer(jugadoresConVoto.get(1));
+		List<Player> jugadores = match.getPlayers();
+		int i = 0;
+		for (int j = 0; j == jugadores.size() - 1; j++) {
+			if (jugadores.get(j).getRole() == Role.CONSUL) {
+				i = j;
+			}
+			if (jugadores.get(j).getRole() != Role.NO_ROL) {
+				Player jugador = jugadores.get(j);
+				jugador.setRole(Role.NO_ROL);
+				playerService.savePlayer(jugador);
+			}
+		}
+		for (int k = 1; k == 4; k++){
+			if ((i + k) >= jugadores.size()) {
+				i = 0;
+			}
+			if (k == 1) {
+				Player jugador = jugadores.get(i+k);
+				jugador.setRole(Role.CONSUL);
+				playerService.savePlayer(jugador);
+			} else if (k == 2) {
+				Player jugador = jugadores.get(i+k);
+				jugador.setRole(Role.PRETOR);
+				playerService.savePlayer(jugador);
+			} else if (k == 3) {
+				Player jugador = jugadores.get(i+k);
+				jugador.setRole(Role.EDIL);
+				playerService.savePlayer(jugador);
+			} else if (k == 4) {
+				Player jugador = jugadores.get(i+k);
+				jugador.setRole(Role.EDIL);
+				playerService.savePlayer(jugador);
+			}
+		}
+		if ((match.getTurn() + 1) >= jugadores.size()){
+			match.setRound(match.getRound() + 1);
+			match.setTurn(0);
+			match.setC(0);
+		} else {
+			match.setTurn(match.getTurn() + 1);
+			match.setC(0);
+		}
+		matchService.saveMatch(match);
+		
+		if (match.getRound() == 2) {
+			return "redirect:/matches/" + idMatch + "/ganador";
+		} else {
+			return "redirect:/matches/" +idMatch + "/match";
+		}
+	}
+	@PostMapping(path="/{idMatch}/NuevoTurno")
+	public String nuevoTurno2(ModelMap modelMap, @PathVariable("idMatch") int idMatch) {
+		Match match = matchService.findById(idMatch);
+		
+		List<Player> jugadoresConVoto = playerService.findByRole(Role.EDIL);
+		for (Player j: jugadoresConVoto) {
+			if(j.getVote() == Vote.GREEN) {
+				match.setVotoaFavor(match.getVotoaFavor() + 1);
+			} else if (j.getVote() == Vote.RED) {
+				match.setVotoenContra(match.getVotoenContra() + 1);
+			}
+		}
+		jugadoresConVoto.get(0).setVote(null);
+		playerService.savePlayer(jugadoresConVoto.get(0));
+		jugadoresConVoto.get(1).setVote(null);
+		playerService.savePlayer(jugadoresConVoto.get(1));
+		List<Player> jugadores = match.getPlayers();
+		int i = 0;
+		for (int j = 0; j == jugadores.size() - 1; j++) {
+			if (jugadores.get(j).getRole() == Role.CONSUL) {
+				i = j;
+			}
+			if (jugadores.get(j).getRole() != Role.NO_ROL) {
+				Player jugador = jugadores.get(j);
+				jugador.setRole(Role.NO_ROL);
+				playerService.savePlayer(jugador);
+			}
+		}
+		for (int k = 1; k == 4; k++){
+			if ((i + k) >= jugadores.size()) {
+				i = 0;
+			}
+			if (k == 1) {
+				Player jugador = jugadores.get(i+k);
+				jugador.setRole(Role.CONSUL);
+				playerService.savePlayer(jugador);
+			} else if (k == 2) {
+				Player jugador = jugadores.get(i+k);
+				jugador.setRole(Role.PRETOR);
+				playerService.savePlayer(jugador);
+			} else if (k == 3) {
+				Player jugador = jugadores.get(i+k);
+				jugador.setRole(Role.EDIL);
+				playerService.savePlayer(jugador);
+			} else if (k == 4) {
+				Player jugador = jugadores.get(i+k);
+				jugador.setRole(Role.EDIL);
+				playerService.savePlayer(jugador);
+			}
+		}
+		if ((match.getTurn() + 1) >= jugadores.size()){
+			match.setRound(match.getRound() + 1);
+			match.setTurn(0);
+			match.setC(0);
+		} else {
+			match.setTurn(match.getTurn() + 1);
+			match.setC(0);
+		}
+		matchService.saveMatch(match);
+		
+		if (match.getRound() == 2) {
+			return "redirect:/matches/" + idMatch + "/ganador";
+		} else {
+			return "redirect:/matches/" +idMatch + "/match";
+		}
 	}
 	@PostMapping(path="/{id}/{idMatch}/cambiarVoto")
 	public String cambiarVoto(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
@@ -165,16 +284,7 @@ public class PlayerController {
 		
 		return "redirect:/matches/" +idMatch + "/match";
 	}
-	
-	@PostMapping(path="/{id}/{idMatch}/NuevoTurno")
-	public String NuevoTurno(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
-		Match match = matchService.findById(idMatch);
-		match.setC(0);
-		match.setTurn(match.getTurn()+1);
-		matchService.saveMatch(match);
-		
-		return "redirect:/matches/" +idMatch + "/match";
-	}
+
 	@PostMapping(path="/{id}/{idMatch}/asignarEdil")
 	public String asignarEdil(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
 		

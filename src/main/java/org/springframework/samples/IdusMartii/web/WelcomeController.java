@@ -20,7 +20,7 @@ public class WelcomeController {
 
       @GetMapping({"/","/welcome"})
       public String welcome(Map<String, Object> model, HttpServletResponse response) {
-        response.addHeader("Refresh","1"); 
+        response.addHeader("Refresh","30"); 
         model.put("now", new Date());
         List<Person> persons = new ArrayList<Person>();
         Person person_1 = new Person();

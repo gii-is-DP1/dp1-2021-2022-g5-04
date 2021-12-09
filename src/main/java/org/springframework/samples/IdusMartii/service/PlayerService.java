@@ -5,6 +5,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.samples.IdusMartii.repository.PlayerRepository;
+import org.springframework.samples.IdusMartii.enumerates.Role;
+import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.model.Player;
@@ -35,10 +37,13 @@ public class PlayerService {
 		return playerRepository.findById(ID).get();
 	}
 	@Transactional
-	public Player findByMatchAndUsername(Match match, User user) throws DataAccessException {
-		return playerRepository.findByMatchAndUsername(match, user);
+	public Player findByMatchAndUser(Match match, User user) throws DataAccessException {
+		return playerRepository.findByMatchAndUser(match, user);
 	}
 	
-	
+	@Transactional
+	public List<Player> findByRole(Role role) throws DataAccessException {
+		return playerRepository.findByRole(role);
+	}
 
 }
