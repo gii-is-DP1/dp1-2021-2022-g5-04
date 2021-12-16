@@ -19,4 +19,6 @@ public interface PlayerRepository extends CrudRepository<Player, Integer>{
 
     @Query("SELECT p FROM Player p WHERE p.role = :role")
     public List <Player> findByRole(@Param("role") Role role);
+    
+    //@Query("SELECT ")
 }

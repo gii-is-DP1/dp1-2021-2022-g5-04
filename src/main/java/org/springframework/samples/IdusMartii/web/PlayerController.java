@@ -23,6 +23,7 @@ import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
+import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Player;
@@ -64,7 +65,12 @@ public class PlayerController {
         Player player = playerService.findbyId(id);
         modelMap.addAttribute("idMatch", idMatch);
         modelMap.addAttribute("player", player);
-        return vista;
+        if (player.getVote() == Vote.YELLOW) {
+        	return "CAMBIAR ESTO";
+        } else {
+            return vista;
+        }
+    
     }
 	
 
@@ -95,7 +101,7 @@ public class PlayerController {
 				}
 			}
 			if (i == 2) {
-				match.setC(match.getC() + 1);
+				match.setPlays(Plays.PRETOR);
 				matchService.saveMatch(match);
 			}
 			
@@ -153,10 +159,10 @@ public class PlayerController {
 		if ((match.getTurn() + 1) >= jugadores.size()){
 			match.setRound(match.getRound() + 1);
 			match.setTurn(0);
-			match.setC(0);
+			match.setPlays(Plays.EDIL);
 		} else {
 			match.setTurn(match.getTurn() + 1);
-			match.setC(0);
+			match.setPlays(Plays.EDIL);
 		}
 		matchService.saveMatch(match);
 		
@@ -169,7 +175,6 @@ public class PlayerController {
 	@PostMapping(path="/{idMatch}/NuevoTurno")
 	public String nuevoTurno2(ModelMap modelMap, @PathVariable("idMatch") int idMatch) {
 		Match match = matchService.findById(idMatch);
-		
 		List<Player> jugadoresConVoto = playerService.findByRole(Role.EDIL);
 		for (Player j: jugadoresConVoto) {
 			if(j.getVote() == Vote.GREEN) {
@@ -182,22 +187,32 @@ public class PlayerController {
 		jugadoresConVoto.get(1).setVote(null);
 		List<Player> jugadores = match.getPlayers();
 		List<Role> roles = new ArrayList<Role>();
-		for (int i = 0; i <= jugadores.size() - 1; i++){
-		    roles.add(jugadores.get((i)).getRole());
+		if (match.getRound() == 0 && match.getTurn() + 1 < jugadores.size()) {
+			for (int i = 0; i <= jugadores.size() - 1; i++) {
+				roles.add(jugadores.get((i)).getRole());
+			}
+			for (int i = 0; i <= jugadores.size() - 1; i++) {
+				jugadores.get((i+1)%jugadores.size()).setRole(roles.get(i));
+			}
+		} else if (match.getRound() == 0 && match.getTurn() + 1 >= jugadores.size()) {
+			for (int i = 0; i <= jugadores.size() - 1; i++) {
+				roles.add(jugadores.get((i)).getRole());
+			}
+			for (int i = 0; i <= jugadores.size() - 1; i++) {
+				if (roles.get(i) == Role.CONSUL) {
+					jugadores.get((i+1)%jugadores.size()).setRole(roles.get(i));
+				}
+			}
 		}
-		for (int i = 0; i <= jugadores.size() - 1; i++){
-		    jugadores.get((i+1)%jugadores.size()).setRole(roles.get(i));
-		}
-		if ((match.getTurn() + 1) >= jugadores.size()){
+		if ((match.getTurn() + 1) >= jugadores.size()) {
 			match.setRound(match.getRound() + 1);
 			match.setTurn(0);
-			match.setC(0);
+			match.setPlays(Plays.CONSUL);
 		} else {
 			match.setTurn(match.getTurn() + 1);
-			match.setC(0);
+			match.setPlays(Plays.EDIL);
 		}
 		matchService.saveMatch(match);
-		
 		if (match.getRound() == 2) {
 			return "redirect:/matches/" + idMatch + "/ganador";
 		} else {
@@ -214,7 +229,7 @@ public class PlayerController {
 			player.setVote(Vote.RED);
 		}
 		playerService.savePlayer(player);
-		match.setC(match.getC() + 1);
+		match.setPlays(Plays.CONSUL);
 		matchService.saveMatch(match);
 		
 		
@@ -223,21 +238,27 @@ public class PlayerController {
 	}
 	@PostMapping(path="/{id}/{idMatch}/noCambiarVoto")
 	public String noCambiarVoto(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+		
 		Match match = matchService.findById(idMatch);
-		match.setC(match.getC() + 1);
+		match.setPlays(Plays.CONSUL);
 		matchService.saveMatch(match);
 		
 		return "redirect:/matches/" +idMatch + "/match";
 	}
-
+	//Añadir a seguridad que sea el jugador que debe entrar a estos sitios
 	@PostMapping(path="/{id}/{idMatch}/asignarEdil")
 	public String asignarEdil(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
 		
 		Player player = playerService.findbyId(id);
 		player.setRole(Role.EDIL);
+		player.setAsigned(true);
 		playerService.savePlayer(player);
-		
-		return "redirect:/matches/" + idMatch + "/match";
+		Match match = matchService.findById(idMatch);
+		if (!matchService.edilNotAsigned(match) && !matchService.pretorNotAsigned(match)) {
+			return "redirect:/matches/" + idMatch + "/rolesAsignados";
+		} else {
+			return "redirect:/matches/" + idMatch + "/match";
+		}
 		
 	}
 	
@@ -246,10 +267,14 @@ public class PlayerController {
 		
 		Player player = playerService.findbyId(id);
 		player.setRole(Role.PRETOR);
+		player.setAsigned(true);
 		playerService.savePlayer(player);
-		
-		return "redirect:/matches/" + idMatch + "/match";
-		
+		Match match = matchService.findById(idMatch);
+		if (!matchService.edilNotAsigned(match) && !matchService.pretorNotAsigned(match)) {
+			return "redirect:/matches/" + idMatch + "/rolesAsignados";
+		} else {
+			return "redirect:/matches/" + idMatch + "/match";
+		}
 	}
 }
 

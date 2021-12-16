@@ -8,6 +8,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 
+import org.springframework.samples.IdusMartii.enumerates.Plays;
+
 import java.util.List;
 
 
@@ -24,7 +26,7 @@ public class Match extends NamedEntity{
 		private int turn;
 		private int votoaFavor;
 		private int votoenContra;
-		private int c;
+		private Plays plays;
 
 		
         @OneToMany(cascade = CascadeType.ALL, mappedBy = "match")

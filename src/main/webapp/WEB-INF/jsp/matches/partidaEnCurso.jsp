@@ -49,58 +49,39 @@
                     <h1>Tu rol actual es:  ${player.role}</h1>
                  
                 </tr>
-			<c:if test="${enseñarCartas}">
+			<c:if test="${mostrarCartas}">
            		<tr>
                     <h1>Tus cartas de facción son: ${player.card1}, ${player.card2}</h1>
                 </tr>
 			</c:if>
-			<c:if test="${enseñarCartas eq false}">
+			<c:if test="${mostrarCartas eq false}">
 				<tr>
 					<h1>Tu facción es: ${player.card1}</h1>
 				</tr>
 			</c:if>
+			<c:if test="${ronda1}">
                 <c:if test="${votar}">
            			<div class="col-sm-offset-2 col-sm-10">
         				<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/${votos[0]}">
-            				
            					<div class="form-group">
                 				<div class="col-sm-offset-2 col-sm-10">
-									
-									
 									<button class="btn btn-default" type="submit">Votar a favor</button>
 								</div>
 							</div>
-        							
         				</form:form>
         				<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/${votos[1]}">
-            				
            					<div class="form-group">
                 				<div class="col-sm-offset-2 col-sm-10">
-									
-									
 									<button class="btn btn-default" type="submit">Votar en contra</button>
 								</div>
 							</div>
         				</form:form>
-        				<c:if test="${votos[2] eq 'YELLOW'}">
-        					<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/${votos[2]}">
-            				
-           						<div class="form-group">
-                					<div class="col-sm-offset-2 col-sm-10">
-									
-									
-										<button class="btn btn-default" type="submit">Votar nulo</button>
-									</div>
-								</div>
-        							
-        					</form:form>
-        				</c:if>
         			</div>
     			</c:if>
     			<c:if test="${revisarVoto}">
         				<c:forEach var="p" items="${match.players}">
         					<c:if test="${p.role eq 'EDIL'}">
-        						<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${p.id}/${id}/revisar" method="GET">
+        						<form:form modelAttribute="match" class="form-horizontal" id="add-match-form"  action="/players/${p.id}/${id}/revisar" method="GET">
                     				<div class="form-group has-feedback"></div>
                         			<div class="form-group">
                         				<div class="col-sm-offset-2 col-sm-10">
@@ -111,46 +92,109 @@
 							</c:if>
 						</c:forEach>
 				</c:if>
-				<c:if test="${ronda1}">
    					<c:if test="${elegirFaccion}">     
-    					<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFaccion1" >
+    					<form:form modelAttribute="match" class="form-horizontal" id="add-match-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFaccion1" >
         					<div class="form-group has-feedback">
-          
         					</div>
         					<div class="form-group">
             					<div class="col-sm-offset-2 col-sm-10">
-               
                         			<button class="btn btn-default" type="submit">Elegir ${player.card1} y contar votos</button>
-    
+                        		</div>
+                        	</div>
       					</form:form>
-      					<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFaccion2" >
+      					<form:form modelAttribute="match" class="form-horizontal" id="add-match-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFaccion2" >
         					<div class="form-group has-feedback">
-          
         					</div>
         					<div class="form-group">
             					<div class="col-sm-offset-2 col-sm-10">
-               
                        			<button class="btn btn-default" type="submit">Elegir ${player.card2} y contar votos</button>
-    
+                       			</div>
+                       		</div>
       					</form:form>
          			</c:if>
-         			<c:if test="${elegirFaccion eq false}">
-         				<form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${id}/NuevoTurno" >
+         			<c:if test="${contarVotos}">
+         				<form:form modelAttribute="match" class="form-horizontal" id="add-match-form"  action="/players/${id}/NuevoTurno" >
         					<div class="form-group has-feedback">
-          
         					</div>
         					<div class="form-group">
             					<div class="col-sm-offset-2 col-sm-10">
-               
                         			<button class="btn btn-default" type="submit">Contar Votos</button>
-    
+                        		</div>
+                        	</div>
       					</form:form>
          			</c:if> 
          		</c:if>
-         		<c:if test="${ronda1 eq false}">
-         			
-         		</c:if>
-   		</c:if>
- 
+         		<c:if test="${ronda2}">
+         			<c:if test="${elegirRol}">
+         				<c:forEach var="pla" items="${jugadoresSinRolConsul}">
+         					<c:if test="${edilesSinAsignar}">
+         						<c:if test="${pla.role != 'EDIL'}">
+         							<form:form modelAttribute="match" class="form-horizontal" id="add-match-form"  action="/players/${pla.id}/${id}/asignarEdil">
+        								<div class="form-group has-feedback">
+        								</div>
+        								<div class="form-group">
+            								<div class="col-sm-offset-2 col-sm-10">
+                        						<button class="btn btn-default" type="submit">Asignar a ${pla.user.username} el rol EDIL</button>
+                        					</div>
+                        				</div>
+      								</form:form>
+      							</c:if>
+      						</c:if>
+      						<c:if test="${pretorSinAsignar}">
+      							<c:if test="${pla.role != 'PRETOR'}">
+      								<form:form modelAttribute="match" class="form-horizontal" id="add-match-form"  action="/players/${pla.id}/${id}/asignarPretor">
+        								<div class="form-group has-feedback">
+        								</div>
+        								<div class="form-group">
+            								<div class="col-sm-offset-2 col-sm-10">
+                        						<button class="btn btn-default" type="submit">Asignar a ${pla.user.username} el rol PRETOR</button>
+                        					</div>
+                        				</div>
+      								</form:form>
+      							</c:if>
+      						</c:if>
+         				</c:forEach>
+         			</c:if>
+         			<c:if test="${votar}">
+           				<div class="col-sm-offset-2 col-sm-10">
+        					<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/${votos[0]}">
+           						<div class="form-group">
+                					<div class="col-sm-offset-2 col-sm-10">
+										<button class="btn btn-default" type="submit">Votar a favor</button>
+									</div>
+								</div>
+        					</form:form>
+        					<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/${votos[1]}">
+           						<div class="form-group">
+                					<div class="col-sm-offset-2 col-sm-10">
+										<button class="btn btn-default" type="submit">Votar en contra</button>
+									</div>
+								</div>
+        					</form:form>
+        					<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/${votos[2]}">
+           						<div class="form-group">
+                					<div class="col-sm-offset-2 col-sm-10">
+										<button class="btn btn-default" type="submit">Votar nulo</button>
+									</div>
+								</div>	
+        					</form:form>
+        				</div>
+        			</c:if>
+        			<c:if test="${revisarVoto}">
+        				<c:forEach var="pl" items="${match.players}">
+        					<c:if test="${pl.role eq 'EDIL'}">
+        						<form:form modelAttribute="match" class="form-horizontal" id="add-match-form"  action="/players/${pl.id}/${id}/revisar" method="GET">
+                    				<div class="form-group has-feedback"></div>
+                        			<div class="form-group">
+                        				<div class="col-sm-offset-2 col-sm-10">
+                            				<button class="btn btn-default" type="submit">Revisar voto de ${pl.user.username}</button>
+                           			</div>
+                       			</div>
+								</form:form>
+							</c:if>
+						</c:forEach>
+				</c:if>
+    			</c:if>
+         	</c:if>
 </c:forEach> 
 </IdusMartii:layout>

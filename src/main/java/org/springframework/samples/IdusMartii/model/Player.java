@@ -25,7 +25,7 @@ public class Player extends NamedEntity{
 		private Faction card2;
 		private Vote vote;
 		private Role role;
-		
+		private boolean asigned;
 		
 		
 		@OneToOne(cascade = CascadeType.ALL)

@@ -21,6 +21,7 @@ import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
+import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Match;
@@ -62,7 +63,7 @@ public class MatchController {
 			match.setTurn(0);
 			match.setVotoaFavor(0);
 			match.setVotoenContra(0);
-			match.setC(0);
+			match.setPlays(Plays.EDIL);
 			Player host = new Player();
 			host.setUser(userService.findUser(currentUserService.showCurrentUser()).get());
 			host.setName("host");
@@ -89,7 +90,7 @@ public class MatchController {
 	public String comenzarPartida(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
 		
 		String vista = "matches/partidaEnCurso";
-		//response.addHeader("Refresh","5");
+		//response.addHeader("Refresh","5"); //Hacerlo con una llamada al servidor (ResController viene en teoría)
 		Match match = this.matchService.findById(id);
 		String currentuser = currentUserService.showCurrentUser();
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
@@ -105,43 +106,38 @@ public class MatchController {
 				modelMap.addAttribute("usuario_votado", j.getUser().getUsername());
 			}
 		}
-		if (player_actual.getVote() == null && player_actual.getRole() == Role.EDIL && match.getC() == 0) {
-			modelMap.addAttribute("votar", true);
-		} else {
-			modelMap.addAttribute("votar", false);
-		}
-		if (player_actual.getCard2() == Faction.DROPPED) {
-			modelMap.addAttribute("enseñarCartas", false);
-		} else if (!modelMap.containsAttribute("enseñarCartas")){
-			modelMap.addAttribute("enseñarCartas", true);
-		}
-		if (player_actual.getRole() == Role.CONSUL && player_actual.getCard2() == Faction.DROPPED && match.getC() == 2) {
-			modelMap.addAttribute("elegirFaccion", false);
-		} else if (player_actual.getRole() == Role.CONSUL && player_actual != jugadores.get(0) && match.getRound() == 0 && match.getC() == 2) {
-			modelMap.addAttribute("elegirFaccion", true);
-		} else if (player_actual.getRole() == Role.CONSUL && player_actual == jugadores.get(0) && match.getRound() == 1 && match.getC() == 2) {
-			modelMap.addAttribute("elegirFaccion", true);
-		} else if (player_actual.getRole() == Role.CONSUL && player_actual == jugadores.get(0) && match.getRound() == 0 && match.getC() == 2) {
-			modelMap.addAttribute("elegirFaccion", false);
-		}
-		if (player_actual.getRole() == Role.PRETOR && match.getC() == 1) {
-			modelMap.addAttribute("revisarVoto", true);
-		} else {
-			modelMap.addAttribute("revisarVoto", false);
-		}
-		if ((match.getRound() == 0 && match.getTurn() == match.getPlayers().size() - 1) || match.getRound() == 1) {
-			modelMap.addAttribute("ronda1", false);
-		} else if (match.getRound() == 0) {
-			modelMap.addAttribute("ronda1", true);
-		}
+		modelMap.addAttribute("mostrarCartas", playerService.showCards(player_actual));
+		modelMap.addAttribute("votar", playerService.canVote(player_actual, match));
+		modelMap.addAttribute("revisarVoto", playerService.checkVote(player_actual, match));
+		modelMap.addAttribute("elegirFaccion", playerService.chooseFaction(player_actual, match));
+		modelMap.addAttribute("contarVotos", playerService.countVotes(player_actual, match));
+		modelMap.addAttribute("ronda1", matchService.roundI(match));
+		modelMap.addAttribute("ronda2", matchService.roundII(match));
+		modelMap.addAttribute("elegirRol", playerService.chooseRol(player_actual, match));
+		modelMap.addAttribute("jugadoresSinRolConsul", matchService.playersWithNoConsulRole(match));
+		modelMap.addAttribute("edilesSinAsignar", matchService.edilNotAsigned(match));
+		modelMap.addAttribute("pretorSinAsignar", matchService.pretorNotAsigned(match));
 		modelMap.addAttribute("current", currentuser);
 		modelMap.addAttribute("match", match);
 		modelMap.addAttribute("votos", votos);
 		return vista;
 	}
-	
+	@GetMapping(path="{id}/rolesAsignados")
+	public String rolesAsignados(@PathVariable("id") int id) {
+		Match match = matchService.findById(id);
+		match.setPlays(Plays.EDIL);
+		List<Player> players = match.getPlayers();
+		for (Player p: players) {
+			if (!p.isAsigned() && p.getRole() != Role.CONSUL) {
+				p.setRole(Role.NO_ROL);
+				playerService.savePlayer(p);
+			}
+		}
+		matchService.saveMatch(match);
+		return "redirect:/matches/" + id + "/match";
+	}
 	@GetMapping(path="/{id}/save")
-	public String guardarJugador2(  @PathVariable("id") int id, ModelMap modelMap) {
+	public String guardarJugador2(@PathVariable("id") int id, ModelMap modelMap) {
 		String vista = "matches/listadoPartida";
 	
 		Match match = this.matchService.findById(id);
