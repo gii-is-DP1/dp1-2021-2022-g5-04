@@ -63,10 +63,14 @@ public class PlayerController {
     public String revisarVoto(@PathVariable("id") int id, @PathVariable("idMatch") int idMatch, ModelMap modelMap) {
         String vista = "players/revisadoVoto";
         Player player = playerService.findbyId(id);
+        modelMap.addAttribute("votoYellow", false);
+
         modelMap.addAttribute("idMatch", idMatch);
         modelMap.addAttribute("player", player);
         if (player.getVote() == Vote.YELLOW) {
-        	return "CAMBIAR ESTO";
+            modelMap.addAttribute("votoYellow", true);
+
+        	return vista;
         } else {
             return vista;
         }
@@ -89,20 +93,29 @@ public class PlayerController {
 
 	@PostMapping(path="/{id}/{idMatch}/{voto}")
 	public String guardarVoto(ModelMap modelMap, @PathVariable("id")int id, @PathVariable("idMatch") int idMatch, @PathVariable("voto") Vote voto) {
+			Integer temp = 0;
 			Player player = playerService.findbyId(id);
+			
 			player.setVote(voto);
 			playerService.savePlayer(player);
 			Match match = matchService.findById(idMatch);
+			if(match.getPlays()==Plays.YELLOWEDIL) {
+				temp = 1;
+			}
 			List<Player> jugadores = match.getPlayers();
 			int i = 0;
 			for (Player j: jugadores) {
 				if (j.getVote() != null) {
-					i += 1;
+					i += 1; 
 				}
 			}
 			if (i == 2) {
+				if(temp==0) {
 				match.setPlays(Plays.PRETOR);
-				matchService.saveMatch(match);
+				matchService.saveMatch(match);}
+				else {
+					match.setPlays(Plays.CONSUL);
+					matchService.saveMatch(match);}
 			}
 			
 			return "redirect:/matches/" + idMatch + "/match";
@@ -234,8 +247,26 @@ public class PlayerController {
 		
 		
 		
+		
 		return "redirect:/matches/" +idMatch + "/match";
 	}
+	
+	@PostMapping(path="/{id}/{idMatch}/cambiarVotoYellow")
+	public String cambiarVotoYellow(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
+		Match match = matchService.findById(idMatch);
+		Player player = playerService.findbyId(id);
+		
+		match.setPlays(Plays.YELLOWEDIL);
+		player.setVote(null);
+		matchService.saveMatch(match);
+		
+		
+		
+		
+		return "redirect:/matches/" +idMatch + "/match";
+	}
+	
+	
 	@PostMapping(path="/{id}/{idMatch}/noCambiarVoto")
 	public String noCambiarVoto(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
 		

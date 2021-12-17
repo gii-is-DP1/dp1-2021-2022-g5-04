@@ -15,6 +15,8 @@
         <tr>
             <td><c:out value="Voto del jugador ${player.user.username}: ${player.vote}"/></td>
         </tr>
+        <c:if test="${!votoYellow}">
+        			
         <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${idMatch}/cambiarVoto">
                  <div class="form-group has-feedback">
 
@@ -35,6 +37,23 @@
                         </div>
                  </div>
 		</form:form>
+		    				</c:if>
+		    	        <c:if test="${votoYellow}">
+		    				  			
+        <form:form modelAttribute="match" class="form-horizontal" id="add-mathch-form"  action="/players/${player.id}/${idMatch}/cambiarVotoYellow">
+                 <div class="form-group has-feedback">
+
+                 </div>
+                 <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                                  <button class="btn btn-default" type="submit">Cambiar voto de ${player.user.username}</button>
+                        </div>
+                 </div>
+		</form:form>
+		
+		    				</c:if>
+		
     </table>
+    
 </IdusMartii:layout>
   

@@ -56,6 +56,21 @@ public class PlayerService {
 		}
 	}
 	@Transactional
+	public boolean canVoteYellow(Player player, Match match) throws DataAccessException {
+		if (player.getVote() == null && player.getRole() == Role.EDIL && match.getPlays() == Plays.YELLOWEDIL) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	public Player playerYellow(Player player, Match match) throws DataAccessException {
+		if (player.getVote() == Vote.YELLOW && player.getRole() == Role.EDIL && match.getPlays() == Plays.YELLOWEDIL) {
+			return player;
+		} else {
+			return null;
+		}
+	}
+	@Transactional
 	public boolean showCards(Player player) throws DataAccessException {
 		if (player.getCard2() == Faction.DROPPED) {
 			return false;

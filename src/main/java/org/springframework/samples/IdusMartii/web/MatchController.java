@@ -74,7 +74,7 @@ public class MatchController {
 			modelMap.addAttribute("message", "¡Jugador guardado correctamente!");
 			return "redirect:/matches/" + match.getId() + "/new";
 	}
-
+ 
 
 	@GetMapping(path="/{id}/new")
 	public String editarPartida(ModelMap modelMap, @PathVariable("id") int id) {
@@ -104,10 +104,16 @@ public class MatchController {
 		for (Player j: jugadores) {
 			if (j.getVote() != null) {
 				modelMap.addAttribute("usuario_votado", j.getUser().getUsername());
-			}
-		}
+
+			}} 
+			
+	
+			modelMap.addAttribute("votarY", playerService.canVoteYellow(player_actual, match));
+			modelMap.addAttribute("playerY", playerService.playerYellow(player_actual, match));
+
 		modelMap.addAttribute("mostrarCartas", playerService.showCards(player_actual));
 		modelMap.addAttribute("votar", playerService.canVote(player_actual, match));
+		
 		modelMap.addAttribute("revisarVoto", playerService.checkVote(player_actual, match));
 		modelMap.addAttribute("elegirFaccion", playerService.chooseFaction(player_actual, match));
 		modelMap.addAttribute("contarVotos", playerService.countVotes(player_actual, match));
@@ -121,6 +127,7 @@ public class MatchController {
 		modelMap.addAttribute("match", match);
 		modelMap.addAttribute("votos", votos);
 		return vista;
+		
 	}
 	@GetMapping(path="{id}/rolesAsignados")
 	public String rolesAsignados(@PathVariable("id") int id) {

@@ -39,9 +39,13 @@
             <th>Players</th>
             <td><c:forEach var="x" items="${match.players}">
                 		<li>${x.user.username} ---> ${x.role}</li>
+                		
                 </c:forEach></td>
         </tr>
-        
+         <tr>
+            <c:out value="${playerY.user.username}"/>
+                    </tr>
+            
       </table>
 <c:forEach items="${match.players}" var="player">
          <c:if test= "${player.user.username eq current}" >
@@ -155,7 +159,39 @@
       						</c:if>
          				</c:forEach>
          			</c:if>
-         			<c:if test="${votar}">
+         			<c:if test="${elegirFaccion}">     
+    					<form:form modelAttribute="match" class="form-horizontal" id="add-match-form"  action="/players/${player.id}/${id}/${player.card1}/ElegirCartaFaccion1" >
+        					<div class="form-group has-feedback">
+        					</div>
+        					<div class="form-group">
+            					<div class="col-sm-offset-2 col-sm-10">
+                        			<button class="btn btn-default" type="submit">Elegir ${player.card1} y contar votos</button>
+                        		</div>
+                        	</div>
+      					</form:form>
+      					<form:form modelAttribute="match" class="form-horizontal" id="add-match-form"  action="/players/${player.id}/${id}/${player.card2}/ElegirCartaFaccion2" >
+        					<div class="form-group has-feedback">
+        					</div>
+        					<div class="form-group">
+            					<div class="col-sm-offset-2 col-sm-10">
+                       			<button class="btn btn-default" type="submit">Elegir ${player.card2} y contar votos</button>
+                       			</div>
+                       		</div>
+      					</form:form>
+         			</c:if>
+         			<c:if test="${contarVotos}">
+         				<form:form modelAttribute="match" class="form-horizontal" id="add-match-form"  action="/players/${id}/NuevoTurno" >
+        					<div class="form-group has-feedback">
+        					</div>
+        					<div class="form-group">
+            					<div class="col-sm-offset-2 col-sm-10">
+                        			<button class="btn btn-default" type="submit">Contar Votos</button>
+                        		</div>
+                        	</div>
+      					</form:form>
+         			</c:if> 
+         	
+         			<c:if test="${votar || votarY}">
            				<div class="col-sm-offset-2 col-sm-10">
         					<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/${votos[0]}">
            						<div class="form-group">
@@ -171,6 +207,7 @@
 									</div>
 								</div>
         					</form:form>
+        					<c:if test="${!votarY}">
         					<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/${votos[2]}">
            						<div class="form-group">
                 					<div class="col-sm-offset-2 col-sm-10">
@@ -178,6 +215,8 @@
 									</div>
 								</div>	
         					</form:form>
+        					        			</c:if>
+        					
         				</div>
         			</c:if>
         			<c:if test="${revisarVoto}">
