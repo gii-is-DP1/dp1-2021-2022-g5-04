@@ -49,7 +49,7 @@
     	</form:form>  
 		<c:forEach items="${match.players}" var="player">
 		    <c:if test= "${player.user.username ne current}" >
-		    	<form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/players/${id}/${match.id}/expulsar" >
+		    	<form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${match.id}/expulsar" >
 	            <div class="form-group">
 	                <div class="col-sm-offset-2 col-sm-10">
 	                   
