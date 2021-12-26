@@ -33,6 +33,11 @@ public class PlayerService {
 	public void savePlayer(Player player) throws DataAccessException {
 		playerRepository.save(player);
 	}
+	
+	@Transactional
+	public void deletePlayer(Player player) throws DataAccessException {
+		playerRepository.delete(player);
+	}
 
 	@Transactional
 	public Player findbyId(Integer ID) throws DataAccessException {
