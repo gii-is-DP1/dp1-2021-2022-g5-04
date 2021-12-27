@@ -1,6 +1,7 @@
 package org.springframework.samples.IdusMartii.service;
 
 import org.springframework.samples.IdusMartii.repository.MatchRepository;
+import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
@@ -45,7 +46,7 @@ public class MatchService {
 	}
 	@Transactional
 	public boolean roundII(Match match) throws DataAccessException {
-		if ((match.getRound() == 0 && (match.getTurn() == match.getPlayers().size() - 1)) || match.getRound() == 1) {
+		if (match.getRound() == 1) {
 			return true;
 		} else {
 			return false;
