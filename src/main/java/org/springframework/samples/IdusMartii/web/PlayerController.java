@@ -90,6 +90,13 @@ public class PlayerController {
 		}
 		return vista;
 	}
+	
+	@PostMapping(path="/{idPlayer}/{idMatch}/expulsar")
+	public String expulsarJugador(@PathVariable("idPlayer") int id, @PathVariable("idMatch") int matchId) {
+		Player player = playerService.findbyId(id);
+		playerService.deletePlayer(player);
+		return "redirect:/matches/" + matchId + "/new";
+	}
 
 	@PostMapping(path="/{id}/{idMatch}/{voto}")
 	public String guardarVoto(ModelMap modelMap, @PathVariable("id")int id, @PathVariable("idMatch") int idMatch, @PathVariable("voto") Vote voto) {
