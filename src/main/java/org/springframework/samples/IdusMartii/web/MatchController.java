@@ -402,7 +402,7 @@ public class MatchController {
 			// 	this.matchService.saveMatch(match);
 		
 		
-		Iterable<Player> g = playerService.findAll();
+		List<Player> g = (List<Player>) playerService.findAll();
 		
 		Random r = new Random();
 		List<Faction> lista = new ArrayList<>();
@@ -412,10 +412,37 @@ public class MatchController {
 		}
 		lista.add(Faction.MERCHANT);
 		lista.add(Faction.MERCHANT);
+		
 
+		for (int i = 0; i< g.size(); i++) {
+			if (i == 0) {
+				System.out.println("aaaassss");
+				g.forEach( p -> System.out.println(p.getUser().getUsername()));
+				g.get(i).setRole(Role.CONSUL);
+				g.get(i).getRole();
+			}
+			else if (i == 1) {
+				System.out.println("pretora");
+				g.get(i).setRole(Role.PRETOR);
+				System.out.println(g.get(i).getRole());
+			}
+			else if (i == 2) {
+				System.out.println("edila");
+				g.get(i).setRole(Role.EDIL);
+				System.out.println(g.get(i).getRole());
+			}
+			else if (i == 3) {
+				System.out.println("edilb");
+				g.get(i).setRole(Role.EDIL);
+				g.get(i).getRole();
+			}
+			else {
+				g.get(i).setRole(Role.NO_ROL);
+			}
+		}
 		g.forEach(p ->p.setCard1(lista.get(r.nextInt((int) playerService.playerCount())))) ;
 		g.forEach(p ->p.setCard2(lista.get(r.nextInt((int)  playerService.playerCount()))));
-		g.forEach(p-> playerService.savePlayer(p));
+		g.forEach(p->playerService.savePlayer(p));
 				
 				return  "redirect:/matches/" + id + "/match";
  
