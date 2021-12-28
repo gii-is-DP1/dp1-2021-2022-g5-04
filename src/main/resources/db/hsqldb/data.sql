@@ -116,4 +116,16 @@ INSERT INTO users(email,username,password,enabled) VALUES ('friend5@gmail.com','
 INSERT INTO players(id,name,card1,card2,vote,role,username,match_id,asigned) VALUES (6, 'player6', '2', '2', null, 3, 'friend5',1,false);
 INSERT INTO authorities(id,username,authority) VALUES (7,'friend5','user');
 
+INSERT INTO achievements(id,name) VALUES (1,'Primera Partida');
+INSERT INTO achievements(id,name) VALUES (2,'El Edil');
+INSERT INTO achievements(id,name) VALUES (3,'El Cónsul');
+INSERT INTO achievements(id,name) VALUES (4,'El Pretor');
+
+INSERT INTO achievement_user(user_username,achievements_id) VALUES ('admin1',1);
+INSERT INTO achievement_user(user_username,achievements_id) VALUES ('admin1',2);
+
+
+
+
+
 

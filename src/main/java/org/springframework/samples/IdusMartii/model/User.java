@@ -2,10 +2,13 @@ package org.springframework.samples.IdusMartii.model;
 
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -36,5 +39,10 @@ public class User implements Serializable{
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
+	
+	@ManyToMany
+	@JoinTable(name = "achievement_user")
+	private List<Achievement> achievements;
+	
 	
 }

@@ -45,6 +45,12 @@
 					<span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
 					<span>Error</span>
 				</petclinic:menuItem>
+				
+				<petclinic:menuItem active="${name eq 'Achievements'}" url="/achievements"
+					title="Achievements">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Achievements</span>
+				</petclinic:menuItem>
 
 			</ul>
 
