@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "achievements")
-public class Achievement extends NamedEntity {
+public class Achievement extends AuditableEntity {
 	
 	
 
