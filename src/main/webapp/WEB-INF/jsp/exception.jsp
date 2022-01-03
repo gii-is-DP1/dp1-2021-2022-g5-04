@@ -4,10 +4,10 @@
 
 <IdusMartii:layout pageName="error">
 
-    <spring:url value="/resources/images/pets.png" var="petsImage"/>
-    <img src="${petsImage}"/>
+    <spring:url value="/resources/images/error.png" var="error"/>
+    <img src="${error}" style="width:300px;height:300px"/>
 
-    <h2>Something happened...</h2>
+    <h2>Algo ha occurrido...</h2>
 
     <p>${exception.message}</p>
 

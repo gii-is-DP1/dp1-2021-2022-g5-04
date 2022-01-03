@@ -16,6 +16,7 @@
 package org.springframework.samples.IdusMartii.service;
 
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -57,4 +58,11 @@ public class UserService {
 	public Iterable<User> findAll(){
 		return userRepository.findAll();
 	}
+	
+	@Transactional
+	public List<User> findbyUsername(String user){
+		return userRepository.findByUsername(user);
+	}
+	
+	
 }

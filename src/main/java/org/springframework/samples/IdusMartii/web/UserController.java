@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.IdusMartii.web;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 
@@ -52,10 +54,11 @@ public class UserController {
         dataBinder.setDisallowedFields("id");
     }
     
-    @GetMapping()
-	public String listadoUsuario(ModelMap modelMap) {
+    @PostMapping()
+	public String listadoUsuario(ModelMap modelMap , @Valid User user) {
 		String vista = "users/listadoUsuarios";
-		Iterable<User> users = userService.findAll();
+		
+		List <User> users =  userService.findbyUsername(user.getUsername());
 		modelMap.addAttribute("users", users);
 		return vista;
 	}
@@ -63,6 +66,7 @@ public class UserController {
     @GetMapping(path="/new")
     public String crearJugador(ModelMap modelMap) {
         String vista = "users/crearUsuario";
+        
         modelMap.addAttribute("user", new User());
         return vista;
     }
@@ -78,6 +82,11 @@ public class UserController {
             modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
         }
         return "redirect:/users";
+    }
+    @GetMapping(path="/find")
+    public String buscarJugador( @Valid User user) {
+     
+        return "users/buscarUsuario";
     }
 
 }
