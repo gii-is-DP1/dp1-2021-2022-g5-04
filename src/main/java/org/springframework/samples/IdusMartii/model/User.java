@@ -15,6 +15,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -38,7 +39,7 @@ public class User implements Serializable {
 	
 	@Id
 	String username;
-	
+	@NotNull
 	String password;
 	@Email
 	String email;
