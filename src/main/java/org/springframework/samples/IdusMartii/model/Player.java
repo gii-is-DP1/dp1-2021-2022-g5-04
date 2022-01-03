@@ -22,7 +22,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "players")
-public class Player extends NamedEntity{
+public class Player extends AuditableEntity{
 		
 	
 		private Faction card1;
