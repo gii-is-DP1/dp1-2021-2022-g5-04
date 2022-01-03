@@ -97,7 +97,7 @@ INSERT INTO users(email,username,password,enabled) VALUES ('ppp@gmail.com','ppp'
 INSERT INTO authorities(id,username,authority) VALUES (2,'ppp','admin');
 
 INSERT INTO users(email,username,password,enabled) VALUES ('friend1@gmail.com','friend1','friend1',TRUE);
-INSERT INTO players(id,name,card1,card2,vote,role,username,match_id,asigned) VALUES (2, 'player2', '1', '1', null, 1, 'friend1',1,false);
+-- INSERT INTO players(id,name,card1,card2,vote,role,username,match_id,asigned) VALUES (2, 'player2', '1', '1', null, 1, 'friend1',1,false);
 INSERT INTO authorities(id,username,authority) VALUES (3,'friend1','user');
 
 INSERT INTO users(email,username,password,enabled) VALUES ('friend2@gmail.com','friend2','friend2',TRUE);
@@ -116,6 +116,8 @@ INSERT INTO users(email,username,password,enabled) VALUES ('friend5@gmail.com','
 INSERT INTO players(id,name,card1,card2,vote,role,username,match_id,asigned) VALUES (6, 'player6', '2', '2', null, 3, 'friend5',1,false);
 INSERT INTO authorities(id,username,authority) VALUES (7,'friend5','user');
 
+INSERT INTO invitations(id,match_id,username) VALUES (0,1,'friend1');
+INSERT INTO invitations(id,match_id,username) VALUES (1,1,'friend1');
 INSERT INTO achievements(id,name) VALUES (1,'Primera Partida');
 INSERT INTO achievements(id,name) VALUES (2,'El Edil');
 INSERT INTO achievements(id,name) VALUES (3,'El Cónsul');
@@ -123,8 +125,6 @@ INSERT INTO achievements(id,name) VALUES (4,'El Pretor');
 
 INSERT INTO achievement_user(user_username,achievements_id) VALUES ('admin1',1);
 INSERT INTO achievement_user(user_username,achievements_id) VALUES ('admin1',2);
-
-
 
 
 
