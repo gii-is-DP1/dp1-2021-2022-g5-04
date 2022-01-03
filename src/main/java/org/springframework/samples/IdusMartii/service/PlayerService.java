@@ -43,6 +43,12 @@ public class PlayerService {
 	public Player findbyId(Integer ID) throws DataAccessException {
 		return playerRepository.findById(ID).get();
 	}
+	
+	@Transactional
+	public List<Player> jugadoresPartida(Match match) throws DataAccessException {
+		return playerRepository.findByMatchId(match);
+	}
+	
 	@Transactional
 	public Player findByMatchAndUser(Match match, User user) throws DataAccessException {
 		return playerRepository.findByMatchAndUser(match, user);

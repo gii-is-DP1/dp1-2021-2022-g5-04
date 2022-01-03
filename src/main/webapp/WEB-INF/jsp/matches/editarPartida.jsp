@@ -56,16 +56,7 @@
                 </div>
             </div>
     </form:form>
-          
-
-	    <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/${id}/game/save" >
-	            <div class="form-group">
-	                <div class="col-sm-offset-2 col-sm-10">
-	                   
-	                            <button class="btn btn-default" type="submit">Comenzar partida</button>
-	                </div>
-	            </div>
-    	</form:form>  
+           
 		<c:forEach items="${match.players}" var="player">
 		    <c:if test= "${player.user.username ne current}" >
 		    	<form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${match.id}/expulsar" >

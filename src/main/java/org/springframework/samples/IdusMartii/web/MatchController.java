@@ -384,57 +384,45 @@ public class MatchController {
 	}
 	@PostMapping(path="/{id}/game/save")
 	public String guardarPartidaEmpezada(ModelMap modelMap, @PathVariable("id") int id) {
-	
-			// String vista = "matches/listadoPartida";
- 
-		
-				//match.setId(id);
-			// Match match = this.matchService.findById(id);
-			// match.setTurn(match.getTurn()+1);
-			// match.setVotoaFavor(match.getVotoaFavor()+1);
-
-			// if (match.getTurn() == 5) {
-			// 	match.setTurn(0);
-			// 	match.setRound(match.getRound()+1);
-
-			// }
-			// if(match.getRound() == 2) {
-			// 	if(match.getVotoaFavor()==((match.getVotoenContra()-1) )) {
-			// 		return "matches/victoriaF" ;}
-			// 	else if(match.getVotoaFavor()==((match.getVotoenContra()-2) )) {
-			// 		return "matches/victoriaF" ;}
-			// 	else if(match.getVotoaFavor()-1==((match.getVotoenContra()) )) {
-			// 		return "matches/victoriaC" ;}	
-			// 	else if(match.getVotoaFavor()-2==((match.getVotoenContra()) )) {
-			// 			return "matches/victoriaC" ;}
-			// 	else {
-			// 		return "matches/victoriaM" ;
-			// 	}
-
-			// }
-			// if(match.getVotoaFavor()==5) {
-			// 	return "matches/victoriaF" ;
-
-			// }else if(match.getVotoenContra()==5) {
-			// 	return "matches/victoriaC" ;
-
-			// }
-			// 	this.matchService.saveMatch(match);
+		Match match = this.matchService.findById(id);
+		List<Player> g = playerService.jugadoresPartida(match);
 		
 		
-		Iterable<Player> g = playerService.findAll();
 		
-		Random r = new Random();
 		List<Faction> lista = new ArrayList<>();
-		for (int i = 0; i<Math.floor(( playerService.playerCount())-1);i++) {
+		for (int i = 0; i<g.size()-1;i++) {
 			lista.add(Faction.LOYAL);
 			lista.add(Faction.TRAITOR);
 		}
 		lista.add(Faction.MERCHANT);
 		lista.add(Faction.MERCHANT);
-
-		g.forEach(p ->p.setCard1(lista.get(r.nextInt((int) playerService.playerCount())))) ;
-		g.forEach(p ->p.setCard2(lista.get(r.nextInt((int)  playerService.playerCount()))));
+		
+		for (int i = 0; i<g.size();i++) {
+			Integer r = (int) Math.floor(Math.random()*(lista.size()-1));
+			g.get(i).setCard1(lista.get(r));
+			lista.remove(lista.get(r));
+			r = (int) Math.floor(Math.random()*(lista.size()-1));
+			g.get(i).setCard2(lista.get(r));
+			lista.remove(lista.get(r));
+			
+		}
+		for (int i = 0; i< g.size(); i++) {
+			if (i == 0) {
+				g.get(i).setRole(Role.CONSUL);
+			}
+			else if (i == 1) {
+				g.get(i).setRole(Role.PRETOR);
+			}
+			else if (i == 2) {
+				g.get(i).setRole(Role.EDIL);
+			}
+			else if (i == 3) {
+				g.get(i).setRole(Role.EDIL);
+			}
+			else {
+				g.get(i).setRole(Role.NO_ROL);
+			}
+		}
 		g.forEach(p-> playerService.savePlayer(p));
 				
 				return  "redirect:/matches/" + id + "/match";
