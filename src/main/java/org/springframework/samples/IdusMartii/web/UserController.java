@@ -54,11 +54,11 @@ public class UserController {
         dataBinder.setDisallowedFields("id");
     }
     
-    @PostMapping()
+    @GetMapping()
 	public String listadoUsuario(ModelMap modelMap , @Valid User user) {
 		String vista = "users/listadoUsuarios";
 		
-		List <User> users =  userService.findbyUsername(user.getUsername());
+		Iterable<User> users =  userService.findAll();
 		modelMap.addAttribute("users", users);
 		return vista;
 	}
