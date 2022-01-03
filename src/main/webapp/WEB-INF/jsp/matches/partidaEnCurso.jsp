@@ -9,8 +9,9 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 
 <IdusMartii:layout pageName="matches">
-    <h2>
-    </h2>
+    <c:if test="${votoAmarilloRevisado}">
+    	<h2>El jugador ${playerY.user.username} ha votado nulo</h2>
+    </c:if>
     <table class="table table-striped">
         <tr>
             <th>Name</th>
@@ -42,9 +43,6 @@
                 		
                 </c:forEach></td>
         </tr>
-         <tr>
-            <c:out value="${playerY.user.username}"/>
-                    </tr>
             
       </table>
 <c:forEach items="${match.players}" var="player">
@@ -83,17 +81,15 @@
         			</div>
     			</c:if>
     			<c:if test="${revisarVoto}">
-        				<c:forEach var="p" items="${match.players}">
-        					<c:if test="${p.role eq 'EDIL'}">
-        						<form:form modelAttribute="match" class="form-horizontal" id="add-match-form"  action="/players/${p.id}/${id}/revisar" method="GET">
+        				<c:forEach var="ed" items="${ediles}">
+        						<form:form modelAttribute="match" class="form-horizontal" id="add-match-form"  action="/players/${ed.id}/${id}/revisar" method="GET">
                     				<div class="form-group has-feedback"></div>
                         			<div class="form-group">
                         				<div class="col-sm-offset-2 col-sm-10">
-                            				<button class="btn btn-default" type="submit">Revisar voto de ${p.user.username}</button>
-                           			</div>
-                       			</div>
+                            				<button class="btn btn-default" type="submit">Revisar voto de ${ed.user.username}</button>
+                           				</div>
+                       				</div>
 								</form:form>
-							</c:if>
 						</c:forEach>
 				</c:if>
    					<c:if test="${elegirFaccion}">     
@@ -191,7 +187,7 @@
       					</form:form>
          			</c:if> 
          	
-         			<c:if test="${votar || votarY}">
+         			<c:if test="${votar}">
            				<div class="col-sm-offset-2 col-sm-10">
         					<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/${votos[0]}">
            						<div class="form-group">
@@ -207,7 +203,7 @@
 									</div>
 								</div>
         					</form:form>
-        					<c:if test="${!votarY}">
+        					<c:if test="${!votoAmarilloRevisado}">
         					<form:form modelAttribute="player_actual" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${id}/${votos[2]}">
            						<div class="form-group">
                 					<div class="col-sm-offset-2 col-sm-10">
@@ -215,22 +211,20 @@
 									</div>
 								</div>	
         					</form:form>
-        					        			</c:if>
+        					</c:if>
         					
         				</div>
         			</c:if>
         			<c:if test="${revisarVoto}">
-        				<c:forEach var="pl" items="${match.players}">
-        					<c:if test="${pl.role eq 'EDIL'}">
-        						<form:form modelAttribute="match" class="form-horizontal" id="add-match-form"  action="/players/${pl.id}/${id}/revisar" method="GET">
+        				<c:forEach var="edil" items="${ediles}">
+        						<form:form modelAttribute="match" class="form-horizontal" id="add-match-form"  action="/players/${edil.id}/${id}/revisar" method="GET">
                     				<div class="form-group has-feedback"></div>
                         			<div class="form-group">
                         				<div class="col-sm-offset-2 col-sm-10">
-                            				<button class="btn btn-default" type="submit">Revisar voto de ${pl.user.username}</button>
+                            				<button class="btn btn-default" type="submit">Revisar voto de ${edil.user.username}</button>
                            			</div>
                        			</div>
 								</form:form>
-							</c:if>
 						</c:forEach>
 				</c:if>
     			</c:if>
