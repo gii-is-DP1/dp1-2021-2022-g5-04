@@ -63,14 +63,10 @@ public class PlayerController {
     public String revisarVoto(@PathVariable("id") int id, @PathVariable("idMatch") int idMatch, ModelMap modelMap) {
         String vista = "players/revisadoVoto";
         Player player = playerService.findbyId(id);
-        modelMap.addAttribute("votoYellow", false);
-
-        modelMap.addAttribute("idMatch", idMatch);
         modelMap.addAttribute("player", player);
+        modelMap.addAttribute("idMatch", idMatch);
         if (player.getVote() == Vote.YELLOW) {
-            modelMap.addAttribute("votoYellow", true);
-
-        	return vista;
+        	return "redirect:/players/" + id + "/" + idMatch + "/revisarVotoYellow";
         } else {
             return vista;
         }
@@ -100,13 +96,16 @@ public class PlayerController {
 
 	@PostMapping(path="/{id}/{idMatch}/{voto}")
 	public String guardarVoto(ModelMap modelMap, @PathVariable("id")int id, @PathVariable("idMatch") int idMatch, @PathVariable("voto") Vote voto) {
-			Integer temp = 0;
 			Player player = playerService.findbyId(id);
-			
 			player.setVote(voto);
 			playerService.savePlayer(player);
 			Match match = matchService.findById(idMatch);
-			if(match.getPlays()==Plays.YELLOWEDIL) {
+			List<Player> jugadores = match.getPlayers();
+			int votos = playerService.calcularVotos(jugadores);
+			matchService.votacionCompletada(votos, match);
+			return "redirect:/matches/" + idMatch + "/match";
+			
+			/*if(match.getPlays()==Plays.YELLOWEDIL) {
 				temp = 1;
 			}
 			List<Player> jugadores = match.getPlayers();
@@ -124,8 +123,7 @@ public class PlayerController {
 					match.setPlays(Plays.CONSUL);
 					matchService.saveMatch(match);}
 			}
-			
-			return "redirect:/matches/" + idMatch + "/match";
+			*/
 	}
 	@PostMapping(path="/{id}/{idMatch}/{card1}/ElegirCartaFaccion1")
 	public String elecciónCarta1(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch,@PathVariable("card1") Faction card1) {
@@ -133,10 +131,7 @@ public class PlayerController {
 		Player player = playerService.findbyId(id);
 		player.setCard1(card1);
 		player.setCard2(Faction.DROPPED);
-
 		playerService.savePlayer(player);
-
-		
 		return "redirect:/players/" + idMatch + "/NuevoTurno";
 	}
 
@@ -144,103 +139,41 @@ public class PlayerController {
 
 	@PostMapping(path="/{id}/{idMatch}/{card2}/ElegirCartaFaccion2")
 	public String elecciónCarta2(ModelMap modelMap, @PathVariable("id") int id,@PathVariable("idMatch") int idMatch ,@PathVariable("card2") Faction card2) {
-	
 		Player player = playerService.findbyId(id);
 		player.setCard1(card2);
 		player.setCard2(Faction.DROPPED);
-
 		playerService.savePlayer(player);
-		
 		return "redirect:/players/" + idMatch + "/NuevoTurno";
-		
 	}
 	@GetMapping(path="/{idMatch}/NuevoTurno")
-	public String nuevoTurno(ModelMap modelMap, @PathVariable("idMatch") int idMatch) {
+	public String nuevoTurnoGet(ModelMap modelMap, @PathVariable("idMatch") int idMatch) {
 		Match match = matchService.findById(idMatch);
-		
-		List<Player> jugadoresConVoto = playerService.findByRole(Role.EDIL);
-		for (Player j: jugadoresConVoto) {
-			if(j.getVote() == Vote.GREEN) {
-				match.setVotoaFavor(match.getVotoaFavor() + 1);
-			} else if (j.getVote() == Vote.RED) {
-				match.setVotoenContra(match.getVotoenContra() + 1);
-			}
-		}
+		List<Player> jugadoresConVoto = playerService.jugadoresConVoto(Role.EDIL, match);
 		jugadoresConVoto.get(0).setVote(null);
 		jugadoresConVoto.get(1).setVote(null);
 		List<Player> jugadores = match.getPlayers();
 		List<Role> roles = new ArrayList<Role>();
-		for (int i = 0; i <= jugadores.size() - 1; i++){
-		    roles.add(jugadores.get((i)).getRole());
-		}
-		for (int i = 0; i <= jugadores.size() - 1; i++){
-		    jugadores.get((i+1)%jugadores.size()).setRole(roles.get(i));
-		}
-		if ((match.getTurn() + 1) >= jugadores.size()){
-			match.setRound(match.getRound() + 1);
-			match.setTurn(0);
-			match.setPlays(Plays.CONSUL);
-		} else {
-			if (match.getRound() == 0) {
-				match.setTurn(match.getTurn() + 1);
-				match.setPlays(Plays.EDIL);
-			} else {
-				match.setTurn(match.getTurn() + 1);
-				match.setPlays(Plays.CONSUL);
-			}
-			
-		}
+		playerService.asignarRoles(match, jugadores, roles);
+		matchService.avanzarTurno(match, jugadores);
 		matchService.saveMatch(match);
-		
-		if (match.getRound() == 2) {
+		if (match.getRound() == 2 || matchService.sufragium(match) != Faction.MERCHANT) {
 			return "redirect:/matches/" + idMatch + "/ganador";
 		} else {
 			return "redirect:/matches/" +idMatch + "/match";
 		}
 	}
 	@PostMapping(path="/{idMatch}/NuevoTurno")
-	public String nuevoTurno2(ModelMap modelMap, @PathVariable("idMatch") int idMatch) {
+	public String nuevoTurnoPost(ModelMap modelMap, @PathVariable("idMatch") int idMatch) {
 		Match match = matchService.findById(idMatch);
-		List<Player> jugadoresConVoto = playerService.findByRole(Role.EDIL);
-		for (Player j: jugadoresConVoto) {
-			if(j.getVote() == Vote.GREEN) {
-				match.setVotoaFavor(match.getVotoaFavor() + 1);
-			} else if (j.getVote() == Vote.RED) {
-				match.setVotoenContra(match.getVotoenContra() + 1);
-			}
-		}
+		List<Player> jugadoresConVoto = playerService.jugadoresConVoto(Role.EDIL, match);
 		jugadoresConVoto.get(0).setVote(null);
 		jugadoresConVoto.get(1).setVote(null);
 		List<Player> jugadores = match.getPlayers();
 		List<Role> roles = new ArrayList<Role>();
-		//Pasar esta condición a una función dentro del servicio
-		if (match.getRound() == 0 && match.getTurn() + 1 < jugadores.size()) {
-			for (int i = 0; i <= jugadores.size() - 1; i++) {
-				roles.add(jugadores.get((i)).getRole());
-			}
-			for (int i = 0; i <= jugadores.size() - 1; i++) {
-				jugadores.get((i+1)%jugadores.size()).setRole(roles.get(i));
-			}
-		} else if (match.getRound() == 0 && match.getTurn() + 1 >= jugadores.size()) {
-			for (int i = 0; i <= jugadores.size() - 1; i++) {
-				roles.add(jugadores.get((i)).getRole());
-			}
-			for (int i = 0; i <= jugadores.size() - 1; i++) {
-				if (roles.get(i) == Role.CONSUL) {
-					jugadores.get((i+1)%jugadores.size()).setRole(roles.get(i));
-				}
-			}
-		}
-		if ((match.getTurn() + 1) >= jugadores.size()) {
-			match.setRound(match.getRound() + 1);
-			match.setTurn(0);
-			match.setPlays(Plays.CONSUL);
-		} else {
-			match.setTurn(match.getTurn() + 1);
-			match.setPlays(Plays.EDIL);
-		}
+		playerService.asignarRoles(match, jugadores, roles);
+		matchService.avanzarTurno(match, jugadores);
 		matchService.saveMatch(match);
-		if (match.getRound() == 2) {
+		if (match.getRound() == 2 || matchService.sufragium(match) != Faction.MERCHANT) {
 			return "redirect:/matches/" + idMatch + "/ganador";
 		} else {
 			return "redirect:/matches/" +idMatch + "/match";
@@ -258,25 +191,16 @@ public class PlayerController {
 		playerService.savePlayer(player);
 		match.setPlays(Plays.CONSUL);
 		matchService.saveMatch(match);
-		
-		
-		
-		
 		return "redirect:/matches/" +idMatch + "/match";
 	}
 	
-	@PostMapping(path="/{id}/{idMatch}/cambiarVotoYellow")
+	@GetMapping(path="/{id}/{idMatch}/revisarVotoYellow")
 	public String cambiarVotoYellow(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
 		Match match = matchService.findById(idMatch);
 		Player player = playerService.findbyId(id);
-		
 		match.setPlays(Plays.YELLOWEDIL);
 		player.setVote(null);
 		matchService.saveMatch(match);
-		
-		
-		
-		
 		return "redirect:/matches/" +idMatch + "/match";
 	}
 	
