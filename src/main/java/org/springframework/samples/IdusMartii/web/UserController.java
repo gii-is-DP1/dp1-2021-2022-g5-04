@@ -74,9 +74,9 @@ public class UserController {
     @PostMapping(path="/save")
     public String guardarJugador(@Valid User user, BindingResult result, ModelMap modelMap) {
         if (result.hasErrors()) {
-            modelMap.addAttribute("users", user);
             return "users/crearUsuario";
         } else {
+            modelMap.addAttribute("users", user);
             userService.saveUser(user);
             authoritiesService.saveAuthorities(user.getUsername(), "user");
             modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
