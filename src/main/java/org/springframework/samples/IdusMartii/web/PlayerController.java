@@ -90,6 +90,13 @@ public class PlayerController {
 		}
 		return vista;
 	}
+	
+	@PostMapping(path="/{idPlayer}/{idMatch}/expulsar")
+	public String expulsarJugador(@PathVariable("idPlayer") int id, @PathVariable("idMatch") int matchId) {
+		Player player = playerService.findbyId(id);
+		playerService.deletePlayer(player);
+		return "redirect:/matches/" + matchId + "/new";
+	}
 
 	@PostMapping(path="/{id}/{idMatch}/{voto}")
 	public String guardarVoto(ModelMap modelMap, @PathVariable("id")int id, @PathVariable("idMatch") int idMatch, @PathVariable("voto") Vote voto) {
@@ -172,10 +179,16 @@ public class PlayerController {
 		if ((match.getTurn() + 1) >= jugadores.size()){
 			match.setRound(match.getRound() + 1);
 			match.setTurn(0);
-			match.setPlays(Plays.EDIL);
+			match.setPlays(Plays.CONSUL);
 		} else {
-			match.setTurn(match.getTurn() + 1);
-			match.setPlays(Plays.EDIL);
+			if (match.getRound() == 0) {
+				match.setTurn(match.getTurn() + 1);
+				match.setPlays(Plays.EDIL);
+			} else {
+				match.setTurn(match.getTurn() + 1);
+				match.setPlays(Plays.CONSUL);
+			}
+			
 		}
 		matchService.saveMatch(match);
 		
@@ -200,6 +213,7 @@ public class PlayerController {
 		jugadoresConVoto.get(1).setVote(null);
 		List<Player> jugadores = match.getPlayers();
 		List<Role> roles = new ArrayList<Role>();
+		//Pasar esta condición a una función dentro del servicio
 		if (match.getRound() == 0 && match.getTurn() + 1 < jugadores.size()) {
 			for (int i = 0; i <= jugadores.size() - 1; i++) {
 				roles.add(jugadores.get((i)).getRole());

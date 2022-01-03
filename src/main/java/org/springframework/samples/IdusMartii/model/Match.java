@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.Valid;
-
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 
 import java.util.List;
@@ -20,7 +18,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "matches")
-public class Match extends NamedEntity{
+public class Match extends AuditableEntity {
  
 		private int round;
 		private int turn;

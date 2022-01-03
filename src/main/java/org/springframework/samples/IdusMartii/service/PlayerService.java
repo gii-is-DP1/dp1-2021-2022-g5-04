@@ -33,6 +33,11 @@ public class PlayerService {
 	public void savePlayer(Player player) throws DataAccessException {
 		playerRepository.save(player);
 	}
+	
+	@Transactional
+	public void deletePlayer(Player player) throws DataAccessException {
+		playerRepository.delete(player);
+	}
 
 	@Transactional
 	public Player findbyId(Integer ID) throws DataAccessException {
@@ -92,7 +97,7 @@ public class PlayerService {
 			boolean resultado = false;
 			if (player.getRole() == Role.CONSUL && player != match.getPlayers().get(0)) {
 				resultado = true;
-			} else if (player.getRole() == Role.CONSUL && player == match.getPlayers().get(0) && match.getRound() == 1){
+			} else if (player.getRole() == Role.CONSUL && player == match.getPlayers().get(0) && match.getRound() == 1 && afterVotes(player, match)){
 				resultado = true;
 			}
 			return resultado;
@@ -102,7 +107,7 @@ public class PlayerService {
 	}
 	@Transactional
 	public boolean countVotes(Player player, Match match) throws DataAccessException {
-		if (match.getPlays() == Plays.CONSUL && player.getRole() == Role.CONSUL && (player == match.getPlayers().get(0) || player.getCard2() == Faction.DROPPED)) {
+		if (match.getPlays() == Plays.CONSUL && player.getRole() == Role.CONSUL && (player == match.getPlayers().get(0) || player.getCard2() == Faction.DROPPED) && afterVotes(player, match) && !chooseFaction(player, match)) {
 			return true;
 		} else {
 			return false;
@@ -115,5 +120,19 @@ public class PlayerService {
 		} else {
 			return false;
 		}
+	}
+	@Transactional
+	public boolean afterVotes(Player player, Match match) throws DataAccessException {
+		boolean resultado = false;
+		int i = 0;
+		for (Player p: playerRepository.findByRole(Role.EDIL)) {
+			if (p.getVote() != null) {
+				i += 1;
+			}
+		}
+		if (i == 2) {
+			resultado = true;
+		}
+		return resultado;
 	}
 }
