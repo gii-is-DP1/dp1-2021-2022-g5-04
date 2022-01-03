@@ -105,15 +105,13 @@ public class MatchController {
 			if (j.getVote() != null) {
 				modelMap.addAttribute("usuario_votado", j.getUser().getUsername());
 
-			}} 
-			
+			}
+		} 
 	
-			modelMap.addAttribute("votarY", playerService.canVoteYellow(player_actual, match));
-			modelMap.addAttribute("playerY", playerService.playerYellow(player_actual, match));
+		modelMap.addAttribute("playerY", playerService.playerYellow(match));
 
 		modelMap.addAttribute("mostrarCartas", playerService.showCards(player_actual));
 		modelMap.addAttribute("votar", playerService.canVote(player_actual, match));
-		
 		modelMap.addAttribute("revisarVoto", playerService.checkVote(player_actual, match));
 		modelMap.addAttribute("elegirFaccion", playerService.chooseFaction(player_actual, match));
 		modelMap.addAttribute("contarVotos", playerService.countVotes(player_actual, match));
@@ -123,26 +121,40 @@ public class MatchController {
 		modelMap.addAttribute("jugadoresSinRolConsul", matchService.playersWithNoConsulRole(match));
 		modelMap.addAttribute("edilesSinAsignar", matchService.edilNotAsigned(match));
 		modelMap.addAttribute("pretorSinAsignar", matchService.pretorNotAsigned(match));
+		modelMap.addAttribute("votoAmarilloRevisado", match.getPlays() == Plays.YELLOWEDIL);
+		modelMap.addAttribute("edilAmarilloRevisado", player_actual == playerService.playerYellow(match));
 		modelMap.addAttribute("current", currentuser);
 		modelMap.addAttribute("match", match);
 		modelMap.addAttribute("votos", votos);
+		modelMap.addAttribute("ediles", playerService.findByRole(match, Role.EDIL));
+		System.out.print(playerService.canVote(player_actual, match));
 		return vista;
 		
 	}
-	@GetMapping(path="{id}/rolesAsignados")
-	public String rolesAsignados(@PathVariable("id") int id) {
+	@GetMapping(path="/{id}/rolesAsignados")
+	public String rolesAsignados(ModelMap modelMap, @PathVariable("id") int id) {
 		Match match = matchService.findById(id);
+		playerService.rolesAsigned(match);
 		match.setPlays(Plays.EDIL);
-		List<Player> players = match.getPlayers();
-		for (Player p: players) {
-			if (!p.isAsigned() && p.getRole() != Role.CONSUL) {
-				p.setRole(Role.NO_ROL);
-				playerService.savePlayer(p);
-			}
-		}
 		matchService.saveMatch(match);
 		return "redirect:/matches/" + id + "/match";
 	}
+	@GetMapping(path="/{id}/ganador") 
+	public String ganador(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
+		String vista = "matches/ganador";
+		Match match = this.matchService.findById(id);
+		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
+		Player player_actual = playerService.findByMatchAndUser(match, usuario);
+		modelMap.addAttribute("faccion", matchService.sufragium(match));
+		modelMap.addAttribute("ganadorLoyal", playerService.winnerLoyal(player_actual, matchService.sufragium(match)));
+		modelMap.addAttribute("ganadorTraitor", playerService.winnerTraitor(player_actual, matchService.sufragium(match)));
+		modelMap.addAttribute("ganadorMerchant", playerService.winnerMerchant(player_actual, matchService.sufragium(match)));
+		modelMap.addAttribute("votosAFavor", match.getVotoaFavor());
+		modelMap.addAttribute("votosEnContra", match.getVotoenContra());
+		return vista;
+	}
+		
+	
 	@GetMapping(path="/{id}/save")
 	public String guardarJugador2(@PathVariable("id") int id, ModelMap modelMap) {
 		String vista = "matches/listadoPartida";
@@ -208,7 +220,7 @@ public class MatchController {
 			// String vista = "matches/listadoPartida";
  
 		
-				//match.setId(id);
+			//match.setId(id);
 			Match match = this.matchService.findById(id);
 			match.setTurn(match.getTurn()+1);
 			match.setVotoenContra(match.getVotoenContra()+1);
@@ -262,7 +274,7 @@ public class MatchController {
 			// String vista = "matches/listadoPartida";
  
 		
-				//match.setId(id);
+			//match.setId(id);
 			Match match = this.matchService.findById(id);
 			match.setTurn(match.getTurn()+1);
 			match.setVotoaFavor(match.getVotoaFavor()+1);
@@ -315,7 +327,7 @@ public class MatchController {
 			// String vista = "matches/listadoPartida";
  
 		
-				//match.setId(id);
+			//match.setId(id);
 			Match match = this.matchService.findById(id);
 			match.setTurn(match.getTurn()+1);
 
@@ -368,7 +380,7 @@ public class MatchController {
 			// String vista = "matches/listadoPartida";
  
 		
-				//match.setId(id);
+			//match.setId(id);
 			// Match match = this.matchService.findById(id);
 			// match.setTurn(match.getTurn()+1);
 			// match.setVotoaFavor(match.getVotoaFavor()+1);
