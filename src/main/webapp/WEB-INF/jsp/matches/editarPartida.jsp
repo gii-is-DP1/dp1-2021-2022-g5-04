@@ -16,14 +16,14 @@
             <th>Name</th>
             <td><b><c:out value="${match.name} "/></b></td>
         </tr>
-        <tr>
+        <!-- <tr>
             <th>Turn</th>
             <td><c:out value="${match.turn}"/></td>
         </tr>
         <tr>
             <th>Round</th>
             <td><c:out value="${match.round}"/></td>
-        </tr>
+        </tr> -->
         <tr>
             <th>Host</th>
             <td><c:out value="${match.players[0].user.username}"/></td>
@@ -46,7 +46,17 @@
                             <button class="btn btn-default" type="submit">Comenzar partida</button>
                 </div>
             </div>
-        </form:form>  
+    </form:form>
+    <form:form modelAttribute="user" class="form-horizontal" id="add-user-form" action="/invitations/${match.id}/save" >
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                            <IdusMartii:inputField label="Username" name="username"/>
+                   
+                            <button class="btn btn-default" type="submit">Enviar invitacion</button>
+                </div>
+            </div>
+    </form:form>
+          
     </c:if>
 
 </IdusMartii:layout>

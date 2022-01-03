@@ -2,6 +2,7 @@ package org.springframework.samples.IdusMartii.web;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
@@ -20,14 +21,15 @@ import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
+import org.springframework.samples.IdusMartii.service.InvitationService;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
+import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -42,6 +44,10 @@ public class MatchController {
 	private UserService userService;
 	@Autowired
 	private PlayerService playerService;
+	@Autowired
+	private InvitationService invitationService;
+	
+
 	
 	@GetMapping()
 	public String listadoPartida(ModelMap modelMap) {
@@ -50,7 +56,6 @@ public class MatchController {
 		modelMap.addAttribute("matches", matches);
 		return vista;
 	}
-	
 	@GetMapping(path="/new")
 	public String crearPartida(ModelMap modelMap) {
 		String vista = "matches/crearPartida";
@@ -74,15 +79,30 @@ public class MatchController {
 			modelMap.addAttribute("message", "¡Jugador guardado correctamente!");
 			return "redirect:/matches/" + match.getId() + "/new";
 	}
+	@PostMapping(path="/{id_match}/{id_invt}/aceptar")
+	public String aceptarPartida(ModelMap modelMap, @PathVariable("id_match") int id_match, @PathVariable("id_invt") int id_invt) {
+			Match match = matchService.findById(id_match);
+			Invitation invitation = invitationService.findById(id_invt);
+			invitationService.deleteInvitation(invitation);
+			Player player = new Player();
+			player.setUser(userService.findUser(currentUserService.showCurrentUser()).get());
+			player.setMatch(match);
+			player.setAsigned(Boolean.FALSE);
+			matchService.saveMatch(match);
+			playerService.savePlayer(player);
+			return "redirect:/matches/" + match.getId() + "/new";
+	}
  
 
 	@GetMapping(path="/{id}/new")
 	public String editarPartida(ModelMap modelMap, @PathVariable("id") int id) {
 		String vista = "matches/editarPartida";
 		Match match = this.matchService.findById(id);
+		User user = new User();
 		String currentuser = currentUserService.showCurrentUser();
 		modelMap.addAttribute("current", currentuser);
 		modelMap.addAttribute("match", match);
+		modelMap.addAttribute("user", user);
 		return vista;
 	}
 
