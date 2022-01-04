@@ -13,8 +13,9 @@
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 200px;">Id</th>
-            <th style="width: 200px;">Nombre</th>
+            <th style="width: 50px;">Id</th>
+            <th style="width: 200px;">Usuario</th>
+            <th style="width: 200px;">Partida</th>
             <th style="width: 200px;">Fecha Creación</th>
             <th style="width: 200px;">Creador</th>
             <th style="width: 200px;">Última Modificación</th>
@@ -28,7 +29,10 @@
                 	<c:out value="${player.id}"/>
                 </td>
                 <td>
-                	<c:out value="${player.name}"/>
+                	<c:out value="${player.user.username}"/>
+                </td>
+                <td>
+                	<c:out value="${player.match}"/>
                 </td>
                 <td>
                 	<c:out value="${player.createdDate}"/>
