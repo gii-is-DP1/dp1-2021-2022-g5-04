@@ -10,22 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class CurrentUserController {
-    //@GetMapping("/currentuser")
-    public String showCurrentUser(){
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        
-        if(authentication!=null)
-            if(authentication.isAuthenticated() && authentication.getPrincipal() instanceof User){
-                User currentUser =(User)authentication.getPrincipal();
-                String username = currentUser.getUsername();
-                System.out.println(username);
-                
-            }else
-                System.out.println("El usuario no ha iniciado sesión");
-       
-        return "welcome";
+
+    public String showCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() == "anonymousUser") {
+        	return "anonymous"; 
+        } else {
+        	User currentUser =(User)authentication.getPrincipal();
+            String username = currentUser.getUsername();
+            return username;
+        }
     }
-   
-    
 }
  
