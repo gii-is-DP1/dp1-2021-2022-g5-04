@@ -25,21 +25,26 @@
 				<petclinic:menuItem active="${name eq 'home'}" url="/"
 					title="home page">
 					<span class="glyphicon glyphicon-home" aria-hidden="true"></span>
-					<span>Home</span>
+					<span>Inicio</span>
 				</petclinic:menuItem>
 
 				<petclinic:menuItem active="${name eq 'Matches'}" url="/matches"
 					title="Matches list">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Matches</span>
+					<span>Partidas</span>
 				</petclinic:menuItem>
 				
 				<petclinic:menuItem active="${name eq 'Achievements'}" url="/achievements"
 					title="Achievements">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Achievements</span>
+					<span>Logros</span>
 				</petclinic:menuItem>
 
+				<petclinic:menuItem active="${name eq 'Auditories'}" url="/auditories"
+					title="Achievements">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Auditoria</span>
+				</petclinic:menuItem>				
 			</ul>
 
 

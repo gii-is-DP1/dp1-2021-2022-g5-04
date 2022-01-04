@@ -14,11 +14,10 @@
         <tr>
             <th style="width: 150px;">Match name</th>
             <th style="width: 200px;">Turns</th>
-            <th style="width: 120px">Rounds</th>
+            <th style="width: 120px">Round</th>
         </tr>
         </thead>
         <tbody>
-            <a>${x}</a>
         <c:forEach items="${matches}" var="match">
             <tr>
                 <td>

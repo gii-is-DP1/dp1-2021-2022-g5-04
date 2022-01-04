@@ -1,13 +1,9 @@
 package org.springframework.samples.IdusMartii.model;
 
-import java.util.List;
-
 import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.ManyToOne;
 
