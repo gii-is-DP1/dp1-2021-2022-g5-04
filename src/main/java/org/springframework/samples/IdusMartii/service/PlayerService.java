@@ -58,6 +58,11 @@ public class PlayerService {
 	public List<Player> findByRole(Match match, Role role) throws DataAccessException {
 		return playerRepository.findByRole(match, role);
 	}
+	
+	@Transactional
+	public List<Match> findMatchesFromUser(User user) throws DataAccessException {
+		return playerRepository.findMatchesFromUser(user);
+	}
 	@Transactional
 	public boolean canVote(Player player, Match match) throws DataAccessException {
 		if (player.getVote() == null && player.getRole() == Role.EDIL && (match.getPlays() == Plays.EDIL || match.getPlays() == Plays.YELLOWEDIL)) {
@@ -140,9 +145,9 @@ public class PlayerService {
 		List<Player> jugadoresConVoto = findByRole(match, role);
 		for (Player j: jugadoresConVoto) {
 			if(j.getVote() == Vote.GREEN) {
-				match.setVotoaFavor(match.getVotoaFavor() + 1);
+				match.setVotesInFavor(match.getVotesInFavor() + 1);
 			} else if (j.getVote() == Vote.RED) {
-				match.setVotoenContra(match.getVotoenContra() + 1);
+				match.setVotesAgainst(match.getVotesAgainst() + 1);
 			}
 		}
 		return jugadoresConVoto;
