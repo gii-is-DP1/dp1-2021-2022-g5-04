@@ -10,7 +10,7 @@
 <petclinic:htmlHeader/>
 
 <body>
-<petclinic:bodyHeader menuName="${pageName}"/>
+<petclinic:adminBodyHeader menuName="${pageName}"/>
 
 <div class="container-fluid">
     <div class="container xd-container">
