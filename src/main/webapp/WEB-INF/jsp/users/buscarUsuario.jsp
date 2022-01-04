@@ -8,7 +8,7 @@
 
 <IdusMartii:layout pageName="usersCreation">
    
-    <form:form modelAttribute="user" class="form-horizontal" id="add-user-form" action="/users">
+    <form:form modelAttribute="user" class="form-horizontal" id="add-user-form" action="/users" method="GET">
         <div class="form-group has-feedback">
             <IdusMartii:inputField label="Username" name="username"/>
           

@@ -25,6 +25,7 @@ public class CurrentUserController {
        
         return "welcome";
     }
+   
     
 }
  

@@ -9,13 +9,15 @@
 
 <IdusMartii:layout pageName="users">
     <h2>Users</h2>
+${admin}
+
+${temp}
 
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
             <th style="width: 200px;">Username</th>
-            <th style="width: 200px;">Password</th>
-            <th style="width: 200px;">Email</th>
+            
         </tr>
         </thead>
         <tbody>
@@ -25,15 +27,14 @@
                 	<c:out value="${user.username}"/>
                 </td>
                 <td>
-                    <c:out value="${user.password}"/>
-                </td>
-                <td>
-                    <c:out value="${user.email}"/>
-                </td>
-                <td>
+              
+                
                 	<spring:url value="/users/new" var="userUrl">
                     </spring:url>
-                	<a href= "${fn:escapeXml(userUrl)}">Create</a>
+                                    <c:if test="${admin eq true}">
+                    
+                	<a href= "${fn:escapeXml(userUrl)}">Editar</a>
+                	</c:if>
                 </td>
             </tr>
         </c:forEach>

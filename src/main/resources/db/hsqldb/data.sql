@@ -118,6 +118,7 @@ INSERT INTO authorities(id,username,authority) VALUES (7,'friend5','user');
 
 INSERT INTO invitations(id,match_id,username) VALUES (0,1,'friend1');
 INSERT INTO invitations(id,match_id,username) VALUES (1,1,'friend1');
+
 INSERT INTO achievements(id,name) VALUES (1,'Primera Partida');
 INSERT INTO achievements(id,name) VALUES (2,'El Edil');
 INSERT INTO achievements(id,name) VALUES (3,'El Cónsul');

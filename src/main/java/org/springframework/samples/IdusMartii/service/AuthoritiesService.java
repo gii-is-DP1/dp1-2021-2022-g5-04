@@ -16,7 +16,9 @@
 package org.springframework.samples.IdusMartii.service;
 
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -38,7 +40,7 @@ import org.springframework.samples.IdusMartii.model.User;
 public class AuthoritiesService {
 
 	private AuthoritiesRepository authoritiesRepository;
-	private UserService userService;
+	private static UserService userService;
 
 	@Autowired
 	public AuthoritiesService(AuthoritiesRepository authoritiesRepository,UserService userService) {
@@ -64,5 +66,20 @@ public class AuthoritiesService {
 			throw new DataAccessException("User '"+userService.findUser(username).get().getUsername()+"' not found!") {};
 	}
 
+	
+	@Transactional
+	public Boolean getAuthorities(String username) throws DataAccessException {
+		String ret = "";
+		Boolean re  = false;
+		List<Authorities> user = authoritiesRepository.findByUsername(username);
+	
+			 ret = user.get(0).getAuthority();
+			 if(ret.equals("admin")) {
+				 re = true;
+			 }
+		
+		
+		return re;
+	}
 
 }

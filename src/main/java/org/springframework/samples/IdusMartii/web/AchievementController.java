@@ -30,5 +30,9 @@ public class AchievementController {
 		modelMap.addAttribute("achievements", achievements);
 		modelMap.addAttribute("user", user);
 		return vista;
+	
+		
+		
 	}
+	
 }

@@ -21,6 +21,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
+import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -45,7 +46,9 @@ public class UserController {
     private UserService userService;
     
     @Autowired
-    private AuthoritiesService authoritiesService;
+    private  AuthoritiesService authoritiesService;
+    @Autowired
+	private CurrentUserService currentUserService;
     
     @InitBinder
     public void setAllowedFields(WebDataBinder dataBinder) {
@@ -53,10 +56,17 @@ public class UserController {
     }
     
     @GetMapping()
-	public String listadoUsuario(ModelMap modelMap) {
+	public String listadoUsuario(ModelMap modelMap, @Valid User user) {
 		String vista = "users/listadoUsuarios";
-		
-		Iterable<User> users =  userService.findAll();
+		if(authoritiesService.getAuthorities(currentUserService.showCurrentUser())==true) {
+            modelMap.addAttribute("admin", true);
+
+            
+    	}else {
+            modelMap.addAttribute("admin", false);
+
+    	}
+		Iterable<User> users =  userService.findbyUsername(user.getUsername());
 		modelMap.addAttribute("users", users);
 		return vista;
 	}   
@@ -83,7 +93,7 @@ public class UserController {
     }
     @GetMapping(path="/find")
     public String buscarJugador( @Valid User user) {
-     
+    
         return "users/buscarUsuario";
     }
 
