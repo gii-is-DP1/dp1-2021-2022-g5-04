@@ -7,30 +7,28 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 
 <IdusMartii:layout pageName="matches">
-    <h2>Matches</h2>
+    <h2>Partidas</h2>
 
     <table id="matchesTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Match name</th>
-            <th style="width: 200px;">Turns</th>
-            <th style="width: 120px">Round</th>
+            <th style="width: 150px;">Nombre de la partida</th>
+            <th style="width: 30px;">Ronda</th>
+            <th style="width: 150px">Faccion ganadora</th>
+            
         </tr>
         </thead>
         <tbody>
         <c:forEach items="${matches}" var="match">
             <tr>
                 <td>
-                    <spring:url value="/matches/{id}/new" var="matchUrl">
-   					<spring:param name="id" value="${match.id}"/>
-                    </spring:url>
-                    <a href="${fn:escapeXml(matchUrl)}"><c:out value="${match.name}"/></a>
-                </td>
-                <td>
-                    <c:out value="${match.turn}"/>
+                     <c:out value="${match.name}"/>
                 </td>
                 <td>
                     <c:out value="${match.round}"/>
+                </td>
+                <td>
+                    <c:out value="${match.winner}"/>
                 </td>
             </tr>
         </c:forEach>

@@ -7,6 +7,7 @@ import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
+import org.springframework.samples.IdusMartii.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class MatchService {
  
     
 	@Transactional(readOnly = true)
-	public Match findById(Integer id) throws DataAccessException{
+	public Match findById(Integer id) throws DataAccessException {
 		return matchRepository.findById(id).get();
 	}
 	
@@ -77,6 +78,14 @@ public class MatchService {
 			}
 		}
 		return resultado;
+	}
+	@Transactional
+	public boolean startMatch(Match match) throws DataAccessException {
+		if (match.getPlayers().size() >= 5) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	@Transactional
 	public boolean edilNotAsigned(Match match) throws DataAccessException {
@@ -130,35 +139,36 @@ public class MatchService {
     public Faction sufragium(Match match) throws DataAccessException {
     	int numeroJugadores = match.getPlayers().size();
     	Faction faccionGanadora = Faction.MERCHANT;
-    	if (match.getVotoaFavor() - match.getVotoenContra() >= 2 && match.getRound() == 2) {
+    	if (match.getVotesInFavor() - match.getVotesAgainst() >= 2 && match.getRound() == 2) {
     		faccionGanadora = Faction.LOYAL;
-    	} else if (match.getVotoenContra() - match.getVotoaFavor() >= 2 && match.getRound() == 2) {
+    	} else if (match.getVotesAgainst() - match.getVotesInFavor() >= 2 && match.getRound() == 2) {
     		faccionGanadora = Faction.TRAITOR;
     	} else if (numeroJugadores == 5) {
-    		if (match.getVotoaFavor() == 13) {
+    		if (match.getVotesInFavor() == 13) {
     			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotoenContra() == 13) {
+    		} else if (match.getVotesAgainst() == 13) {
     			faccionGanadora = Faction.LOYAL;
     		}
     	} else if (numeroJugadores == 6) {
-    		if (match.getVotoaFavor() == 15) {
+    		if (match.getVotesInFavor() == 15) {
     			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotoenContra() == 15) {
+    		} else if (match.getVotesAgainst() == 15) {
     			faccionGanadora = Faction.LOYAL;
     		}
     	} else if (numeroJugadores == 7) {
-    		if (match.getVotoaFavor() == 17) {
+    		if (match.getVotesInFavor() == 17) {
     			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotoenContra() == 17) {
+    		} else if (match.getVotesAgainst() == 17) {
     			faccionGanadora = Faction.LOYAL;
     		}
     	} else if (numeroJugadores == 8) {
-    		if (match.getVotoaFavor() == 20) {
+    		if (match.getVotesInFavor() == 20) {
     			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotoenContra() == 20) {
+    		} else if (match.getVotesAgainst() == 20) {
     			faccionGanadora = Faction.LOYAL;
     		}
     	}
     	return faccionGanadora;
     }
+    
 }

@@ -7,17 +7,28 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.IdusMartii.model.Person;
+import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.IdusMartii.service.AuthoritiesService;
+import org.springframework.samples.IdusMartii.service.CurrentUserService;
+import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
 @Controller
 public class WelcomeController {
-
-
-      @GetMapping({"/","/welcome"})
-      public String welcome(Map<String, Object> model, HttpServletResponse response) {
+	@Autowired
+	private CurrentUserService currentUserService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+	private AuthoritiesService authoritiesService;
+	
+    @GetMapping({"/","/welcome"})
+    public String welcome(Map<String, Object> model, HttpServletResponse response) {
+    	User current = userService.findUser(currentUserService.showCurrentUser()).get();
         response.addHeader("Refresh","30"); 
         model.put("now", new Date());
         List<Person> persons = new ArrayList<Person>();
@@ -51,7 +62,10 @@ public class WelcomeController {
         model.put("group", "L5-4");
         
 
-       
-        return "welcome";
+        if (authoritiesService.getAuthorities(current.getUsername())) {
+        	return "welcomeAdmin";
+        } else {
+        	return "welcome";
+        }
       }
 }

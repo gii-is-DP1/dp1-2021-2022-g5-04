@@ -9,7 +9,7 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 
 <IdusMartii:layout pageName="matches">
-   		<h1>Victoria para los ${faccion}</h1>
+   		<h1>Victoria para los ${faccionGanadora}</h1>
    		<c:if test="${ganadorLoyal}">
    			<h2>Has ganado</h2>
    		</c:if>

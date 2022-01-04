@@ -38,24 +38,23 @@
         
     </table> 
     <c:if test= "${match.players[0].user.username eq current}" >
-   
-    <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/${id}/game/save" >
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                   
-                            <button class="btn btn-default" type="submit">Comenzar partida</button>
-                </div>
-            </div>
-    </form:form>
-    <form:form modelAttribute="user" class="form-horizontal" id="add-user-form" action="/invitations/${match.id}/save" >
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                            <IdusMartii:inputField label="Username" name="username"/>
-                   
-                            <button class="btn btn-default" type="submit">Enviar invitacion</button>
-                </div>
-            </div>
-    </form:form>
+   		<c:if test="${startMatch}">
+    		<form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/${id}/game/save" >
+            		<div class="form-group">
+                		<div class="col-sm-offset-2 col-sm-10">
+                   			<button class="btn btn-default" type="submit">Comenzar partida</button>
+                		</div>
+            		</div>
+    		</form:form>
+    	</c:if>
+    		<form:form modelAttribute="user" class="form-horizontal" id="add-user-form" action="/invitations/${match.id}/save" >
+            	<div class="form-group">
+                	<div class="col-sm-offset-2 col-sm-10">
+                    	<IdusMartii:inputField label="Username" name="username"/>
+                			<button class="btn btn-default" type="submit">Enviar invitacion</button>
+               	 	</div>
+            	</div>
+    		</form:form>
            
 		<c:forEach items="${match.players}" var="player">
 		    <c:if test= "${player.user.username ne current}" >
