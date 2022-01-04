@@ -28,7 +28,12 @@ public class WelcomeController {
 	
     @GetMapping({"/","/welcome"})
     public String welcome(Map<String, Object> model, HttpServletResponse response) {
-    	User current = userService.findUser(currentUserService.showCurrentUser()).get();
+    	if (currentUserService.showCurrentUser() != "anonymous") {
+    		User current = userService.findUser(currentUserService.showCurrentUser()).get();
+    		model.put("admin", authoritiesService.getAuthorities(current.getUsername()));
+    	} else {
+    		model.put("admin", false);
+    	}
         response.addHeader("Refresh","30"); 
         model.put("now", new Date());
         List<Person> persons = new ArrayList<Person>();
@@ -61,11 +66,7 @@ public class WelcomeController {
         model.put("title", "Idus Martii"); 
         model.put("group", "L5-4");
         
-
-        if (authoritiesService.getAuthorities(current.getUsername())) {
-        	return "welcomeAdmin";
-        } else {
-        	return "welcome";
-        }
+        return "welcome";
+        
       }
 }

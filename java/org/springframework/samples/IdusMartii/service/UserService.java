@@ -60,7 +60,7 @@ public class UserService {
 	}
 	
 	@Transactional
-	public List<User> findbyUsername(String user){
+	public User findbyUsername(String user){
 		return userRepository.findByUsername(user);
 	}
 	

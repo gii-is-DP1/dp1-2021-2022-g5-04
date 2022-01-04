@@ -72,13 +72,10 @@ public class AuthoritiesService {
 		String ret = "";
 		Boolean re  = false;
 		List<Authorities> user = authoritiesRepository.findByUsername(username);
-	
 			 ret = user.get(0).getAuthority();
 			 if(ret.equals("admin")) {
 				 re = true;
 			 }
-		
-		
 		return re;
 	}
 

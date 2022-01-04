@@ -15,6 +15,8 @@
  */
 package org.springframework.samples.IdusMartii.web;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 
@@ -66,7 +68,7 @@ public class UserController {
             modelMap.addAttribute("admin", false);
 
     	}
-		Iterable<User> users =  userService.findbyUsername(user.getUsername());
+		Iterable<User> users =  userService.findAll();
 		modelMap.addAttribute("users", users);
 		return vista;
 	}   

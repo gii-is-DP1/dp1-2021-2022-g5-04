@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
+import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
@@ -43,20 +44,14 @@ public class MatchController {
 	private PlayerService playerService;
 	@Autowired
 	private InvitationService invitationService;
-	
 
 	
 	@GetMapping()
 	public String matchesList(ModelMap modelMap) {
 		String vista = "matches/matchesList";
-		Iterable<Match> matches = playerService.findMatchesFromUser(userService.findUser(currentUserService.showCurrentUser()).get());
-		modelMap.addAttribute("matches", matches);
-		return vista;
-	}
-	@GetMapping(path="/admin")
-	public String adminMatchesList(ModelMap modelMap) {
-		String vista = "matches/adminMatchesList";
-		Iterable<Match> matches = playerService.findMatchesFromUser(userService.findUser(currentUserService.showCurrentUser()).get());
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		List<Match> matches = matchService.matches(user);
+		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		return vista;
 	}

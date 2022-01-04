@@ -23,14 +23,34 @@ public class MatchService {
 	MatchRepository matchRepository;
     @Autowired
     PlayerRepository playerRepository;
-
+    @Autowired
+    AuthoritiesService authoritiesService;
+    @Autowired
+    PlayerService playerService;
+    
 	@Transactional
 	public Iterable<Match> findAll(){
 		return matchRepository.findAll();
 	}
 
- 
-    
+	@Transactional
+	public boolean isAdmin(User user) throws DataAccessException {
+		if (authoritiesService.getAuthorities(user.getUsername())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+    @Transactional
+    public List<Match> matches(User user) throws DataAccessException {
+    	if (isAdmin(user)) {
+    		List<Match> matches = playerService.findMatchesFromUser(user);
+    		return matches;
+    	} else {
+    		return (List<Match>)findAll();
+    	}
+    	
+    }
 	@Transactional(readOnly = true)
 	public Match findById(Integer id) throws DataAccessException {
 		return matchRepository.findById(id).get();

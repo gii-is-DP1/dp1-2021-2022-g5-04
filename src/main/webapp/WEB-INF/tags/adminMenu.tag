@@ -28,7 +28,7 @@
 					<span>Inicio</span>
 				</petclinic:menuItem>
 
-				<petclinic:menuItem active="${name eq 'Matches'}" url="/matches/admin"
+				<petclinic:menuItem active="${name eq 'Matches'}" url="/matches"
 					title="Matches list">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Partidas</span>
