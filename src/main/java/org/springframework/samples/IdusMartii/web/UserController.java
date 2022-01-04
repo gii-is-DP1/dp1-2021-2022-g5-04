@@ -15,8 +15,6 @@
  */
 package org.springframework.samples.IdusMartii.web;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 
@@ -55,13 +53,13 @@ public class UserController {
     }
     
     @GetMapping()
-	public String listadoUsuario(ModelMap modelMap , @Valid User user) {
+	public String listadoUsuario(ModelMap modelMap) {
 		String vista = "users/listadoUsuarios";
 		
 		Iterable<User> users =  userService.findAll();
 		modelMap.addAttribute("users", users);
 		return vista;
-	}
+	}   
     
     @GetMapping(path="/new")
     public String crearJugador(ModelMap modelMap) {

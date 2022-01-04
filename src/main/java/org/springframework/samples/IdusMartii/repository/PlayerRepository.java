@@ -2,7 +2,6 @@ package org.springframework.samples.IdusMartii.repository;
 
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Role;
-import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.data.jpa.repository.Query;

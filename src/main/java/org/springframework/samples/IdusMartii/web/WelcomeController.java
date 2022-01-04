@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 
 import org.springframework.samples.IdusMartii.model.Person;
