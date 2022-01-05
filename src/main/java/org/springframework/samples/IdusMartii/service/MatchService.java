@@ -43,7 +43,7 @@ public class MatchService {
 	}
     @Transactional
     public List<Match> matches(User user) throws DataAccessException {
-    	if (isAdmin(user)) {
+    	if (!isAdmin(user)) {
     		List<Match> matches = playerService.findMatchesFromUser(user);
     		return matches;
     	} else {
