@@ -87,7 +87,7 @@ INSERT INTO types VALUES (6, 'hamster');
 -- INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02', 'rabies shot');
 -- INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 -- INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
-INSERT INTO matches (id,name,round,turn,votoa_favor,votoen_contra,plays)VALUES (1, 'partida1', 0, 0, 0, 0, 0);
+INSERT INTO matches (id,name,round,turn,votes_in_favor,votes_against,plays,finished)VALUES (1, 'partida1', 0, 0, 0, 0, 0, false);
 
 INSERT INTO users(email,username,password,enabled) VALUES ('admin@gmail.com','admin1','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
@@ -118,6 +118,7 @@ INSERT INTO authorities(id,username,authority) VALUES (7,'friend5','user');
 
 INSERT INTO invitations(id,match_id,username) VALUES (0,1,'friend1');
 INSERT INTO invitations(id,match_id,username) VALUES (1,1,'friend1');
+
 INSERT INTO achievements(id,name) VALUES (1,'Primera Partida');
 INSERT INTO achievements(id,name) VALUES (2,'El Edil');
 INSERT INTO achievements(id,name) VALUES (3,'El Cónsul');
