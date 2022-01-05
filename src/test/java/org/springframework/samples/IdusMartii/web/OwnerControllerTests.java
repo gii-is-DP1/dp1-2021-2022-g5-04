@@ -47,7 +47,7 @@ class OwnerControllerTests {
 
 	@MockBean
 	private UserService userService;
-
+	
 	@MockBean
 	private AuthoritiesService authoritiesService;
 
