@@ -38,39 +38,31 @@
         </tr>     
     </table> 
     <c:if test= "${match.players[0].user.username eq current}" >
-
-   		<c:if test="${startMatch}">
-    		<form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/${id}/game/save" >
-            		<div class="form-group">
-                		<div class="col-sm-offset-2 col-sm-10">
-                   			<button class="btn btn-default" type="submit">Comenzar partida</button>
-                		</div>
-            		</div>
-    		</form:form>
-    	</c:if>
     		<form:form modelAttribute="user" class="form-horizontal" id="add-user-form" action="/invitations/${match.id}/save" >
             	<div class="form-group">
-                	<div class="col-sm-offset-2 col-sm-10">
-                    	<IdusMartii:inputField label="Username" name="username"/>
-                			<button class="btn btn-warning" type="submit">Enviar invitacion</button>
-               	 	</div>
-            	</div>
-    		</form:form>
-           
-		<c:forEach items="${match.players}" var="player">
-		    <c:if test= "${player.user.username ne current}" >
-		    	<form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/players/${player.id}/${match.id}/expulsar" >
-	            <div class="form-group">
-	                <div class="col-sm-offset-2 col-sm-10">
-	                   
-	                            <button class="btn btn-default" type="submit">Expulsar a ${player.user.username} </button>
-	                </div>
-	            </div>
-    	</form:form>  
-		    </c:if>
-		
-		</c:forEach>     
-
+                	<div class="col-md-6">
+						<IdusMartii:inputField label="Username" name="username"/>
+			   
+						
+					</div>
+					<div class="col-md-3">
+				
+	   
+						<button class="btn btn-warning" type="submit">Enviar invitacion</button>
+					</div>
+					<div class="col-md-3">
+							<c:if test="${startMatch}">
+								<form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/${id}/game/save" >
+										<div class="form-group">
+											<div class="col-sm-offset-2 col-sm-10">
+												<button class="btn btn-success" type="submit">Comenzar partida</button>
+											</div>
+										</div>
+								</form:form>
+						</c:if>
+					</div>
+				</div>
+    		</form:form>   
     </c:if>
 
 </IdusMartii:layout>
