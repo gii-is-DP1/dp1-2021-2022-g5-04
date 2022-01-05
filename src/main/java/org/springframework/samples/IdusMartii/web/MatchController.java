@@ -55,12 +55,14 @@ public class MatchController {
 		modelMap.addAttribute("matches", matches);
 		return vista;
 	}
+	
 	@GetMapping(path="/new")
 	public String crearPartida(ModelMap modelMap) {
 		String vista = "matches/crearPartida";
 		modelMap.addAttribute("match", new Match());
 		return vista;
 	}
+	
 	@PostMapping(path="/save")
 	public String guardarPartida(@Valid Match match, BindingResult result, ModelMap modelMap) {
 			match.setRound(0);
@@ -78,6 +80,7 @@ public class MatchController {
 			modelMap.addAttribute("message", "¡Jugador guardado correctamente!");
 			return "redirect:/matches/" + match.getId() + "/new";
 	}
+	
 	@PostMapping(path="/{id_match}/{id_invt}/aceptar")
 	public String aceptarPartida(ModelMap modelMap, @PathVariable("id_match") int id_match, @PathVariable("id_invt") int id_invt) {
 			Match match = matchService.findById(id_match);
@@ -150,6 +153,7 @@ public class MatchController {
 		return vista;
 		
 	}
+	
 	@GetMapping(path="/{id}/rolesAsignados")
 	public String rolesAsignados(ModelMap modelMap, @PathVariable("id") int id) {
 		Match match = matchService.findById(id);
@@ -158,6 +162,7 @@ public class MatchController {
 		matchService.saveMatch(match);
 		return "redirect:/matches/" + id + "/match";
 	}
+	
 	@GetMapping(path="/{id}/ganador") 
 	public String ganador(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
 		String vista = "matches/ganador";
@@ -194,6 +199,7 @@ public class MatchController {
 		modelMap.addAttribute("match", match);
 		return vista;
 	}
+	
 	@PostMapping(path="/{id}/game/save")
 	public String guardarPartidaEmpezada(ModelMap modelMap, @PathVariable("id") int id) {
 

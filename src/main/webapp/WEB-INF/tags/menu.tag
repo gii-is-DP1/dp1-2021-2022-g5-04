@@ -38,13 +38,7 @@
 					title="Achievements">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Logros</span>
-				</petclinic:menuItem>
-
-				<petclinic:menuItem active="${name eq 'Auditories'}" url="/auditories"
-					title="Achievements">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Auditoria</span>
-				</petclinic:menuItem>				
+				</petclinic:menuItem>			
 			</ul>
 
 
