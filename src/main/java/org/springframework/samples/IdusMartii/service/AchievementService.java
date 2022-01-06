@@ -31,5 +31,7 @@ public class AchievementService {
 	public List<Achievement> findByUser(User user) throws DataAccessException {
 		return achievementRepository.findByUser(user);
 	}
+	
+	
 
 }

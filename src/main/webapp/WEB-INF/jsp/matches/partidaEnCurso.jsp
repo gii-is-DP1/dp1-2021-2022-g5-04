@@ -27,9 +27,9 @@
         </tr>
         <tr>
             <th>Votos a favor</th>
-            <td><c:out value="${match.votoaFavor}"/></td>
+            <td><c:out value="${match.votesInFavor}"/></td>
             <th>Votos en Contra</th>
-            <td><c:out value="${match.votoenContra}"/></td>
+            <td><c:out value="${match.votesAgainst}"/></td>
             <td><c:out value="Tu voto: ${player_actual.vote}"/></td>
         </tr>
         <tr>

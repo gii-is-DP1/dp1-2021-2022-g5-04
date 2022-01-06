@@ -20,13 +20,13 @@ import org.springframework.dao.DataAccessException;
 @Service
 public class MatchService {
     @Autowired 
-	MatchRepository matchRepository;
+    private MatchRepository matchRepository;
     @Autowired
-    PlayerRepository playerRepository;
+    private PlayerRepository playerRepository;
     @Autowired
-    AuthoritiesService authoritiesService;
+    private AuthoritiesService authoritiesService;
     @Autowired
-    PlayerService playerService;
+    private PlayerService playerService;
     
 	@Transactional
 	public Iterable<Match> findAll(){
@@ -101,6 +101,7 @@ public class MatchService {
 	}
 	@Transactional
 	public boolean startMatch(Match match) throws DataAccessException {
+		
 		if (match.getPlayers().size() >= 5) {
 			return true;
 		} else {

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
+import org.springframework.samples.IdusMartii.service.AchievementUserService;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
@@ -44,6 +45,9 @@ public class MatchController {
 	private PlayerService playerService;
 	@Autowired
 	private InvitationService invitationService;
+	@Autowired
+    AchievementUserService achievementUserService;
+	
 
 	
 	@GetMapping()
@@ -245,6 +249,16 @@ public class MatchController {
 		
 		Match match = this.matchService.findById(id);
 		List<Player> g = playerService.jugadoresPartida(match);
+		
+		for (int i = 0; i<g.size();i++) {
+			User u = g.get(i).getUser();
+			if (achievementUserService.checkAchievement1(u)) {
+				achievementUserService.saveAchievementUser(u.getUsername(), 1);
+				
+			}
+			
+		}
+		
 		
 		List<Faction> lista = new ArrayList<>();
 		for (int i = 0; i<g.size()-1;i++) {
