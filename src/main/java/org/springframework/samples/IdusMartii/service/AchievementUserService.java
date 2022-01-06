@@ -28,8 +28,15 @@ public class AchievementUserService {
 	
 	@Transactional
 	public boolean checkAchievement1(User user) throws DataAccessException {
-		return playerService.findbyUsername(user.getUsername()).size() > 0;
+		return playerService.findbyUsername(user.getUsername()).size() == 1;
 	}
+	
+	
+	@Transactional
+	public boolean checkAchievement5Games(User user) throws DataAccessException {
+		return playerService.findbyUsername(user.getUsername()).size() == 5;
+	}
+	
 	
 	
 

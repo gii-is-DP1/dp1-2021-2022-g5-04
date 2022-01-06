@@ -212,9 +212,14 @@ public class MatchController {
 		
 		for (int i = 0; i<g.size();i++) {
 			User u = g.get(i).getUser();
+			String username = u.getUsername();
+			playerService.findbyUsername(username);
 			if (achievementUserService.checkAchievement1(u)) {
 				achievementUserService.saveAchievementUser(u.getUsername(), 1);
 				
+			}
+			else if(achievementUserService.checkAchievement5Games(u)) {
+				achievementUserService.saveAchievementUser(u.getUsername(), 5);
 			}
 			
 		}
@@ -254,19 +259,15 @@ public class MatchController {
 				g.get(i).setRole(Role.NO_ROL);
 			}
 		}
-		g.forEach(p-> playerService.savePlayer(p));
-				
-				return  "redirect:/matches/" + id + "/match";
- 
+		g.forEach(p-> playerService.savePlayer(p)); 
 			
-		
-	
-		}
 
 		playerService.roleAndCardsAsignation(match);
 		match.setRound(1);
 		matchService.saveMatch(match);
 		return  "redirect:/matches/" + id + "/match";
-	}
+	
+		}
 
 }
+
