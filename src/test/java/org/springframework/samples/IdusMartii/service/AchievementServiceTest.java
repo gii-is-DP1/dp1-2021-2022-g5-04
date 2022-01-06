@@ -53,10 +53,11 @@ public class AchievementServiceTest {
     @Test
     public void testFindByUser(){
         Optional<User> usuario= userService.findUser("admin1");
-        User nomUser = usuario.get();
+        User nombreUser = usuario.get();
         List<Achievement> listaLogros=achievementService.findByUser(usuario.get());
 
         assertThat(listaLogros.size()).isEqualTo(2);
+
     }
     
 }
