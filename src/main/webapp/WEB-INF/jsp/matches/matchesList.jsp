@@ -21,9 +21,27 @@
         <tbody>
         <c:forEach items="${matches}" var="match">
             <tr>
+            <c:if test="${match.round == 0}">
                 <td>
+                <spring:url value="/matches/{id}/new" var="matchUrl">
+   					<spring:param name="id" value="${match.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(matchUrl)}"><c:out value="${match.name}"/></a>
+                </td>
+            </c:if>
+            <c:if test="${match.round == 1 || match.round == 2}">
+            	<td>
+                <spring:url value="/matches/{id}/match" var="matchUrl">
+   					<spring:param name="id" value="${match.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(matchUrl)}"><c:out value="${match.name}"/></a>
+              	  </td>
+            </c:if>
+            <c:if test="${match.round == 3}">
+            	<td>
                      <c:out value="${match.name}"/>
                 </td>
+            </c:if>
                 <td>
                     <c:out value="${match.round}"/>
                 </td>
@@ -56,9 +74,27 @@
         <tbody>
         <c:forEach items="${matches}" var="match">
             <tr>
+            <c:if test="${match.round == 0}">
                 <td>
+                <spring:url value="/matches/{id}/new" var="matchUrl">
+   					<spring:param name="id" value="${match.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(matchUrl)}"><c:out value="${match.name}"/></a>
+                </td>
+            </c:if>
+            <c:if test="${match.round == 1 || match.round == 2}">
+            	<td>
+                <spring:url value="/matches/{id}/match" var="matchUrl">
+   					<spring:param name="id" value="${match.id}"/>
+                    </spring:url>
+                    <a href="${fn:escapeXml(matchUrl)}"><c:out value="${match.name}"/></a>
+              	  </td>
+            </c:if>
+            <c:if test="${match.round == 3}">
+            	<td>
                      <c:out value="${match.name}"/>
                 </td>
+            </c:if>
                 <td>
                     <c:out value="${match.round}"/>
                 </td>

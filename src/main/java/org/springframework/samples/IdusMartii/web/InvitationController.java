@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
@@ -36,7 +37,8 @@ public class InvitationController {
 	private UserService userService;
 	@Autowired
 	private MatchService matchService;
-	
+	@Autowired
+	private AuthoritiesService authoritiesService;
 	
 		
 	@GetMapping()
@@ -45,6 +47,7 @@ public class InvitationController {
         User user = userService.findUser(currentUserService.showCurrentUser()).get();
 		List<Invitation> invitations = invitationService.findByUser(user);
 		modelMap.addAttribute("invitations", invitations);
+		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
 		return vista;
 	}
 	@PostMapping(path="/{id_invt}/rechazar")

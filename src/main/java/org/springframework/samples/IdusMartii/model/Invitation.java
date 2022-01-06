@@ -16,7 +16,7 @@ import lombok.Setter;
 @Table(name = "invitations")
 public class Invitation extends BaseEntity{
  
-		private Date fecha;	
+		private Date fecha;
         @ManyToOne()
 	    @JoinColumn(name = "match_id")
 		private Match match;

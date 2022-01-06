@@ -7,7 +7,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 
-<IdusMartii:layout pageName="playerAuditory">
+<IdusMartii:adminLayout pageName="playerAuditory">
     <h2>Auditoria de Players</h2>
 
     <table id="usersTable" class="table table-striped">
@@ -51,4 +51,4 @@
         </c:forEach>
         </tbody>
     </table>
-</IdusMartii:layout>
+</IdusMartii:adminLayout>
