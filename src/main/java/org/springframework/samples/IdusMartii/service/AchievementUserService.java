@@ -23,19 +23,20 @@ public class AchievementUserService {
 	
 	@Transactional
 	public void saveAchievementUser(String username, Integer id) throws DataAccessException {
-		achievementUserRepository.saveAchievementUser(username, id);
+		achievementUserRepository.saveAchievementUser(username, Integer.valueOf(id));
 	}
 	
 	@Transactional
-	public boolean checkAchievement1(User user) throws DataAccessException {
-		return playerService.findbyUsername(user.getUsername()).size() == 1;
+	public boolean checkAchievement1(User user, Integer id) throws DataAccessException {
+		return playerService.findbyUsername(user.getUsername()).size() == achievementUserRepository.findById(id).get().getValor() ;
+		
 	}
 	
 	
-	@Transactional
-	public boolean checkAchievement5Games(User user) throws DataAccessException {
-		return playerService.findbyUsername(user.getUsername()).size() == 5;
-	}
+//	@Transactional
+	//public boolean checkAchievement5Games(User user) throws DataAccessException {
+	//	return playerService.findbyUsername(user.getUsername()).size() == 5;
+//	}
 	
 	
 	

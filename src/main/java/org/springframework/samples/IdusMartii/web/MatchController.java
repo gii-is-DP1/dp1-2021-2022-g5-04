@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
+import org.springframework.samples.IdusMartii.service.AchievementService;
 import org.springframework.samples.IdusMartii.service.AchievementUserService;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
@@ -47,6 +48,8 @@ public class MatchController {
 	private InvitationService invitationService;
 	@Autowired
     AchievementUserService achievementUserService;
+	@Autowired
+    AchievementService achievementService;
 	
 
 	
@@ -214,15 +217,21 @@ public class MatchController {
 			User u = g.get(i).getUser();
 			String username = u.getUsername();
 			playerService.findbyUsername(username);
-			if (achievementUserService.checkAchievement1(u)) {
-				achievementUserService.saveAchievementUser(u.getUsername(), 1);
+		//	if (achievementUserService.checkAchievement1(u)) {
+			//	achievementUserService.saveAchievementUser(u.getUsername(), 1);
 				
-			}
-			else if(achievementUserService.checkAchievement5Games(u)) {
-				achievementUserService.saveAchievementUser(u.getUsername(), 5);
-			}
+		//	}
+			//else if(achievementUserService.checkAchievement5Games(u)) {
+				//achievementUserService.saveAchievementUser(u.getUsername(), 5);
 			
+			
+			for(int k = 1; k<achievementService.achievementCount();k++) {
+				if (achievementUserService.checkAchievement1(u, k) == true) {
+					achievementUserService.saveAchievementUser(u.getUsername(),k);
+			}
+			}
 		}
+		
 		
 		
 		List<Faction> lista = new ArrayList<>();
