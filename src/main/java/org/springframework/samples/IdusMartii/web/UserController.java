@@ -91,7 +91,7 @@ public class UserController {
             authoritiesService.saveAuthorities(user.getUsername(), "user");
             modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
         }
-        return "redirect:/users";
+        return "redirect:/";
     }
     @GetMapping(path="/find")
     public String buscarJugador( @Valid User user) {

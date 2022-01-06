@@ -55,6 +55,22 @@ public class MatchController {
 		modelMap.addAttribute("matches", matches);
 		return vista;
 	}
+	@GetMapping(path="/spectator")
+	public String spectatorMode(ModelMap modelMap) {
+		String vista = "matches/spectatorModeList";
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		List<Match> matches = matchService.matchesInProgress_NotFinished();
+		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("matches", matches);
+		return vista;
+	}
+	@GetMapping(path="/{id_match}/spectator")
+	public String spectatorModeMatch(ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
+		String vista = "matches/spectatorMode";
+		Match match = this.matchService.findById(id_match);
+		modelMap.addAttribute("match", match);
+		return vista;
+	}
 	
 	@GetMapping(path="/new")
 	public String crearPartida(ModelMap modelMap) {
@@ -106,6 +122,7 @@ public class MatchController {
 		modelMap.addAttribute("match", match);
 		modelMap.addAttribute("user", user);
 		modelMap.addAttribute("startMatch", matchService.startMatch(match));
+		modelMap.addAttribute("hideInvitationButton", matchService.HideInvitationButton(match));
 		return vista;
 	}
 
@@ -113,8 +130,11 @@ public class MatchController {
 	public String comenzarPartida(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
 		
 		String vista = "matches/partidaEnCurso";
-		//response.addHeader("Refresh","5"); //Hacerlo con una llamada al servidor (ResController viene en teoría)
+		response.addHeader("Refresh","5"); //Hacerlo con una llamada al servidor (ResController viene en teoría)
 		Match match = this.matchService.findById(id);
+		if(match.getRound()==0){
+			match.setRound(1);
+		}
 		String currentuser = currentUserService.showCurrentUser();
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
 		Player player_actual = playerService.findByMatchAndUser(match, usuario);
@@ -165,6 +185,7 @@ public class MatchController {
 	
 	@GetMapping(path="/{id}/ganador") 
 	public String ganador(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
+		response.addHeader("Refresh","5");
 		String vista = "matches/ganador";
 		Match match = this.matchService.findById(id);
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
