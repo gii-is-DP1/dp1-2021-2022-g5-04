@@ -7,12 +7,13 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 <c:if test="${admin}">
 <IdusMartii:adminLayout pageName="matches">
-    <h2>Partidas</h2>
+   <h2>Partidas</h2>
 
     <table id="matchesTable" class="table table-striped">
         <thead>
         <tr>
             <th style="width: 150px;">Nombre de la partida</th>
+            <th style="width: 100px">Creador</th>
             <th style="width: 30px;">Ronda</th>
             <th style="width: 150px">Faccion ganadora</th>
             
@@ -42,6 +43,9 @@
                      <c:out value="${match.name}"/>
                 </td>
             </c:if>
+            	<td>
+            		<c:out value="${match.players[0].user.username}"/>
+            	</td>
                 <td>
                     <c:out value="${match.round}"/>
                 </td>
@@ -60,12 +64,13 @@
 </c:if>
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="matches">
-    <h2>Partidas</h2>
+      <h2>Partidas</h2>
 
     <table id="matchesTable" class="table table-striped">
         <thead>
         <tr>
             <th style="width: 150px;">Nombre de la partida</th>
+            <th style="width: 100px">Creador</th>
             <th style="width: 30px;">Ronda</th>
             <th style="width: 150px">Faccion ganadora</th>
             
@@ -95,6 +100,9 @@
                      <c:out value="${match.name}"/>
                 </td>
             </c:if>
+            	<td>
+            		<c:out value="${match.players[0].user.username}"/>
+            	</td>
                 <td>
                     <c:out value="${match.round}"/>
                 </td>
