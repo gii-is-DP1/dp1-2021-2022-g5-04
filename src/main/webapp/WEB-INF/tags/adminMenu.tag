@@ -30,20 +30,25 @@
 
 				<petclinic:menuItem active="${name eq 'Matches'}" url="/matches"
 					title="Matches list">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
 					<span>Partidas</span>
 				</petclinic:menuItem>
 				
 				<petclinic:menuItem active="${name eq 'Achievements'}" url="/achievements"
 					title="Achievements">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
 					<span>Logros</span>
 				</petclinic:menuItem>
 
 				<petclinic:menuItem active="${name eq 'Auditories'}" url="/auditories"
 					title="Achievements">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-book" aria-hidden="true"></span>
 					<span>Auditoria</span>
+				</petclinic:menuItem>	
+				<petclinic:menuItem active="${name eq 'Invitations'}" url="/invitations"
+					title="Invitations">
+					<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+					<span>Invitaciones</span>
 				</petclinic:menuItem>				
 			</ul>
 
@@ -57,7 +62,7 @@
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span> 
+						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>ï¿½
 							<strong><sec:authentication property="name" /></strong> <span
 							class="glyphicon glyphicon-chevron-down"></span>
 					</a>

@@ -52,6 +52,21 @@ public class MatchService {
     	}
     	
     }
+	@Transactional
+    public List<Match> matchesInProgress_NotFinished() throws DataAccessException {
+		List<Match> matchesInProgress_NotFinished = new ArrayList<>();
+		Iterable<Match> matches = matchRepository.findAll();
+		for(Match m:matches){
+			if(!m.isFinished() && m.getRound()!=0){
+				matchesInProgress_NotFinished.add(m);
+			}
+
+		}
+    	
+    	return matchesInProgress_NotFinished;
+    	
+    	
+    }
 	@Transactional(readOnly = true)
 	public Match findById(Integer id) throws DataAccessException {
 		return matchRepository.findById(id).get();
@@ -145,6 +160,15 @@ public class MatchService {
 			return false;
 		}
 	}
+	@Transactional
+	public boolean HideInvitationButton(Match match) throws DataAccessException {
+		if (match.getPlayers().size() < 8) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	@Transactional
 	public boolean edilNotAsigned(Match match) throws DataAccessException {
 		boolean resultado = true;

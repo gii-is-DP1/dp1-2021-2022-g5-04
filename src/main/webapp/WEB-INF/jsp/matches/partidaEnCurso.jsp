@@ -278,12 +278,12 @@
                 </tr>
 			<c:if test="${mostrarCartas}">
            		<tr>
-                    <h1>Tus cartas de facción son: ${player.card1}, ${player.card2}</h1>
+                    <h1>Tus cartas de facciï¿½n son: ${player.card1}, ${player.card2}</h1>
                 </tr>
 			</c:if>
 			<c:if test="${mostrarCartas eq false}">
 				<tr>
-					<h1>Tu facción es: ${player.card1}</h1>
+					<h1>Tu facciï¿½n es: ${player.card1}</h1>
 				</tr>
 			</c:if>
 			<c:if test="${ronda1}">

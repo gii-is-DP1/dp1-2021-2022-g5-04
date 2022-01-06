@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.samples.IdusMartii.repository.InvitationRepository;
 import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
+import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.model.Player;
@@ -20,6 +22,8 @@ import java.util.List;
 public class PlayerService {
 	@Autowired
 	private PlayerRepository playerRepository;
+	@Autowired 
+	InvitationRepository invitationRepository;
 	
 	@Transactional
 	public int playerCount() {
@@ -38,6 +42,14 @@ public class PlayerService {
 	
 	@Transactional
 	public void deletePlayer(Player player) throws DataAccessException {
+		playerRepository.delete(player);
+	}
+	@Transactional
+	public void deletePlayerWithInvitaton(Player player, Match match, User user) throws DataAccessException {
+		List<Invitation> invitations = invitationRepository.findByUserAndMatch(user, match);
+		for(Invitation invitation:invitations){
+			invitationRepository.delete(invitation);
+		}
 		playerRepository.delete(player);
 	}
 

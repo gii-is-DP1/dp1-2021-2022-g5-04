@@ -13,8 +13,11 @@
         <div class="col-sm-6">
             <ul></ul>
             <a href="http://localhost:8080/matches/new">
-                <button class ="btn btn-success"style="margin: 50px; margin-top: 250px; width:500px;height:100px;FONT-SIZE: 36pt; " >Crear una partida</button>
-              </a> 
+                <button class ="btn btn-success"style="margin: 50px; margin-top: 150px; width:500px;height:100px;FONT-SIZE: 36pt; " >Crear una partida</button>
+            </a> 
+            <a href="http://localhost:8080/matches/spectator">
+                <button class ="btn btn-warning"style="margin: 50px; margin-top: 50px; width:500px;height:100px;FONT-SIZE: 36pt; " >Modo espectador</button>
+            </a> 
         </div>
         <div class="col-md-6">
             <spring:url value="/resources/images/icon-idus.png" htmlEscape="true" var="iconImage"/>
@@ -46,8 +49,11 @@
         <div class="col-sm-6">
             <ul></ul>
             <a href="http://localhost:8080/matches/new">
-                <button class ="btn btn-success"style="margin: 50px; margin-top: 250px; width:500px;height:100px;FONT-SIZE: 36pt; " >Crear una partida</button>
-              </a> 
+                <button class ="btn btn-success"style="margin: 50px; margin-top: 150px; width:500px;height:100px;FONT-SIZE: 36pt; " >Crear una partida</button>
+            </a> 
+            <a href="http://localhost:8080/matches/spectator">
+                <button class ="btn btn-warning"style="margin: 50px; margin-top: 50px; width:500px;height:100px;FONT-SIZE: 36pt; " >Modo espectador</button>
+            </a> 
         </div>
         <div class="col-md-6">
             <spring:url value="/resources/images/icon-idus.png" htmlEscape="true" var="iconImage"/>

@@ -15,8 +15,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.samples.IdusMartii.service.InvitationService;
+
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
+
 import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.UserService;
@@ -37,11 +41,15 @@ public class PlayerController {
 	@Autowired
 	private MatchService matchService;
 	@Autowired
+
+	private InvitationService invitationService;
+
 	private CurrentUserService currentUserService;
 	@Autowired
 	private UserService userService;
 	@Autowired
     AuthoritiesService authoritiesService;
+
 
 		
 	@GetMapping()
@@ -91,7 +99,17 @@ public class PlayerController {
 	@PostMapping(path="/{idPlayer}/{idMatch}/expulsar")
 	public String expulsarJugador(@PathVariable("idPlayer") int id, @PathVariable("idMatch") int matchId) {
 		Player player = playerService.findbyId(id);
-		playerService.deletePlayer(player);
+		User user = player.getUser();
+		
+		if(invitationService.findByUser(user).size()==0){
+			playerService.deletePlayer(player);
+		}
+		else{
+			Match match = matchService.findById(matchId);
+			playerService.deletePlayerWithInvitaton(player, match, user);
+		}
+		
+			
 		return "redirect:/matches/" + matchId + "/new";
 	}
 

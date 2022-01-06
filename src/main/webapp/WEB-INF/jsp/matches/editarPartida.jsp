@@ -37,6 +37,9 @@
             </c:forEach></td>
         </tr>     
     </table> 
+    
+    <c:if test= "${match.players[0].user.username eq current}" >
+        <c:if test="${hideInvitationButton}">
     <c:if test= "${isHost}" >
     	<div class="col-md-9">
     		<form:form modelAttribute="user" class="form-horizontal" id="add-user-form" action="/invitations/${match.id}/save" >
@@ -47,6 +50,21 @@
 					<div class="col-md-3">
 						<button class="btn btn-warning" type="submit">Enviar invitacion</button>
 					</div>
+
+				</div>
+    		</form:form>   
+        </c:if>
+    </c:if>
+    <div class="col-md-3">
+        <c:if test="${startMatch}">
+            <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/${id}/game/save" >
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button class="btn btn-success" type="submit">Comenzar partida</button>
+                        </div>
+                    </div>
+            </form:form>
+
 				</div>
 			</form:form>
 		</div>
@@ -121,6 +139,7 @@
 			</c:if>
 		</div>
     </c:if>
+</div>
 
 </IdusMartii:layout>
 </c:if>
