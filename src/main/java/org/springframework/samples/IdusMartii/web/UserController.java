@@ -77,7 +77,6 @@ public class UserController {
     @GetMapping(path="/new")
     public String crearJugador(ModelMap modelMap) {
         String vista = "users/crearUsuario";
-        
         modelMap.addAttribute("user", new User());
         return vista;
     }
