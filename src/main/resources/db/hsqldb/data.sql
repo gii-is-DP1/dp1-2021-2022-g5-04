@@ -119,6 +119,6 @@ INSERT INTO authorities(id,username,authority) VALUES (7,'friend5','user');
 INSERT INTO invitations(id,match_id,username) VALUES (0,1,'friend1');
 INSERT INTO invitations(id,match_id,username) VALUES (1,1,'friend1');
 
-INSERT INTO achievements(id,name,description) VALUES (1,'Primera Partida', 'Juega tu primera partida a Idus Martii');
+INSERT INTO achievements(id,name,description, valor) VALUES (1,'Primera Partida', 'Juega tu primera partida a Idus Martii', 1);
 INSERT INTO achievements(id,name,description) VALUES (2,'5 Partidas', 'Juega 5 partidas a Idus Martii');
 

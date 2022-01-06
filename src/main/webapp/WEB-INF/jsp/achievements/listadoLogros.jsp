@@ -10,6 +10,12 @@
 <IdusMartii:adminLayout pageName="achievement">
 <h2>Achievements</h2>
 
+ <spring:url value="/achievements/new" var="userUrl">
+                
+                    </spring:url>
+                    
+                	<a href= "${fn:escapeXml(userUrl)}">Nuevo Logro</a>
+
     <table id="achievementsTable" class="table table-striped">
         <thead>
         <tr>
@@ -28,12 +34,21 @@
                 	<c:out value="${user.getAchievements().contains(achievement) ? 'COMPLETED' : 'X'}"/>	
                 	
                 </td>
+                <td>
+                <spring:url value="/achievements/{id}/edit" var="userUrl">
+                   <spring:param name="id" value="${achievement.id}"/>
+                
+                    </spring:url>
+                    
+                	<a href= "${fn:escapeXml(userUrl)}">Editar</a>
+                	</td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
 </IdusMartii:adminLayout>
-</c:if>
+                	</c:if>
+
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="achievements">
     <h2>Achievements</h2>
@@ -59,6 +74,8 @@
                 	<c:out value="${user.getAchievements().contains(achievement) ? 'COMPLETED' : 'X'}"/>	
                 	
                 </td>
+                
+                	
             </tr>
         </c:forEach>
         </tbody>

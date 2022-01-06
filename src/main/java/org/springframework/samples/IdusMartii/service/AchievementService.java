@@ -1,5 +1,6 @@
 package org.springframework.samples.IdusMartii.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,32 @@ public class AchievementService {
 	@Transactional
 	public List<Achievement> findByUser(User user) throws DataAccessException {
 		return achievementRepository.findByUser(user);
+	}
+	
+
+	@Transactional
+	public void saveAchievement(Achievement ac) throws DataAccessException {
+		
+		achievementRepository.save(ac);
+
+	}
+	
+
+	@Transactional
+	public Achievement findById(Integer id) throws DataAccessException {
+		
+		return achievementRepository.findById(id).get();
+
+	}
+	
+	@Transactional
+	public Integer nextId( ) throws DataAccessException {
+		
+		List<Integer> temp = new ArrayList<>();
+				achievementRepository.findAll().forEach(c->temp.add(c.getId()));
+				return (temp.size());
+		 
+
 	}
 	
 	
