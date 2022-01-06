@@ -21,10 +21,10 @@ ${temp}
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${users}" var="user">
+      
             <tr>
                 <td>
-                	<c:out value="${user.username}"/>
+                	<c:out value="${users.username}"/>
                 </td>
                 <td>
               
@@ -37,7 +37,6 @@ ${temp}
                 	</c:if>
                 </td>
             </tr>
-        </c:forEach>
         </tbody>
     </table>
 </IdusMartii:layout>

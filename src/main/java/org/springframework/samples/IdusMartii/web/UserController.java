@@ -16,6 +16,7 @@
 package org.springframework.samples.IdusMartii.web;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -68,7 +69,7 @@ public class UserController {
             modelMap.addAttribute("admin", false);
 
     	}
-		Iterable<User> users =  userService.findAll();
+		User users =  userService.findbyUsername(user.getUsername());
 		modelMap.addAttribute("users", users);
 		return vista;
 	}   
@@ -76,7 +77,6 @@ public class UserController {
     @GetMapping(path="/new")
     public String crearJugador(ModelMap modelMap) {
         String vista = "users/crearUsuario";
-        
         modelMap.addAttribute("user", new User());
         return vista;
     }

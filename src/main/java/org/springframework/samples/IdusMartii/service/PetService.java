@@ -19,12 +19,12 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.IdusMartii.service.exceptions.DuplicatedPetNameException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.samples.IdusMartii.repository.PetRepository;
 import org.springframework.samples.IdusMartii.repository.VisitRepository;
+import org.springframework.samples.IdusMartii.service.exceptions.DuplicatedPetNameException;
 import org.springframework.samples.IdusMartii.model.PetType;
 import org.springframework.samples.IdusMartii.model.Visit;
 import org.springframework.samples.IdusMartii.model.Pet;
