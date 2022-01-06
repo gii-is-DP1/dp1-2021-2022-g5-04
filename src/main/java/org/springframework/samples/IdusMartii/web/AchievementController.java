@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.service.AchievementService;
+import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -19,16 +20,17 @@ public class AchievementController {
 	private AchievementService achievementService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private AuthoritiesService authoritiesService;
 	@GetMapping()
 	public String listadoLogros(ModelMap modelMap) {
 		String vista = "achievements/listadoLogros";
 		Iterable<Achievement> achievements = achievementService.findAll();
 		String userName = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-
-
 		User user = userService.findUser(userName).orElse(null);
 		modelMap.addAttribute("achievements", achievements);
 		modelMap.addAttribute("user", user);
+		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
 		return vista;
 	
 		

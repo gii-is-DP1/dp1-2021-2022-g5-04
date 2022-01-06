@@ -2,6 +2,7 @@ package org.springframework.samples.IdusMartii.service;
 
 import org.springframework.samples.IdusMartii.repository.InvitationRepository;
 import org.springframework.samples.IdusMartii.model.Invitation;
+import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
 
 import java.util.List;
@@ -33,6 +34,10 @@ public class InvitationService {
     @Transactional(readOnly = true)
 	public List<Invitation> findByUser(User user) throws DataAccessException{
 		return invitationRepository.findByUser(user);
+	}
+	@Transactional(readOnly = true)
+	public List<Invitation> findByUserAndMatch(User user, Match match) throws DataAccessException{
+		return invitationRepository.findByUserAndMatch(user, match);
 	}
 	@Transactional
 	public void deleteInvitation(Invitation invitation) throws DataAccessException {

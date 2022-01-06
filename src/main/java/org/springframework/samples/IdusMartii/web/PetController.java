@@ -23,7 +23,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.IdusMartii.model.Owner;
 import org.springframework.samples.IdusMartii.service.OwnerService;
-import org.springframework.samples.IdusMartii.service.exceptions.DuplicatedPetNameException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -35,6 +34,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.samples.IdusMartii.service.PetService;
+import org.springframework.samples.IdusMartii.service.exceptions.DuplicatedPetNameException;
 import org.springframework.samples.IdusMartii.model.PetType;
 import org.springframework.samples.IdusMartii.model.Pet;
 

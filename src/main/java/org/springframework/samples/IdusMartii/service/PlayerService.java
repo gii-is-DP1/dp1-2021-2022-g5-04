@@ -4,20 +4,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.samples.IdusMartii.repository.InvitationRepository;
 import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
+import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.model.Player;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PlayerService {
 	@Autowired
 	private PlayerRepository playerRepository;
+	@Autowired 
+	InvitationRepository invitationRepository;
 	
 	@Transactional
 	public int playerCount() {
@@ -36,6 +42,14 @@ public class PlayerService {
 	
 	@Transactional
 	public void deletePlayer(Player player) throws DataAccessException {
+		playerRepository.delete(player);
+	}
+	@Transactional
+	public void deletePlayerWithInvitaton(Player player, Match match, User user) throws DataAccessException {
+		List<Invitation> invitations = invitationRepository.findByUserAndMatch(user, match);
+		for(Invitation invitation:invitations){
+			invitationRepository.delete(invitation);
+		}
 		playerRepository.delete(player);
 	}
 
@@ -86,6 +100,43 @@ public class PlayerService {
 		return jugador;
 	}
 	@Transactional
+	public void roleAndCardsAsignation(Match match) throws DataAccessException {
+		List<Player> players = match.getPlayers();
+		for (int i = 0; i< players.size(); i++) {
+			if (i == 0) {
+				players.get(i).setRole(Role.CONSUL);
+			}
+			else if (i == 1) {
+				players.get(i).setRole(Role.PRETOR);
+			}
+			else if (i == 2) {
+				players.get(i).setRole(Role.EDIL);
+			}
+			else if (i == 3) {
+				players.get(i).setRole(Role.EDIL);
+			}
+			else {
+				players.get(i).setRole(Role.NO_ROL);
+			}
+		}
+		List<Faction> cards = new ArrayList<Faction>();
+		for (int i = 0; i<players.size()-1;i++) {
+			cards.add(Faction.LOYAL);
+			cards.add(Faction.TRAITOR);
+		}
+		cards.add(Faction.MERCHANT);
+		cards.add(Faction.MERCHANT);
+		
+		for (int i = 0; i<players.size();i++) {
+			Integer r = (int) Math.floor(Math.random()*(cards.size()-1));
+			players.get(i).setCard1(cards.get(r));
+			cards.remove(cards.get(r));
+			r = (int) Math.floor(Math.random()*(cards.size()-1));
+			players.get(i).setCard2(cards.get(r));
+			cards.remove(cards.get(r));
+		}
+	}
+	@Transactional
 	public boolean showCards(Player player) throws DataAccessException {
 		if (player.getCard2() == Faction.DROPPED) {
 			return false;
@@ -107,7 +158,7 @@ public class PlayerService {
 			boolean resultado = false;
 			if (player.getRole() == Role.CONSUL && player != match.getPlayers().get(0)) {
 				resultado = true;
-			} else if (player.getRole() == Role.CONSUL && player == match.getPlayers().get(0) && match.getRound() == 1 && afterVotes(player, match)){
+			} else if (player.getRole() == Role.CONSUL && player == match.getPlayers().get(0) && match.getRound() == 3 && afterVotes(player, match)){
 				resultado = true;
 			}
 			return resultado;
@@ -159,14 +210,14 @@ public class PlayerService {
 	}
 	@Transactional
 	public void asignarRoles(Match match, List<Player> jugadores, List<Role> roles) throws DataAccessException {
-		if(match.getRound() == 0 && match.getTurn() < jugadores.size() - 1) {
+		if(match.getRound() == 1 && match.getTurn() < jugadores.size() - 1) {
 			for (int i = 0; i <= jugadores.size() - 1; i++) {
 				roles.add(jugadores.get((i)).getRole());
 			}
 			for (int i = 0; i <= jugadores.size() - 1; i++) {
 				jugadores.get((i+1)%jugadores.size()).setRole(roles.get(i));
 			}
-		} else if (match.getRound() == 1 || (match.getRound() == 0 && match.getTurn() == jugadores.size() - 1)){
+		} else if (match.getRound() == 2 || (match.getRound() == 1 && match.getTurn() == jugadores.size() - 1)){
 			for (int i = 0; i <= jugadores.size() - 1; i++) {
 				roles.add(jugadores.get((i)).getRole());
 			}

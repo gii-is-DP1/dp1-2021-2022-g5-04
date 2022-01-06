@@ -15,13 +15,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import org.springframework.samples.IdusMartii.service.InvitationService;
+
+import org.springframework.samples.IdusMartii.service.AuthoritiesService;
+import org.springframework.samples.IdusMartii.service.CurrentUserService;
+
 import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
+import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Player;
+import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.model.Match;
 
 @Controller
@@ -32,6 +40,16 @@ public class PlayerController {
 	private PlayerService playerService;
 	@Autowired
 	private MatchService matchService;
+	@Autowired
+
+	private InvitationService invitationService;
+
+	private CurrentUserService currentUserService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+    AuthoritiesService authoritiesService;
+
 
 		
 	@GetMapping()
@@ -50,10 +68,12 @@ public class PlayerController {
 	}
 	@GetMapping(path="/{id}/{idMatch}/revisar")
     public String revisarVoto(@PathVariable("id") int id, @PathVariable("idMatch") int idMatch, ModelMap modelMap) {
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
         String vista = "players/revisadoVoto";
         Player player = playerService.findbyId(id);
         modelMap.addAttribute("player", player);
         modelMap.addAttribute("idMatch", idMatch);
+        modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
         if (player.getVote() == Vote.YELLOW) {
         	return "redirect:/players/" + id + "/" + idMatch + "/revisarVotoYellow";
         } else {
@@ -79,7 +99,17 @@ public class PlayerController {
 	@PostMapping(path="/{idPlayer}/{idMatch}/expulsar")
 	public String expulsarJugador(@PathVariable("idPlayer") int id, @PathVariable("idMatch") int matchId) {
 		Player player = playerService.findbyId(id);
-		playerService.deletePlayer(player);
+		User user = player.getUser();
+		
+		if(invitationService.findByUser(user).size()==0){
+			playerService.deletePlayer(player);
+		}
+		else{
+			Match match = matchService.findById(matchId);
+			playerService.deletePlayerWithInvitaton(player, match, user);
+		}
+		
+			
 		return "redirect:/matches/" + matchId + "/new";
 	}
 
@@ -93,30 +123,9 @@ public class PlayerController {
 			int votos = playerService.calcularVotos(jugadores);
 			matchService.votacionCompletada(votos, match);
 			return "redirect:/matches/" + idMatch + "/match";
-			
-			/*if(match.getPlays()==Plays.YELLOWEDIL) {
-				temp = 1;
-			}
-			List<Player> jugadores = match.getPlayers();
-			int i = 0;
-			for (Player j: jugadores) {
-				if (j.getVote() != null) {
-					i += 1; 
-				}
-			}
-			if (i == 2) {
-				if(temp==0) {
-				match.setPlays(Plays.PRETOR);
-				matchService.saveMatch(match);}
-				else {
-					match.setPlays(Plays.CONSUL);
-					matchService.saveMatch(match);}
-			}
-			*/
 	}
 	@PostMapping(path="/{id}/{idMatch}/{card1}/ElegirCartaFaccion1")
 	public String elecciónCarta1(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch,@PathVariable("card1") Faction card1) {
-	
 		Player player = playerService.findbyId(id);
 		player.setCard1(card1);
 		player.setCard2(Faction.DROPPED);
@@ -145,7 +154,7 @@ public class PlayerController {
 		playerService.asignarRoles(match, jugadores, roles);
 		matchService.avanzarTurno(match, jugadores);
 		matchService.saveMatch(match);
-		if (match.getRound() == 2 || matchService.sufragium(match) != Faction.MERCHANT) {
+		if (match.getRound() == 3 || matchService.sufragium(match) != Faction.MERCHANT) {
 			return "redirect:/matches/" + idMatch + "/ganador";
 		} else {
 			return "redirect:/matches/" +idMatch + "/match";
@@ -162,7 +171,7 @@ public class PlayerController {
 		playerService.asignarRoles(match, jugadores, roles);
 		matchService.avanzarTurno(match, jugadores);
 		matchService.saveMatch(match);
-		if (match.getRound() == 2 || matchService.sufragium(match) != Faction.MERCHANT) {
+		if (match.getRound() == 3 || matchService.sufragium(match) != Faction.MERCHANT) {
 			return "redirect:/matches/" + idMatch + "/ganador";
 		} else {
 			return "redirect:/matches/" +idMatch + "/match";

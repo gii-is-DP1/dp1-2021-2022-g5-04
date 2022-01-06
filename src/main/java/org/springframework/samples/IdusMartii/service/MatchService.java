@@ -5,6 +5,7 @@ import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
+import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
@@ -51,6 +52,21 @@ public class MatchService {
     	}
     	
     }
+	@Transactional
+    public List<Match> matchesInProgress_NotFinished() throws DataAccessException {
+		List<Match> matchesInProgress_NotFinished = new ArrayList<>();
+		Iterable<Match> matches = matchRepository.findAll();
+		for(Match m:matches){
+			if(!m.isFinished() && m.getRound()!=0){
+				matchesInProgress_NotFinished.add(m);
+			}
+
+		}
+    	
+    	return matchesInProgress_NotFinished;
+    	
+    	
+    }
 	@Transactional(readOnly = true)
 	public Match findById(Integer id) throws DataAccessException {
 		return matchRepository.findById(id).get();
@@ -60,10 +76,47 @@ public class MatchService {
 	public void saveMatch(Match match) throws DataAccessException {
 		matchRepository.save(match);
 	}
+	@Transactional
+	public boolean isHost(Player player, Match match) throws DataAccessException {
+		if (match.getPlayers().get(0) == player) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	@Transactional
+	public List<Vote> votes(Match match) throws DataAccessException {
+		List<Vote> votes = new ArrayList<>();
+		votes.add(Vote.GREEN); votes.add(Vote.RED);
+		if (match.getRound() == 2) {
+			votes.add(Vote.YELLOW);
+		}
+		return votes;
+	}
+	@Transactional
+	public String votedUser(Match match) throws DataAccessException {
+		String player = null;
+		for (Player p: match.getPlayers()) {
+			if (p.getVote() != null) {
+				player = p.getUser().getUsername();
+			}
+		} 
+		return player;
+	}
+	@Transactional
+	public List<Player> noHostPlayers(Match match) throws DataAccessException {
+		List<Player> noHostPlayers = new ArrayList<Player>();
+		for (Player p: match.getPlayers()) {
+			if (match.getPlayers().get(0) != p) {
+				noHostPlayers.add(p);
+			}
+		}
+		return noHostPlayers;
+	}
 	
 	@Transactional
 	public boolean roundI(Match match) throws DataAccessException {
-		if (match.getRound() == 0) {
+		if (match.getRound() == 1) {
 			return true;
 		} else {
 			return false;
@@ -71,7 +124,7 @@ public class MatchService {
 	}
 	@Transactional
 	public boolean roundII(Match match) throws DataAccessException {
-		if (match.getRound() == 1) {
+		if (match.getRound() == 2) {
 			return true;
 		} else {
 			return false;
@@ -109,6 +162,15 @@ public class MatchService {
 		}
 	}
 	@Transactional
+	public boolean HideInvitationButton(Match match) throws DataAccessException {
+		if (match.getPlayers().size() < 8) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Transactional
 	public boolean edilNotAsigned(Match match) throws DataAccessException {
 		boolean resultado = true;
 		List<Player> players = match.getPlayers();
@@ -130,7 +192,7 @@ public class MatchService {
 			match.setTurn(0);
 			match.setPlays(Plays.CONSUL);
 		} else {
-			if (match.getRound() == 1) {
+			if (match.getRound() == 2) {
 				match.setTurn(match.getTurn() + 1);
 				match.setPlays(Plays.CONSUL);
 				for (Player p: jugadores) {
@@ -160,9 +222,9 @@ public class MatchService {
     public Faction sufragium(Match match) throws DataAccessException {
     	int numeroJugadores = match.getPlayers().size();
     	Faction faccionGanadora = Faction.MERCHANT;
-    	if (match.getVotesInFavor() - match.getVotesAgainst() >= 2 && match.getRound() == 2) {
+    	if (match.getVotesInFavor() - match.getVotesAgainst() >= 2 && match.getRound() == 3) {
     		faccionGanadora = Faction.LOYAL;
-    	} else if (match.getVotesAgainst() - match.getVotesInFavor() >= 2 && match.getRound() == 2) {
+    	} else if (match.getVotesAgainst() - match.getVotesInFavor() >= 2 && match.getRound() == 3) {
     		faccionGanadora = Faction.TRAITOR;
     	} else if (numeroJugadores == 5) {
     		if (match.getVotesInFavor() == 13) {

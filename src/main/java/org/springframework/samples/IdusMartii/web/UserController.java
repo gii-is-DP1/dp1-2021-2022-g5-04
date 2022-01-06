@@ -77,7 +77,6 @@ public class UserController {
     @GetMapping(path="/new")
     public String crearJugador(ModelMap modelMap) {
         String vista = "users/crearUsuario";
-        
         modelMap.addAttribute("user", new User());
         return vista;
     }
@@ -92,7 +91,7 @@ public class UserController {
             authoritiesService.saveAuthorities(user.getUsername(), "user");
             modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
         }
-        return "redirect:/users";
+        return "redirect:/";
     }
     @GetMapping(path="/find")
     public String buscarJugador( @Valid User user) {

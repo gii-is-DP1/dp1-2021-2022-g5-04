@@ -59,11 +59,29 @@ public class MatchController {
 		modelMap.addAttribute("matches", matches);
 		return vista;
 	}
+	@GetMapping(path="/spectator")
+	public String spectatorMode(ModelMap modelMap) {
+		String vista = "matches/spectatorModeList";
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		List<Match> matches = matchService.matchesInProgress_NotFinished();
+		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("matches", matches);
+		return vista;
+	}
+	@GetMapping(path="/{id_match}/spectator")
+	public String spectatorModeMatch(ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
+		String vista = "matches/spectatorMode";
+		Match match = this.matchService.findById(id_match);
+		modelMap.addAttribute("match", match);
+		return vista;
+	}
 	
 	@GetMapping(path="/new")
 	public String crearPartida(ModelMap modelMap) {
 		String vista = "matches/crearPartida";
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
 		modelMap.addAttribute("match", new Match());
+		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		return vista;
 	}
 	
@@ -104,12 +122,18 @@ public class MatchController {
 	public String editarPartida(ModelMap modelMap, @PathVariable("id") int id) {
 		String vista = "matches/editarPartida";
 		Match match = this.matchService.findById(id);
-		User user = new User();
-		String currentuser = currentUserService.showCurrentUser();
-		modelMap.addAttribute("current", currentuser);
+		String currentUser = currentUserService.showCurrentUser();
+		User user = userService.findbyUsername(currentUser);
+		Player player = playerService.findByMatchAndUser(match, user);
+		List<Player> noHostPlayers = matchService.noHostPlayers(match);
+		modelMap.addAttribute("current", currentUser);
 		modelMap.addAttribute("match", match);
 		modelMap.addAttribute("user", user);
+		modelMap.addAttribute("noHostPlayers", noHostPlayers);
 		modelMap.addAttribute("startMatch", matchService.startMatch(match));
+		modelMap.addAttribute("hideInvitationButton", matchService.HideInvitationButton(match));
+		modelMap.addAttribute("isHost", matchService.isHost(player, match));
+		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		return vista;
 	}
 
@@ -117,24 +141,17 @@ public class MatchController {
 	public String comenzarPartida(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
 		
 		String vista = "matches/partidaEnCurso";
-		//response.addHeader("Refresh","5"); //Hacerlo con una llamada al servidor (ResController viene en teoría)
+		response.addHeader("Refresh","5"); //Hacerlo con una llamada al servidor (ResController viene en teoría)
 		Match match = this.matchService.findById(id);
+		if(match.getRound()==0){
+			match.setRound(1);
+		}
 		String currentuser = currentUserService.showCurrentUser();
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
 		Player player_actual = playerService.findByMatchAndUser(match, usuario);
-		List<Vote> votos = new ArrayList<>();
-		votos.add(Vote.GREEN); votos.add(Vote.RED);
-		if (match.getRound() == 1) {
-			votos.add(Vote.YELLOW);
-		}
-		List<Player> jugadores = match.getPlayers();
-		for (Player j: jugadores) {
-			if (j.getVote() != null) {
-				modelMap.addAttribute("usuario_votado", j.getUser().getUsername());
-
-			}
-		} 
-	
+		modelMap.addAttribute("votos", matchService.votes(match));
+		modelMap.addAttribute("votedUser", matchService.votedUser(match));
+			
 		modelMap.addAttribute("playerY", playerService.playerYellow(match));
 
 		modelMap.addAttribute("mostrarCartas", playerService.showCards(player_actual));
@@ -152,8 +169,8 @@ public class MatchController {
 		modelMap.addAttribute("edilAmarilloRevisado", player_actual == playerService.playerYellow(match));
 		modelMap.addAttribute("current", currentuser);
 		modelMap.addAttribute("match", match);
-		modelMap.addAttribute("votos", votos);
 		modelMap.addAttribute("ediles", playerService.findByRole(match, Role.EDIL));
+		modelMap.addAttribute("admin", matchService.isAdmin(usuario));
 		return vista;
 		
 	}
@@ -169,6 +186,7 @@ public class MatchController {
 	
 	@GetMapping(path="/{id}/ganador") 
 	public String ganador(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
+		response.addHeader("Refresh","5");
 		String vista = "matches/ganador";
 		Match match = this.matchService.findById(id);
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
@@ -179,75 +197,17 @@ public class MatchController {
 		modelMap.addAttribute("ganadorMerchant", playerService.winnerMerchant(player_actual, matchService.sufragium(match)));
 		modelMap.addAttribute("votosAFavor", match.getVotesInFavor());
 		modelMap.addAttribute("votosEnContra", match.getVotesAgainst());
+		modelMap.addAttribute("admin", matchService.isAdmin(usuario));
 		match.setFinished(true);
 		match.setWinner(matchService.sufragium(match));
-		return vista;
-	}
-		
-	
-	@GetMapping(path="/{id}/save")
-	public String guardarJugador2(@PathVariable("id") int id, ModelMap modelMap) {
-		String vista = "matches/listadoPartida";
-	
-		Match match = this.matchService.findById(id);
-		modelMap.addAttribute(match);
-		
-		return vista;
-	}
-
-	@GetMapping(path="/{id}/game")
-	public String empezarPartida(ModelMap modelMap, @PathVariable("id") int id) {
-		String vista = "matches/listadoPartida";
-		Match match = this.matchService.findById(id);
-
-		modelMap.addAttribute("match", match);
+		matchService.saveMatch(match);
 		return vista;
 	}
 	
 	@PostMapping(path="/{id}/game/save")
 	public String guardarPartidaEmpezada(ModelMap modelMap, @PathVariable("id") int id) {
-
-
-
-	
-			// String vista = "matches/listadoPartida";
- 
-		
-			//match.setId(id);
-			// Match match = this.matchService.findById(id);
-			// match.setTurn(match.getTurn()+1);
-			// match.setVotoaFavor(match.getVotoaFavor()+1);
-
-			// if (match.getTurn() == 5) {
-			// 	match.setTurn(0);
-			// 	match.setRound(match.getRound()+1);
-
-			// }
-			// if(match.getRound() == 2) {
-			// 	if(match.getVotoaFavor()==((match.getVotoenContra()-1) )) {
-			// 		return "matches/victoriaF" ;}
-			// 	else if(match.getVotoaFavor()==((match.getVotoenContra()-2) )) {
-			// 		return "matches/victoriaF" ;}
-			// 	else if(match.getVotoaFavor()-1==((match.getVotoenContra()) )) {
-			// 		return "matches/victoriaC" ;}	
-			// 	else if(match.getVotoaFavor()-2==((match.getVotoenContra()) )) {
-			// 			return "matches/victoriaC" ;}
-			// 	else {
-			// 		return "matches/victoriaM" ;
-			// 	}
-
-			// }
-			// if(match.getVotoaFavor()==5) {
-			// 	return "matches/victoriaF" ;
-
-			// }else if(match.getVotoenContra()==5) {
-			// 	return "matches/victoriaC" ;
-
-			// }
-			// 	this.matchService.saveMatch(match);
-
-		
 		Match match = this.matchService.findById(id);
+
 		List<Player> g = playerService.jugadoresPartida(match);
 		
 		for (int i = 0; i<g.size();i++) {
@@ -302,4 +262,11 @@ public class MatchController {
 		
 	
 		}
+
+		playerService.roleAndCardsAsignation(match);
+		match.setRound(1);
+		matchService.saveMatch(match);
+		return  "redirect:/matches/" + id + "/match";
+	}
+
 }
