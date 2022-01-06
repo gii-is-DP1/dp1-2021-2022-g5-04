@@ -53,6 +53,9 @@
                     <c:out value="${achievement.name}"/>
                 </td>
                 <td>
+                    <c:out value="${achievement.description}"/>
+                </td>
+                <td>
                 	<c:out value="${user.getAchievements().contains(achievement) ? 'COMPLETED' : 'X'}"/>	
                 	
                 </td>
