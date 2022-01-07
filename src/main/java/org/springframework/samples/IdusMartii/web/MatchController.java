@@ -102,14 +102,8 @@ public class MatchController {
 	@PostMapping(path="/{id_match}/{id_invt}/aceptar")
 	public String aceptarPartida(ModelMap modelMap, @PathVariable("id_match") int id_match, @PathVariable("id_invt") int id_invt) {
 			Match match = matchService.findById(id_match);
-			Invitation invitation = invitationService.findById(id_invt);
-			invitationService.deleteInvitation(invitation);
-			Player player = new Player();
-			player.setUser(userService.findUser(currentUserService.showCurrentUser()).get());
-			player.setMatch(match);
-			player.setAsigned(Boolean.FALSE);
-			matchService.saveMatch(match);
-			playerService.savePlayer(player);
+			User user = userService.findUser(currentUserService.showCurrentUser()).get();
+			invitationService.acceptInvitation(id_invt, match, user);
 			return "redirect:/matches/" + match.getId() + "/new";
 	}
  
@@ -126,7 +120,7 @@ public class MatchController {
 		modelMap.addAttribute("match", match);
 		modelMap.addAttribute("user", user);
 		modelMap.addAttribute("noHostPlayers", noHostPlayers);
-		modelMap.addAttribute("startMatch", matchService.startMatch(match));
+		modelMap.addAttribute("startMatch", matchService.startMatchButton(match));
 		modelMap.addAttribute("hideInvitationButton", matchService.HideInvitationButton(match));
 		modelMap.addAttribute("isHost", matchService.isHost(player, match));
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
@@ -203,9 +197,7 @@ public class MatchController {
 	@PostMapping(path="/{id}/game/save")
 	public String guardarPartidaEmpezada(ModelMap modelMap, @PathVariable("id") int id) {
 		Match match = this.matchService.findById(id);
-		playerService.roleAndCardsAsignation(match);
-		match.setRound(1);
-		matchService.saveMatch(match);
+		matchService.startMatch(match);
 		return  "redirect:/matches/" + id + "/match";
 	}
 }

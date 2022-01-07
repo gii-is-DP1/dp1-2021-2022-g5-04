@@ -181,12 +181,7 @@ public class PlayerController {
 	public String cambiarVoto(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
 		Match match = matchService.findById(idMatch);
 		Player player = playerService.findbyId(id);
-		if (player.getVote() == Vote.RED) {
-			player.setVote(Vote.GREEN);
-		} else {
-			player.setVote(Vote.RED);
-		}
-		playerService.savePlayer(player);
+		playerService.changeVote(player);
 		match.setPlays(Plays.CONSUL);
 		matchService.saveMatch(match);
 		return "redirect:/matches/" +idMatch + "/match";
