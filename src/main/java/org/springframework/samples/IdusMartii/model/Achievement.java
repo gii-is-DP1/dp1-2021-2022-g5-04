@@ -12,6 +12,9 @@ import lombok.Setter;
 @Table(name = "achievements")
 public class Achievement extends AuditableEntity {
 	
+	private String description;
 	
+	private Integer valor;
+
 
 }

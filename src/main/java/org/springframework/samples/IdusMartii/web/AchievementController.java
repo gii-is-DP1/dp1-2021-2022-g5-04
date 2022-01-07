@@ -1,5 +1,7 @@
 package org.springframework.samples.IdusMartii.web;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.User;
@@ -10,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -36,5 +40,46 @@ public class AchievementController {
 		
 		
 	}
+	
+	@GetMapping(path="/{id}/edit")
+	public String nuevoLogros(ModelMap modelMap , @PathVariable("id") int id) {
+		String vista = "achievements/editarLogro";
+		  modelMap.addAttribute("achievement", achievementService.findById(id));
+		
+		return vista;
+	
+		
+		
+	}
+	
+	@GetMapping(path="/new")
+	public String editarLogros(ModelMap modelMap ) {
+		String vista = "achievements/editarLogro";
+		Achievement ac =new Achievement();
+		ac.setId(achievementService.nextId()+1);
+		  modelMap.addAttribute("achievement",ac);
+		
+		return vista;
+	
+		
+		
+	}
+	@PostMapping(path="/{id}/save")
+	public String guardarLogros(ModelMap modelMap, @Valid Achievement achievement , @PathVariable("id") int id) {
+		Achievement ac = achievement;
+		ac.setId(id);
+		achievementService.saveAchievement(ac);
+		
+		String vista = "redirect:/achievements";
+		
+		return vista;
+	
+		
+		
+	}
+	
+	
+	
+	
 	
 }

@@ -59,6 +59,11 @@ public class PlayerService {
 	}
 	
 	@Transactional
+	public List<Player> findbyUsername(String username) throws DataAccessException {
+		return playerRepository.findByUsername(username);
+	}
+	
+	@Transactional
 	public List<Player> jugadoresPartida(Match match) throws DataAccessException {
 		return playerRepository.findByMatchId(match);
 	}
