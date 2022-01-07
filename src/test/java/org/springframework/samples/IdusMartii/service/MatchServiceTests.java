@@ -69,7 +69,7 @@ public class MatchServiceTests {
 	}
 	
 	@Test
-	public void testSaveMatch() {
+	public void testSaveMatch() { //H13
 		Iterable <Match> matches = matchService.findAll();
 		List <String> nombres = new ArrayList<>();
 		matches.forEach(p -> nombres.add(p.getName()));
@@ -89,19 +89,27 @@ public class MatchServiceTests {
 		assertThat(nombres2.size()).isEqualTo(found + 1);
 		
 	}
+	@Test
+	public void testStartMatch(){
+		Match match = matchService.findById(1);
+		matchService.startMatch(match);
+		//assertThat(match.getPlays()).isEqualTo(Plays.EDIL);
+		assertThat(match.getRound()).isEqualTo(1);
+	}
 
 	@Test
 	public void testRoundI(){
 		Match match1 = matchService.findById(1);
+		
 		boolean ronda1=matchService.roundI(match1);
-
+		match1.setRound(1);
 		assertThat(ronda1).isTrue();
 	}
 
 	@Test
 	public void testRoundII(){
 		Match match1 = matchService.findById(1);
-		match1.setRound(1);
+		match1.setRound(2);
 		boolean ronda2=matchService.roundII(match1);
 
 		assertThat(ronda2).isTrue();
@@ -133,7 +141,7 @@ public class MatchServiceTests {
 	@Test
 	public void testStarMatch(){
 		Match match1 = matchService.findById(1);
-		boolean empezarPartida= matchService.startMatch(match1);
+		boolean empezarPartida= matchService.startMatchButton(match1);
 		assertThat(empezarPartida).isTrue();
 
 		Match partidaNueva = new Match();
@@ -141,7 +149,7 @@ public class MatchServiceTests {
 		jugNueva.add(match1.getPlayers().get(0));
 		jugNueva.add(match1.getPlayers().get(4));
 		partidaNueva.setPlayers(jugNueva);
-		boolean empezarPartida2= matchService.startMatch(partidaNueva);
+		boolean empezarPartida2= matchService.startMatchButton(partidaNueva);
 		assertThat(empezarPartida2).isFalse();
 	}
 
@@ -175,7 +183,7 @@ public class MatchServiceTests {
 		match1.getPlayers().get(4).isAsigned();
 		match1.getPlayers().get(5).isAsigned();
 		this.matchService.avanzarTurno(match1, match1.getPlayers());
-		assertThat(match1.getPlays()).isEqualTo(Plays.CONSUL);
+		assertThat(match1.getPlays()).isEqualTo(Plays.EDIL);
 		assertThat(match1.getPlayers().get(0).isAsigned()).isFalse();
 	}
 	@Test
@@ -209,7 +217,7 @@ public class MatchServiceTests {
 		Match match1 = matchService.findById(1);
 		match1.setVotesInFavor(3);
 		match1.setVotesAgainst(0);
-		match1.setRound(2);
+		match1.setRound(3);
 		Faction facciongana = matchService.sufragium(match1);
 
 		assertThat(facciongana).isEqualTo(Faction.LOYAL);
@@ -220,7 +228,7 @@ public class MatchServiceTests {
 		Match match1 = matchService.findById(1);
 		match1.setVotesInFavor(0);
 		match1.setVotesAgainst(3);
-		match1.setRound(2);
+		match1.setRound(3);
 		Faction facciongana = matchService.sufragium(match1);
 
 		assertThat(facciongana).isEqualTo(Faction.TRAITOR);

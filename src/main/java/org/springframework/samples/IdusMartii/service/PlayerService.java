@@ -67,6 +67,15 @@ public class PlayerService {
 	public List<Player> jugadoresPartida(Match match) throws DataAccessException {
 		return playerRepository.findByMatchId(match);
 	}
+	@Transactional
+	public void changeVote(Player player) throws DataAccessException {
+		if (player.getVote() == Vote.RED) {
+			player.setVote(Vote.GREEN);
+		} else {
+			player.setVote(Vote.RED);
+		}
+		savePlayer(player);
+	}
 	
 	@Transactional
 	public Player findByMatchAndUser(Match match, User user) throws DataAccessException {
