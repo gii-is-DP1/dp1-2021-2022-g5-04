@@ -28,7 +28,7 @@ public class Player extends AuditableEntity{
 		private boolean asigned;
 		
 		
-		@OneToOne(cascade = CascadeType.ALL)
+		@OneToOne
 	    @JoinColumn(name = "username", referencedColumnName = "username")
 		User user;
 		@ManyToOne

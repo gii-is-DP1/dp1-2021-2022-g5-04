@@ -156,9 +156,6 @@ public class MatchService {
 
 	public boolean startMatchButton(Match match) throws DataAccessException {
 
-	public boolean startMatch(Match match) throws DataAccessException {
-		
-
 		if (match.getPlayers().size() >= 5) {
 			return true;
 		} else {
