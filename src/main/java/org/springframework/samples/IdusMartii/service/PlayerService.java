@@ -92,6 +92,17 @@ public class PlayerService {
 		return playerRepository.findMatchesFromUser(user);
 	}
 	@Transactional
+	public List<Match> findMatchesFromHost(User user) throws DataAccessException {
+		List<Match> matchesResult = new ArrayList();
+		List<Match> matchesIterate = playerRepository.findMatchesFromUser(user);
+		for (Match m : matchesIterate){
+			if(m.getPlayers().get(0).getUser()==user){
+				matchesResult.add(m);
+			}
+		}
+		return matchesResult;
+	}
+	@Transactional
 	public boolean canVote(Player player, Match match) throws DataAccessException {
 		if (player.getVote() == null && player.getRole() == Role.EDIL && (match.getPlays() == Plays.EDIL || match.getPlays() == Plays.YELLOWEDIL)) {
 			return true;

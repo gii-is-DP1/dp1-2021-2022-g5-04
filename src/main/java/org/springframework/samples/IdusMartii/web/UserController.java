@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.IdusMartii.web;
 
+import java.io.Console;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +73,18 @@ public class UserController {
 		modelMap.addAttribute("users", users);
 		return vista;
 	}   
+    @GetMapping(path="/friends")
+	public String listadoAmigos(ModelMap modelMap) {
+		String vista = "users/listadoAmigos";
+		if(authoritiesService.getAuthorities(currentUserService.showCurrentUser())==true) {
+            modelMap.addAttribute("admin", true);
+    	}else {
+            modelMap.addAttribute("admin", false);
+    	}
+		List<User> user =  userService.findFriends(currentUserService.showCurrentUser());
+		modelMap.addAttribute("users", user);
+		return vista;
+	}  
     
     @GetMapping(path="/new")
     public String crearJugador(ModelMap modelMap) {

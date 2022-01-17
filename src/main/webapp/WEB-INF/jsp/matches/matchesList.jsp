@@ -7,7 +7,8 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 <c:if test="${admin}">
 <IdusMartii:adminLayout pageName="matches">
-   <h2>Partidas</h2>
+   <h2>Listado de Partidas</h2>
+    
 
     <table id="matchesTable" class="table table-striped">
         <thead>
@@ -64,7 +65,7 @@
 </c:if>
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="matches">
-      <h2>Partidas</h2>
+      <h2>Listado de partidas ${CorP}</h2>
 
     <table id="matchesTable" class="table table-striped">
         <thead>

@@ -1,7 +1,5 @@
 package org.springframework.samples.IdusMartii.model;
 
-import javax.persistence.CascadeType;
-
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;

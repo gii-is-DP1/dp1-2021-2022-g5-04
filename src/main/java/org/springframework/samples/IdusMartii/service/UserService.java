@@ -63,6 +63,10 @@ public class UserService {
 	public User findbyUsername(String user){
 		return userRepository.findByUsername(user);
 	}
+	@Transactional
+	public List<User> findFriends(String user){
+		return userRepository.findByUsername(user).getFriends();
+	}
 	
 	
 }

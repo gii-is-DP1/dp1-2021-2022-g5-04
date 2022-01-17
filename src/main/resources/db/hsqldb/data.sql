@@ -129,3 +129,10 @@ INSERT INTO achievements(id,name,description, valor, achievement_type) VALUES (2
 INSERT INTO achievement_user(user_username,achievements_id) VALUES ('admin1',1);
 INSERT INTO achievement_user(user_username,achievements_id) VALUES ('admin1',2);
 
+INSERT INTO friends(user_username,friends_username) VALUES ('admin1','friend1');
+INSERT INTO friends(user_username,friends_username) VALUES ('friend1','admin1');
+INSERT INTO friends(user_username,friends_username) VALUES ('admin1','friend2');
+INSERT INTO friends(user_username,friends_username) VALUES ('friend2','admin1');
+
+
+
