@@ -81,8 +81,8 @@ public class UserController {
     	}else {
             modelMap.addAttribute("admin", false);
     	}
-		List<User> user =  userService.findFriends(currentUserService.showCurrentUser());
-		modelMap.addAttribute("users", user);
+		List<User> friends =  userService.findFriends(currentUserService.showCurrentUser());
+		modelMap.addAttribute("friends", friends);
 		return vista;
 	}  
     
@@ -128,17 +128,10 @@ public class UserController {
     	}
         return "users/buscarUsuario";
     }
-    @GetMapping(path="/delete/{username}")
+    @PostMapping(path="/delete/{username}")
     public String eliminarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
     	User currentUser = userService.findbyUsername(currentUserService.showCurrentUser());
     	userService.deleteFriend(currentUser, username);
-    	if (authoritiesService.getAuthorities(currentUser.getUsername())) {
-    		modelMap.addAttribute("admin", true);
-    	} else {
-    		modelMap.addAttribute("admin", false);
-    	}
-		List<User> friends =  userService.findFriends(currentUserService.showCurrentUser());
-		modelMap.addAttribute("users", friends);
-    	return "redirect:users/listadoAmigos";
+    	return "redirect:/users/friends";
     }
 }
