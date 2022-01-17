@@ -27,8 +27,8 @@ public class AchievementUserService {
 	}
 	
 	@Transactional
-	public boolean checkAchievement1(User user, Integer id) throws DataAccessException {
-		return playerService.findbyUsername(user.getUsername()).size() == achievementUserRepository.findById(id).get().getValor() ;
+	public boolean checkAchievementJugadas(User user, Integer valor) throws DataAccessException {
+		return playerService.findbyUsername(user.getUsername()).size() == valor ;
 		
 	}
 	
