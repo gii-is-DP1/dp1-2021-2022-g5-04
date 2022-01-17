@@ -128,5 +128,8 @@ INSERT INTO achievement_user(user_username,achievements_id) VALUES ('admin1',2);
 INSERT INTO friends(user_username,friends_username) VALUES ('admin1','friend1');
 INSERT INTO friends(user_username,friends_username) VALUES ('friend1','admin1');
 
+INSERT INTO friends_invitations(id,username2,username) VALUES (1,'friend1','ppp');
+
+
 
 
