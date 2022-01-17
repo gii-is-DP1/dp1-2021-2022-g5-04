@@ -10,7 +10,7 @@
     <h2>
         <c:if test="${user['new']}">Edit</c:if> User
     </h2>
-    <form:form modelAttribute="user" class="form-horizontal" id="add-user-form" action="/users/{user.id}/save">
+    <form:form modelAttribute="user" class="form-horizontal" id="add-user-form" action="/users/${user.username}/save">
         <div class="form-group has-feedback">
             <IdusMartii:inputField label="Username" name="username"/>
             <IdusMartii:inputPassword label="Password" name="password"/>
@@ -18,11 +18,9 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <c:choose>
-                    <c:when test="${user['new']}">
+                
                         <button class="btn btn-default" type="submit">Add User</button>
-                    </c:when>
-                </c:choose>
+                  
             </div>
         </div>
     </form:form>

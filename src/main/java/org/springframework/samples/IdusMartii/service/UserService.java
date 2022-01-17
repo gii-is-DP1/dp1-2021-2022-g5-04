@@ -64,5 +64,13 @@ public class UserService {
 		return userRepository.findByUsername(user);
 	}
 	
+	@Transactional
+	public User findbyId(String id){
+		return userRepository.findById(id.toString()).get();
+	}
 	
+	@Transactional
+	public void deleteById(String id){
+		 userRepository.deleteById(id);;
+	}
 }
