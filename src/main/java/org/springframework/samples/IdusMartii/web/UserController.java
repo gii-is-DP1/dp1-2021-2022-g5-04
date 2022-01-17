@@ -64,7 +64,7 @@ public class UserController {
     @GetMapping()
 	public String listadoUsuario(ModelMap modelMap, @Valid User user) {
 		String vista = "users/listadoUsuarios";
-		if(authoritiesService.getAuthorities(currentUserService.showCurrentUser())==true) {
+		if(authoritiesService.getAuthorities(currentUserService.showCurrentUser())) {
             modelMap.addAttribute("admin", true);
     	}else {
             modelMap.addAttribute("admin", false);
@@ -76,7 +76,7 @@ public class UserController {
     @GetMapping(path="/friends")
 	public String listadoAmigos(ModelMap modelMap) {
 		String vista = "users/listadoAmigos";
-		if(authoritiesService.getAuthorities(currentUserService.showCurrentUser())==true) {
+		if(authoritiesService.getAuthorities(currentUserService.showCurrentUser())) {
             modelMap.addAttribute("admin", true);
     	}else {
             modelMap.addAttribute("admin", false);
@@ -128,5 +128,17 @@ public class UserController {
     	}
         return "users/buscarUsuario";
     }
-
+    @GetMapping(path="/delete/{username}")
+    public String eliminarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
+    	User currentUser = userService.findbyUsername(currentUserService.showCurrentUser());
+    	userService.deleteFriend(currentUser, username);
+    	if (authoritiesService.getAuthorities(currentUser.getUsername())) {
+    		modelMap.addAttribute("admin", true);
+    	} else {
+    		modelMap.addAttribute("admin", false);
+    	}
+		List<User> friends =  userService.findFriends(currentUserService.showCurrentUser());
+		modelMap.addAttribute("users", friends);
+    	return "redirect:users/listadoAmigos";
+    }
 }
