@@ -42,8 +42,6 @@ public class User implements Serializable {
 	String password;
 	@Email
 	String email;
-
-	// List<String> friends;
 	
 	boolean enabled;
 
@@ -57,6 +55,8 @@ public class User implements Serializable {
 	@ManyToMany
 	@JoinTable(name = "achievement_user")
 	private List<Achievement> achievements;
-	
-	
+
+	@ManyToMany
+	@JoinTable(name = "friends")
+	private List<User> friends;	
 }
