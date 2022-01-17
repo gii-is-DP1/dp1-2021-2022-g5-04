@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.IdusMartii.model.Achievement;
+import org.springframework.samples.IdusMartii.model.AchievementType;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.repository.AchievementRepository;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,12 @@ public class AchievementService {
 		return achievementRepository.findAll();
 	}
 	
+	@Transactional
+	public List<Achievement> findByAchievementType(String tipo){
+		AchievementType tipoId = achievementRepository.findAchievementTypeByName(tipo);
+		return achievementRepository.findByAchievementType(tipoId);
+	}
+	
 
 	@Transactional
 	public List<Achievement> findByUser(User user) throws DataAccessException {
@@ -41,6 +48,15 @@ public class AchievementService {
 
 	}
 	
+	@Transactional
+	public List<AchievementType> getAllAchievementsTypes(){
+		return achievementRepository.findAllAchievementsTypes();
+	}
+	
+	@Transactional
+	public AchievementType getAchievementTypeByName(String name){
+		return achievementRepository.findAchievementTypeByName(name);
+	}
 
 	@Transactional
 	public Achievement findById(Integer id) throws DataAccessException {

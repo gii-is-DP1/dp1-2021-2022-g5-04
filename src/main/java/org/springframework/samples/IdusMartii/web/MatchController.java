@@ -26,6 +26,7 @@ import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
+import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
@@ -248,10 +249,10 @@ public class MatchController {
 			//else if(achievementUserService.checkAchievement5Games(u)) {
 				//achievementUserService.saveAchievementUser(u.getUsername(), 5);
 			
-			
-			for(int k = 1; k<achievementService.achievementCount();k++) {
-				if (achievementUserService.checkAchievement1(u, k) == true) {
-					achievementUserService.saveAchievementUser(u.getUsername(),k);
+			List<Achievement> jugadas = achievementService.findByAchievementType("jugadas");
+			for(int k = 0; k<jugadas.size();k++) {
+				if (achievementUserService.checkAchievementJugadas(u,jugadas.get(k).getValor()) == true) {
+					achievementUserService.saveAchievementUser(u.getUsername(),jugadas.get(k).getId());
 			}
 			}
 		}

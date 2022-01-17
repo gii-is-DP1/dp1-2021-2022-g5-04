@@ -13,9 +13,14 @@
     </h2>
     <form:form modelAttribute="achievement" class="form-horizontal" id="add-user-form" action="/achievements/${achievement.id}/save">
         <div class="form-group has-feedback">
-            <IdusMartii:inputField label="Name" name="name"/>
-            <IdusMartii:inputField label="Description" name="description"/>
-            <IdusMartii:inputField label="Valor" name="valor"/>
+          
+            <input type="hidden" name="id" value="${achievement.id}"/>
+            <IdusMartii:inputField label="name" name="name"/>
+            <IdusMartii:inputField label="description" name="description"/>
+            <IdusMartii:inputField label="valor" name="valor"/>
+            <div class="control-group">
+            	<IdusMartii:selectField label="achievementType" name="achievementType" names="${achievementType}" size="3"/>
+            </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

@@ -11,6 +11,7 @@ import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,20 +58,29 @@ public class AchievementController {
 		String vista = "achievements/editarLogro";
 		Achievement ac =new Achievement();
 		ac.setId(achievementService.nextId()+1);
-		  modelMap.addAttribute("achievement",ac);
+		modelMap.addAttribute("achievement",ac);
+		modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
+
 		
 		return vista;
 	
-		
+
 		
 	}
 	@PostMapping(path="/{id}/save")
-	public String guardarLogros(ModelMap modelMap, @Valid Achievement achievement , @PathVariable("id") int id) {
-		Achievement ac = achievement;
-		ac.setId(id);
-		achievementService.saveAchievement(ac);
-		String vista = "redirect:/achievements";
-		return vista;
+	public String guardarLogros(ModelMap modelMap, @Valid Achievement achievement ,BindingResult result, @PathVariable("id") int id) {
+		String vista = "achievements/editarLogro";
+		if (result.hasErrors()){
+			modelMap.addAttribute("achievement",achievement);
+			modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
+			return vista;
+		}
+		else {
+			achievement.setId(id);
+			achievementService.saveAchievement(achievement);
+			vista = "redirect:/achievements";
+			return vista;
+		}
 	}
 	
 	
