@@ -60,9 +60,17 @@ public class UserService {
 	}
 	
 	@Transactional
-	public User findbyUsername(String user){
-		return userRepository.findByUsername(user);
+	public User findbyUsername(String username){
+		return userRepository.findByUsername(username);
 	}
 	
+	@Transactional
+	public void deleteFriend(User user, String username) throws DataAccessException {
+		List<User> friends = user.getFriends();
+		User friendToBeDeleted = userRepository.findByUsername(username);
+		friends.remove(friendToBeDeleted);
+		user.setFriends(friends);
+		saveUser(user);
+	}
 	
 }
