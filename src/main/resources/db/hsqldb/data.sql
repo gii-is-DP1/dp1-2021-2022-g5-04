@@ -125,3 +125,8 @@ INSERT INTO achievements(id,name,description) VALUES (2,'5 Partidas', 'Juega 5 p
 INSERT INTO achievement_user(user_username,achievements_id) VALUES ('admin1',1);
 INSERT INTO achievement_user(user_username,achievements_id) VALUES ('admin1',2);
 
+INSERT INTO friends(user_username,friends_username) VALUES ('admin1','friend1');
+INSERT INTO friends(user_username,friends_username) VALUES ('friend1','admin1');
+
+
+
