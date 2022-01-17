@@ -145,7 +145,7 @@ public class MatchServiceTests {
 		assertThat(empezarPartida).isTrue();
 
 		Match partidaNueva = new Match();
-		List<Player> jugNueva= new ArrayList();
+		List<Player> jugNueva= new ArrayList<>();
 		jugNueva.add(match1.getPlayers().get(0));
 		jugNueva.add(match1.getPlayers().get(4));
 		partidaNueva.setPlayers(jugNueva);

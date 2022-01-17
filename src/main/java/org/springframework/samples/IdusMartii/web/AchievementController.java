@@ -69,13 +69,8 @@ public class AchievementController {
 		Achievement ac = achievement;
 		ac.setId(id);
 		achievementService.saveAchievement(ac);
-		
 		String vista = "redirect:/achievements";
-		
 		return vista;
-	
-		
-		
 	}
 	
 	

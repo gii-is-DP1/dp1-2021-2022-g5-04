@@ -22,6 +22,7 @@ import javax.validation.Valid;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
@@ -32,6 +33,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -63,11 +65,8 @@ public class UserController {
 		String vista = "users/listadoUsuarios";
 		if(authoritiesService.getAuthorities(currentUserService.showCurrentUser())==true) {
             modelMap.addAttribute("admin", true);
-
-            
     	}else {
             modelMap.addAttribute("admin", false);
-
     	}
 		User users =  userService.findbyUsername(user.getUsername());
 		modelMap.addAttribute("users", users);
@@ -93,9 +92,27 @@ public class UserController {
         }
         return "redirect:/";
     }
+    @PostMapping(path="/{id}/save")
+    public String guardarJugadorModificado(@Valid User user, BindingResult result, ModelMap modelMap, @PathVariable("id") int id) {
+        if (result.hasErrors()) {
+            return "users/crearUsuario"; //Cambiar a la vista de edición
+        } else {
+        	User u = user;
+    		u.setUsername(user.getUsername());
+    		userService.saveUser(u);
+            modelMap.addAttribute("users", user);
+            authoritiesService.saveAuthorities(user.getUsername(), "user");
+            modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
+        }
+        return "redirect:/";
+    }
     @GetMapping(path="/find")
-    public String buscarJugador( @Valid User user) {
-    
+    public String buscarJugador(@Valid User user, ModelMap modelMap) {
+    	if(authoritiesService.getAuthorities(currentUserService.showCurrentUser())==true) {
+            modelMap.addAttribute("admin", true);
+    	}else {
+            modelMap.addAttribute("admin", false);
+    	}
         return "users/buscarUsuario";
     }
 

@@ -148,9 +148,7 @@ public class MatchController {
 		Player player_actual = playerService.findByMatchAndUser(match, usuario);
 		modelMap.addAttribute("votos", matchService.votes(match));
 		modelMap.addAttribute("votedUser", matchService.votedUser(match));
-			
 		modelMap.addAttribute("playerY", playerService.playerYellow(match));
-
 		modelMap.addAttribute("mostrarCartas", playerService.showCards(player_actual));
 		modelMap.addAttribute("votar", playerService.canVote(player_actual, match));
 		modelMap.addAttribute("revisarVoto", playerService.checkVote(player_actual, match));
@@ -168,10 +166,12 @@ public class MatchController {
 		modelMap.addAttribute("match", match);
 		modelMap.addAttribute("ediles", playerService.findByRole(match, Role.EDIL));
 		modelMap.addAttribute("admin", matchService.isAdmin(usuario));
-		return vista;
-		
+		if (match.getRound() == 3 || matchService.sufragium(match) != Faction.MERCHANT) {
+			return "redirect:/matches/" + id + "/ganador";
+		} else {
+			return vista;
+		}
 	}
-	
 	@GetMapping(path="/{id}/rolesAsignados")
 	public String rolesAsignados(ModelMap modelMap, @PathVariable("id") int id) {
 		Match match = matchService.findById(id);
@@ -180,7 +180,6 @@ public class MatchController {
 		matchService.saveMatch(match);
 		return "redirect:/matches/" + id + "/match";
 	}
-	
 	@GetMapping(path="/{id}/ganador") 
 	public String ganador(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
 		response.addHeader("Refresh","5");

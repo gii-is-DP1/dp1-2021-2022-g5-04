@@ -49,7 +49,12 @@
 					title="Invitations">
 					<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
 					<span>Invitaciones</span>
-				</petclinic:menuItem>				
+				</petclinic:menuItem>	
+				<petclinic:menuItem active="${name eq 'Users'}" url="/users/find"
+					title="Usuarios">
+					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+					<span>Buscar Usuario</span>
+				</petclinic:menuItem>			
 			</ul>
 
 
@@ -62,7 +67,7 @@
 				</sec:authorize>
 				<sec:authorize access="isAuthenticated()">
 					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>�
+						data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span>
 							<strong><sec:authentication property="name" /></strong> <span
 							class="glyphicon glyphicon-chevron-down"></span>
 					</a>

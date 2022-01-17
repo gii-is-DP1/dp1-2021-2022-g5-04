@@ -9,9 +9,6 @@
 
 <IdusMartii:layout pageName="users">
     <h2>Users</h2>
-${admin}
-
-${temp}
 
     <table id="usersTable" class="table table-striped">
         <thead>
@@ -31,8 +28,7 @@ ${temp}
                 
                 	<spring:url value="/users/new" var="userUrl">
                     </spring:url>
-                                    <c:if test="${admin eq true}">
-                    
+                    <c:if test="${admin}">
                 	<a href= "${fn:escapeXml(userUrl)}">Editar</a>
                 	</c:if>
                 </td>
