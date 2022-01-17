@@ -41,7 +41,6 @@ public class AuditoriesController {
     @GetMapping()
 	public String auditoriasMenu(ModelMap modelMap) {
 		String vista = "auditories/auditoriasMenu";
-		
 		Iterable<User> users =  userService.findAll();
 		modelMap.addAttribute("users", users);
 		return vista;
