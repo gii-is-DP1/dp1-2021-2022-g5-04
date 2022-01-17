@@ -53,6 +53,16 @@ public class MatchService {
     	
     }
 	@Transactional
+    public List<Match> matchesCreated(User user) throws DataAccessException {
+    	if (!isAdmin(user)) {
+    		List<Match> matches = playerService.findMatchesFromHost(user);
+    		return matches;
+    	} else {
+    		return (List<Match>)findAll();
+    	}
+    	
+    }
+	@Transactional
     public List<Match> matchesInProgress_NotFinished() throws DataAccessException {
 		List<Match> matchesInProgress_NotFinished = new ArrayList<>();
 		Iterable<Match> matches = matchRepository.findAll();

@@ -53,13 +53,41 @@ public class MatchController {
 	
 
 	
+	
 	@GetMapping()
 	public String matchesList(ModelMap modelMap) {
+		String vista = "matches/matchesListMenu";
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		List<Match> matches = matchService.matches(user);
+		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("matches", matches);
+		if(matchService.isAdmin(user)){
+			return "matches/matchesList";
+		}
+		else{
+
+		
+		return vista;
+		}
+	}
+	@GetMapping(path="/created")
+	public String matchesListCreated(ModelMap modelMap) {
+		String vista = "matches/matchesList";
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		List<Match> matches = matchService.matchesCreated(user);
+		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("matches", matches);
+		modelMap.addAttribute("CorP", "creadas");
+		return vista;
+	}
+	@GetMapping(path="/played")
+	public String matchesListPlayed(ModelMap modelMap) {
 		String vista = "matches/matchesList";
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
 		List<Match> matches = matchService.matches(user);
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
+		modelMap.addAttribute("CorP", "jugadas");
 		return vista;
 	}
 	@GetMapping(path="/spectator")
