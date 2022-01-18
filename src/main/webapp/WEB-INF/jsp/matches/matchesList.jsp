@@ -7,16 +7,15 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 <c:if test="${admin}">
 <IdusMartii:adminLayout pageName="matches">
-   <h2>Listado de Partidas</h2>
-    
+    <h2>Listado de partidas ${CorP}</h2>
 
     <table id="matchesTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Nombre de la partida</th>
-            <th style="width: 100px">Creador</th>
-            <th style="width: 30px;">Ronda</th>
-            <th style="width: 150px">Faccion ganadora</th>
+            <th style="width: 100px;">Nombre de la partida</th>
+            <th style="width: 50px">Creador</th>
+            <th style="width: 50px">Faccion ganadora</th>
+            <th style="width: 150px">Jugadores</th>
             
         </tr>
         </thead>
@@ -47,11 +46,14 @@
             	<td>
             		<c:out value="${match.players[0].user.username}"/>
             	</td>
-                <td>
-                    <c:out value="${match.round}"/>
-                </td>
+             
                 <td>
                     <c:out value="${match.winner}"/>
+                </td>
+                <td>
+                    <c:forEach items="${match.players}" var="player">
+                        <c:out value=" ${player.user.username},    "/>
+                    </c:forEach>
                 </td>
             </tr>
         </c:forEach>
