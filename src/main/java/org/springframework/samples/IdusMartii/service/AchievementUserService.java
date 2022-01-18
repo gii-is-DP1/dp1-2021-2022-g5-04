@@ -20,6 +20,8 @@ public class AchievementUserService {
 	private AchievementUserRepository achievementUserRepository;
 	@Autowired
 	private PlayerService playerService;
+	@Autowired
+	private UserService userService;
 	
 	@Transactional
 	public void saveAchievementUser(String username, Integer id) throws DataAccessException {
@@ -29,14 +31,10 @@ public class AchievementUserService {
 	@Transactional
 	public boolean checkAchievementJugadas(User user, Integer valor) throws DataAccessException {
 		return playerService.findbyUsername(user.getUsername()).size() == valor ;
-		
 	}
 	
-	
-//	@Transactional
-	//public boolean checkAchievement5Games(User user) throws DataAccessException {
-	//	return playerService.findbyUsername(user.getUsername()).size() == 5;
-//	}
+
+
 	
 	
 	

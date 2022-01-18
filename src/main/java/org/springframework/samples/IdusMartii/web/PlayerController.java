@@ -42,15 +42,11 @@ public class PlayerController {
 	private MatchService matchService;
 	@Autowired
 	private InvitationService invitationService;
-    @Autowired
+
+	@Autowired
 	private CurrentUserService currentUserService;
 	@Autowired
 	private UserService userService;
-	@Autowired
-    AuthoritiesService authoritiesService;
-
-
-		
 	@GetMapping()
 	public String listadoJugadores(ModelMap modelMap) {
 		String vista = "players/listadoJugadores";
@@ -67,12 +63,12 @@ public class PlayerController {
 	}
 	@GetMapping(path="/{id}/{idMatch}/revisar")
     public String revisarVoto(@PathVariable("id") int id, @PathVariable("idMatch") int idMatch, ModelMap modelMap) {
-		User user = userService.findUser(currentUserService.showCurrentUser()).get();
         String vista = "players/revisadoVoto";
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
         Player player = playerService.findbyId(id);
         modelMap.addAttribute("player", player);
         modelMap.addAttribute("idMatch", idMatch);
-        modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
+        modelMap.addAttribute("admin", matchService.isAdmin(user));
         if (player.getVote() == Vote.YELLOW) {
         	return "redirect:/players/" + id + "/" + idMatch + "/revisarVotoYellow";
         } else {
@@ -153,7 +149,8 @@ public class PlayerController {
 		playerService.asignarRoles(match, jugadores, roles);
 		matchService.avanzarTurno(match, jugadores);
 		matchService.saveMatch(match);
-		if (match.getRound() == 3 || matchService.sufragium(match) != Faction.MERCHANT) {
+		Faction sufragium = matchService.sufragium(match);
+		if (match.getRound() == 3 || sufragium != Faction.MERCHANT) {
 			return "redirect:/matches/" + idMatch + "/ganador";
 		} else {
 			return "redirect:/matches/" +idMatch + "/match";

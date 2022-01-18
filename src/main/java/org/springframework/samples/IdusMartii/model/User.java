@@ -59,6 +59,8 @@ public class User implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
 	
+	Integer victorias;
+	
 	@ManyToMany
 	@JoinTable(name = "achievement_user")
 	private List<Achievement> achievements;
