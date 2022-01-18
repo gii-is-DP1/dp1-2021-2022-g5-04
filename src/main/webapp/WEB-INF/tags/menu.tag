@@ -43,12 +43,14 @@
 					title="Invitations">
 					<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
 					<span>Invitaciones</span>
-				</petclinic:menuItem>	
-				<petclinic:menuItem active="${name eq 'Users'}" url="/users"
+				</petclinic:menuItem>
+			
+				<petclinic:menuItem active="${name eq 'Users'}" url="/users/own"
 					title="Usuarios">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 					<span>Buscar Usuario</span>
 				</petclinic:menuItem>		
+			
 			</ul>
 
 

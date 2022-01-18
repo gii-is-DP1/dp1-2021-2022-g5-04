@@ -20,8 +20,11 @@
             <div class="col-sm-offset-2 col-sm-10">
                 
                         <button class="btn btn-default" type="submit">Add User</button>
+                        
                   
             </div>
         </div>
     </form:form>
+      	                
+				
 </IdusMartii:layout>

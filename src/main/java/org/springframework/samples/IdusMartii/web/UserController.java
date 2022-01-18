@@ -17,6 +17,7 @@ package org.springframework.samples.IdusMartii.web;
 
 
 import java.io.Console;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,9 +70,21 @@ public class UserController {
 		Iterable< User> users =  userService.findAll();
 	
 		modelMap.addAttribute("users", users);
-        modelMap.addAttribute("usert", currentUserService.showCurrentUser())
+        modelMap.addAttribute("usert", currentUserService.showCurrentUser());
 		return vista;
 	}   
+    
+    @GetMapping(path="/own")
+   	public String listadoUsuarioPropio(ModelMap modelMap) {
+   		String vista = "users/listadoUsuarios";
+   	
+   		 User user =  userService.findbyUsername(currentUserService.showCurrentUser());
+   	List<User> users = new ArrayList<>();
+   	users.add(user);
+   		modelMap.addAttribute("users", users);
+          // modelMap.addAttribute("usert", currentUserService.showCurrentUser());
+   		return vista;
+   	}   
     @GetMapping(path="/friends")
 	public String listadoAmigos(ModelMap modelMap) {
 		String vista = "users/listadoAmigos";
@@ -126,7 +139,7 @@ public class UserController {
             authoritiesService.saveAuthorities(user.getUsername(), "user");
             modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
         
-        return "redirect:/users";
+        return "redirect:/";
     }
   
     @PostMapping(path="/delete/{username}")
@@ -135,4 +148,13 @@ public class UserController {
     	userService.deleteFriend(currentUser, username);
     	return "redirect:/users/friends";
     }
+    @GetMapping(path="/{username}/delete")
+    public String eliminarUserIntermedio(@PathVariable("username") String username, ModelMap modelMap) {
+    	userService.deleteById((username));
+
+    	return "redirect:/users";
+    }
+    
+    
+   
 }
