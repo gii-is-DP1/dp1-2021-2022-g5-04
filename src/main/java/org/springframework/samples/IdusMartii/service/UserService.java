@@ -38,6 +38,8 @@ import org.springframework.samples.IdusMartii.model.User;
 public class UserService {
 
 	private UserRepository userRepository;
+	@Autowired
+	private PlayerService playerService;
 
 	@Autowired
 	public UserService(UserRepository userRepository) {
@@ -69,12 +71,23 @@ public class UserService {
 	}
 	
 	@Transactional
+
 	public void deleteFriend(User user, String username) throws DataAccessException {
 		List<User> friends = user.getFriends();
 		User friendToBeDeleted = userRepository.findByUsername(username);
 		friends.remove(friendToBeDeleted);
 		user.setFriends(friends);
 		saveUser(user);
+
 	}
 	
+	@Transactional
+	public void deleteById(String id){
+		 userRepository.deleteById(id);;
+	}
+	@Transactional
+	public Integer matchesPlayedForUser(User user) throws DataAccessException {
+		return playerService.findbyUsername(user.getUsername()).size() ;
+		
+	}
 }

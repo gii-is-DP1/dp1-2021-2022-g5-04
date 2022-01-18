@@ -15,7 +15,9 @@
  */
 package org.springframework.samples.IdusMartii.web;
 
+
 import java.io.Console;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,20 +61,30 @@ public class UserController {
     @InitBinder
     public void setAllowedFields(WebDataBinder dataBinder) {
         dataBinder.setDisallowedFields("id");
-    }
+    } 
     
     @GetMapping()
-	public String listadoUsuario(ModelMap modelMap, @Valid User user) {
+	public String listadoUsuario(ModelMap modelMap) {
 		String vista = "users/listadoUsuarios";
-		if(authoritiesService.getAuthorities(currentUserService.showCurrentUser())) {
-            modelMap.addAttribute("admin", true);
-    	}else {
-            modelMap.addAttribute("admin", false);
-    	}
-		User users =  userService.findbyUsername(user.getUsername());
+	
+		Iterable< User> users =  userService.findAll();
+	
 		modelMap.addAttribute("users", users);
+        modelMap.addAttribute("usert", currentUserService.showCurrentUser());
 		return vista;
 	}   
+    
+    @GetMapping(path="/own")
+   	public String listadoUsuarioPropio(ModelMap modelMap) {
+   		String vista = "users/listadoUsuarios";
+   	
+   		 User user =  userService.findbyUsername(currentUserService.showCurrentUser());
+   	List<User> users = new ArrayList<>();
+   	users.add(user);
+   		modelMap.addAttribute("users", users);
+          // modelMap.addAttribute("usert", currentUserService.showCurrentUser());
+   		return vista;
+   	}   
     @GetMapping(path="/friends")
 	public String listadoAmigos(ModelMap modelMap) {
 		String vista = "users/listadoAmigos";
@@ -92,6 +104,15 @@ public class UserController {
         modelMap.addAttribute("user", new User());
         return vista;
     }
+    
+    @GetMapping(path="/{id}/edit")
+    public String editarJugador(ModelMap modelMap, @PathVariable  String id ) {
+        String vista = "users/editarUsuario";
+        
+      
+        modelMap.addAttribute("user", userService.findbyUsername(id));
+        return vista;
+    }
 
     @PostMapping(path="/save")
     public String guardarJugador(@Valid User user, BindingResult result, ModelMap modelMap) {
@@ -105,33 +126,35 @@ public class UserController {
         }
         return "redirect:/";
     }
+    
     @PostMapping(path="/{id}/save")
-    public String guardarJugadorModificado(@Valid User user, BindingResult result, ModelMap modelMap, @PathVariable("id") int id) {
-        if (result.hasErrors()) {
-            return "users/crearUsuario"; //Cambiar a la vista de edición
-        } else {
-        	User u = user;
-    		u.setUsername(user.getUsername());
+    public String guardarJugadorModificado(@Valid User user, BindingResult result, ModelMap modelMap, @PathVariable("id") String id) {
+       
+        	User u = userService.findbyUsername(id);
+        
+        
+        	u.setEmail(user.getEmail());
+        	u.setPassword(user.getPassword());
     		userService.saveUser(u);
-            modelMap.addAttribute("users", user);
             authoritiesService.saveAuthorities(user.getUsername(), "user");
             modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
-        }
+        
         return "redirect:/";
     }
-    @GetMapping(path="/find")
-    public String buscarJugador(@Valid User user, ModelMap modelMap) {
-    	if(authoritiesService.getAuthorities(currentUserService.showCurrentUser())==true) {
-            modelMap.addAttribute("admin", true);
-    	}else {
-            modelMap.addAttribute("admin", false);
-    	}
-        return "users/buscarUsuario";
-    }
+  
     @PostMapping(path="/delete/{username}")
     public String eliminarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
     	User currentUser = userService.findbyUsername(currentUserService.showCurrentUser());
     	userService.deleteFriend(currentUser, username);
     	return "redirect:/users/friends";
     }
+    @GetMapping(path="/{username}/delete")
+    public String eliminarUserIntermedio(@PathVariable("username") String username, ModelMap modelMap) {
+    	userService.deleteById((username));
+
+    	return "redirect:/users";
+    }
+    
+    
+   
 }

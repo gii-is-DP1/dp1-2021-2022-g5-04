@@ -61,12 +61,17 @@ public class InvitationController {
 		String username = user.getUsername();
 		User usuario = userService.findUser(username).get();
 		Match match = matchService.findById(id_match);
-		Invitation invitation = new Invitation();
-		Date fecha = new Date();
-		invitation.setUser(usuario);
-		invitation.setMatch(match);	
-		invitation.setFecha(fecha);
-		invitationService.saveInvitation(invitation);
+		if(matchService.matchContainUser(match, usuario) && (invitationService.findByUserAndMatch(usuario, match).size()!=0)){
+			modelMap.addAttribute("message", "Este usuario ya está en la partida");
+		}
+		else{
+			Invitation invitation = new Invitation();
+			Date fecha = new Date();
+			invitation.setUser(usuario);
+			invitation.setMatch(match);	
+			invitation.setFecha(fecha);
+			invitationService.saveInvitation(invitation);
+		}
 		return "redirect:/matches/" + match.getId() + "/new";
 	}
 	

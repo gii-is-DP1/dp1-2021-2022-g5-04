@@ -42,6 +42,7 @@ public class PlayerController {
 	private MatchService matchService;
 	@Autowired
 	private InvitationService invitationService;
+
 	@Autowired
 	private CurrentUserService currentUserService;
 	@Autowired

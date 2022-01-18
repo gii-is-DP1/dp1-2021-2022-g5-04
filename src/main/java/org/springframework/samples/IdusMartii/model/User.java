@@ -16,6 +16,8 @@ import javax.persistence.EntityListeners;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -38,10 +40,14 @@ public class User implements Serializable {
 	@LastModifiedDate private LocalDateTime lastModifiedDate; 
 	
 	@Id
+	@NotNull
+	@Size(min=5, max=25)
+	@Column(unique=true)
 	String username;
-	
+	@NotNull
 	String password;
 	@Email
+	@NotNull
 	String email;
 	
 	boolean enabled;

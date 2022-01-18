@@ -43,8 +43,8 @@
 		<c:if test= "${isHost}" >
 			<div class="col-md-9">
 				<form:form modelAttribute="user" class="form-horizontal" id="add-user-form" action="/invitations/${match.id}/save" >
-					<div class="form-group">
-						<div class="col-md-6">
+					<div class="form-group has-feedback">
+						<div class="col-md-7">
 							<IdusMartii:inputField label="Username" name="username"/>
 						</div>
 						<div class="col-md-3">

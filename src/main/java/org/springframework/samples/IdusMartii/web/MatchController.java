@@ -62,14 +62,28 @@ public class MatchController {
 		List<Match> matches = matchService.matches(user);
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
-		if(matchService.isAdmin(user)){
-			return "matches/matchesList";
-		}
-		else{
-
-		
 		return vista;
-		}
+		
+	}
+	@GetMapping(path="/finished")
+	public String matchesListFinished(ModelMap modelMap) {
+		String vista = "matches/matchesList";
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		List<Match> matches = matchService.matchesFinished();
+		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("matches", matches);
+		modelMap.addAttribute("CorP", "terminadas");
+		return vista;
+	}
+	@GetMapping(path="/progress")
+	public String matchesListProgress(ModelMap modelMap) {
+		String vista = "matches/matchesList";
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		List<Match> matches = matchService.matchesInProgress_NotFinished();
+		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("matches", matches);
+		modelMap.addAttribute("CorP", "en progreso");
+		return vista;
 	}
 	@GetMapping(path="/created")
 	public String matchesListCreated(ModelMap modelMap) {
@@ -79,6 +93,16 @@ public class MatchController {
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		modelMap.addAttribute("CorP", "creadas");
+		return vista;
+	}
+	@GetMapping(path="/lobby")
+	public String matchesListLobby(ModelMap modelMap) {
+		String vista = "matches/matchesList";
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		List<Match> matches = matchService.matchesLobby();
+		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("matches", matches);
+		modelMap.addAttribute("CorP", "en lobby");
 		return vista;
 	}
 	@GetMapping(path="/played")

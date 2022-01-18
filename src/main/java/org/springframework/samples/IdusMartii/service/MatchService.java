@@ -68,6 +68,17 @@ public class MatchService {
     	
     }
 	@Transactional
+    public boolean matchContainUser(Match match, User user) throws DataAccessException {
+		List<Player> players = match.getPlayers();
+		List<User> users = new ArrayList();
+		for (Player p:players){
+			users.add(p.getUser());
+		}
+
+    	return users.contains(user);
+    	
+    }
+	@Transactional
     public List<Match> matchesInProgress_NotFinished() throws DataAccessException {
 		List<Match> matchesInProgress_NotFinished = new ArrayList<>();
 		Iterable<Match> matches = matchRepository.findAll();
@@ -79,6 +90,36 @@ public class MatchService {
 		}
     	
     	return matchesInProgress_NotFinished;
+    	
+    	
+    }
+	@Transactional
+    public List<Match> matchesFinished() throws DataAccessException {
+		List<Match> matchesFinished = new ArrayList<>();
+		Iterable<Match> matches = matchRepository.findAll();
+		for(Match m:matches){
+			if(m.isFinished()){
+				matchesFinished.add(m);
+			}
+
+		}
+    	
+    	return matchesFinished;
+    	
+    	
+    }
+	@Transactional
+    public List<Match> matchesLobby() throws DataAccessException {
+		List<Match> matchesFinished = new ArrayList<>();
+		Iterable<Match> matches = matchRepository.findAll();
+		for(Match m:matches){
+			if(m.getRound()==0){
+				matchesFinished.add(m);
+			}
+
+		}
+    	
+    	return matchesFinished;
     	
     	
     }
