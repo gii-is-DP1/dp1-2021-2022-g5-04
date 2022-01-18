@@ -13,26 +13,38 @@
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 200px;">Username</th>
-            
+            <th style="width: 150px;">Username</th>
+            <th style="width: 200px;">Password</th>
+            <th style="width: 200px;">Email</th>
         </tr>
         </thead>
         <tbody>
       
+           <c:forEach items="${users}" var="user">
             <tr>
                 <td>
-                	<c:out value="${users.username}"/>
+                	<c:out value="${user.username}"/>
                 </td>
                 <td>
+                    <c:out value="${user.password}"/>
+                </td>
+                <td>
+                    <c:out value="${user.email}"/>
+                </td>
+               <td>
+              
+				<spring:url value="/users/{id}/edit" var="userUrl">
+		    <spring:param name="id" value="${user.username}"/>
+				
+                    </spring:url>
+                	<a href= "${fn:escapeXml(userUrl)}">Editar</a>
+                	                </td>
+                	
+            </tr>       
+             </c:forEach>
               
                 
-                	<spring:url value="/users/new" var="userUrl">
-                    </spring:url>
-                    <c:if test="${admin}">
-                	<a href= "${fn:escapeXml(userUrl)}">Editar</a>
-                	</c:if>
-                </td>
-            </tr>
+                	
         </tbody>
     </table>
 </IdusMartii:layout>

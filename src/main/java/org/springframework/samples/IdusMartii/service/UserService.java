@@ -69,12 +69,18 @@ public class UserService {
 	}
 	
 	@Transactional
+
 	public void deleteFriend(User user, String username) throws DataAccessException {
 		List<User> friends = user.getFriends();
 		User friendToBeDeleted = userRepository.findByUsername(username);
 		friends.remove(friendToBeDeleted);
 		user.setFriends(friends);
 		saveUser(user);
+
 	}
 	
+	@Transactional
+	public void deleteById(String id){
+		 userRepository.deleteById(id);;
+	}
 }
