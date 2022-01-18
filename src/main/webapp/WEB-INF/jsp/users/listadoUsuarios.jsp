@@ -39,7 +39,15 @@
                     </spring:url>
                 	<a href= "${fn:escapeXml(userUrl)}">Editar</a>
                 	                </td>
-                	
+                	               <td> 
+  <spring:url value="/users/{username}/delete" var="userrUrl">
+		    <spring:param name="username" value="${user.username}"/>
+				
+                    </spring:url> 
+                                    	<a href= "${fn:escapeXml(userrUrl)}">Eliminar</a>
+                    
+                                    	                </td>
+                                   	
             </tr>       
              </c:forEach>
               

@@ -28,6 +28,7 @@
 					<span>Inicio</span>
 				</petclinic:menuItem>
 
+
 				<petclinic:menuItem active="${name eq 'Matches'}" url="/matches"
 					title="Matches list">
 					<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
@@ -50,7 +51,7 @@
 					<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
 					<span>Invitaciones</span>
 				</petclinic:menuItem>	
-				<petclinic:menuItem active="${name eq 'Users'}" url="/users/find"
+				<petclinic:menuItem active="${name eq 'Users'}" url="/users"
 					title="Usuarios">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 					<span>Buscar Usuario</span>
