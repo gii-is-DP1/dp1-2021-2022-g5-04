@@ -100,9 +100,9 @@ public class MatchServiceTests {
 	@Test
 	public void testRoundI(){
 		Match match1 = matchService.findById(1);
-		
-		boolean ronda1=matchService.roundI(match1);
 		match1.setRound(1);
+		boolean ronda1=matchService.roundI(match1);
+		
 		assertThat(ronda1).isTrue();
 	}
 
