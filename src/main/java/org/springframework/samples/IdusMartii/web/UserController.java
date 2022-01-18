@@ -69,7 +69,7 @@ public class UserController {
 		Iterable< User> users =  userService.findAll();
 	
 		modelMap.addAttribute("users", users);
-        modelMap.addAttribute("usert", currentUserService.showCurrentUser())
+        modelMap.addAttribute("usert", currentUserService.showCurrentUser());
 		return vista;
 	}   
     @GetMapping(path="/friends")
