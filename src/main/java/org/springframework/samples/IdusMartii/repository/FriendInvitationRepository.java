@@ -6,12 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.samples.IdusMartii.model.FriendInvitation;
-import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.User;
 
 public interface FriendInvitationRepository extends CrudRepository<FriendInvitation, Integer>{
 	
-	@Query("SELECT i.user_requester FROM FriendInvitation i WHERE i.user_requested = :user")
-    public List<User> findUserRequesters(@Param("user") User user);  
+	@Query("SELECT i FROM FriendInvitation i WHERE i.user_requested = :user")
+    public List<FriendInvitation> findFriendInvitationsByUserRequested(@Param("user") User user);  
+	
 
 }

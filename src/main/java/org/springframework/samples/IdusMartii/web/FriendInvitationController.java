@@ -35,17 +35,16 @@ public class FriendInvitationController {
 	public String listadoFriendInvitaciones(ModelMap modelMap) {
 		String vista = "friendInvitations/listadoFriendInvitaciones";
         User user = userService.findUser(currentUserService.showCurrentUser()).get();
-		List<User> friendInvitations = friendInvitationService.findUserRequesters(user);
+		List<FriendInvitation> friendInvitations = friendInvitationService.findFriendInvitationsByUserRequested(user);
 		modelMap.addAttribute("friendInvitations", friendInvitations);
 		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
-		System.out.println("pepe");
 		return vista;
 	}
 	@PostMapping(path="/{id_invt}/decline")
 	public String rechazarInvitacion(ModelMap modelMap, @PathVariable("id_invt") int id_invt) {
 			FriendInvitation friendInvitation = friendInvitationService.findById(id_invt);
 			friendInvitationService.deleteFriendInvitation(friendInvitation);
-			return "redirect:/friendInvitations/listadoFriendInvitaciones";
+			return "redirect:/friendInvitations";
 			
 			
 	}
@@ -58,13 +57,13 @@ public class FriendInvitationController {
 		friendInvitation.setUser_requested(userRequested);
 		friendInvitation.setUser_requester(userRequester);
 		friendInvitationService.saveFriendInvitation(friendInvitation);
-		return "redirect:/friendInvitations/listadoFriendInvitaciones";
+		return "redirect:/friendInvitations";
 	}
 	
 	@PostMapping(path="/{id_invt}/accept")
 	public String aceptarInvitacion(ModelMap modelMap, @PathVariable("id_invt") int id_invt) {
 			friendInvitationService.acceptFriendInvitation(id_invt);
-			return "redirect:/friendInvitations/listadoFriendInvitaciones";
+			return "redirect:/friendInvitations";
 			
 			
 	}

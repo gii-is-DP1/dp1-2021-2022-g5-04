@@ -14,7 +14,7 @@
 			<c:forEach items="${friendInvitations}" var="friendInvitation">
 				<tr>
 					<td>
-						${friendInvitation.userRequester} te ha enviado una solicitud de amistad.
+						${friendInvitation.user_requester.username} te ha enviado una solicitud de amistad.
 					</td>
 					<td>
 						<form:form modelAttribute="friendInvitation" class="form-horizontal" id="add-invitation-form" action="/friendInvitations/${friendInvitation.id}/accept">
@@ -50,7 +50,7 @@
 			<c:forEach items="${friendInvitations}" var="friendInvitation">
 				<tr>
 					<td>
-						${friendInvitation.userRequester} te ha enviado una solicitud de amistad.
+						${friendInvitation.user_requester.username} te ha enviado una solicitud de amistad.
 					</td>
 					<td>
 						<form:form modelAttribute="friendInvitation" class="form-horizontal" id="add-invitation-form" action="/friendInvitations/${friendInvitation.id}/accept">

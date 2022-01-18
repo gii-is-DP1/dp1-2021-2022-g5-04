@@ -7,7 +7,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.samples.IdusMartii.model.FriendInvitation;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.repository.FriendInvitationRepository;
-import org.springframework.samples.IdusMartii.repository.FriendsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +22,7 @@ public class FriendInvitationService {
 		@Autowired
 		private UserService userService;
 		@Autowired
-		private FriendsRepository friendsRepository;
+		private FriendsService friendsService;
 
 		@Transactional
 		public Iterable<FriendInvitation> findAll(){
@@ -40,8 +39,8 @@ public class FriendInvitationService {
 			friendInvitationRepository.save(friendInvitation);
 		}
 	    @Transactional(readOnly = true)
-		public List<User> findUserRequesters(User user) throws DataAccessException{
-			return friendInvitationRepository.findUserRequesters(user);
+		public List<FriendInvitation> findFriendInvitationsByUserRequested(User user) throws DataAccessException{
+			return friendInvitationRepository.findFriendInvitationsByUserRequested(user);
 		}
 		@Transactional
 		public void deleteFriendInvitation(FriendInvitation friendInvitation) throws DataAccessException {
@@ -50,7 +49,9 @@ public class FriendInvitationService {
 		@Transactional
 		public void acceptFriendInvitation(int id_invt) throws DataAccessException {
 			FriendInvitation friendInvitation = friendInvitationService.findById(id_invt);
-			friendsRepository.saveFriends(friendInvitation.getUser_requester().getUsername(), friendInvitation.getUser_requested().getUsername());
+			System.out.println(friendInvitation.getUser_requester().getUsername());
+			
+			friendsService.saveFriends(friendInvitation.getUser_requester().getUsername(), friendInvitation.getUser_requested().getUsername());
 			friendInvitationService.deleteFriendInvitation(friendInvitation);
 		}
 		
