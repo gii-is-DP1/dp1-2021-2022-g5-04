@@ -6,5 +6,6 @@ import org.springframework.samples.IdusMartii.model.Match;
 
 
 public interface MatchRepository extends CrudRepository<Match, Integer>{
-
+	
+	
 }

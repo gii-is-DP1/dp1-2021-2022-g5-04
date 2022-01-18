@@ -46,6 +46,7 @@ public class AchievementController {
 	public String nuevoLogros(ModelMap modelMap , @PathVariable("id") int id) {
 		String vista = "achievements/editarLogro";
 		  modelMap.addAttribute("achievement", achievementService.findById(id));
+		  modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
 		
 		return vista;
 	

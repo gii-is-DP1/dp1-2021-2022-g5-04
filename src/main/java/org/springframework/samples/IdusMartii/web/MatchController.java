@@ -226,6 +226,8 @@ public class MatchController {
 		match.setFinished(true);
 		match.setWinner(matchService.sufragium(match));
 		matchService.saveMatch(match);
+		matchService.registrarGanadores(match);
+		
 		return vista;
 	}
 	
@@ -242,12 +244,6 @@ public class MatchController {
 			User u = g.get(i).getUser();
 			String username = u.getUsername();
 			playerService.findbyUsername(username);
-		//	if (achievementUserService.checkAchievement1(u)) {
-			//	achievementUserService.saveAchievementUser(u.getUsername(), 1);
-				
-		//	}
-			//else if(achievementUserService.checkAchievement5Games(u)) {
-				//achievementUserService.saveAchievementUser(u.getUsername(), 5);
 			
 			List<Achievement> jugadas = achievementService.findByAchievementType("jugadas");
 			for(int k = 0; k<jugadas.size();k++) {
@@ -258,43 +254,43 @@ public class MatchController {
 		}
 		
 		
-		
-		List<Faction> lista = new ArrayList<>();
-		for (int i = 0; i<g.size()-1;i++) {
-			lista.add(Faction.LOYAL);
-			lista.add(Faction.TRAITOR);
-		}
-		lista.add(Faction.MERCHANT);
-		lista.add(Faction.MERCHANT);
-		
-		for (int i = 0; i<g.size();i++) {
-			Integer r = (int) Math.floor(Math.random()*(lista.size()-1));
-			g.get(i).setCard1(lista.get(r));
-			lista.remove(lista.get(r));
-			r = (int) Math.floor(Math.random()*(lista.size()-1));
-			g.get(i).setCard2(lista.get(r));
-			lista.remove(lista.get(r));
-			
-		}
-		for (int i = 0; i< g.size(); i++) {
-			if (i == 0) {
-				g.get(i).setRole(Role.CONSUL);
-			}
-			else if (i == 1) {
-				g.get(i).setRole(Role.PRETOR);
-			}
-			else if (i == 2) {
-				g.get(i).setRole(Role.EDIL);
-			}
-			else if (i == 3) {
-				g.get(i).setRole(Role.EDIL);
-			}
-			else {
-				g.get(i).setRole(Role.NO_ROL);
-			}
-		}
-		g.forEach(p-> playerService.savePlayer(p)); 
-			
+//		
+//		List<Faction> lista = new ArrayList<>();
+//		for (int i = 0; i<g.size()-1;i++) {
+//			lista.add(Faction.LOYAL);
+//			lista.add(Faction.TRAITOR);
+//		}
+//		lista.add(Faction.MERCHANT);
+//		lista.add(Faction.MERCHANT);
+//		
+//		for (int i = 0; i<g.size();i++) {
+//			Integer r = (int) Math.floor(Math.random()*(lista.size()-1));
+//			g.get(i).setCard1(lista.get(r));
+//			lista.remove(lista.get(r));
+//			r = (int) Math.floor(Math.random()*(lista.size()-1));
+//			g.get(i).setCard2(lista.get(r));
+//			lista.remove(lista.get(r));
+//			
+//		}
+//		for (int i = 0; i< g.size(); i++) {
+//			if (i == 0) {
+//				g.get(i).setRole(Role.CONSUL);
+//			}
+//			else if (i == 1) {
+//				g.get(i).setRole(Role.PRETOR);
+//			}
+//			else if (i == 2) {
+//				g.get(i).setRole(Role.EDIL);
+//			}
+//			else if (i == 3) {
+//				g.get(i).setRole(Role.EDIL);
+//			}
+//			else {
+//				g.get(i).setRole(Role.NO_ROL);
+//			}
+//		}
+//		g.forEach(p-> playerService.savePlayer(p)); 
+//			
 
 		playerService.roleAndCardsAsignation(match);
 		match.setRound(1);

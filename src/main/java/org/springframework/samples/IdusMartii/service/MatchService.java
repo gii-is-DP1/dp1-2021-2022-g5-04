@@ -6,6 +6,7 @@ import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
+import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
@@ -28,6 +29,10 @@ public class MatchService {
     private AuthoritiesService authoritiesService;
     @Autowired
     private PlayerService playerService;
+    @Autowired
+    private AchievementService achievementService;
+    @Autowired
+    private AchievementUserService achievementUserService;
     
 	@Transactional
 	public Iterable<Match> findAll(){
@@ -235,6 +240,13 @@ public class MatchService {
 			}
 		}
     }
+    
+    @Transactional
+    public List<Player> findWinners(Match match){
+    	Faction faccion = match.getWinner();
+    	return playerRepository.findWinners(match, faccion);
+    }
+    
     @Transactional
     public Faction sufragium(Match match) throws DataAccessException {
     	int numeroJugadores = match.getPlayers().size();
@@ -244,25 +256,25 @@ public class MatchService {
     	} else if (match.getVotesAgainst() - match.getVotesInFavor() >= 2 && match.getRound() == 3) {
     		faccionGanadora = Faction.TRAITOR;
     	} else if (numeroJugadores == 5) {
-    		if (match.getVotesInFavor() == 13) {
+    		if (match.getVotesInFavor() >= 13) {
     			faccionGanadora = Faction.TRAITOR;
     		} else if (match.getVotesAgainst() == 13) {
     			faccionGanadora = Faction.LOYAL;
     		}
     	} else if (numeroJugadores == 6) {
-    		if (match.getVotesInFavor() == 15) {
+    		if (match.getVotesInFavor() >= 15) {
     			faccionGanadora = Faction.TRAITOR;
     		} else if (match.getVotesAgainst() == 15) {
     			faccionGanadora = Faction.LOYAL;
     		}
     	} else if (numeroJugadores == 7) {
-    		if (match.getVotesInFavor() == 17) {
+    		if (match.getVotesInFavor() >= 17) {
     			faccionGanadora = Faction.TRAITOR;
     		} else if (match.getVotesAgainst() == 17) {
     			faccionGanadora = Faction.LOYAL;
     		}
     	} else if (numeroJugadores == 8) {
-    		if (match.getVotesInFavor() == 20) {
+    		if (match.getVotesInFavor() >= 20) {
     			faccionGanadora = Faction.TRAITOR;
     		} else if (match.getVotesAgainst() == 20) {
     			faccionGanadora = Faction.LOYAL;
@@ -270,5 +282,19 @@ public class MatchService {
     	}
     	return faccionGanadora;
     }
+
+	public void registrarGanadores(Match match) {
+		List<Player> playersGanadores = playerService.findWinners(match);
+		List<Achievement> ganadas = achievementService.findByAchievementType("ganadas");
+		for(Player p : playersGanadores) {
+			p.getUser().setVictorias(p.getUser().getVictorias()+1);
+			playerService.savePlayer(p);
+			for(Achievement a : ganadas) {
+				if(p.getUser().getVictorias() == a.getValor()) {
+					achievementUserService.saveAchievementUser(p.getUser().getUsername(), 2);
+				}
+			}
+		}
+	}
     
 }

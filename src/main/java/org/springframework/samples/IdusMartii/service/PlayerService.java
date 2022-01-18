@@ -292,4 +292,10 @@ public class PlayerService {
 			}
 		}
 	}
+	
+	@Transactional
+	public List<Player> findWinners(Match match){
+		return playerRepository.findWinners(match, match.getWinner());
+	}
+	
 }

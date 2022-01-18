@@ -5,14 +5,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
-<c:if test="${admin}">
-<IdusMartii:adminLayout pageName="matches">
-   <h2>Partidas</h2>
-    
 
-    
-</IdusMartii:adminLayout>
-</c:if>
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="matches">
       <h2>Partidas</h2>

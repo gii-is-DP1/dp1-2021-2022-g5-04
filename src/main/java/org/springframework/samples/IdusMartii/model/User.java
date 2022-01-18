@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -51,6 +52,8 @@ public class User implements Serializable {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
+	
+	Integer victorias;
 	
 	@ManyToMany
 	@JoinTable(name = "achievement_user")
