@@ -11,8 +11,9 @@ import org.springframework.data.repository.query.Param;
 public interface UserRepository extends  CrudRepository<User, String>{
     
 	
-	  @Query("SELECT u FROM User u where u.username = :username")
-	    public User findByUsername(@Param("username") String username);
-	  
-	  
+
+	@Query("SELECT u FROM User u where u.username = :username")
+	public User findByUsername(@Param("username") String username);
+	@Query("SELECT u.friends FROM User u where u.username = :username")
+	 public List<List<User>>findFriends(@Param("username") String username);
 }

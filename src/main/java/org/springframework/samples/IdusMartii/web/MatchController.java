@@ -26,6 +26,7 @@ import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
+import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
@@ -53,13 +54,41 @@ public class MatchController {
 	
 
 	
+	
 	@GetMapping()
 	public String matchesList(ModelMap modelMap) {
+		String vista = "matches/matchesListMenu";
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		List<Match> matches = matchService.matches(user);
+		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("matches", matches);
+		if(matchService.isAdmin(user)){
+			return "matches/matchesList";
+		}
+		else{
+
+		
+		return vista;
+		}
+	}
+	@GetMapping(path="/created")
+	public String matchesListCreated(ModelMap modelMap) {
+		String vista = "matches/matchesList";
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		List<Match> matches = matchService.matchesCreated(user);
+		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("matches", matches);
+		modelMap.addAttribute("CorP", "creadas");
+		return vista;
+	}
+	@GetMapping(path="/played")
+	public String matchesListPlayed(ModelMap modelMap) {
 		String vista = "matches/matchesList";
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
 		List<Match> matches = matchService.matches(user);
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
+		modelMap.addAttribute("CorP", "jugadas");
 		return vista;
 	}
 	@GetMapping(path="/spectator")
@@ -220,10 +249,10 @@ public class MatchController {
 			//else if(achievementUserService.checkAchievement5Games(u)) {
 				//achievementUserService.saveAchievementUser(u.getUsername(), 5);
 			
-			
-			for(int k = 1; k<achievementService.achievementCount();k++) {
-				if (achievementUserService.checkAchievement1(u, k) == true) {
-					achievementUserService.saveAchievementUser(u.getUsername(),k);
+			List<Achievement> jugadas = achievementService.findByAchievementType("jugadas");
+			for(int k = 0; k<jugadas.size();k++) {
+				if (achievementUserService.checkAchievementJugadas(u,jugadas.get(k).getValor()) == true) {
+					achievementUserService.saveAchievementUser(u.getUsername(),jugadas.get(k).getId());
 			}
 			}
 		}

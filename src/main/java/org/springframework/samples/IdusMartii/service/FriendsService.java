@@ -10,35 +10,19 @@ import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.repository.AchievementUserRepository;
+import org.springframework.samples.IdusMartii.repository.FriendsRepository;
 import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class AchievementUserService {
+public class FriendsService {
 	@Autowired
-	private AchievementUserRepository achievementUserRepository;
-	@Autowired
-	private PlayerService playerService;
+	private FriendsRepository friendsRepository;
 	
 	@Transactional
-	public void saveAchievementUser(String username, Integer id) throws DataAccessException {
-		achievementUserRepository.saveAchievementUser(username, Integer.valueOf(id));
+	public void saveFriends(String username1, String username2) throws DataAccessException {
+		friendsRepository.saveFriends(username1, username2);
 	}
 	
-	@Transactional
-	public boolean checkAchievementJugadas(User user, Integer valor) throws DataAccessException {
-		return playerService.findbyUsername(user.getUsername()).size() == valor ;
-		
-	}
-	
-	
-//	@Transactional
-	//public boolean checkAchievement5Games(User user) throws DataAccessException {
-	//	return playerService.findbyUsername(user.getUsername()).size() == 5;
-//	}
-	
-	
-	
-
 }

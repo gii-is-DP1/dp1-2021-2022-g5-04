@@ -15,7 +15,8 @@
  */
 package org.springframework.samples.IdusMartii.web;
 
-import java.util.ArrayList;
+
+import java.io.Console;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,12 +67,23 @@ public class UserController {
 		String vista = "users/listadoUsuarios";
 	
 		Iterable< User> users =  userService.findAll();
+	
 		modelMap.addAttribute("users", users);
-        modelMap.addAttribute("usert", currentUserService.showCurrentUser());
-
-		
+        modelMap.addAttribute("usert", currentUserService.showCurrentUser())
 		return vista;
 	}   
+    @GetMapping(path="/friends")
+	public String listadoAmigos(ModelMap modelMap) {
+		String vista = "users/listadoAmigos";
+		if(authoritiesService.getAuthorities(currentUserService.showCurrentUser())) {
+            modelMap.addAttribute("admin", true);
+    	}else {
+            modelMap.addAttribute("admin", false);
+    	}
+		List<User> friends =  userService.findFriends(currentUserService.showCurrentUser());
+		modelMap.addAttribute("friends", friends);
+		return vista;
+	}  
     
     @GetMapping(path="/new")
     public String crearJugador(ModelMap modelMap) {
@@ -107,8 +119,7 @@ public class UserController {
        
         	User u = userService.findbyUsername(id);
         
-        	//u.setUsername(user.getUsername());
-        	//No se  puede modificar el username porque es la id del user
+        
         	u.setEmail(user.getEmail());
         	u.setPassword(user.getPassword());
     		userService.saveUser(u);
@@ -117,14 +128,11 @@ public class UserController {
         
         return "redirect:/users";
     }
-    @GetMapping(path="/find")
-    public String buscarJugador( ModelMap modelMap) {
-    	if(authoritiesService.getAuthorities(currentUserService.showCurrentUser())==true) {
-            modelMap.addAttribute("admin", true);
-    	}else {
-            modelMap.addAttribute("admin", false);
-    	}
-        return "users/buscarUsuario";
+  
+    @PostMapping(path="/delete/{username}")
+    public String eliminarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
+    	User currentUser = userService.findbyUsername(currentUserService.showCurrentUser());
+    	userService.deleteFriend(currentUser, username);
+    	return "redirect:/users/friends";
     }
-
 }
