@@ -101,15 +101,17 @@ public class UserController {
         }
         return "redirect:/";
     }
+    
     @PostMapping(path="/{id}/save")
     public String guardarJugadorModificado(@Valid User user, BindingResult result, ModelMap modelMap, @PathVariable("id") String id) {
        
-        	User u = user;
-        userService.deleteById(id);
+        	User u = userService.findbyUsername(id);
         
-        	
+        	//u.setUsername(user.getUsername());
+        	//No se  puede modificar el username porque es la id del user
+        	u.setEmail(user.getEmail());
+        	u.setPassword(user.getPassword());
     		userService.saveUser(u);
-           // modelMap.addAttribute("users", user);
             authoritiesService.saveAuthorities(user.getUsername(), "user");
             modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
         
