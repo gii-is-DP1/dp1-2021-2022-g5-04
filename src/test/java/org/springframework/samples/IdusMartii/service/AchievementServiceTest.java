@@ -34,7 +34,7 @@ public class AchievementServiceTest {
     public void testAchievementCount(){
         int contar= achievementService.achievementCount();
         
-        assertEquals(contar, 4);;
+        assertEquals(contar, 2);;
     }
 
     @Test
@@ -44,9 +44,7 @@ public class AchievementServiceTest {
 		logrosT.forEach(l -> logros.add(l.getName()));
 
         assertEquals(logros.get(0), "Primera Partida");
-        assertEquals(logros.get(1), "El Edil");
-        assertEquals(logros.get(2), "El Cónsul");
-        assertEquals(logros.get(3), "El Pretor");
+        assertEquals(logros.get(1), "5 Partidas");
 
     }
 
@@ -58,6 +56,36 @@ public class AchievementServiceTest {
 
         assertThat(listaLogros.size()).isEqualTo(2);
 
+    }
+
+    @Test 
+    public void testSaveAchievement(){
+        Achievement logro = new Achievement();
+        logro.setName("Nuevo Logro");
+        this.achievementService.saveAchievement(logro);
+        Iterable <Achievement> logros = achievementService.findAll();
+		List <String> nomLogros = new ArrayList<>();
+		logros.forEach(p -> nomLogros.add(p.getName()));
+
+        assertThat(nomLogros.size()).isEqualTo(3);
+    }
+
+    @Test
+    public void testFindById(){
+        Achievement logroId=achievementService.findById(1);
+
+        assertThat(logroId.getName()).isEqualTo("Primera Partida");
+    }
+
+    @Test
+    public void testNextId(){
+        Achievement logro = new Achievement();
+        logro.setName("Nuevo Logro");
+        this.achievementService.saveAchievement(logro);
+
+        Integer listLogro= achievementService.nextId();
+
+        assertThat(listLogro).isEqualTo(3);
     }
     
 }
