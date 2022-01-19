@@ -328,7 +328,11 @@ public class MatchService {
 		List<Player> playersGanadores = playerService.findWinners(match);
 		List<Achievement> ganadas = achievementService.findByAchievementType("ganadas");
 		for(Player p : playersGanadores) {
-			p.getUser().setVictorias(p.getUser().getVictorias()+1);
+			Integer victorias = 0;
+			if(p.getUser().getVictorias() != null) {
+				victorias = p.getUser().getVictorias();
+			}
+			p.getUser().setVictorias(victorias+1);
 			playerService.savePlayer(p);
 			for(Achievement a : ganadas) {
 				if(p.getUser().getVictorias() == a.getValor()) {
