@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
@@ -22,6 +25,7 @@ import org.springframework.samples.IdusMartii.service.AchievementUserService;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
+import org.springframework.samples.IdusMartii.IdusMartiiApplication;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
@@ -33,6 +37,7 @@ import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
 import javax.servlet.http.HttpServletResponse;
 
+@Slf4j
 @Controller
 @RequestMapping("/matches")
 public class MatchController {
@@ -276,45 +281,7 @@ public class MatchController {
 			}
 			}
 		}
-		
-		
-//		
-//		List<Faction> lista = new ArrayList<>();
-//		for (int i = 0; i<g.size()-1;i++) {
-//			lista.add(Faction.LOYAL);
-//			lista.add(Faction.TRAITOR);
-//		}
-//		lista.add(Faction.MERCHANT);
-//		lista.add(Faction.MERCHANT);
-//		
-//		for (int i = 0; i<g.size();i++) {
-//			Integer r = (int) Math.floor(Math.random()*(lista.size()-1));
-//			g.get(i).setCard1(lista.get(r));
-//			lista.remove(lista.get(r));
-//			r = (int) Math.floor(Math.random()*(lista.size()-1));
-//			g.get(i).setCard2(lista.get(r));
-//			lista.remove(lista.get(r));
-//			
-//		}
-//		for (int i = 0; i< g.size(); i++) {
-//			if (i == 0) {
-//				g.get(i).setRole(Role.CONSUL);
-//			}
-//			else if (i == 1) {
-//				g.get(i).setRole(Role.PRETOR);
-//			}
-//			else if (i == 2) {
-//				g.get(i).setRole(Role.EDIL);
-//			}
-//			else if (i == 3) {
-//				g.get(i).setRole(Role.EDIL);
-//			}
-//			else {
-//				g.get(i).setRole(Role.NO_ROL);
-//			}
-//		}
-//		g.forEach(p-> playerService.savePlayer(p)); 
-//			
+			
 
 		playerService.roleAndCardsAsignation(match);
 		match.setRound(1);
