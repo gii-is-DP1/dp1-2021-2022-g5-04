@@ -15,10 +15,6 @@ public interface FriendsRepository extends CrudRepository<Achievement, Integer>{
 	@Modifying
 	@Query(value="INSERT INTO FRIENDS(user_username, friends_username) VALUES (:username1,:username2) AND INSERT INTO FRIENDS(user_username, friends_username) VALUES (:username2,:username1)",nativeQuery=true)
     public void saveFriends(@Param("username") String username1, @Param("username2") String username2);
-
-	
-    
-    
     
     
 

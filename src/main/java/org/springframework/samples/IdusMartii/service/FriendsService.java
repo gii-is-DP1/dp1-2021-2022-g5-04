@@ -25,4 +25,8 @@ public class FriendsService {
 		friendsRepository.saveFriends(username1, username2);
 	}
 	
+	@Transactional
+	public void deleteAllFriendsFromUser(User user) throws DataAccessException {
+		friendsRepository.deleteFriendRequester(user);
+	}
 }

@@ -6,14 +6,13 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 
-<IdusMartii:layout pageName="usersCreation">
+<IdusMartii:adminLayout pageName="usersCreation">
     <h2>
     Achievements
     ${achievement.id}
     </h2>
     <form:form modelAttribute="achievement" class="form-horizontal" id="add-user-form" action="/achievements/${achievement.id}/save">
         <div class="form-group has-feedback">
-          
             <input type="hidden" name="id" value="${achievement.id}"/>
             <IdusMartii:inputField label="name" name="name"/>
             <IdusMartii:inputField label="description" name="description"/>
@@ -24,10 +23,8 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-             
-                        <button class="btn btn-default" type="submit">Confirmar cambios</button>
-                  
+            	<button class="btn btn-default" type="submit">Confirmar cambios</button>   
             </div>
         </div>
     </form:form>
-</IdusMartii:layout>
+</IdusMartii:adminLayout>
