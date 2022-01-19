@@ -60,9 +60,6 @@
                
         </tbody>
     </table>
-    <spring:url value="/matches/new" var="matchUrl">
-    </spring:url>
-    <a href= "${fn:escapeXml(matchUrl)}">Crear</a>
 </IdusMartii:adminLayout>
 </c:if>
 <c:if test="${admin eq false}">
@@ -117,8 +114,5 @@
                
         </tbody>
     </table>
-    <spring:url value="/matches/new" var="matchUrl">
-    </spring:url>
-    <a href= "${fn:escapeXml(matchUrl)}">Crear</a>
 </IdusMartii:layout>
 </c:if>
