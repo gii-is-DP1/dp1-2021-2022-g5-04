@@ -28,7 +28,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.samples.IdusMartii.repository.UserRepository;
+import org.springframework.samples.IdusMartii.web.MatchController;
 import org.springframework.samples.IdusMartii.model.User;
 
 /**
@@ -37,6 +41,7 @@ import org.springframework.samples.IdusMartii.model.User;
  *
  * @author Michael Isvy
  */
+@Slf4j
 @Service
 public class UserService {
 	@Autowired
@@ -60,15 +65,19 @@ public class UserService {
 	
 	@Transactional
 	public void saveUser(User user) throws DataAccessException {
+		log.debug("usando metodo saveUser()");
 		user.setEnabled(true);
 		userRepository.save(user);
 	}
 	@Transactional
 	public Optional<User> findUser(String username) {
+		log.debug("usando metodo findUser()");
+		log.info("atributo:" + username);
 		return userRepository.findById(username);
 	}
 	@Transactional
 	public Iterable<User> findAll(){
+		log.info("Buscando lista de usuarios");
 		return userRepository.findAll();
 	}
 	@Transactional
@@ -93,17 +102,23 @@ public class UserService {
 	}
 	@Transactional
 	public User findbyUsername(String username){
+		log.debug("Usando metodo findbyUsername()");
+		log.info("Atributo:" + username);
 		return userRepository.findByUsername(username);
 	}
+  
 	@Transactional
-	public List<User> findFriends(String username){
-		return userRepository.findByUsername(username).getFriends();
+	public List<User> findFriends(String user){
+		log.debug("Usando metodo findFriends()");
+		log.info("Atributo:" + user);
+		return userRepository.findByUsername(user).getFriends();
 	}
 	
 	@Transactional
 	public void deleteFriend(User user, String username) throws DataAccessException {
+		log.debug("Usando metodo deleteFriend()");
 		List<User> friends = user.getFriends();
-		User friendToBeDeleted = userRepository.findByUsername(username);
+		User friendToBeDeleted = this.findbyUsername(username);
 		friends.remove(friendToBeDeleted);
 		user.setFriends(friends);
 		saveUser(user);

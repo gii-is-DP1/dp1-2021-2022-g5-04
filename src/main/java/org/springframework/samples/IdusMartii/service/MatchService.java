@@ -17,8 +17,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.dao.DataAccessException;
 
+@Slf4j
 @Service
 public class MatchService {
     @Autowired 
@@ -36,14 +40,17 @@ public class MatchService {
     
 	@Transactional
 	public Iterable<Match> findAll(){
+		log.info("buscando partidas");
 		return matchRepository.findAll();
 	}
 
 	@Transactional
 	public boolean isAdmin(User user) throws DataAccessException {
 		if (authoritiesService.getAuthorities(user.getUsername())) {
+			log.info("El user es admin");
 			return true;
 		} else {
+			log.info("El user no es admin");
 			return false;
 		}
 	}
