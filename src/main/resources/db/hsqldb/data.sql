@@ -47,3 +47,8 @@ INSERT INTO friends(user_username,friends_username) VALUES ('admin1', 'friend3')
 INSERT INTO friends(user_username,friends_username) VALUES ('friend3', 'admin1');
 
 
+INSERT INTO friends_invitations(id,username2,username) VALUES (1,'friend1','ppp');
+
+
+
+
