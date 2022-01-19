@@ -70,6 +70,7 @@ public class MatchController {
 		return vista;
 		
 	}
+	
 	@GetMapping(path="/finished")
 	public String matchesListFinished(ModelMap modelMap) {
 		String vista = "matches/matchesList";
@@ -80,6 +81,7 @@ public class MatchController {
 		modelMap.addAttribute("CorP", "terminadas");
 		return vista;
 	}
+	
 	@GetMapping(path="/progress")
 	public String matchesListProgress(ModelMap modelMap) {
 		String vista = "matches/matchesList";
@@ -90,6 +92,7 @@ public class MatchController {
 		modelMap.addAttribute("CorP", "en progreso");
 		return vista;
 	}
+	
 	@GetMapping(path="/created")
 	public String matchesListCreated(ModelMap modelMap) {
 		String vista = "matches/matchesList";
@@ -100,6 +103,7 @@ public class MatchController {
 		modelMap.addAttribute("CorP", "creadas");
 		return vista;
 	}
+	
 	@GetMapping(path="/lobby")
 	public String matchesListLobby(ModelMap modelMap) {
 		String vista = "matches/matchesList";
@@ -110,6 +114,7 @@ public class MatchController {
 		modelMap.addAttribute("CorP", "en lobby");
 		return vista;
 	}
+	
 	@GetMapping(path="/played")
 	public String matchesListPlayed(ModelMap modelMap) {
 		String vista = "matches/matchesList";
@@ -120,6 +125,7 @@ public class MatchController {
 		modelMap.addAttribute("CorP", "jugadas");
 		return vista;
 	}
+	
 	@GetMapping(path="/spectator")
 	public String spectatorMode(ModelMap modelMap) {
 		String vista = "matches/spectatorModeList";
@@ -129,6 +135,7 @@ public class MatchController {
 		modelMap.addAttribute("matches", matches);
 		return vista;
 	}
+	
 	@GetMapping(path="/{id_match}/spectator")
 	public String spectatorModeMatch(ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
 		String vista = "matches/spectatorMode";
@@ -171,7 +178,6 @@ public class MatchController {
 			invitationService.acceptInvitation(id_invt, match, user);
 			return "redirect:/matches/" + match.getId() + "/new";
 	}
- 
 
 	@GetMapping(path="/{id}/new")
 	public String editarPartida(ModelMap modelMap, @PathVariable("id") int id) {
@@ -194,9 +200,8 @@ public class MatchController {
 
 	@GetMapping(path="/{id}/match")
 	public String comenzarPartida(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
-		
 		String vista = "matches/partidaEnCurso";
-		response.addHeader("Refresh","5"); //Hacerlo con una llamada al servidor (ResController viene en teoría)
+		response.addHeader("Refresh","20"); //Es una decisión de diseño y la otra alternativa es implementar el RestController, pero no la cogimos por falta de tiempo
 		Match match = this.matchService.findById(id);
 		if(match.getRound()==0){
 			match.setRound(1);
@@ -240,7 +245,7 @@ public class MatchController {
 	}
 	@GetMapping(path="/{id}/ganador") 
 	public String ganador(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
-		response.addHeader("Refresh","5");
+		response.addHeader("Refresh","20");
 		String vista = "matches/ganador";
 		Match match = this.matchService.findById(id);
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
@@ -256,40 +261,30 @@ public class MatchController {
 		match.setWinner(matchService.sufragium(match));
 		matchService.saveMatch(match);
 		matchService.registrarGanadores(match);
-		
 		return vista;
 	}
 	
 	@PostMapping(path="/{id}/game/save")
 	public String guardarPartidaEmpezada(ModelMap modelMap, @PathVariable("id") int id) {
 		Match match = this.matchService.findById(id);
-
 		matchService.startMatch(match);
-
-
 		List<Player> g = playerService.jugadoresPartida(match);
-		
 		for (int i = 0; i<g.size();i++) {
 			User u = g.get(i).getUser();
 			String username = u.getUsername();
 			playerService.findbyUsername(username);
-			
 			List<Achievement> jugadas = achievementService.findByAchievementType("jugadas");
 			for(int k = 0; k<jugadas.size();k++) {
 				if (achievementUserService.checkAchievementJugadas(u,jugadas.get(k).getValor()) == true) {
 					achievementUserService.saveAchievementUser(u.getUsername(),jugadas.get(k).getId());
-			}
+				}
 			}
 		}
-			
-
 		playerService.roleAndCardsAsignation(match);
 		match.setRound(1);
 		matchService.saveMatch(match);
-
 		return  "redirect:/matches/" + id + "/match";
-	
-		}
+	}
 
 }
 

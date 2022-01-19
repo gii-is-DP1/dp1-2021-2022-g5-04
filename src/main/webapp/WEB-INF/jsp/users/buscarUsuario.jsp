@@ -6,37 +6,28 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 <c:if test="${admin}">
-<IdusMartii:adminLayout pageName="usersCreation">
-   
-    <form:form  modelAttribute="User" class="form-horizontal" id="add-user-form" action="/users" method="GET">
+<IdusMartii:adminLayout pageName="usersFinding">
+    <form:form modelAttribute="playerAux" class="form-horizontal" id="find-user-form" action="/users/find">
         <div class="form-group has-feedback">
-            <IdusMartii:inputField label="Username" name="username"/>
-            
-          
+            <IdusMartii:inputField label="Texto" name="name"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              
-                        <button class="btn btn-default" type="submit">Buscar</button>
-               
+            	<button class="btn btn-default" type="submit">Buscar</button>
             </div>
         </div>
     </form:form>
 </IdusMartii:adminLayout>
 </c:if>
 <c:if test="${admin eq false}">
-<IdusMartii:layout pageName="usersCreation">
-   
-    <form:form modelAttribute="user" class="form-horizontal" id="add-user-form" action="/users" method="GET">
+<IdusMartii:layout pageName="usersFinding">
+    <form:form modelAttribute="user" class="form-horizontal" id="find-user-form" action="/users/find" method="GET">
         <div class="form-group has-feedback">
             <IdusMartii:inputField label="Username" name="username"/>
-          
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-              
-                        <button class="btn btn-default" type="submit">Buscar</button>
-               
+            	<button class="btn btn-default" type="submit">Buscar</button>
             </div>
         </div>
     </form:form>

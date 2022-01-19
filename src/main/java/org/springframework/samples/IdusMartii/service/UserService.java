@@ -16,6 +16,7 @@
 package org.springframework.samples.IdusMartii.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,10 +44,18 @@ import org.springframework.samples.IdusMartii.model.User;
 @Slf4j
 @Service
 public class UserService {
-
+	@Autowired
 	private UserRepository userRepository;
 	@Autowired
 	private PlayerService playerService;
+	@Autowired
+	private AuthoritiesService authoritiesService;
+	@Autowired
+	private InvitationService invitationService;
+	@Autowired
+	private FriendsService friendsService;
+	@Autowired
+	private AchievementService achievementService;
 
 	@Autowired
 	public UserService(UserRepository userRepository) {
@@ -69,13 +80,33 @@ public class UserService {
 		log.info("Buscando lista de usuarios");
 		return userRepository.findAll();
 	}
-	
+	@Transactional
+	public Page<User> findAllUsersWithPagination(Pageable pageable){
+		return userRepository.findAllUsersWithPagination(pageable);
+	}
+	@Transactional
+	public List<Integer> createNumberOfPagesList(Page<User> userPage, int pageNumber){
+		int numberOfPages = (userPage.getNumberOfElements()/5) + 1;
+		List<Integer> numberOfPagesList = new ArrayList<Integer>();
+		int i = 1;
+		while(i != numberOfPages + 1) {
+			numberOfPagesList.add(i);
+			i++;
+		}
+		numberOfPagesList.remove(numberOfPagesList.indexOf(pageNumber));
+		return numberOfPagesList;
+	}
+	@Transactional
+	public List<User> findUsersByText(String text){
+		return userRepository.findUsersByText(text);
+	}
 	@Transactional
 	public User findbyUsername(String username){
 		log.debug("Usando metodo findbyUsername()");
 		log.info("Atributo:" + username);
 		return userRepository.findByUsername(username);
 	}
+  
 	@Transactional
 	public List<User> findFriends(String user){
 		log.debug("Usando metodo findFriends()");
@@ -84,7 +115,6 @@ public class UserService {
 	}
 	
 	@Transactional
-
 	public void deleteFriend(User user, String username) throws DataAccessException {
 		log.debug("Usando metodo deleteFriend()");
 		List<User> friends = user.getFriends();
@@ -96,12 +126,28 @@ public class UserService {
 	}
 	
 	@Transactional
-	public void deleteById(String id){
-		 userRepository.deleteById(id);;
+	public void delete(User user){
+		if (user.getAchievements().size() > 0) {
+			achievementService.deleteAllAchievementsFromUser(user);
+		}
+		invitationService.deleteAllInvitationsFromUser(user);
+		if (user.getFriends().size() > 0) {
+			friendsService.deleteAllFriendsFromUser(user);
+		}
+		playerService.deleteAllPlayersFromUser(user);
+		userRepository.delete(user);
 	}
 	@Transactional
 	public Integer matchesPlayedForUser(User user) throws DataAccessException {
-		return playerService.findbyUsername(user.getUsername()).size() ;
+		return playerService.findbyUsername(user.getUsername()).size();
 		
+	}
+	@Transactional
+	public boolean isAdmin(User user) throws DataAccessException {
+		if (authoritiesService.getAuthorities(user.getUsername())) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
