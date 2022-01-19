@@ -27,4 +27,8 @@ public class FriendsService {
 		
 	}
 	
+	@Transactional
+	public void deleteAllFriendsFromUser(User user) throws DataAccessException {
+		friendsRepository.deleteFriendRequester(user);
+	}
 }

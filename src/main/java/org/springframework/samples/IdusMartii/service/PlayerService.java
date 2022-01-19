@@ -178,7 +178,7 @@ public class PlayerService {
 			boolean resultado = false;
 			if (player.getRole() == Role.CONSUL && player != match.getPlayers().get(0)) {
 				resultado = true;
-			} else if (player.getRole() == Role.CONSUL && player == match.getPlayers().get(0) && match.getRound() == 3 && afterVotes(player, match)){
+			} else if (player.getRole() == Role.CONSUL && player == match.getPlayers().get(0) && match.getRound() == 2 && afterVotes(player, match)){
 				resultado = true;
 			}
 			return resultado;
@@ -297,5 +297,15 @@ public class PlayerService {
 	public List<Player> findWinners(Match match){
 		return playerRepository.findWinners(match, match.getWinner());
 	}
-	
+	@Transactional
+	public List<Player> findPlayersFromUser(User user) {
+		return playerRepository.findPlayersFromUser(user);
+	}
+	@Transactional
+	public void deleteAllPlayersFromUser(User user) {
+		List<Player> playersFromUser = findPlayersFromUser(user);
+		for (Player p: playersFromUser) {
+			playerRepository.delete(p);
+		}
+	}
 }

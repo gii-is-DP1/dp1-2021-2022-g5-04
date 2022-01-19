@@ -9,27 +9,21 @@
 
 <IdusMartii:adminLayout pageName="users">
     <h2>Users</h2>
+
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
             <th style="width: 150px;">Username</th>
-            <th style="width: 200px;">Password</th>
-            <th style="width: 200px;">Email</th>
         </tr>
         </thead>
         <tbody>
+      
            <c:forEach items="${users}" var="user">
             <tr>
                 <td>
                 	<c:out value="${user.username}"/>
                 </td>
-                <td>
-                    <c:out value="${user.password}"/>
-                </td>
-                <td>
-                    <c:out value="${user.email}"/>
-                </td>
-               <td>
+              <td>
 				<spring:url value="/users/{id}/edit" var="userUrl">
 		    	<spring:param name="id" value="${user.username}"/>
 				</spring:url>
@@ -40,15 +34,14 @@
 		    	<spring:param name="username" value="${user.username}"/>
 				</spring:url> 
                     <a href="${fn:escapeXml(userrUrl)}">Eliminar</a>
-           	   </td>                   	
+           	   </td>
+                                   	
             </tr>       
            </c:forEach>
+              
+                
+                	
         </tbody>
     </table>
-    <c:forEach items="${numberOfPagesList}" var="numberOfPage">
-    	<spring:url value="/users?page={pageNumber}" var="numberUrl">
-    	<spring:param name="pageNumber" value="${numberOfPage}"/>
-    	</spring:url>
-    		<a href="${fn:escapeXml(numberUrl)}">${numberOfPage}</a>
-    </c:forEach>
+    
 </IdusMartii:adminLayout>

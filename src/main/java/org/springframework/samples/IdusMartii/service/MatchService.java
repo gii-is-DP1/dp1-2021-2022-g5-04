@@ -323,11 +323,10 @@ public class MatchService {
     	}
     	return faccionGanadora;
     }
-
 	public void registrarGanadores(Match match) {
-		List<Player> playersGanadores = playerService.findWinners(match);
+		List<Player> winners = playerService.findWinners(match);
 		List<Achievement> ganadas = achievementService.findByAchievementType("ganadas");
-		for(Player p : playersGanadores) {
+		for(Player p : winners) {
 			Integer victorias = 0;
 			if(p.getUser().getVictorias() != null) {
 				victorias = p.getUser().getVictorias();
@@ -341,5 +340,4 @@ public class MatchService {
 			}
 		}
 	}
-    
 }

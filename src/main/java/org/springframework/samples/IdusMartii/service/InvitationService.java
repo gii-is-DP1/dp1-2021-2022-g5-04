@@ -64,7 +64,13 @@ public class InvitationService {
 			matchService.saveMatch(match);
 			playerService.savePlayer(player);
 	}
-	
+	@Transactional
+	public void deleteAllInvitationsFromUser(User user) {
+		List<Invitation> invitationsFromUser = invitationRepository.findByUser(user);
+		for (Invitation i: invitationsFromUser) {
+			invitationRepository.delete(i);
+		}
+	}
     
     
 }
