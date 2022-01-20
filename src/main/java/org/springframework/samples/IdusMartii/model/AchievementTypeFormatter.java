@@ -24,7 +24,6 @@ public class AchievementTypeFormatter implements Formatter<AchievementType>{
       
 	@Override
      public AchievementType parse(String name, Locale locale) throws ParseException {
-	     // TODO Auto-generated method stub
 	 	if(achievementService.getAchievementTypeByName(name) != null) {
 	 		return achievementService.getAchievementTypeByName(name);
 	 	}

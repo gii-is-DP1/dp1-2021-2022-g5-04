@@ -1,6 +1,7 @@
 package org.springframework.samples.IdusMartii.model;
 
 import javax.persistence.Entity;
+import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.ManyToOne;
@@ -26,18 +27,11 @@ public class Player extends AuditableEntity{
 		private boolean asigned;
 		
 		
-		@OneToOne
+		@OneToOne(cascade = CascadeType.ALL)
 	    @JoinColumn(name = "username", referencedColumnName = "username")
 		User user;
 		@ManyToOne
 		@JoinColumn(name = "match_id")
 		private Match match;
-		
-		
-
-
-		// @ManyToOne
-		// @JoinColumn(name = "match_id")
-		// private Match match;
 		
 }
