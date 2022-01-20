@@ -87,7 +87,8 @@ INSERT INTO types VALUES (6, 'hamster');
 -- INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02', 'rabies shot');
 -- INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 -- INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
-INSERT INTO matches (id,name,round,turn,votes_in_favor,votes_against,plays,finished)VALUES (1, 'partida1', 0, 0, 0, 0, 0, false);
+INSERT INTO chat(id,mensaje,fecha) VALUES (1,'hola1','2022-01-19');
+INSERT INTO matches (id,name,round,turn,votes_in_favor,votes_against,plays,finished,chat_id)VALUES (1, 'partida1', 0, 0, 0, 0, 0, false,1);
 
 INSERT INTO users(email,username,password,enabled) VALUES ('admin@gmail.com','admin1','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');

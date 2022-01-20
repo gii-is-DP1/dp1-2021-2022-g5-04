@@ -20,6 +20,7 @@ import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.AchievementService;
 import org.springframework.samples.IdusMartii.service.AchievementUserService;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
+import org.springframework.samples.IdusMartii.service.ChatService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
@@ -31,6 +32,7 @@ import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.IdusMartii.model.Chat;
 import javax.servlet.http.HttpServletResponse;
 
 @Controller
@@ -51,6 +53,8 @@ public class MatchController {
     AchievementUserService achievementUserService;
 	@Autowired
     AchievementService achievementService;
+	@Autowired
+	ChatService chatService;
 	
 
 	
@@ -323,6 +327,8 @@ public class MatchController {
 		return  "redirect:/matches/" + id + "/match";
 	
 		}
+
+		
 
 }
 
