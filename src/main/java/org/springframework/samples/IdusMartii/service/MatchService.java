@@ -17,8 +17,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.dao.DataAccessException;
 
+@Slf4j
 @Service
 public class MatchService {
     @Autowired 
@@ -36,14 +40,17 @@ public class MatchService {
     
 	@Transactional
 	public Iterable<Match> findAll(){
+		log.info("buscando partidas");
 		return matchRepository.findAll();
 	}
 
 	@Transactional
 	public boolean isAdmin(User user) throws DataAccessException {
 		if (authoritiesService.getAuthorities(user.getUsername())) {
+			log.info("El user es admin");
 			return true;
 		} else {
+			log.info("El user no es admin");
 			return false;
 		}
 	}
@@ -323,11 +330,10 @@ public class MatchService {
     	}
     	return faccionGanadora;
     }
-
 	public void registrarGanadores(Match match) {
-		List<Player> playersGanadores = playerService.findWinners(match);
+		List<Player> winners = playerService.findWinners(match);
 		List<Achievement> ganadas = achievementService.findByAchievementType("ganadas");
-		for(Player p : playersGanadores) {
+		for(Player p : winners) {
 			Integer victorias = 0;
 			if(p.getUser().getVictorias() != null) {
 				victorias = p.getUser().getVictorias();
@@ -341,5 +347,4 @@ public class MatchService {
 			}
 		}
 	}
-    
 }

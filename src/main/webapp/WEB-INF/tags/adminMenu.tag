@@ -51,10 +51,15 @@
 					<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
 					<span>Invitaciones</span>
 				</petclinic:menuItem>	
-				<petclinic:menuItem active="${name eq 'Users'}" url="/users"
+				<petclinic:menuItem active="${name eq 'Users'}" url="/users?page=1"
 					title="Usuarios">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-					<span>Buscar Usuario</span>
+					<span>Usuarios</span>
+				</petclinic:menuItem>
+				<petclinic:menuItem active="${name eq 'Find Users'}" url="/users/find"
+					title="Buscar Usuarios">
+					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+					<span>Buscar Usuarios</span>
 				</petclinic:menuItem>			
 			</ul>
 

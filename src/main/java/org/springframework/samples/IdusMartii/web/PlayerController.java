@@ -66,6 +66,7 @@ public class PlayerController {
         String vista = "players/revisadoVoto";
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
         Player player = playerService.findbyId(id);
+		modelMap.addAttribute("voteCard", playerService.showVoteCard(player.getVote()));
         modelMap.addAttribute("player", player);
         modelMap.addAttribute("idMatch", idMatch);
         modelMap.addAttribute("admin", matchService.isAdmin(user));
