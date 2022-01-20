@@ -55,8 +55,6 @@ public class FriendInvitationController {
 			FriendInvitation friendInvitation = friendInvitationService.findById(id_invt);
 			friendInvitationService.deleteFriendInvitation(friendInvitation);
 			return "redirect:/friendInvitations";
-			
-			
 	}
 	@PostMapping(path="/{userRequester}/{userRequested}/save")
 	public String guardarInvitacion(ModelMap modelMap, @PathVariable("userRequester") User userRequester, @PathVariable("userRequested") User userRequested) {
@@ -78,7 +76,7 @@ public class FriendInvitationController {
 		log.debug("Id de solicitud: " + id_invt);
 		log.info("Accediendo al servicio de solicitudes de amistad por el método acceptFriendInvitatoin()");
 			friendInvitationService.acceptFriendInvitation(id_invt);
-			return "redirect:/friendInvitations";		
+			return "redirect:/friendInvitations";
 	}
 	
 }

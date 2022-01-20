@@ -23,6 +23,7 @@ import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.AchievementService;
 import org.springframework.samples.IdusMartii.service.AchievementUserService;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
+import org.springframework.samples.IdusMartii.service.ChatService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
 import org.springframework.samples.IdusMartii.IdusMartiiApplication;
@@ -56,6 +57,7 @@ public class MatchController {
     AchievementUserService achievementUserService;
 	@Autowired
     AchievementService achievementService;
+	
 	
 
 	
@@ -358,6 +360,8 @@ public class MatchController {
 		matchService.saveMatch(match);
 		return  "redirect:/matches/" + id + "/match";
 	}
+
+		
 
 }
 

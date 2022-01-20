@@ -22,6 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 public class FriendsService {
 	@Autowired
 	private FriendsRepository friendsRepository;
+	@Autowired
+	private UserService userService;
 	
 	@Transactional
 	public void saveFriends(String username1, String username2) throws DataAccessException {
@@ -29,11 +31,13 @@ public class FriendsService {
 		log.debug("atributos: " + username1 + ", " + username2);
 		friendsRepository.saveFriends1(username1, username2);
 		friendsRepository.saveFriends2(username2, username1);
-		
 	}
 	
 	@Transactional
 	public void deleteAllFriendsFromUser(User user) throws DataAccessException {
-		friendsRepository.deleteFriendRequester(user);
+		List<String> friendsFromUser = friendsRepository.findUserFriendsFromUsername(user.getUsername());
+		for (String s: friendsFromUser) {
+			userService.deleteFriend(user, s);
+		}
 	}
 }

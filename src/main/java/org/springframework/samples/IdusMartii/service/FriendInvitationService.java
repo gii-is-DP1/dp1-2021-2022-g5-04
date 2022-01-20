@@ -60,11 +60,15 @@ public class FriendInvitationService {
 			log.info("Aceptando solicitud de amistad...");
 			log.debug("Id de solicitud: " + id_invt);
 			FriendInvitation friendInvitation = friendInvitationService.findById(id_invt);
-			System.out.println(friendInvitation.getUser_requester().getUsername());
-			
 			friendsService.saveFriends(friendInvitation.getUser_requester().getUsername(), friendInvitation.getUser_requested().getUsername());
 			friendInvitationService.deleteFriendInvitation(friendInvitation);
 		}
-		
+		@Transactional
+		public void deleteFriendInvitationsFromUser(User user) throws DataAccessException {
+			List<FriendInvitation> friendInvitationsFromUser = friendInvitationRepository.findFriendInvitationsByUserRequester(user);
+			for (FriendInvitation fi: friendInvitationsFromUser) {
+				friendInvitationRepository.delete(fi);
+			}
+		}
 
 }

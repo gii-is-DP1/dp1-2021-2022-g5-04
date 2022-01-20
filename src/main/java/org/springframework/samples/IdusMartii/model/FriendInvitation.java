@@ -24,9 +24,5 @@ public class FriendInvitation extends BaseEntity{
 	@OneToOne()
 	@JoinColumn(name = "username2")
 	private User user_requested;
-	
-	
-	
-	
 
 }
