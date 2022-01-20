@@ -45,12 +45,9 @@ public class FriendInvitationController {
 			FriendInvitation friendInvitation = friendInvitationService.findById(id_invt);
 			friendInvitationService.deleteFriendInvitation(friendInvitation);
 			return "redirect:/friendInvitations";
-			
-			
 	}
 	@PostMapping(path="/{userRequester}/{userRequested}/save")
 	public String guardarInvitacion(ModelMap modelMap, @PathVariable("userRequester") User userRequester, @PathVariable("userRequested") User userRequested) {
-		
 		FriendInvitation friendInvitation = new FriendInvitation();
 		Date fecha = new Date();
 		friendInvitation.setFecha(fecha);
@@ -64,8 +61,6 @@ public class FriendInvitationController {
 	public String aceptarInvitacion(ModelMap modelMap, @PathVariable("id_invt") int id_invt) {
 			friendInvitationService.acceptFriendInvitation(id_invt);
 			return "redirect:/friendInvitations";
-			
-			
 	}
 	
 	

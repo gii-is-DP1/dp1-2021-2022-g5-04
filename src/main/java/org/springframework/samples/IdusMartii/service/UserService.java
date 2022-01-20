@@ -51,6 +51,8 @@ public class UserService {
 	private FriendsService friendsService;
 	@Autowired
 	private AchievementService achievementService;
+	@Autowired
+	private FriendInvitationService friendInvitationService;
 
 	@Autowired
 	public UserService(UserRepository userRepository) {
@@ -104,10 +106,13 @@ public class UserService {
 	public void deleteFriend(User user, String username) throws DataAccessException {
 		List<User> friends = user.getFriends();
 		User friendToBeDeleted = userRepository.findByUsername(username);
+		List<User> friendsFromSecondUser = friendToBeDeleted.getFriends();
 		friends.remove(friendToBeDeleted);
+		friendsFromSecondUser.remove(user);
 		user.setFriends(friends);
+		friendToBeDeleted.setFriends(friendsFromSecondUser);
 		saveUser(user);
-
+		saveUser(friendToBeDeleted);
 	}
 	
 	@Transactional
@@ -119,6 +124,7 @@ public class UserService {
 		if (user.getFriends().size() > 0) {
 			friendsService.deleteAllFriendsFromUser(user);
 		}
+		friendInvitationService.deleteFriendInvitationsFromUser(user);
 		playerService.deleteAllPlayersFromUser(user);
 		userRepository.delete(user);
 	}

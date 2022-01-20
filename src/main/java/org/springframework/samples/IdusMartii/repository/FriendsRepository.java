@@ -15,7 +15,8 @@ public interface FriendsRepository extends CrudRepository<User, Integer>{
 	@Modifying
 	@Query(value="INSERT INTO FRIENDS(user_username, friends_username) VALUES (:username1,:username2) AND INSERT INTO FRIENDS(user_username, friends_username) VALUES (:username2,:username1)",nativeQuery=true)
     public void saveFriends(@Param("username") String username1, @Param("username2") String username2);
-  @Modifying
+	
+	@Modifying
 	@Query(value="INSERT INTO FRIENDS(user_username, friends_username) VALUES (:username1,:username2)", nativeQuery=true)
     public void saveFriends1(@Param("username1") String username1, @Param("username2") String username2);
 	
@@ -23,7 +24,8 @@ public interface FriendsRepository extends CrudRepository<User, Integer>{
 	@Query(value="INSERT INTO FRIENDS(user_username, friends_username) VALUES (:username2,:username1)", nativeQuery=true)
     public void saveFriends2(@Param("username2") String username2, @Param("username1") String username1);
 
-	
+	@Query(value="SELECT f.friends_username FROM FRIENDS f WHERE f.user_username = :username", nativeQuery=true)
+	public List<String> findUserFriendsFromUsername(@Param("username") String username);
     
     
 
