@@ -9,29 +9,45 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 <c:if test="${admin}">
 <IdusMartii:adminLayout pageName="matches">
-   		<h1>Victoria para los ${faccionGanadora}</h1>
-   		<c:if test="${ganadorLoyal}">
-   			<h2>Has ganado</h2>
-   		</c:if>
-   		<c:if test="${ganadorTraitor}">
-   			<h2>Has ganado</h2>
-   		</c:if>
-   		<c:if test="${ganadorMerchant}">
-   			<h2>Has ganado</h2>
-   		</c:if>
+	<div class="row">
+		<div class="col-md-6">
+   			<h1>Victoria para los ${faccionGanadora}</h1>
+			
+					<img class="img-responsive" src="/resources/images/${cartaFaccion}.jpg" style="height: 400px; width: 300px;"/>
+			
+		</div>
+		<div class="col-md-6">	
+			<c:if test="${winner}">
+				<img class="img-responsive" src="/resources/images/winner.png" style="height: 400px; width: 400px; margin-top: 50px;"/>
+				
+			</c:if>
+			<c:if test="${!winner}">
+				<img class="img-responsive" src="/resources/images/loser.png" style="height: 500px; width: 600px;"/>
+			</c:if>
+			
+		</div>
+	</div>
 </IdusMartii:adminLayout>
 </c:if>
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="matches">
-   		<h1>Victoria para los ${faccionGanadora}</h1>
-   		<c:if test="${ganadorLoyal}">
-   			<h2>Has ganado</h2>
-   		</c:if>
-   		<c:if test="${ganadorTraitor}">
-   			<h2>Has ganado</h2>
-   		</c:if>
-   		<c:if test="${ganadorMerchant}">
-   			<h2>Has ganado</h2>
-   		</c:if>
+	<div class="row">
+		<div class="col-md-6">
+   			<h1>Victoria para los ${faccionGanadora}</h1>
+			
+					<img class="img-responsive" src="/resources/images/${cartaFaccion}.jpg" style="height: 400px; width: 300px;"/>
+			
+		</div>
+		<div class="col-md-6">	
+			<c:if test="${winner}">
+				<img class="img-responsive" src="/resources/images/winner.png" style="height: 400px; width: 400px; margin-top: 50px;"/>
+				
+			</c:if>
+			<c:if test="${!winner}">
+				<img class="img-responsive" src="/resources/images/loser.png" style="height: 500px; width: 600px;"/>
+			</c:if>
+			
+		</div>
+	</div>
 </IdusMartii:layout>
 </c:if>
