@@ -20,22 +20,24 @@ import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class AchievementUserService {
 	@Autowired
 	private AchievementUserRepository achievementUserRepository;
 	@Autowired
 	private PlayerService playerService;
-	@Autowired
-	private UserService userService;
-	
 	@Transactional
 	public void saveAchievementUser(String username, Integer id) throws DataAccessException {
+		log.info("Guardando Logro...");
 		achievementUserRepository.saveAchievementUser(username, Integer.valueOf(id));
 	}
 	
 	@Transactional
 	public boolean checkAchievementJugadas(User user, Integer valor) throws DataAccessException {
+		log.info("Comparando partidas jugadas con el valor del logro...");
 		return playerService.findbyUsername(user.getUsername()).size() == valor ;
 	}
 	

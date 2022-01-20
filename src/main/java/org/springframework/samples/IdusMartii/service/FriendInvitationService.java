@@ -10,6 +10,9 @@ import org.springframework.samples.IdusMartii.repository.FriendInvitationReposit
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class FriendInvitationService {
 	
@@ -18,36 +21,44 @@ public class FriendInvitationService {
 		@Autowired
 		private FriendInvitationService friendInvitationService;
 		@Autowired
-		private CurrentUserService currentUserService;
-		@Autowired
-		private UserService userService;
-		@Autowired
 		private FriendsService friendsService;
 
 		@Transactional
 		public Iterable<FriendInvitation> findAll(){
+			log.info("Acceso al metodo findAll() de Solicitudes de amistad.");
 			return friendInvitationRepository.findAll();
 		}
 	    
 		@Transactional(readOnly = true)
 		public FriendInvitation findById(Integer id) throws DataAccessException{
+			log.info("Buscando FriendInvitation por Id");
+			log.debug("Atributo: " + id);
 			return friendInvitationRepository.findById(id).get();
 		}
 		
 		@Transactional
 		public void saveFriendInvitation(FriendInvitation friendInvitation) throws DataAccessException {
+			log.info("Creando invitación de amistad...");
+			log.debug("Atributo: " + friendInvitation);
+
 			friendInvitationRepository.save(friendInvitation);
 		}
 	    @Transactional(readOnly = true)
 		public List<FriendInvitation> findFriendInvitationsByUserRequested(User user) throws DataAccessException{
+	    	log.info("Buscando Solicitudes de amistad de usuario...");
+	    	log.debug("Usuario: " + user);
 			return friendInvitationRepository.findFriendInvitationsByUserRequested(user);
 		}
 		@Transactional
 		public void deleteFriendInvitation(FriendInvitation friendInvitation) throws DataAccessException {
+			log.info("Rechazando solicitud de amistad...");
+			log.debug("Atributo: " + friendInvitation);
 			friendInvitationRepository.delete(friendInvitation);
 		}
 		@Transactional
 		public void acceptFriendInvitation(int id_invt) throws DataAccessException {
+			log.info("Aceptando solicitud de amistad...");
+			log.debug("Id de solicitud: " + id_invt);
 			FriendInvitation friendInvitation = friendInvitationService.findById(id_invt);
 			friendsService.saveFriends(friendInvitation.getUser_requester().getUsername(), friendInvitation.getUser_requested().getUsername());
 			friendInvitationService.deleteFriendInvitation(friendInvitation);

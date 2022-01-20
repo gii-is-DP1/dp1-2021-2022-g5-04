@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 @RequestMapping("/achievements")
 public class AchievementController {
@@ -37,9 +40,12 @@ public class AchievementController {
 	private AuthoritiesService authoritiesService;
 	@GetMapping()
 	public String listadoLogros(ModelMap modelMap) {
+		log.info("Llamando al listado de logros...");
 		String vista = "achievements/listadoLogros";
+		log.info("Llamada al servicio de logros por el metodo findAll()");
 		Iterable<Achievement> achievements = achievementService.findAll();
 		String userName = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+		log.info("Llamada al servicio de usuarios por el método  findUser()");
 		User user = userService.findUser(userName).orElse(null);
 		modelMap.addAttribute("achievements", achievements);
 		modelMap.addAttribute("user", user);
@@ -110,7 +116,9 @@ else {
 	@GetMapping(path="/{id}/edit")
 	public String nuevoLogros(ModelMap modelMap , @PathVariable("id") int id) {
 		String vista = "achievements/editarLogro";
+		log.info("Acceso al servicio de logros por el metodo findById()");
 		  modelMap.addAttribute("achievement", achievementService.findById(id));
+		log.info("Acceso al servicio de logros por el metodo getAllAchievementsTypes()");
 		  modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
 		
 		return vista;
@@ -148,13 +156,17 @@ else {
 	@PostMapping(path="/{id}/save")
 	public String guardarLogros(ModelMap modelMap, @Valid Achievement achievement ,BindingResult result, @PathVariable("id") int id) {
 		String vista = "achievements/editarLogro";
+		log.info("Comprobando si hay errores");
 		if (result.hasErrors()){
+			log.error("Error encontrado");
 			modelMap.addAttribute("achievement",achievement);
 			modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
 			return vista;
 		}
 		else {
+			log.info("No se encontraron errores.");
 			achievement.setId(id);
+			log.info("Guardando logro...");
 			achievementService.saveAchievement(achievement);
 			vista = "redirect:/achievements";
 			return vista;
