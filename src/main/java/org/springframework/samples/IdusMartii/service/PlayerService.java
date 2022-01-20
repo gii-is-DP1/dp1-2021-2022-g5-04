@@ -178,7 +178,7 @@ public class PlayerService {
 			boolean resultado = false;
 			if (player.getRole() == Role.CONSUL && player != match.getPlayers().get(0)) {
 				resultado = true;
-			} else if (player.getRole() == Role.CONSUL && player == match.getPlayers().get(0) && match.getRound() == 3 && afterVotes(player, match)){
+			} else if (player.getRole() == Role.CONSUL && player == match.getPlayers().get(0) && match.getRound() == 2 && afterVotes(player, match)){
 				resultado = true;
 			}
 			return resultado;
@@ -260,29 +260,14 @@ public class PlayerService {
 		return i;
 	}
 	@Transactional
-	public boolean winnerLoyal(Player jugador, Faction faction) throws DataAccessException {
-		if (jugador.getCard1() == Faction.LOYAL && Faction.LOYAL == faction) {
+	public boolean winner(Player jugador, Faction faction) throws DataAccessException {
+		if (jugador.getCard1() == faction) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	@Transactional
-	public boolean winnerTraitor(Player jugador, Faction faction) throws DataAccessException {
-		if (jugador.getCard1() == Faction.TRAITOR && Faction.TRAITOR == faction) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	@Transactional
-	public boolean winnerMerchant(Player jugador, Faction faction) throws DataAccessException {
-		if (jugador.getCard1() == Faction.MERCHANT && Faction.MERCHANT == faction) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+	
 	@Transactional
 	public void rolesAsigned(Match match) throws DataAccessException {
 		for (Player p: match.getPlayers()) {
@@ -296,6 +281,70 @@ public class PlayerService {
 	@Transactional
 	public List<Player> findWinners(Match match){
 		return playerRepository.findWinners(match, match.getWinner());
+	}
+	@Transactional
+	public String showCardRole(Player player) throws DataAccessException {
+		if (player.getRole()==Role.CONSUL) {
+			String result =  "pretor";
+			return result;
+		}
+		else if (player.getRole()==Role.EDIL){
+			String result =  "edil";
+			return result;
+		}
+		else if (player.getRole()==Role.PRETOR) {
+			String result =  "pretor";
+			return result;
+
+		}
+		else{
+			String result =  "no_role";
+			return result;
+
+		}
+		
+	}
+	@Transactional
+	public String showFactionCard(Faction faction) throws DataAccessException {
+		if (faction==Faction.LOYAL) {
+			String result =  "loyal";
+			return result;
+		}
+		else if (faction==Faction.MERCHANT) {
+			String result =  "merchant";
+			return result;
+		}
+		else{
+			String result =  "traitor";
+			return result;
+		}
+		
+	}
+	@Transactional
+	public boolean showVoteCondition(Vote vote) throws DataAccessException {
+		if (vote == null) {
+			return false;
+		}
+		else{
+			return true;
+		}
+		
+	}
+	@Transactional
+	public String showVoteCard(Vote vote) throws DataAccessException {
+		if (vote==Vote.GREEN) {
+			String result =  "green";
+			return result;
+		}
+		else if (vote==Vote.RED) {
+			String result =  "red";
+			return result;
+		}
+		else{
+			String result =  "yellow";
+			return result;
+		}
+		
 	}
 	
 }

@@ -201,8 +201,13 @@ public class MatchController {
 		Player player_actual = playerService.findByMatchAndUser(match, usuario);
 		modelMap.addAttribute("votos", matchService.votes(match));
 		modelMap.addAttribute("votedUser", matchService.votedUser(match));
+		modelMap.addAttribute("voteCondition", playerService.showVoteCondition(player_actual.getVote()));
+		modelMap.addAttribute("voteCard", playerService.showVoteCard(player_actual.getVote()));
 		modelMap.addAttribute("playerY", playerService.playerYellow(match));
 		modelMap.addAttribute("mostrarCartas", playerService.showCards(player_actual));
+		modelMap.addAttribute("roleCard", playerService.showCardRole(player_actual));
+		modelMap.addAttribute("card1", playerService.showFactionCard(player_actual.getCard1()));
+		modelMap.addAttribute("card2", playerService.showFactionCard(player_actual.getCard2()));
 		modelMap.addAttribute("votar", playerService.canVote(player_actual, match));
 		modelMap.addAttribute("revisarVoto", playerService.checkVote(player_actual, match));
 		modelMap.addAttribute("elegirFaccion", playerService.chooseFaction(player_actual, match));
@@ -241,9 +246,8 @@ public class MatchController {
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
 		Player player_actual = playerService.findByMatchAndUser(match, usuario);
 		modelMap.addAttribute("faccionGanadora", matchService.sufragium(match));
-		modelMap.addAttribute("ganadorLoyal", playerService.winnerLoyal(player_actual, matchService.sufragium(match)));
-		modelMap.addAttribute("ganadorTraitor", playerService.winnerTraitor(player_actual, matchService.sufragium(match)));
-		modelMap.addAttribute("ganadorMerchant", playerService.winnerMerchant(player_actual, matchService.sufragium(match)));
+		modelMap.addAttribute("cartaFaccion", playerService.showFactionCard(matchService.sufragium(match)));
+		modelMap.addAttribute("winner", playerService.winner(player_actual, matchService.sufragium(match)));
 		modelMap.addAttribute("votosAFavor", match.getVotesInFavor());
 		modelMap.addAttribute("votosEnContra", match.getVotesAgainst());
 		modelMap.addAttribute("admin", matchService.isAdmin(usuario));
