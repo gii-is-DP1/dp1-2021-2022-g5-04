@@ -40,7 +40,7 @@ public class MatchService {
     
 	@Transactional
 	public Iterable<Match> findAll(){
-		log.info("buscando partidas");
+		log.info("Buscando partidas...");
 		return matchRepository.findAll();
 	}
 

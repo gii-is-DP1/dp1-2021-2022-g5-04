@@ -75,6 +75,7 @@ public class AchievementService {
 
 	@Transactional
 	public Achievement findById(Integer id) throws DataAccessException {
+		log.info("Buscando logro por Id...");
 		return achievementRepository.findById(id).get();
 	}
 	
@@ -87,9 +88,11 @@ public class AchievementService {
 	
 	@Transactional
 	public void deleteAllAchievementsFromUser(User user) throws DataAccessException {
+		log.info("Intentando borrar los logros del usuario: " + user);
 		if (achievementRepository.findByUser(user).isEmpty()) {
-			
+			log.info("Usuario no encontrado, nada que borrar.");
 		} else {
+			log.info("User encontrado");
 			List<Achievement> achievementsFromUser = achievementRepository.findByUser(user);
 			for (Achievement a: achievementsFromUser) {
 				achievementRepository.delete(a);
