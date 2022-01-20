@@ -2,6 +2,7 @@ package org.springframework.samples.IdusMartii.model;
 
 
 import java.io.Serializable;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -49,7 +50,7 @@ public class User implements Serializable {
 	@Email
 	@NotNull
 	String email;
-	
+	Integer victorias;
 	boolean enabled;
 
 	public boolean isNew() {
@@ -58,14 +59,12 @@ public class User implements Serializable {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
 	private Set<Authorities> authorities;
-	
-	Integer victorias;
-	
-	@ManyToMany
+
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "achievement_user")
 	private List<Achievement> achievements;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "friends")
 	private List<User> friends;	
 }

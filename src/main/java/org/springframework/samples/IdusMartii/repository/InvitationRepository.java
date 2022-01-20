@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface InvitationRepository extends CrudRepository<Invitation, Integer>{
     @Query("SELECT i FROM Invitation i WHERE i.user = :user")
-    public List <Invitation> findByUser(@Param("user") User user);  
+    public List<Invitation> findByUser(@Param("user") User user);  
     @Query("SELECT i FROM Invitation i WHERE i.user = :user AND i.match = :match")
-    public List <Invitation> findByUserAndMatch(@Param("user") User user, @Param("match") Match match);  
+    public List<Invitation> findByUserAndMatch(@Param("user") User user, @Param("match") Match match);  
 }

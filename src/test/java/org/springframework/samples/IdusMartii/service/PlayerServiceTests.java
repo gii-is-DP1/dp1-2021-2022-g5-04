@@ -298,29 +298,13 @@ public class PlayerServiceTests {
 	}
 
 	@Test
-	public void testWinnerLoyal(){
+	public void testWinner(){
 		Match match1 = matchService.findById(1);
-		boolean ganaFiel= playerService.winnerLoyal(match1.getPlayers().get(0),Faction.LOYAL);
+		Player player = match1.getPlayers().get(0);
+		player.setCard1(Faction.LOYAL);
+		boolean ganaFiel= playerService.winner(match1.getPlayers().get(0),Faction.LOYAL);
 		
 		assertThat(ganaFiel).isTrue();
-
-	}
-
-	@Test
-	public void testWinnerTraitor(){
-		Match match1 = matchService.findById(1);
-		boolean ganaTraidor= playerService.winnerTraitor(match1.getPlayers().get(2),Faction.TRAITOR);
-		
-		assertThat(ganaTraidor).isTrue();
-
-	}
-
-	@Test
-	public void testWinnerMerchant(){
-		Match match1 = matchService.findById(1);
-		boolean ganaMercader= playerService.winnerMerchant(match1.getPlayers().get(3),Faction.MERCHANT);
-		
-		assertThat(ganaMercader).isTrue();
 
 	}
 
