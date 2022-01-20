@@ -1,6 +1,12 @@
 package org.springframework.samples.IdusMartii.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -34,6 +40,46 @@ public class AchievementUserService {
 	}
 	
 
+	@Transactional
+	public Integer listStatistics(User user) throws DataAccessException {
+		return playerService.findbyUsername(user.getUsername()).size() ;
+	}
+	
+	@Transactional
+	public Integer listStatisticsWin(User user) throws DataAccessException {
+		return playerService.findbyUsername(user.getUsername()).size() ;}
+	
+	
+	@Transactional
+	public Map<Integer,List< String>> rankingStatistics() throws DataAccessException {
+		Map<Integer, List<String>> rest = new HashMap<>();
+		Iterable<Player> players =  playerService.findAll();
+		List<User> users =  userService.findUsers();
+		Set<Integer> indice = new HashSet<>();
+
+		for(User user:users) {
+			Integer temp =  listStatistics( user);
+			indice.add(temp);
+		}
+
+		for(Integer i : indice) {
+			List<String> tempp = new ArrayList<>();
+
+			for(User user :users) {
+				Integer temppp =  listStatistics( user);
+			if(i == temppp) {
+				tempp.add(user.getUsername());
+			}}
+
+				
+				
+			
+			rest.put(i, tempp);
+			
+		}
+		
+		return rest;
+	}
 
 	
 	
