@@ -71,7 +71,7 @@
 									<c:if test="${elegirRol}">
 										<c:forEach var="pla" items="${jugadoresSinRolConsul}">
 											<c:if test="${edilesSinAsignar}">
-												<c:if test="${pla.role != 'EDIL'}">
+												<c:if test="${numeroJugadores eq 5}">
 													<form:form modelAttribute="match" class="form-horizontal"
 														id="add-match-form"
 														action="/players/${pla.id}/${id}/asignarEdil">
@@ -83,6 +83,21 @@
 															</div>
 														
 													</form:form>
+												</c:if>
+												<c:if test="${numeroJugadores != 5}">
+													<c:if test="${pla.role != 'EDIL'}">
+														<form:form modelAttribute="match" class="form-horizontal"
+															id="add-match-form"
+															action="/players/${pla.id}/${id}/asignarEdil">
+														
+														
+																<div class="col">
+																	<button class="btn btn-success" type="submit">Asignar
+																		a ${pla.user.username} EDIL</button>
+																</div>
+														
+														</form:form>
+													</c:if>
 												</c:if>
 											</c:if>
 											<c:if test="${pretorSinAsignar}">
