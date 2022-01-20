@@ -90,4 +90,10 @@ public class UserService {
 		return playerService.findbyUsername(user.getUsername()).size() ;
 		
 	}
+
+
+	public List<User> findUsers() {
+		// TODO Auto-generated method stub
+		return userRepository.findUsers();
+	}
 }
