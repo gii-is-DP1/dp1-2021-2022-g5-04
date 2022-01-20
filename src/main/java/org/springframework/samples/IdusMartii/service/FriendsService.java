@@ -15,6 +15,9 @@ import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class FriendsService {
 	@Autowired
@@ -22,6 +25,8 @@ public class FriendsService {
 	
 	@Transactional
 	public void saveFriends(String username1, String username2) throws DataAccessException {
+		log.info("Llamada al metodo saveFriends(String, String)");
+		log.debug("atributos: " + username1 + ", " + username2);
 		friendsRepository.saveFriends1(username1, username2);
 		friendsRepository.saveFriends2(username2, username1);
 		

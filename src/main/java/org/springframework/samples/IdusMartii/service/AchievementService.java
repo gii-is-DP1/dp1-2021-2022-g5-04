@@ -12,6 +12,9 @@ import org.springframework.samples.IdusMartii.repository.AchievementRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class AchievementService {
 	
@@ -25,11 +28,13 @@ public class AchievementService {
 	
 	@Transactional
 	public Iterable<Achievement> findAll(){
+		log.info("Buscando todos los logros...");
 		return achievementRepository.findAll();
 	}
 	
 	@Transactional
 	public List<Achievement> findByAchievementType(String tipo){
+		log.info("Buscando logros del tipo " + tipo);
 		AchievementType tipoId = achievementRepository.findAchievementTypeByName(tipo);
 		return achievementRepository.findByAchievementType(tipoId);
 	}
@@ -37,22 +42,34 @@ public class AchievementService {
 
 	@Transactional
 	public List<Achievement> findByUser(User user) throws DataAccessException {
+		log.info("Llamada al metodo findByUser(User)");
+		log.debug("atributo: " + user);
 		return achievementRepository.findByUser(user);
 	}
 	
 
 	@Transactional
 	public void saveAchievement(Achievement ac) throws DataAccessException {
+		log.info("Guardando Logro...");
 		achievementRepository.save(ac);
 	}
 	
 	@Transactional
 	public List<AchievementType> getAllAchievementsTypes() throws DataAccessException{
+		log.info("Obteniendo tipos de logro");
 		return achievementRepository.findAllAchievementsTypes();
 	}
 	
 	@Transactional
 	public AchievementType getAchievementTypeByName(String name) throws DataAccessException{
+		log.info("Buscando logros por tipo...");
+		log.debug("Atributo: " + name);
+		if (achievementRepository.findAchievementTypeByName(name) == null) {
+			log.error("No se ha encontrado ningún logro con el tipo: " + name);
+		}
+		else {
+			log.info("Logros encontrados.");
+		}
 		return achievementRepository.findAchievementTypeByName(name);
 	}
 
