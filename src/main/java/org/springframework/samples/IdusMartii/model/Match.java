@@ -34,10 +34,7 @@ public class Match extends AuditableEntity {
         @OneToMany(cascade = CascadeType.ALL, mappedBy = "match")
 	    private List<Player> players;
 
-		@OneToOne(cascade = CascadeType.ALL)
-		@JoinColumn(name="chat_id")
-    	private Chat chat;
-    
+		
 }
 
 

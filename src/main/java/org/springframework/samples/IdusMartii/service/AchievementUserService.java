@@ -45,9 +45,6 @@ public class AchievementUserService {
 		return playerService.findbyUsername(user.getUsername()).size() ;
 	}
 	
-	@Transactional
-	public Integer listStatisticsWin(User user) throws DataAccessException {
-		return playerService.findbyUsername(user.getUsername()).size() ;}
 	
 	
 	@Transactional
@@ -77,6 +74,51 @@ public class AchievementUserService {
 			rest.put(i, tempp);
 			
 		}
+		
+		@Transactional
+		public Map<Integer,List< String>> rankingWinners() throws DataAccessException {
+			Map<Integer, List<String>> rest = new HashMap<>();
+			Iterable<Player> players =  playerService.findAll();
+			List<User> users =  userService.findUsers();
+			Set<Integer> indice = new HashSet<>();
+
+			for(User user:users) {
+				Integer temp = 0;
+			
+				if(user.getVictorias()!=null) {
+					 temp =  user.getVictorias();
+
+				}else {
+				 temp =  0;
+
+				}
+			
+				indice.add(temp);
+			}
+
+			for(Integer i : indice) {
+				List<String> tempp = new ArrayList<>();
+
+				for(User user :users) {
+					Integer temp = 0;
+					
+					if(user.getVictorias()!=null) {
+						 temp =  user.getVictorias();
+
+					}else {
+					 temp =  0;
+
+					}
+								if(i == temp) {
+					tempp.add(user.getUsername());
+				}}
+
+					
+					
+				
+				rest.put(i, tempp);
+				
+			}
 		
 		return rest;
 	}
