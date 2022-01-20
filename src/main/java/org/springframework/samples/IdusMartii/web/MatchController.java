@@ -36,7 +36,6 @@ import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.model.Chat;
 import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
@@ -58,8 +57,7 @@ public class MatchController {
     AchievementUserService achievementUserService;
 	@Autowired
     AchievementService achievementService;
-	@Autowired
-	ChatService chatService;
+	
 	
 
 	

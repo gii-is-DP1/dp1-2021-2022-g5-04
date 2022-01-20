@@ -57,8 +57,14 @@ public class AchievementController {
 		String userName = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 		User user = userService.findUser(userName).orElse(null);
 		Integer statistics = achievementUserService.listStatistics(user);
-		
+		Integer win = user.getVictorias();
 		modelMap.addAttribute("statistics", statistics);
+if (win!=null) {
+		modelMap.addAttribute("win", win);}
+else {
+	modelMap.addAttribute("win", 0);
+
+}
 		modelMap.addAttribute("user", user);
 		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
 		return vista;
@@ -79,7 +85,22 @@ public class AchievementController {
 
 		modelMap.addAttribute("user", user);
 		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
-		return vista;
+		return vista;}
+		
+		@GetMapping(path="/statistics/rankingWinners")
+		public String rankingWinners(ModelMap modelMap) {
+			String vista = "achievements/ranking";
+			//Iterable<Achievement> achievements = achievementService.findAll();
+			String userName = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+			User user = userService.findUser(userName).orElse(null);
+			Map<Integer, List<String> >statistics = achievementUserService.rankingWinners();
+			
+			modelMap.addAttribute("map", statistics);
+
+			modelMap.addAttribute("user", user);
+			modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
+			return vista;
+		
 	
 		
 		

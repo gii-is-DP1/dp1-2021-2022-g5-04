@@ -152,7 +152,7 @@ public class UserService {
 
 	public List<User> findUsers() {
 		// TODO Auto-generated method stub
-		return userRepository.findUsers();
+		return userRepository.findUsers();}
 	@Transactional
 	public boolean isAdmin(User user) throws DataAccessException {
 		if (authoritiesService.getAuthorities(user.getUsername())) {
