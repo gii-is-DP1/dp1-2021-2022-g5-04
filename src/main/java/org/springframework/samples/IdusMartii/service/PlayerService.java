@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.samples.IdusMartii.repository.InvitationRepository;
 import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
@@ -18,6 +21,7 @@ import org.springframework.samples.IdusMartii.model.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class PlayerService {
 	@Autowired
@@ -37,11 +41,13 @@ public class PlayerService {
 	
 	@Transactional
 	public void savePlayer(Player player) throws DataAccessException {
+		log.info("Guardando jugador...");
 		playerRepository.save(player);
 	}
 	
 	@Transactional
 	public void deletePlayer(Player player) throws DataAccessException {
+		log.info("Eliminando jugador...");
 		playerRepository.delete(player);
 	}
 	@Transactional
@@ -55,16 +61,22 @@ public class PlayerService {
 
 	@Transactional
 	public Player findbyId(Integer ID) throws DataAccessException {
+		log.info("Buscando jugador...");
+		log.debug("ID: " + ID);
 		return playerRepository.findById(ID).get();
 	}
 	
 	@Transactional
 	public List<Player> findbyUsername(String username) throws DataAccessException {
+		log.info("Buscando jugador...");
+		log.debug("username: " + username);
 		return playerRepository.findByUsername(username);
 	}
 	
 	@Transactional
 	public List<Player> jugadoresPartida(Match match) throws DataAccessException {
+		log.info("Buscando jugadores de la partida...");
+		log.debug("Partida: " + match);
 		return playerRepository.findByMatchId(match);
 	}
 	@Transactional

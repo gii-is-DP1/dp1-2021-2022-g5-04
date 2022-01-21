@@ -75,6 +75,9 @@ public class UserService {
 	public void saveUser(User user) throws DataAccessException {
 		log.debug("usando metodo saveUser()");
 		user.setEnabled(true);
+		if(user.getVictorias() == null) {
+			user.setVictorias(0);
+		}
 		userRepository.save(user);
 	}
 	@Transactional
