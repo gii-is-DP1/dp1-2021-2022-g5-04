@@ -8,6 +8,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -140,7 +141,7 @@ public class PlayerController {
 		return "redirect:/players/" + idMatch + "/NuevoTurno";
 	}
 	@GetMapping(path="/{idMatch}/NuevoTurno")
-	public String nuevoTurnoGet(ModelMap modelMap, @PathVariable("idMatch") int idMatch) {
+	public String nuevoTurnoGet(ModelMap modelMap, @PathVariable("idMatch") int idMatch) throws DataAccessException{
 		Match match = matchService.findById(idMatch);
 		List<Player> jugadoresConVoto = playerService.jugadoresConVoto(Role.EDIL, match);
 		jugadoresConVoto.get(0).setVote(null);
@@ -150,15 +151,17 @@ public class PlayerController {
 		playerService.asignarRoles(match, jugadores, roles);
 		matchService.avanzarTurno(match, jugadores);
 		matchService.saveMatch(match);
-		Faction sufragium = matchService.sufragium(match);
-		if (match.getRound() == 3 || sufragium != Faction.MERCHANT) {
-			return "redirect:/matches/" + idMatch + "/ganador";
-		} else {
-			return "redirect:/matches/" +idMatch + "/match";
+		try {
+			return playerService.continueTurn(match, idMatch);
+		} catch (DataAccessException e){
+			User current = userService.findbyUsername(currentUserService.showCurrentUser());
+			modelMap.addAttribute("message", "La partida no ha terminado aún");
+			modelMap.addAttribute("admin", playerService.isAdmin(current));
+			return "/exception";
 		}
 	}
 	@PostMapping(path="/{idMatch}/NuevoTurno")
-	public String nuevoTurnoPost(ModelMap modelMap, @PathVariable("idMatch") int idMatch) {
+	public String nuevoTurnoPost(ModelMap modelMap, @PathVariable("idMatch") int idMatch) throws DataAccessException{
 		Match match = matchService.findById(idMatch);
 		List<Player> jugadoresConVoto = playerService.jugadoresConVoto(Role.EDIL, match);
 		jugadoresConVoto.get(0).setVote(null);
@@ -168,10 +171,13 @@ public class PlayerController {
 		playerService.asignarRoles(match, jugadores, roles);
 		matchService.avanzarTurno(match, jugadores);
 		matchService.saveMatch(match);
-		if (match.getRound() == 3 || matchService.sufragium(match) != Faction.MERCHANT) {
-			return "redirect:/matches/" + idMatch + "/ganador";
-		} else {
-			return "redirect:/matches/" +idMatch + "/match";
+		try {
+			return playerService.continueTurn(match, idMatch);
+		} catch (DataAccessException e){
+			User current = userService.findbyUsername(currentUserService.showCurrentUser());
+			modelMap.addAttribute("message", "La partida no ha terminado aún");
+			modelMap.addAttribute("admin", playerService.isAdmin(current));
+			return "/exception";
 		}
 	}
 	@PostMapping(path="/{id}/{idMatch}/cambiarVoto")
@@ -204,7 +210,7 @@ public class PlayerController {
 		
 		return "redirect:/matches/" +idMatch + "/match";
 	}
-	//Añadir a seguridad que sea el jugador que debe entrar a estos sitios
+
 	@PostMapping(path="/{id}/{idMatch}/asignarEdil")
 	public String asignarEdil(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch) {
 		

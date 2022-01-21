@@ -23,7 +23,6 @@ import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.model.Chat;
-import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
 
@@ -44,7 +43,7 @@ public class ChatController {
 	@GetMapping(path="/{id_match}")
 	public String listadoChat(ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
 		String vista = "chats/chat";
-        response.addHeader("Refresh","5");
+        response.addHeader("Refresh","30");
         Match match = matchService.findById(id_match);
         User user = userService.findUser(currentUserService.showCurrentUser()).get();
         List<Chat> chats = chatService.findByMach(match);

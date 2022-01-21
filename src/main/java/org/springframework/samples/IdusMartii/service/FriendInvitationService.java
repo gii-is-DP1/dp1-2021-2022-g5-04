@@ -36,10 +36,10 @@ public class FriendInvitationService {
 			return friendInvitationRepository.findById(id).get();
 		}
 		
-		@Transactional
+		@Transactional(rollbackFor = Exception.class)
 		public void saveFriendInvitation(FriendInvitation friendInvitation) throws DataAccessException {
-      log.info("Creando invitación de amistad...");
-      log.debug("Atributo: " + friendInvitation);
+			log.info("Creando invitación de amistad...");
+			log.debug("Atributo: " + friendInvitation);
 			if (friendInvitation.getUser_requested() != friendInvitation.getUser_requester()) {
 				friendInvitationRepository.save(friendInvitation);
 			} else {

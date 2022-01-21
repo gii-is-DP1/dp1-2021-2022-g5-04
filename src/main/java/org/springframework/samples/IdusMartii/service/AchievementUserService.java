@@ -25,10 +25,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class AchievementUserService {
+
+	
 	@Autowired
 	private AchievementUserRepository achievementUserRepository;
 	@Autowired
 	private PlayerService playerService;
+	@Autowired
+	private UserService userService;
+	
 	@Transactional
 	public void saveAchievementUser(String username, Integer id) throws DataAccessException {
 		log.info("Guardando Logro...");
@@ -52,15 +57,12 @@ public class AchievementUserService {
 	@Transactional
 	public Map<Integer,List< String>> rankingStatistics() throws DataAccessException {
 		Map<Integer, List<String>> rest = new HashMap<>();
-		Iterable<Player> players =  playerService.findAll();
 		List<User> users =  userService.findUsers();
 		Set<Integer> indice = new HashSet<>();
-
 		for(User user:users) {
 			Integer temp =  listStatistics( user);
 			indice.add(temp);
 		}
-
 		for(Integer i : indice) {
 			List<String> tempp = new ArrayList<>();
 
@@ -68,65 +70,41 @@ public class AchievementUserService {
 				Integer temppp =  listStatistics( user);
 			if(i == temppp) {
 				tempp.add(user.getUsername());
-			}}
-
-				
-				
-			
-			rest.put(i, tempp);
-			
+			}
 		}
-		
+			rest.put(i, tempp);
+		}
+		return rest;
+	}
 		@Transactional
 		public Map<Integer,List< String>> rankingWinners() throws DataAccessException {
 			Map<Integer, List<String>> rest = new HashMap<>();
-			Iterable<Player> players =  playerService.findAll();
 			List<User> users =  userService.findUsers();
 			Set<Integer> indice = new HashSet<>();
-
 			for(User user:users) {
 				Integer temp = 0;
-			
 				if(user.getVictorias()!=null) {
 					 temp =  user.getVictorias();
-
 				}else {
 				 temp =  0;
-
 				}
-			
 				indice.add(temp);
 			}
-
 			for(Integer i : indice) {
 				List<String> tempp = new ArrayList<>();
-
 				for(User user :users) {
 					Integer temp = 0;
-					
 					if(user.getVictorias()!=null) {
 						 temp =  user.getVictorias();
-
-					}else {
+					} else {
 					 temp =  0;
-
 					}
-								if(i == temp) {
+					if(i == temp) {
 					tempp.add(user.getUsername());
-				}}
-
-					
-					
-				
+					}
+				}
 				rest.put(i, tempp);
-				
 			}
-		
 		return rest;
 	}
-
-	
-	
-	
-
 }

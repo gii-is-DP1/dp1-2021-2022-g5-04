@@ -1,7 +1,7 @@
 package org.springframework.samples.IdusMartii.web;
 
 
-import java.util.ArrayList;
+
 import java.util.List;
 import javax.validation.Valid;
 
@@ -22,17 +22,11 @@ import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.AchievementService;
 import org.springframework.samples.IdusMartii.service.AchievementUserService;
-import org.springframework.samples.IdusMartii.service.AuthoritiesService;
-import org.springframework.samples.IdusMartii.service.ChatService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
-import org.springframework.samples.IdusMartii.IdusMartiiApplication;
-import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
-import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Achievement;
-import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
@@ -252,8 +246,7 @@ public class MatchController {
 	@GetMapping(path="/{id}/match")
 	public String comenzarPartida(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
 		log.info("Comenzando partida...");
-		String vista = "matches/partidaEnCurso";
-		response.addHeader("Refresh","20");
+		//response.addHeader("Refresh","20");
 		log.info("Acceso al servicio de partidas por el metodo findById()");
 		log.debug("Id : " + id);
 		Match match = this.matchService.findById(id);
@@ -291,11 +284,7 @@ public class MatchController {
 		modelMap.addAttribute("match", match);
 		modelMap.addAttribute("ediles", playerService.findByRole(match, Role.EDIL));
 		modelMap.addAttribute("admin", matchService.isAdmin(usuario));
-		if (match.getRound() == 3 || matchService.sufragium(match) != Faction.MERCHANT) {
-			return "redirect:/matches/" + id + "/ganador";
-		} else {
-			return vista;
-		}
+		return matchService.partidaEnCurso(match, id);
 	}
 	@GetMapping(path="/{id}/rolesAsignados")
 	public String rolesAsignados(ModelMap modelMap, @PathVariable("id") int id) {

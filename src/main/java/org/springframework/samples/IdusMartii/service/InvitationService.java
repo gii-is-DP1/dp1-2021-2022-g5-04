@@ -20,7 +20,7 @@ import org.springframework.dao.DataAccessException;
 @Service
 public class InvitationService {
     @Autowired 
-	InvitationRepository invitationRepository;
+	private InvitationRepository invitationRepository;
 	@Autowired
 	private InvitationService invitationService;
 	@Autowired

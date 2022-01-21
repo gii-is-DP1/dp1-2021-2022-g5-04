@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.samples.IdusMartii.repository.InvitationRepository;
 import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
@@ -18,13 +21,17 @@ import org.springframework.samples.IdusMartii.model.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class PlayerService {
 	@Autowired
 	private PlayerRepository playerRepository;
 	@Autowired 
-	InvitationRepository invitationRepository;
-	
+	private InvitationRepository invitationRepository;
+	@Autowired
+	private MatchService matchService;
+	@Autowired
+	private AuthoritiesService authoritiesService;
 	@Transactional
 	public int playerCount() {
 		return (int) playerRepository.count();
@@ -93,7 +100,7 @@ public class PlayerService {
 	}
 	@Transactional
 	public List<Match> findMatchesFromHost(User user) throws DataAccessException {
-		List<Match> matchesResult = new ArrayList();
+		List<Match> matchesResult = new ArrayList<Match>();
 		List<Match> matchesIterate = playerRepository.findMatchesFromUser(user);
 		for (Match m : matchesIterate){
 			if(m.getPlayers().get(0).getUser()==user){
@@ -285,7 +292,7 @@ public class PlayerService {
 	@Transactional
 	public String showCardRole(Player player) throws DataAccessException {
 		if (player.getRole()==Role.CONSUL) {
-			String result =  "pretor";
+			String result =  "consul";
 			return result;
 		}
 		else if (player.getRole()==Role.EDIL){
@@ -324,29 +331,38 @@ public class PlayerService {
 	public boolean showVoteCondition(Vote vote) throws DataAccessException {
 		if (vote == null) {
 			return false;
-		}
-		else{
+		} else {
 			return true;
 		}
-		
 	}
 	@Transactional
 	public String showVoteCard(Vote vote) throws DataAccessException {
 		if (vote==Vote.GREEN) {
 			String result =  "green";
 			return result;
-		}
-		else if (vote==Vote.RED) {
+		} else if (vote==Vote.RED) {
 			String result =  "red";
 			return result;
-		}
-		else{
+		} else {
 			String result =  "yellow";
 			return result;
 		}
-		
 	}
-	
+	@Transactional
+	public String continueTurn(Match match, int idMatch) throws DataAccessException {
+		String retornar = "";
+		if (match.getRound() < 3) {
+			try {
+				matchService.sufragium(match);
+			} catch (DataAccessException e) {
+				retornar = "redirect:/matches/" + idMatch + "/match";
+			}
+		} else {
+			retornar = "redirect:/matches/" + idMatch + "/ganador";
+		}
+		return retornar;
+	}
+	@Transactional
 	public List<Player> findPlayersFromUser(User user) {
 		return playerRepository.findPlayersFromUser(user);
 	}
@@ -355,6 +371,16 @@ public class PlayerService {
 		List<Player> playersFromUser = findPlayersFromUser(user);
 		for (Player p: playersFromUser) {
 			playerRepository.delete(p);
+		}
+	}
+	@Transactional
+	public boolean isAdmin(User user) throws DataAccessException {
+		if (authoritiesService.getAuthorities(user.getUsername())) {
+			log.info("El user es admin");
+			return true;
+		} else {
+			log.info("El user no es admin");
+			return false;
 		}
 	}
 }

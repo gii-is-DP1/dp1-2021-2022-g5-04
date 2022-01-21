@@ -316,7 +316,7 @@ public class MatchService {
     	}
     	return traitors.size() > 0;
     }
-    @Transactional
+    @Transactional(rollbackFor = {DataAccessException.class})
     public Faction sufragium(Match match) throws DataAccessException {
     	int numeroJugadores = match.getPlayers().size();
     	Faction faccionGanadora = Faction.MERCHANT;
@@ -325,27 +325,27 @@ public class MatchService {
     	} else if (match.getVotesAgainst() - match.getVotesInFavor() >= 2 && match.getRound() == 3 && checkNumberOfTraitors(match)) {
     		faccionGanadora = Faction.TRAITOR;
     	} else if (numeroJugadores == 5) {
-    		if (match.getVotesInFavor() >= 13) {
+    		if (match.getVotesInFavor() >= 13 && checkNumberOfTraitors(match)) {
     			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotesAgainst() == 13) {
+    		} else if (match.getVotesAgainst() == 13 && checkNumberOfLoyals(match)) {
     			faccionGanadora = Faction.LOYAL;
     		}
     	} else if (numeroJugadores == 6) {
-    		if (match.getVotesInFavor() >= 15) {
+    		if (match.getVotesInFavor() >= 15 && checkNumberOfTraitors(match)) {
     			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotesAgainst() == 15) {
+    		} else if (match.getVotesAgainst() == 15 && checkNumberOfLoyals(match)) {
     			faccionGanadora = Faction.LOYAL;
     		}
     	} else if (numeroJugadores == 7) {
-    		if (match.getVotesInFavor() >= 17) {
+    		if (match.getVotesInFavor() >= 17 && checkNumberOfTraitors(match)) {
     			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotesAgainst() == 17) {
+    		} else if (match.getVotesAgainst() == 17 && checkNumberOfLoyals(match)) {
     			faccionGanadora = Faction.LOYAL;
     		}
     	} else if (numeroJugadores == 8) {
-    		if (match.getVotesInFavor() >= 20) {
+    		if (match.getVotesInFavor() >= 20 && checkNumberOfTraitors(match)) {
     			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotesAgainst() == 20) {
+    		} else if (match.getVotesAgainst() == 20 && checkNumberOfLoyals(match)) {
     			faccionGanadora = Faction.LOYAL;
     		}
     	}
@@ -355,7 +355,16 @@ public class MatchService {
     		return faccionGanadora;
     	}
     }
-    
+    @Transactional
+    public String partidaEnCurso(Match match, int id) throws DataAccessException {
+    	String retornar = "";
+    	if (match.isFinished()) {
+    		retornar = "redirect:/matches/" + id + "/ganador";
+    	} else {
+    		retornar = "matches/partidaEnCurso";
+    	}
+    	return retornar;
+    }
     @Transactional
 	public void registrarGanadores(Match match) {
 		List<Player> winners = playerService.findWinners(match);
