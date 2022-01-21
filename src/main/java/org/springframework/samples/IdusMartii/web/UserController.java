@@ -48,12 +48,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * @author Juergen Hoeller
  * @author Ken Krebs
  * @author Arjen Poutsma
  * @author Michael Isvy
  */
+@Slf4j
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -72,6 +75,7 @@ public class UserController {
     
     @GetMapping()
 	public String listadoUsuarios(@RequestParam("page") int page, ModelMap modelMap) {
+    	log.info("Accediendo al listado de usuarios...");
 		String vista = "users/listadoUsuarios";
 		Pageable completePageable = PageRequest.of(0, 999999999, Sort.by("username"));
 		Pageable pageable = PageRequest.of(page-1, 5, Sort.by("username"));
@@ -85,17 +89,17 @@ public class UserController {
     
     @GetMapping(path="/own")
    	public String listadoUsuarioPropio(ModelMap modelMap) {
-   		String vista = "users/listadoUsuarios";
-   	
+    	log.info("Accediendo a los datos de tu perfil...");
+    	String vista = "users/listadoUsuarios";
    		User user =  userService.findbyUsername(currentUserService.showCurrentUser());
    		List<User> users = new ArrayList<>();
    		users.add(user);
    		modelMap.addAttribute("users", users);
-        // modelMap.addAttribute("user", currentUserService.showCurrentUser());
    		return vista;
    	}   
     @GetMapping(path="/friends")
 	public String listadoAmigos(ModelMap modelMap) {
+    	log.info("Accediendo a los datos del usuario...");
 		String vista = "users/listadoAmigos";
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
     	modelMap.addAttribute("admin", userService.isAdmin(user));
@@ -122,6 +126,7 @@ public class UserController {
     
     @PostMapping(path="/find")
     public String buscarUsuariosConUnTexto(@Valid Player player, BindingResult result, ModelMap modelMap) {
+    	log.info("Buscando usuario...");
         modelMap.addAttribute("users", userService.findUsersByText(player.getName()));
         return "users/usuariosEncontrados";
     }
@@ -129,6 +134,7 @@ public class UserController {
     
     @GetMapping(path="/{id}/edit")
     public String editarUsuario(@PathVariable("id") String id, ModelMap modelMap) {
+    	log.info("Editando usuario...");
         String vista = "users/editarUsuario";
         modelMap.addAttribute("user", userService.findbyUsername(id));
         return vista;
@@ -136,9 +142,12 @@ public class UserController {
 
     @PostMapping(path="/save")
     public String guardarUsuario(@Valid User user, BindingResult result, ModelMap modelMap) {
+    	log.info("Intentando registrar usuario...");
         if (result.hasErrors()) {
+        	log.info("Errores encontrados.");
             return "users/crearUsuario";
         } else {
+        	log.info("No se encontraron errores");
             modelMap.addAttribute("users", user);
             userService.saveUser(user);
             authoritiesService.saveAuthorities(user.getUsername(), "user");
@@ -149,6 +158,7 @@ public class UserController {
     
     @PostMapping(path="/{id}/save")
     public String guardarUsuarioModificado(@Valid User user, BindingResult result, @PathVariable("id") String id, ModelMap modelMap) {
+    	log.info("Guardando usuario...");
         User u = userService.findbyUsername(id);
         u.setEmail(user.getEmail());
         u.setPassword(user.getPassword());
@@ -160,6 +170,7 @@ public class UserController {
   
     @PostMapping(path="/delete/{username}")
     public String eliminarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
+    	log.info("Eliminando amigo...");
     	User currentUser = userService.findbyUsername(currentUserService.showCurrentUser());
     	userService.deleteFriend(currentUser, username);
     	return "redirect:/users/friends";
