@@ -150,9 +150,10 @@ public class MatchController {
 	}
 	
 	@GetMapping(path="/spectator")
-	public String spectatorMode(ModelMap modelMap) {
-		log.info("Accediendo a la lista de partidas que se pueden spectar...");
+	public String spectatorMode(ModelMap modelMap, HttpServletResponse response) {
+		log.info("Accediendo a la lista de partidas que se pueden espectar...");
 		String vista = "matches/spectatorModeList";
+		response.addHeader("Refresh","30");
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
 		log.info("Accediendo al servicio de partidas por el metodo matchesInProgress_NotFinished()");
 		List<Match> matches = matchService.matchesInProgress_NotFinished();
@@ -167,6 +168,7 @@ public class MatchController {
 	public String spectatorModeMatch(ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
 		log.info("Accediendo a la partida...");
 		String vista = "matches/spectatorMode";
+		response.addHeader("Refresh","20");
 		log.info("Accediendo al servicio de partidas por el metodo findById()");
 		log.debug("id: " + id_match);
 		Match match = this.matchService.findById(id_match);

@@ -1,5 +1,6 @@
-INSERT INTO matches (id,name,round,turn,votes_in_favor,votes_against,plays,finished)VALUES (1, 'partida1', 0, 0, 0, 0, 0, false);
 
+
+INSERT INTO matches (id,name,round,turn,votes_in_favor,votes_against,plays,finished)VALUES (1, 'partida1', 0, 0, 0, 0, 0, false);
 
 INSERT INTO users(email,username,password,enabled) VALUES ('admin@gmail.com','admin1','4dm1n',TRUE);
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
@@ -48,6 +49,9 @@ INSERT INTO friends(user_username,friends_username) VALUES ('friend3', 'admin1')
 
 
 INSERT INTO friends_invitations(id,username2,username) VALUES (1,'friend1','ppp');
+
+INSERT INTO chats(id,text,date,username, match_id) VALUES (1,'hola1','2022-01-19','admin1',1);
+
 
 
 
