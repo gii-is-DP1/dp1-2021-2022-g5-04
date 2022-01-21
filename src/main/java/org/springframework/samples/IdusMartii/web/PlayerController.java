@@ -3,14 +3,13 @@ package org.springframework.samples.IdusMartii.web;
 
 
 import java.util.ArrayList;
+
 import java.util.List;
 
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,28 +43,12 @@ public class PlayerController {
 	private MatchService matchService;
 	@Autowired
 	private InvitationService invitationService;
-
 	@Autowired
 	private CurrentUserService currentUserService;
 	@Autowired
 	private UserService userService;
-	@GetMapping()
-	public String listadoJugadores(ModelMap modelMap) {
-		log.info("Accediendo a la lista de jugadores...");
-		String vista = "players/listadoJugadores";
-		log.info("Acesso al servicio de jugadores por el metodo findAll()");
-		Iterable<Player> players = playerService.findAll();
-		modelMap.addAttribute("players", players);
-		return vista;
-	}
 	
-	@GetMapping(path="/new")
-	public String crearJugador(ModelMap modelMap) {
-		log.info("Acesso al formulario de creacion de jugador.");
-		String vista = "players/editarJugador";
-		modelMap.addAttribute("player", new Player());
-		return vista;
-	}
+	
 	@GetMapping(path="/{id}/{idMatch}/revisar")
     public String revisarVoto(@PathVariable("id") int id, @PathVariable("idMatch") int idMatch, ModelMap modelMap) {
 		log.info("Revisando voto...");
@@ -86,57 +69,38 @@ public class PlayerController {
     
     }
 	
-
-	@PostMapping(path="/new")
-	public String guardarJugador(@Valid Player player, BindingResult result, ModelMap modelMap) {
-		log.info("Creando jugador...");
-		String vista = "players/listadoJugadores";
-		if (result.hasErrors()) {
-			log.error("Errores encontrados");
-			modelMap.addAttribute("players", player);
-			return "players/editarJugador";
-		} else {
-			playerService.savePlayer(player);
-			modelMap.addAttribute("message", "¡Jugador guardado correctamente!");
-		}
-		return vista;
-	}
-	
 	@PostMapping(path="/{idPlayer}/{idMatch}/expulsar")
-	public String expulsarJugador(@PathVariable("idPlayer") int id, @PathVariable("idMatch") int matchId) {
+	public String expulsarJugador(@PathVariable("idPlayer") int id, @PathVariable("idMatch") int matchId, ModelMap modelMap) {
 		log.info("Expulsando jugador...");
 		Player player = playerService.findbyId(id);
 		User user = player.getUser();
+		User current = userService.findUser(currentUserService.showCurrentUser()).get();
+		Match match = matchService.findById(matchId);
 		log.info("Accediendo al servicio de jugadores...");
-		if(invitationService.findByUser(user).size()==0){
-			playerService.deletePlayer(player);
-		}
-		else{
+		if (invitationService.findByUser(user).size()==0){
+			return playerService.deletePlayerFromMatch(player, match, current, matchId, modelMap);
+		} else {
 			log.info("Accediendo al servicio de partias por el metodo findById()");
 			log.debug("Id: " + matchId);
-			Match match = matchService.findById(matchId);
-			playerService.deletePlayerWithInvitaton(player, match, user);
+			return playerService.deletePlayerWithInvitaton(player, match, user, current, matchId, modelMap);
 		}
-		
-			
-		return "redirect:/matches/" + matchId + "/new";
 	}
 
 	@PostMapping(path="/{id}/{idMatch}/{voto}")
 	public String guardarVoto(ModelMap modelMap, @PathVariable("id")int id, @PathVariable("idMatch") int idMatch, @PathVariable("voto") Vote voto) {
 		log.info("Guardando voto...");
-			Player player = playerService.findbyId(id);
-			player.setVote(voto);
-			playerService.savePlayer(player);
+		Player player = playerService.findbyId(id);
+		player.setVote(voto);
+		playerService.savePlayer(player);
 		log.info("Accediendo al servicio de partias por el metodo findById()");
 		log.debug("Id: " + idMatch);
-			Match match = matchService.findById(idMatch);
-			List<Player> jugadores = match.getPlayers();
+		Match match = matchService.findById(idMatch);
+		List<Player> jugadores = match.getPlayers();
 		log.info("Accediendo al servicio de jugadores por el metodo calcularVotos()");
 		log.debug("Jugadores: " + jugadores);
-			int votos = playerService.calcularVotos(jugadores);
-			matchService.votacionCompletada(votos, match);
-			return "redirect:/matches/" + idMatch + "/match";
+		int votos = playerService.calcularVotos(jugadores);
+		matchService.votacionCompletada(votos, match);
+		return "redirect:/matches/" + idMatch + "/match";
 	}
 	@PostMapping(path="/{id}/{idMatch}/{card1}/ElegirCartaFaccion1")
 	public String elecciónCarta1(ModelMap modelMap, @PathVariable("id") int id, @PathVariable("idMatch") int idMatch,@PathVariable("card1") Faction card1) {
@@ -172,7 +136,7 @@ public class PlayerController {
 		matchService.avanzarTurno(match, jugadores);
 		matchService.saveMatch(match);
 		Faction sufragium = matchService.sufragium(match);
-		if (match.getRound() == 3 || sufragium != null) {
+		if (match.getRound() == 3 || sufragium != Faction.MERCHANT) {
 			log.info("Partida finalizada, calculando ganador...");
 			return "redirect:/matches/" + idMatch + "/ganador";
 		} else {
@@ -191,7 +155,7 @@ public class PlayerController {
 		playerService.asignarRoles(match, jugadores, roles);
 		matchService.avanzarTurno(match, jugadores);
 		matchService.saveMatch(match);
-		if (match.getRound() == 3 || matchService.sufragium(match) != null) {
+		if (match.getRound() == 3 || matchService.sufragium(match) != Faction.MERCHANT) {
 			log.info("Partida finalizada, calculando ganador...");
 			return "redirect:/matches/" + idMatch + "/ganador";
 		} else {

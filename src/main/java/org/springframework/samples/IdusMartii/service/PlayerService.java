@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.samples.IdusMartii.repository.InvitationRepository;
 import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
@@ -26,12 +28,11 @@ public class PlayerService {
 	@Autowired
 	private PlayerRepository playerRepository;
 	@Autowired 
-	private InvitationService invitationService;
+	private InvitationRepository invitationRepository;
 	@Autowired
 	private MatchService matchService;
 	@Autowired
 	private AuthoritiesService authoritiesService;
-
 	@Transactional
 	public int playerCount() {
 		return (int) playerRepository.count();
@@ -50,16 +51,30 @@ public class PlayerService {
 	
 	@Transactional
 	public void deletePlayer(Player player) throws DataAccessException {
-		log.info("Eliminando jugador...");
 		playerRepository.delete(player);
 	}
+	
 	@Transactional
-	public void deletePlayerWithInvitaton(Player player, Match match, User user) throws DataAccessException {
-		List<Invitation> invitations = invitationService.findByUserAndMatch(user, match);
-		for(Invitation invitation:invitations){
-			invitationService.deleteInvitation(invitation);
+	public String deletePlayerFromMatch(Player player, Match match, User current, int matchId, ModelMap modelMap) throws DataAccessException {
+		log.info("Eliminando jugador de una partida...");
+		if(current == match.getPlayers().get(0).getUser()) {
+			match.getPlayers().remove(player);
+			matchService.saveMatch(match);
+			return "redirect:/matches/" + matchId + "/new";
+		} else {
+			modelMap.addAttribute("message", "No puedes expulsar a un jugador sin ser el host de la partida");
+			return "/exception";
 		}
-		playerRepository.delete(player);
+		
+	}
+	
+	@Transactional
+	public String deletePlayerWithInvitaton(Player player, Match match, User user, User current, int matchId, ModelMap modelMap) throws DataAccessException {
+		List<Invitation> invitations = invitationRepository.findByUserAndMatch(user, match);
+		for(Invitation invitation:invitations){
+			invitationRepository.delete(invitation);
+		}
+		return deletePlayerFromMatch(player, match, current, matchId, modelMap);
 	}
 
 	@Transactional
@@ -74,19 +89,6 @@ public class PlayerService {
 		log.info("Buscando jugador...");
 		log.debug("username: " + username);
 		return playerRepository.findByUsername(username);
-	}
-	@Transactional
-	public List<Player> findbyUsernameMatchFinished(String username) throws DataAccessException {
-		List<Player> players = playerRepository.findByUsername(username);
-		List<Player> result = new ArrayList<Player>();
-		for(Player p : players){
-			if(p.getMatch().isFinished()){
-				result.add(p);
-			}
-
-		}
-		
-		return result;
 	}
 	
 	@Transactional
@@ -108,6 +110,20 @@ public class PlayerService {
 	@Transactional
 	public Player findByMatchAndUser(Match match, User user) throws DataAccessException {
 		return playerRepository.findByMatchAndUser(match, user);
+	}
+	
+	@Transactional
+	public List<Player> findbyUsernameMatchFinished(String username) throws DataAccessException {
+		List<Player> players = playerRepository.findByUsername(username);
+		List<Player> result = new ArrayList<Player>();
+		for(Player p : players){
+			if(p.getMatch().isFinished()){
+				result.add(p);
+			}
+
+		}
+		
+		return result;
 	}
 	
 	@Transactional
@@ -295,7 +311,6 @@ public class PlayerService {
 			return false;
 		}
 	}
-	
 	
 	@Transactional
 	public void rolesAsigned(Match match) throws DataAccessException {
