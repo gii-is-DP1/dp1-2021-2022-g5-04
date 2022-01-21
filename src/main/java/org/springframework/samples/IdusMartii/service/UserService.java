@@ -149,6 +149,11 @@ public class UserService {
 		return playerService.findbyUsername(user.getUsername()).size();
 		
 	}
+
+
+	public List<User> findUsers() {
+		// TODO Auto-generated method stub
+		return userRepository.findUsers();}
 	@Transactional
 	public boolean isAdmin(User user) throws DataAccessException {
 		if (authoritiesService.getAuthorities(user.getUsername())) {
