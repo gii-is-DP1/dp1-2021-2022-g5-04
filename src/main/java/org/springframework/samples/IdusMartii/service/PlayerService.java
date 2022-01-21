@@ -27,11 +27,18 @@ public class PlayerService {
 	@Autowired
 	private PlayerRepository playerRepository;
 	@Autowired 
+
+	InvitationService invitationService;
+	@Autowired 
+	MatchService matchService;
+	
+
 	private InvitationRepository invitationRepository;
 	@Autowired
 	private MatchService matchService;
 	@Autowired
 	private AuthoritiesService authoritiesService;
+
 	@Transactional
 	public int playerCount() {
 		return (int) playerRepository.count();
@@ -55,9 +62,9 @@ public class PlayerService {
 	}
 	@Transactional
 	public void deletePlayerWithInvitaton(Player player, Match match, User user) throws DataAccessException {
-		List<Invitation> invitations = invitationRepository.findByUserAndMatch(user, match);
+		List<Invitation> invitations = invitationService.findByUserAndMatch(user, match);
 		for(Invitation invitation:invitations){
-			invitationRepository.delete(invitation);
+			invitationService.deleteInvitation(invitation);
 		}
 		playerRepository.delete(player);
 	}
@@ -74,6 +81,19 @@ public class PlayerService {
 		log.info("Buscando jugador...");
 		log.debug("username: " + username);
 		return playerRepository.findByUsername(username);
+	}
+	@Transactional
+	public List<Player> findbyUsernameMatchFinished(String username) throws DataAccessException {
+		List<Player> players = playerRepository.findByUsername(username);
+		List<Player> result = new ArrayList();
+		for(Player p : players){
+			if(p.getMatch().isFinished()){
+				result.add(p);
+			}
+
+		}
+		
+		return result;
 	}
 	
 	@Transactional
@@ -282,6 +302,7 @@ public class PlayerService {
 			return false;
 		}
 	}
+	
 	
 	@Transactional
 	public void rolesAsigned(Match match) throws DataAccessException {

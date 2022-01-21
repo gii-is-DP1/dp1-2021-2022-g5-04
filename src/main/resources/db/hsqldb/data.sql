@@ -2,30 +2,30 @@
 
 INSERT INTO matches (id,name,round,turn,votes_in_favor,votes_against,plays,finished)VALUES (1, 'partida1', 0, 0, 0, 0, 0, false);
 
-INSERT INTO users(email,username,password,enabled) VALUES ('admin@gmail.com','admin1','4dm1n',TRUE);
+INSERT INTO users(email,username,password,enabled,victorias) VALUES ('admin@gmail.com','admin1','4dm1n',TRUE,0);
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 INSERT INTO players(id,name,card1,card2,vote,role,username,match_id,asigned) VALUES (1, 'player1', null, null, null, 0, 'admin1',1,false);
 
-INSERT INTO users(email,username,password,enabled) VALUES ('ppp@gmail.com','ppp','ppp',TRUE);
+INSERT INTO users(email,username,password,enabled,victorias) VALUES ('ppp@gmail.com','ppp','ppp',TRUE,0);
 INSERT INTO authorities(id,username,authority) VALUES (2,'ppp','admin');
 
-INSERT INTO users(email,username,password,enabled) VALUES ('friend1@gmail.com','friend1','friend1',TRUE);
+INSERT INTO users(email,username,password,enabled,victorias) VALUES ('friend1@gmail.com','friend1','friend1',TRUE,0);
 INSERT INTO players(id,name,card1,card2,vote,role,username,match_id,asigned) VALUES (2, 'player2', null, null, null, 1, 'friend1',1,false);
 INSERT INTO authorities(id,username,authority) VALUES (3,'friend1','user');
 
-INSERT INTO users(email,username,password,enabled) VALUES ('friend2@gmail.com','friend2','friend2',TRUE);
+INSERT INTO users(email,username,password,enabled,victorias) VALUES ('friend2@gmail.com','friend2','friend2',TRUE,0);
 INSERT INTO players(id,name,card1,card2,vote,role,username,match_id,asigned) VALUES (3, 'player3', null, null, null, 2,'friend2',1,false);
 INSERT INTO authorities(id,username,authority) VALUES (4,'friend2','user');
 
-INSERT INTO users(email,username,password,enabled) VALUES ('friend3@gmail.com','friend3','friend3',TRUE);
+INSERT INTO users(email,username,password,enabled,victorias) VALUES ('friend3@gmail.com','friend3','friend3',TRUE,0);
 INSERT INTO players(id,name,card1,card2,vote,role,username,match_id,asigned) VALUES (4, 'player4', null, null, null, 2,'friend3',1,false);
 INSERT INTO authorities(id,username,authority) VALUES (5,'friend3','user');
 
-INSERT INTO users(email,username,password,enabled) VALUES ('friend4@gmail.com','friend4','friend4',TRUE);
+INSERT INTO users(email,username,password,enabled,victorias) VALUES ('friend4@gmail.com','friend4','friend4',TRUE,0);
 INSERT INTO players(id,name,card1,card2,vote,role,username,match_id,asigned) VALUES (5, 'player5', null, null, null, 3, 'friend4',1,false);
 INSERT INTO authorities(id,username,authority) VALUES (6,'friend4','user');
 
-INSERT INTO users(email,username,password,enabled) VALUES ('friend5@gmail.com','friend5','friend5',TRUE);
+INSERT INTO users(email,username,password,enabled,victorias) VALUES ('friend5@gmail.com','friend5','friend5',TRUE,0);
 INSERT INTO players(id,name,card1,card2,vote,role,username,match_id,asigned) VALUES (6, 'player6', null, null, null, 3, 'friend5',1,false);
 INSERT INTO authorities(id,username,authority) VALUES (7,'friend5','user');
 
