@@ -42,11 +42,14 @@
 <IdusMartii:layout pageName="achievements">
     <h2>Achievements</h2>
 
-      <table id="achievementsTable" class="table table-striped">
+     <table id="achievementsTable" class="table table-striped">
         <thead>
         <tr>
             <th >Partidas jugadas</th>
             <th ></th>
+                        <th >Partidas ganadas</th>
+                        <th ></th>
+            
         </tr>
         </thead>
         <tbody>
@@ -54,6 +57,9 @@
                 
                 <td>
                     <c:out value="${statistics}"/>
+                </td>
+                  <td>
+                    <c:out value="${win}"/>
                 </td>
                
             </tr>

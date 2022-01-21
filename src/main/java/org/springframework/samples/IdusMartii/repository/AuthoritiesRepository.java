@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.samples.IdusMartii.model.Authorities;
-import org.springframework.samples.IdusMartii.model.User;
 
 
 

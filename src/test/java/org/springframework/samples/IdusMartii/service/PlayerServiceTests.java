@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.model.Player;
-import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
@@ -119,7 +118,7 @@ public class PlayerServiceTests {
 		List<Player> listaJug= playerService.jugadoresPartida(match1);
 
 		Iterable<Player> players = playerService.findAll();
-		List<Player> listJ= new ArrayList();
+		List<Player> listJ= new ArrayList<Player>();
 		players.forEach(p -> listJ.add(p));
 		
 		assertThat(listaJug).isEqualTo(listJ);
@@ -150,7 +149,7 @@ public class PlayerServiceTests {
 		Optional<User> usuario= userService.findUser("friend1");
 		List<Match> listaPart= playerService.findMatchesFromUser(usuario.get());
 
-		List<Match> listaP= new ArrayList();
+		List<Match> listaP= new ArrayList<Match>();
 		Match match1 = matchService.findById(1);
 		listaP.add(match1);
 
@@ -252,7 +251,7 @@ public class PlayerServiceTests {
 		match1.getPlayers().get(3).setVote(Vote.GREEN);
 		List<Player> jugVotos= playerService.jugadoresConVoto(Role.EDIL, match1);
 
-		List<Player> listJugRol= new ArrayList();
+		List<Player> listJugRol= new ArrayList<Player>();
 		listJugRol.add(playerService.findbyId(3));
 		listJugRol.add(playerService.findbyId(4));
 	
@@ -265,7 +264,7 @@ public class PlayerServiceTests {
 	public void testAsignarRoles(){
 		Match match1 = matchService.findById(1);
 		List<Player> listJugadores= playerService.jugadoresPartida(match1);
-		List<Role> listRoles= new ArrayList();
+		List<Role> listRoles= new ArrayList<Role>();
 		this.playerService.asignarRoles(match1, listJugadores, listRoles);
 
 		assertThat(listJugadores.get(0).getRole()).isEqualTo(Role.CONSUL);
@@ -278,7 +277,7 @@ public class PlayerServiceTests {
 		Match match1 = matchService.findById(1);
 		List<Player> listJugadores= playerService.jugadoresPartida(match1);
 		match1.setRound(1);
-		List<Role> listRoles= new ArrayList();
+		List<Role> listRoles= new ArrayList<Role>();
 		this.playerService.asignarRoles(match1, listJugadores, listRoles);
 
 		assertThat(match1.getPlayers().get(0).getRole()).isEqualTo(Role.NO_ROL);

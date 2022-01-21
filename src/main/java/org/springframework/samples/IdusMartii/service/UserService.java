@@ -32,7 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.samples.IdusMartii.repository.UserRepository;
-import org.springframework.samples.IdusMartii.web.MatchController;
+import org.springframework.samples.IdusMartii.model.Achievement;
+import org.springframework.samples.IdusMartii.model.Match;
+import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.Person;
 import org.springframework.samples.IdusMartii.model.User;
 
@@ -58,7 +60,10 @@ public class UserService {
 	@Autowired
 	private AchievementService achievementService;
 	@Autowired
+	private AchievementUserService achievementUserService;
+	@Autowired
 	private FriendInvitationService friendInvitationService;
+
 
 	@Autowired
 	public UserService(UserRepository userRepository) {
@@ -70,6 +75,9 @@ public class UserService {
 	public void saveUser(User user) throws DataAccessException {
 		log.debug("usando metodo saveUser()");
 		user.setEnabled(true);
+		if(user.getVictorias() == null) {
+			user.setVictorias(0);
+		}
 		userRepository.save(user);
 	}
 	@Transactional
@@ -105,8 +113,8 @@ public class UserService {
 	}
 	@Transactional
 	public User findbyUsername(String username){
-		log.debug("Usando metodo findbyUsername()");
-		log.info("Atributo:" + username);
+		log.info("Usando metodo findbyUsername()");
+		log.debug("Atributo:" + username);
 		return userRepository.findByUsername(username);
 	}
   
@@ -133,6 +141,8 @@ public class UserService {
 	
 	@Transactional
 	public void delete(User user){
+	log.info("Borrando usuario...");
+	log.debug("Usuario: " + user);
 		if (user.getAchievements().size() > 0) {
 			achievementService.deleteAllAchievementsFromUser(user);
 		}
@@ -146,17 +156,41 @@ public class UserService {
 	}
 	@Transactional
 	public Integer matchesPlayedForUser(User user) throws DataAccessException {
+		log.info("Buscando numero de partidas jugadas...");
 		return playerService.findbyUsername(user.getUsername()).size();
 		
 	}
+		
+	@Transactional
+    public void registrarVictoria(Match match, Player player) {
+		log.info("Comprobando si el jugador ha ganado...");
+    	List<Player> ganadores = playerService.findWinners(match);
+    	List<Achievement> ganadas = achievementService.findByAchievementType("ganadas");
+    	if(ganadores.contains(player)) {
+    		log.info("Enhorabuena, has ganado.");
+    		User user = player.getUser();
+			user.setVictorias(user.getVictorias()+1);
+			this.saveUser(user);
+    		for(Achievement a : ganadas) {
+				  if(user.getVictorias() == a.getValor()) {
+					  achievementUserService.saveAchievementUser(user.getUsername(), 2);
+				  }
+			  }
+    	}
+    }
+	
+	
 
 
 	public List<User> findUsers() {
 		// TODO Auto-generated method stub
 		return userRepository.findUsers();}
+
+  
 	@Transactional
 	public boolean isAdmin(User user) throws DataAccessException {
 		if (authoritiesService.getAuthorities(user.getUsername())) {
+			log.info("Eres administrador. Estás haciendo un buen trabajo, sigue así.");
 			return true;
 		} else {
 			return false;

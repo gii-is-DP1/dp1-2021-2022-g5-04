@@ -1,7 +1,4 @@
 package org.springframework.samples.IdusMartii.web;
-
-
-
 import java.util.Date;
 import java.util.List;
 

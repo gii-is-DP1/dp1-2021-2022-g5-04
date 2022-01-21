@@ -39,6 +39,27 @@
 					<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
 					<span>Logros</span>
 				</petclinic:menuItem>
+					
+				<petclinic:menuItem active="${name eq 'Statistics'}" url="/achievements/statistics"
+					title="Achievements">
+					<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+					<span>
+					Estadisticas</span>
+				</petclinic:menuItem>
+						
+				<petclinic:menuItem active="${name eq 'Ranking'}" url="/achievements/statistics/ranking"
+					title="Achievements">
+					<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+					<span>
+					Ranking partidas jugadas</span>
+									</petclinic:menuItem>
+					
+					<petclinic:menuItem active="${name eq 'Ranking'}" url="/achievements/statistics/rankingWinners"
+					title="Achievements">
+					<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+					<span>
+					Ranking partidas ganadas</span>
+				</petclinic:menuItem>
 				<petclinic:menuItem active="${name eq 'Invitations'}" url="/invitations"
 					title="Invitations">
 					<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
@@ -48,7 +69,7 @@
 				<petclinic:menuItem active="${name eq 'Users'}" url="/users/find"
 					title="Users">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-					<span>Buscar Usuario</span>
+					<span>Buscar usuarios</span>
 				</petclinic:menuItem>		
 				<petclinic:menuItem active="${name eq 'Friends'}" url="/friendInvitations"
 					title="Friend Invitations">

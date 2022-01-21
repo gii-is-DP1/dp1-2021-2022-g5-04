@@ -49,7 +49,6 @@ public class InvitationController {
 	public String listadoInvitaciones(ModelMap modelMap) {
 		log.info("Solicitando la lista de Invitaciones a partida...");
 		String vista = "invitations/listadoInvitaciones";
-		log.info("Accediendo al servicio de Usuario por el método findUser()");
         User user = userService.findUser(currentUserService.showCurrentUser()).get();
         log.info("Accediendo al servicio de invitaciones a partida por el metodo findByUser");
 		List<Invitation> invitations = invitationService.findByUser(user);

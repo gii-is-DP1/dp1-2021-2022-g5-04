@@ -1,6 +1,4 @@
 package org.springframework.samples.IdusMartii.web;
-
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
