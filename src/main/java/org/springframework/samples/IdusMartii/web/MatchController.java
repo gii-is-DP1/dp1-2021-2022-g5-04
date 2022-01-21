@@ -319,7 +319,7 @@ public class MatchController {
 		match.setFinished(true);
 		match.setWinner(matchService.sufragium(match));
 		matchService.saveMatch(match);
-		matchService.registrarGanadores(match);
+		userService.registrarVictoria(match, player_actual);
 		return vista;
 	}
 	

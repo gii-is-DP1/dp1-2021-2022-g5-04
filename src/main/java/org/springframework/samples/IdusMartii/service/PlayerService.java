@@ -350,6 +350,7 @@ public class PlayerService {
 	public List<Player> findPlayersFromUser(User user) {
 		return playerRepository.findPlayersFromUser(user);
 	}
+	
 	@Transactional
 	public void deleteAllPlayersFromUser(User user) {
 		List<Player> playersFromUser = findPlayersFromUser(user);
