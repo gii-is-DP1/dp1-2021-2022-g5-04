@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.samples.IdusMartii.repository.InvitationRepository;
 import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
@@ -79,7 +78,7 @@ public class PlayerService {
 	@Transactional
 	public List<Player> findbyUsernameMatchFinished(String username) throws DataAccessException {
 		List<Player> players = playerRepository.findByUsername(username);
-		List<Player> result = new ArrayList();
+		List<Player> result = new ArrayList<Player>();
 		for(Player p : players){
 			if(p.getMatch().isFinished()){
 				result.add(p);

@@ -2,12 +2,7 @@ package org.springframework.samples.IdusMartii.service;
 
 import java.util.ArrayList;
 
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.IdusMartii.model.User;
@@ -28,11 +23,7 @@ public class AchievementUserService {
     private PlayerService playerService;
     @Autowired
     private UserService userService;
-	@Autowired
-    private MatchService matchService;
-	
-    
-    @Transactional
+	@Transactional
     public void saveAchievementUser(String username, Integer id) throws DataAccessException {
         log.info("Guardando Logro...");
         achievementUserRepository.saveAchievementUser(username, Integer.valueOf(id));
@@ -47,7 +38,7 @@ public class AchievementUserService {
 
     @Transactional
     public List<Double> listStatistics(User user) throws DataAccessException {
-        List<Double> list =new ArrayList();
+        List<Double> list =new ArrayList<Double>();
 		Double partidasJugadas = (double) userService.matchesPlayedForUser(user);
         Double victorias = (double)user.getVictorias();
         Double derrotas = partidasJugadas-victorias;

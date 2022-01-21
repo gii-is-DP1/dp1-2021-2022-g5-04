@@ -33,12 +33,7 @@ public class MatchService {
     private AuthoritiesService authoritiesService;
     @Autowired
     private PlayerService playerService;
-    @Autowired
-    private AchievementService achievementService;
-    @Autowired
-    private AchievementUserService achievementUserService;
-    
-	@Transactional
+    @Transactional
 	public Iterable<Match> findAll(){
 		log.info("Buscando partidas...");
 		return matchRepository.findAll();
@@ -427,8 +422,14 @@ public class MatchService {
     }
     
     public String errorAlreadyStarted(ModelMap modelMap) throws DataAccessException{
-    	log.info("Estoy en errorAlreadyStarted");
+    	log.info("Estoy en errorAlreadyStarted()");
     	modelMap.addAttribute("message", "La partida ya ha empezado.");
+    	return "/exception";
+    }
+    
+    public String errorNotStartedYet(ModelMap modelMap) throws DataAccessException{
+    	log.info("Estoy en errorNotStartedYet()");
+    	modelMap.addAttribute("message", "La partida no ha empezado todavía.");
     	return "/exception";
     }
 }

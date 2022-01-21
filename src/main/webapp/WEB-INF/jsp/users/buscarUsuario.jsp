@@ -9,7 +9,7 @@
 <IdusMartii:adminLayout pageName="usersFinding">
     <form:form modelAttribute="playerAux" class="form-horizontal" id="find-user-form" action="/users/find">
         <div class="form-group has-feedback">
-            <IdusMartii:inputField label="Texto" name="name"/>
+            <IdusMartii:inputField label="Nombre de usuario:" name="name"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
@@ -23,7 +23,7 @@
 <IdusMartii:layout pageName="usersFinding">
     <form:form modelAttribute="playerAux" class="form-horizontal" id="find-user-form" action="/users/find">
         <div class="form-group has-feedback">
-            <IdusMartii:inputField label="Texto" name="name"/>
+            <IdusMartii:inputField label="Nombre de usuario:" name="name"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
