@@ -32,8 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.samples.IdusMartii.repository.UserRepository;
-import org.springframework.samples.IdusMartii.web.MatchController;
-
 import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;

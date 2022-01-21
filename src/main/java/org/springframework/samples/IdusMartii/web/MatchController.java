@@ -1,7 +1,6 @@
 package org.springframework.samples.IdusMartii.web;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 
@@ -22,17 +21,12 @@ import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.AchievementService;
 import org.springframework.samples.IdusMartii.service.AchievementUserService;
-import org.springframework.samples.IdusMartii.service.AuthoritiesService;
-import org.springframework.samples.IdusMartii.service.ChatService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
-import org.springframework.samples.IdusMartii.IdusMartiiApplication;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
-import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Achievement;
-import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;

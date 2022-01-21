@@ -1,12 +1,10 @@
 package org.springframework.samples.IdusMartii.web;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.IdusMartii.model.FriendInvitation;
-import org.springframework.samples.IdusMartii.model.Person;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
@@ -81,6 +79,7 @@ public class FriendInvitationController {
 			modelMap.addAttribute("admin", authoritiesService.getAuthorities(userRequester.getUsername()));
 			return "/exception";
 		}
+	}
 		
 
 	@PostMapping(path="/{userRequester}/{userRequested}/save")

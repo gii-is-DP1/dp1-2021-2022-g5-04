@@ -11,13 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.IdusMartii.enumerates.Faction;
-import org.springframework.samples.IdusMartii.enumerates.Plays;
-import org.springframework.samples.IdusMartii.enumerates.Role;
-import org.springframework.samples.IdusMartii.enumerates.Vote;
-import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.Achievement;
-import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.stereotype.Service;
 

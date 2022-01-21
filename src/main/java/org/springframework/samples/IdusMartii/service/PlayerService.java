@@ -93,7 +93,7 @@ public class PlayerService {
 	}
 	@Transactional
 	public List<Match> findMatchesFromHost(User user) throws DataAccessException {
-		List<Match> matchesResult = new ArrayList();
+		List<Match> matchesResult = new ArrayList<Match>();
 		List<Match> matchesIterate = playerRepository.findMatchesFromUser(user);
 		for (Match m : matchesIterate){
 			if(m.getPlayers().get(0).getUser()==user){

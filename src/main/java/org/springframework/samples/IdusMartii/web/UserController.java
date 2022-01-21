@@ -16,12 +16,8 @@
 package org.springframework.samples.IdusMartii.web;
 
 
-import java.io.Console;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 
@@ -30,8 +26,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;

@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.samples.IdusMartii.service.InvitationService;
 
-import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 
 import org.springframework.samples.IdusMartii.service.MatchService;
