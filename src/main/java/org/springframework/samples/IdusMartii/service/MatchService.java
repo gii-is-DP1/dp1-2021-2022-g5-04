@@ -296,14 +296,33 @@ public class MatchService {
     	Faction faccion = match.getWinner();
     	return playerRepository.findWinners(match, faccion);
     }
-    
+    @Transactional
+    private boolean checkNumberOfLoyals(Match match) throws DataAccessException {
+    	List<Player> loyals = new ArrayList<Player>();
+    	for (Player p: match.getPlayers()) {
+    		if (p.getCard1() == Faction.LOYAL) {
+    			loyals.add(p);
+    		}
+    	}
+    	return loyals.size() > 0;
+    }
+    @Transactional
+    private boolean checkNumberOfTraitors(Match match) throws DataAccessException {
+    	List<Player> traitors = new ArrayList<Player>();
+    	for (Player p: match.getPlayers()) {
+    		if (p.getCard1() == Faction.TRAITOR) {
+    			traitors.add(p);
+    		}
+    	}
+    	return traitors.size() > 0;
+    }
     @Transactional
     public Faction sufragium(Match match) throws DataAccessException {
     	int numeroJugadores = match.getPlayers().size();
     	Faction faccionGanadora = Faction.MERCHANT;
-    	if (match.getVotesInFavor() - match.getVotesAgainst() >= 2 && match.getRound() == 3) {
+    	if (match.getVotesInFavor() - match.getVotesAgainst() >= 2 && match.getRound() == 3 && checkNumberOfLoyals(match)) {
     		faccionGanadora = Faction.LOYAL;
-    	} else if (match.getVotesAgainst() - match.getVotesInFavor() >= 2 && match.getRound() == 3) {
+    	} else if (match.getVotesAgainst() - match.getVotesInFavor() >= 2 && match.getRound() == 3 && checkNumberOfTraitors(match)) {
     		faccionGanadora = Faction.TRAITOR;
     	} else if (numeroJugadores == 5) {
     		if (match.getVotesInFavor() >= 13) {
@@ -330,9 +349,14 @@ public class MatchService {
     			faccionGanadora = Faction.LOYAL;
     		}
     	}
-    	return faccionGanadora;
+    	if (faccionGanadora == Faction.MERCHANT && match.getRound() != 3) {
+    		throw new DataAccessException("La partida no ha terminado aún") {};
+    	} else {
+    		return faccionGanadora;
+    	}
     }
     
+    @Transactional
 	public void registrarGanadores(Match match) {
 		List<Player> winners = playerService.findWinners(match);
 		List<Achievement> ganadas = achievementService.findByAchievementType("ganadas");

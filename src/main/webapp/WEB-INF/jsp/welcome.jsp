@@ -6,7 +6,8 @@
 
 <c:if test="${admin}">
 <IdusMartii:adminLayout pageName="home">
-     <spring:url value="/resources/images/fondo.jpg" htmlEscape="true" var="fondoImage"/>
+
+    <spring:url value="/resources/images/fondo.jpg" htmlEscape="true" var="fondoImage"/>
     
    
     <div class="row" style="background-image: url(${fondoImage}); background-size: cover;"> 
@@ -30,7 +31,7 @@
         <h2> Project ${title}</h2>
         <p><h2> Group ${group}</h2></p>
         <p><ul>
-        <c:forEach var="x" items="${persons}">
+        <c:forEach var="x" items="${people}">
             <li>${x.firstName} ${x.lastName}</li>
         </c:forEach>
         </ul></p>
@@ -66,7 +67,7 @@
         <h2> Project ${title}</h2>
         <p><h2> Group ${group}</h2></p>
         <p><ul>
-        <c:forEach var="x" items="${persons}">
+        <c:forEach var="x" items="${people}">
             <li>${x.firstName} ${x.lastName}</li>
         </c:forEach>
         </ul></p>

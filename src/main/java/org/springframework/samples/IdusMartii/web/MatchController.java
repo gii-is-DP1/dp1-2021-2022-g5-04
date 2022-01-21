@@ -58,8 +58,6 @@ public class MatchController {
     AchievementService achievementService;
 	
 
-	
-	
 	@GetMapping()
 	public String matchesList(ModelMap modelMap) {
 		String vista = "matches/matchesListMenu";
@@ -230,6 +228,7 @@ public class MatchController {
 		modelMap.addAttribute("pretorSinAsignar", matchService.pretorNotAsigned(match));
 		modelMap.addAttribute("votoAmarilloRevisado", match.getPlays() == Plays.YELLOWEDIL);
 		modelMap.addAttribute("edilAmarilloRevisado", player_actual == playerService.playerYellow(match));
+		modelMap.addAttribute("numeroJugadoresCinco", match.getPlayers().size() == 5);
 		modelMap.addAttribute("current", currentuser);
 		modelMap.addAttribute("match", match);
 		modelMap.addAttribute("ediles", playerService.findByRole(match, Role.EDIL));
