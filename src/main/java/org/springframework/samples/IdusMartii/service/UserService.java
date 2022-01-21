@@ -169,13 +169,8 @@ public class UserService {
     	if(ganadores.contains(player)) {
     		log.info("Enhorabuena, has ganado.");
     		User user = player.getUser();
-    		if(user.getVictorias() == null) {
-    			user.setVictorias(1);
-    		}
-    		else {
-    			user.setVictorias(user.getVictorias()+1);
-    			this.saveUser(user);
-    		}
+			user.setVictorias(user.getVictorias()+1);
+			this.saveUser(user);
     		for(Achievement a : ganadas) {
 				  if(user.getVictorias() == a.getValor()) {
 					  achievementUserService.saveAchievementUser(user.getUsername(), 2);
