@@ -47,7 +47,7 @@
 </IdusMartii:adminLayout>
 </c:if>
 <c:if test="${admin eq false}">
-<IdusMartii:layout pageName="matches">
+<IdusMartii:layout pageName="chats">
 	<div class="row">
 		<c:forEach items="${chats}" var="chat">
 			<c:if test="${currentUser eq chat.user}">

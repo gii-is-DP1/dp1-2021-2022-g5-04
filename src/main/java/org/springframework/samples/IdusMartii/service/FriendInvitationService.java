@@ -9,6 +9,7 @@ import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.repository.FriendInvitationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,14 +37,17 @@ public class FriendInvitationService {
 			return friendInvitationRepository.findById(id).get();
 		}
 		
-		@Transactional(rollbackFor = Exception.class)
-		public void saveFriendInvitation(FriendInvitation friendInvitation) throws DataAccessException {
+		@Transactional
+		public String saveFriendInvitation(FriendInvitation friendInvitation, ModelMap modelMap) throws DataAccessException {
 			log.info("Creando invitación de amistad...");
 			log.debug("Atributo: " + friendInvitation);
 			if (friendInvitation.getUser_requested() != friendInvitation.getUser_requester()) {
 				friendInvitationRepository.save(friendInvitation);
+				modelMap.addAttribute("message", "Petición enviada con éxito al usuario con nombre " + friendInvitation.getUser_requested().getUsername());
+				return "/welcome";
 			} else {
-				throw new DataAccessException("Un usuario no puede enviarse una solicitud de amistad a si mismo") {};
+				modelMap.addAttribute("message", "No puedes enviarte una solicitud de amistad a ti mismo");
+				return "/exception";
 			}
 		}
 		
@@ -54,23 +58,39 @@ public class FriendInvitationService {
 			return friendInvitationRepository.findFriendInvitationsByUserRequested(user);
 		}
 		@Transactional
-		public void deleteFriendInvitation(FriendInvitation friendInvitation) throws DataAccessException {
+		public String deleteFriendInvitation(FriendInvitation friendInvitation, User current, ModelMap modelMap) throws DataAccessException {
 			log.info("Rechazando solicitud de amistad...");
 			log.debug("Atributo: " + friendInvitation);
-			friendInvitationRepository.delete(friendInvitation);
+			if (friendInvitation.getUser_requested() != friendInvitation.getUser_requester()) {
+				friendInvitationRepository.delete(friendInvitation);
+				return "redirect:/friendInvitations";
+			} else {
+				modelMap.addAttribute("message", "No puedes eliminar una solicitud de amistad que no es tuya");
+				return "/exception";
+			}
 		}
 		@Transactional
-		public void acceptFriendInvitation(int id_invt) throws DataAccessException {
+		public String acceptFriendInvitation(int id_invt, User current, ModelMap modelMap) throws DataAccessException {
 			log.info("Aceptando solicitud de amistad...");
 			log.debug("Id de solicitud: " + id_invt);
 			FriendInvitation friendInvitation = friendInvitationService.findById(id_invt);
-			friendsService.saveFriends(friendInvitation.getUser_requester().getUsername(), friendInvitation.getUser_requested().getUsername());
-			friendInvitationService.deleteFriendInvitation(friendInvitation);
+			if(current == friendInvitation.getUser_requested()) {
+				friendsService.saveFriends(friendInvitation.getUser_requester().getUsername(), friendInvitation.getUser_requested().getUsername());
+				friendInvitationService.deleteFriendInvitation(friendInvitation, current, modelMap);
+				return "redirect:/friendInvitations";
+			} else {
+				modelMap.addAttribute("message", "No puedes aceptar una solicitud de amistad que no es tuya");
+				return "/exception";
+			}
 		}
 		@Transactional
 		public void deleteFriendInvitationsFromUser(User user) throws DataAccessException {
 			List<FriendInvitation> friendInvitationsFromUser = friendInvitationRepository.findFriendInvitationsByUserRequester(user);
+			List<FriendInvitation> friendInvitationsRequestedToUser = friendInvitationRepository.findFriendInvitationsByUserRequested(user);
 			for (FriendInvitation fi: friendInvitationsFromUser) {
+				friendInvitationRepository.delete(fi);
+			}
+			for (FriendInvitation fi: friendInvitationsRequestedToUser) {
 				friendInvitationRepository.delete(fi);
 			}
 		}

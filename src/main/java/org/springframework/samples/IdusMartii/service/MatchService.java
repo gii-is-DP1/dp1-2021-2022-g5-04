@@ -33,10 +33,6 @@ public class MatchService {
     private AuthoritiesService authoritiesService;
     @Autowired
     private PlayerService playerService;
-    @Autowired
-    private AchievementService achievementService;
-    @Autowired
-    private AchievementUserService achievementUserService;
     
 	@Transactional
 	public Iterable<Match> findAll(){
@@ -419,13 +415,13 @@ public class MatchService {
     	}
     		return faccionGanadora;
     }
-    
+    @Transactional
     public String errorNotFinished(ModelMap modelMap) throws DataAccessException{
     	log.info("Estoy en errorNotFinished()");
     	modelMap.addAttribute("message", "La partida no ha acabado.");
     	return "/exception";
     }
-    
+    @Transactional
     public String errorAlreadyStarted(ModelMap modelMap) throws DataAccessException{
     	log.info("Estoy en errorAlreadyStarted");
     	modelMap.addAttribute("message", "La partida ya ha empezado.");

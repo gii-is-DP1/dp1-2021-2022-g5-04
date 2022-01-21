@@ -76,8 +76,6 @@ public class UserController {
 		Page<User> completeUserPage = userService.findAllUsersWithPagination(completePageable);
 		Page<User> userPage =  userService.findAllUsersWithPagination(pageable);
 		modelMap.addAttribute("users", userPage.getContent());
-    	modelMap.addAttribute("admin", userService.isAdmin(userService.findbyUsername(currentUserService.showCurrentUser())));
-
         modelMap.addAttribute("user", currentUserService.showCurrentUser());
         modelMap.addAttribute("numberOfPagesList", userService.createNumberOfPagesList(completeUserPage, page));
 		return vista;
@@ -85,7 +83,6 @@ public class UserController {
     
     @GetMapping(path="/own")
    	public String listadoUsuarioPropio(ModelMap modelMap) {
-
     	log.info("Accediendo a los datos de tu perfil...");
    		String vista = "users/miUsuario";
    		User user =  userService.findbyUsername(currentUserService.showCurrentUser());
@@ -94,8 +91,6 @@ public class UserController {
    		modelMap.addAttribute("users", users);
     	modelMap.addAttribute("admin", userService.isAdmin(user));
    		modelMap.addAttribute("user", user);
-   	//	modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
-
    		return vista;
    	}   
     
@@ -113,7 +108,9 @@ public class UserController {
     @GetMapping(path="/new")
     public String crearUsuario(ModelMap modelMap) {
         String vista = "users/crearUsuario";
+        User user = userService.findUser(currentUserService.showCurrentUser()).get();
         modelMap.addAttribute("user", new User());
+        modelMap.addAttribute("admin", userService.isAdmin(user));
         return vista;
     }
     
@@ -146,7 +143,6 @@ public class UserController {
     	User current = userService.findUser(currentUserService.showCurrentUser()).get();
     	modelMap.addAttribute("admin", userService.isAdmin(current));
         modelMap.addAttribute("user", userService.findbyUsername(username));
-        log.info("ola");
         return vista;
     }
     

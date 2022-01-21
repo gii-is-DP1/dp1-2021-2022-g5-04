@@ -7,8 +7,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 <c:if test="${admin}">
-<IdusMartii:adminLayout pageName="achievement">
-<h2>Achievements</h2>
+<IdusMartii:adminLayout pageName="estadisticas">
+<h2>Estadisticas</h2>
 
 
 
@@ -39,8 +39,8 @@
                 	</c:if>
 
 <c:if test="${admin eq false}">
-<IdusMartii:layout pageName="achievements">
-    <h2>Achievements</h2>
+<IdusMartii:layout pageName="estadisticas">
+    <h2>Estadisticas</h2>
 
      <table id="achievementsTable" class="table table-striped">
         <thead>
@@ -66,4 +66,4 @@
         </tbody>
     </table>
 </IdusMartii:layout>
-                	</c:if>
+</c:if>

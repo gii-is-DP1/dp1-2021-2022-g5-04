@@ -63,7 +63,8 @@ public class UserService {
 	private AchievementUserService achievementUserService;
 	@Autowired
 	private FriendInvitationService friendInvitationService;
-
+	@Autowired
+	private ChatService chatService;
 
 	@Autowired
 	public UserService(UserRepository userRepository) {
@@ -152,13 +153,13 @@ public class UserService {
 		}
 		friendInvitationService.deleteFriendInvitationsFromUser(user);
 		playerService.deleteAllPlayersFromUser(user);
+		chatService.deleteChatsFromUser(user);
 		userRepository.delete(user);
 	}
 	@Transactional
 	public Integer matchesPlayedForUser(User user) throws DataAccessException {
 		log.info("Buscando numero de partidas jugadas...");
 		return playerService.findbyUsername(user.getUsername()).size();
-		
 	}
 		
 	@Transactional

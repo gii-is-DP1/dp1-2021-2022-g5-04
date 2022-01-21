@@ -57,18 +57,16 @@ public class AchievementController {
 	@GetMapping(path="/statistics")
 	public String listadoStatistics(ModelMap modelMap) {
 		String vista = "achievements/listadoEstadisticas";
-		//Iterable<Achievement> achievements = achievementService.findAll();
 		String userName = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 		User user = userService.findUser(userName).orElse(null);
 		Integer statistics = achievementUserService.listStatistics(user);
 		Integer win = user.getVictorias();
 		modelMap.addAttribute("statistics", statistics);
-if (win!=null) {
-		modelMap.addAttribute("win", win);}
-else {
-	modelMap.addAttribute("win", 0);
-
-}
+		if (win!=null) {
+			modelMap.addAttribute("win", win);
+		} else {
+			modelMap.addAttribute("win", 0);
+		}
 		modelMap.addAttribute("user", user);
 		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
 		return vista;
@@ -80,7 +78,6 @@ else {
 	@GetMapping(path="/statistics/ranking")
 	public String rankingStatistics(ModelMap modelMap) {
 		String vista = "achievements/ranking";
-		//Iterable<Achievement> achievements = achievementService.findAll();
 		String userName = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 		User user = userService.findUser(userName).orElse(null);
 		Map<Integer, List<String> >statistics = achievementUserService.rankingStatistics();
@@ -94,35 +91,24 @@ else {
 		@GetMapping(path="/statistics/rankingWinners")
 		public String rankingWinners(ModelMap modelMap) {
 			String vista = "achievements/ranking";
-			//Iterable<Achievement> achievements = achievementService.findAll();
 			String userName = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 			User user = userService.findUser(userName).orElse(null);
 			Map<Integer, List<String> >statistics = achievementUserService.rankingWinners();
-			
 			modelMap.addAttribute("map", statistics);
-
 			modelMap.addAttribute("user", user);
 			modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
 			return vista;
-		
-	
-		
-		
 	}
 	
 	
 	@GetMapping(path="/{id}/edit")
-	public String nuevoLogros(ModelMap modelMap , @PathVariable("id") int id) {
+	public String editarLogros(ModelMap modelMap , @PathVariable("id") int id) {
 		String vista = "achievements/editarLogro";
 		log.info("Acceso al servicio de logros por el metodo findById()");
-		  modelMap.addAttribute("achievement", achievementService.findById(id));
+		modelMap.addAttribute("achievement", achievementService.findById(id));
 		log.info("Acceso al servicio de logros por el metodo getAllAchievementsTypes()");
-		  modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
-		
+		modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
 		return vista;
-	
-		
-		
 	}
 	
 	
@@ -132,24 +118,19 @@ else {
 	@GetMapping(path="/{id}/statistics")
 	public String listadoEstadisticas(ModelMap modelMap , @PathVariable("id") int id) {
 		String vista = "achievements/editarLogro";
-		  modelMap.addAttribute("achievement", achievementService.findById(id));
-		  modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
-		
-		return vista;}
+		modelMap.addAttribute("achievement", achievementService.findById(id));
+		modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
+		return vista;
+	}
 	
 	@GetMapping(path="/new")
-	public String editarLogros(ModelMap modelMap ) {
+	public String nuevoLogros(ModelMap modelMap) {
 		String vista = "achievements/editarLogro";
 		Achievement ac =new Achievement();
 		ac.setId(achievementService.nextId()+1);
 		modelMap.addAttribute("achievement",ac);
 		modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
-
-		
 		return vista;
-	
-
-		
 	}
 	@PostMapping(path="/{id}/save")
 	public String guardarLogros(ModelMap modelMap, @Valid Achievement achievement ,BindingResult result, @PathVariable("id") int id) {
