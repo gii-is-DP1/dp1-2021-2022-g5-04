@@ -44,8 +44,9 @@ public class FriendInvitationService {
 				friendInvitationRepository.save(friendInvitation);
 			} else {
 				throw new DataAccessException("Un usuario no puede enviarse una solicitud de amistad a si mismo") {};
-      }
+			}
 		}
+		
 	    @Transactional(readOnly = true)
 		public List<FriendInvitation> findFriendInvitationsByUserRequested(User user) throws DataAccessException{
 	    	log.info("Buscando Solicitudes de amistad de usuario...");

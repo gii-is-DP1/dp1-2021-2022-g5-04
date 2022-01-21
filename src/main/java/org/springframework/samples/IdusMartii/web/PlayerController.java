@@ -3,6 +3,7 @@ package org.springframework.samples.IdusMartii.web;
 
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -18,8 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.samples.IdusMartii.service.InvitationService;
-
-import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 
 import org.springframework.samples.IdusMartii.service.MatchService;
