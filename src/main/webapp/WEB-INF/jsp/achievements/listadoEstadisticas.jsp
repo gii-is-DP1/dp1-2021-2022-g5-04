@@ -8,62 +8,68 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 <c:if test="${admin}">
 <IdusMartii:adminLayout pageName="achievement">
-<h2>Achievements</h2>
+<h2>Estadisticas</h2>
 
 
 
-    <table id="achievementsTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th >Partidas jugadas</th>
-            <th ></th>
-                        <th >Partidas ganadas</th>
-                        <th ></th>
-            
-        </tr>
-        </thead>
-        <tbody>
-            <tr>
-                
-                <td>
-                    <c:out value="${statistics}"/>
-                </td>
-                  <td>
-                    <c:out value="${win}"/>
-                </td>
-               
-            </tr>
-        </tbody>
-    </table>
+<table class="table table-striped">
+    <tr>
+        <th>Partidas jugadas</th>
+        <td><b><c:out value="${statistics.get(0)} " /></b></td>
+    </tr>
+    <tr>
+        <th>Partidas ganadas</th>
+        <td><c:out value="${statistics.get(1)}" /></td>
+    </tr>
+    <tr>
+        <th>Partidas perdidas</th>
+        <td><c:out value="${statistics.get(2)}" /></td>
+    </tr>
+    <tr>
+        <th>Porcentaje de victorias</th>
+        <td><c:out value="${statistics.get(3)} %" /></td>
+    </tr>
+    <tr>
+        <th>Porcentaje de derrotas</th>
+        <td><c:out value="${statistics.get(3)} %" /></td>
+    </tr>
+    
+    
+
+</table>
 </IdusMartii:adminLayout>
                 	</c:if>
 
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="achievements">
-    <h2>Achievements</h2>
+    <h2>Estadisticas</h2>
 
-     <table id="achievementsTable" class="table table-striped">
-        <thead>
-        <tr>
-            <th >Partidas jugadas</th>
-            <th ></th>
-                        <th >Partidas ganadas</th>
-                        <th ></th>
-            
-        </tr>
-        </thead>
-        <tbody>
-            <tr>
-                
-                <td>
-                    <c:out value="${statistics}"/>
-                </td>
-                  <td>
-                    <c:out value="${win}"/>
-                </td>
-               
-            </tr>
-        </tbody>
-    </table>
+
+
+<table class="table table-striped">
+    <tr>
+        <th>Partidas jugadas</th>
+        <td><b><c:out value="${statistics.get(0)} " /></b></td>
+    </tr>
+    <tr>
+        <th>Partidas ganadas</th>
+        <td><c:out value="${statistics.get(1)}" /></td>
+    </tr>
+    <tr>
+        <th>Partidas perdidas</th>
+        <td><c:out value="${statistics.get(2)}" /></td>
+    </tr>
+    <tr>
+        <th>Porcentaje de victorias</th>
+        <td><c:out value="${statistics.get(3)} %" /></td>
+    </tr>
+    <tr>
+        <th>Porcentaje de derrotas</th>
+        <td><c:out value="${statistics.get(3)} %" /></td>
+    </tr>
+    
+    
+
+</table>
 </IdusMartii:layout>
                 	</c:if>

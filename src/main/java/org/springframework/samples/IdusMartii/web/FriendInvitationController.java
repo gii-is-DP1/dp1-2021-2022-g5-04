@@ -81,6 +81,7 @@ public class FriendInvitationController {
 			modelMap.addAttribute("admin", authoritiesService.getAuthorities(userRequester.getUsername()));
 			return "/exception";
 		}
+	}
 		
 
 	@PostMapping(path="/{userRequester}/{userRequested}/save")

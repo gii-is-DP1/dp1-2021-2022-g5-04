@@ -67,11 +67,14 @@ public class UserService {
 
 	
 	@Transactional
-	public void saveUser(User user) throws DataAccessException {
-		log.debug("usando metodo saveUser()");
-		user.setEnabled(true);
-		userRepository.save(user);
-	}
+    public void saveUser(User user) throws DataAccessException {
+        log.debug("usando metodo saveUser()");
+        user.setEnabled(true);
+        if(user.getVictorias() == null) {
+            user.setVictorias(0);
+        }
+        userRepository.save(user);
+    }
 	@Transactional
 	public Optional<User> findUser(String username) {
 		log.debug("usando metodo findUser()");
@@ -146,13 +149,13 @@ public class UserService {
 	}
 	@Transactional
 	public Integer matchesPlayedForUser(User user) throws DataAccessException {
-		return playerService.findbyUsername(user.getUsername()).size();
+		return playerService.findbyUsernameMatchFinished(user.getUsername()).size();
 		
 	}
 
 
 	public List<User> findUsers() {
-		// TODO Auto-generated method stub
+		
 		return userRepository.findUsers();}
 	@Transactional
 	public boolean isAdmin(User user) throws DataAccessException {

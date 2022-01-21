@@ -12,6 +12,7 @@ import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.service.AchievementService;
 import org.springframework.samples.IdusMartii.service.AchievementUserService;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
+import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,8 @@ public class AchievementController {
 	private UserService userService;
 	@Autowired
 	private AuthoritiesService authoritiesService;
+	@Autowired
+	private CurrentUserService currentUserService;
 	@GetMapping()
 	public String listadoLogros(ModelMap modelMap) {
 		log.info("Llamando al listado de logros...");
@@ -59,58 +62,34 @@ public class AchievementController {
 	@GetMapping(path="/statistics")
 	public String listadoStatistics(ModelMap modelMap) {
 		String vista = "achievements/listadoEstadisticas";
-		//Iterable<Achievement> achievements = achievementService.findAll();
-		String userName = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-		User user = userService.findUser(userName).orElse(null);
-		Integer statistics = achievementUserService.listStatistics(user);
-		Integer win = user.getVictorias();
-		modelMap.addAttribute("statistics", statistics);
-if (win!=null) {
-		modelMap.addAttribute("win", win);}
-else {
-	modelMap.addAttribute("win", 0);
+			
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		modelMap.addAttribute("statistics", achievementUserService.listStatistics(user));
+		modelMap.addAttribute("user", user);
+		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
+		return vista;	
+	}
+	
+	@GetMapping(path="/ranking")
+	public String rankingStatistics(ModelMap modelMap) {
+		String vista = "achievements/ranking";
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		List<String> rankingWinners = achievementUserService.ranking();
+		List<Double> rankingStats = achievementUserService.rankingStatistics();
+		
+		modelMap.addAttribute("winners", rankingWinners);
+		modelMap.addAttribute("stats", rankingStats);
 
-}
 		modelMap.addAttribute("user", user);
 		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
 		return vista;
-	
-		
-		
 	}
-	
-	@GetMapping(path="/statistics/ranking")
-	public String rankingStatistics(ModelMap modelMap) {
-		String vista = "achievements/ranking";
-		//Iterable<Achievement> achievements = achievementService.findAll();
-		String userName = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-		User user = userService.findUser(userName).orElse(null);
-		Map<Integer, List<String> >statistics = achievementUserService.rankingStatistics();
 		
-		modelMap.addAttribute("map", statistics);
-
-		modelMap.addAttribute("user", user);
-		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
-		return vista;}
-		
-		@GetMapping(path="/statistics/rankingWinners")
-		public String rankingWinners(ModelMap modelMap) {
-			String vista = "achievements/ranking";
-			//Iterable<Achievement> achievements = achievementService.findAll();
-			String userName = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-			User user = userService.findUser(userName).orElse(null);
-			Map<Integer, List<String> >statistics = achievementUserService.rankingWinners();
-			
-			modelMap.addAttribute("map", statistics);
-
-			modelMap.addAttribute("user", user);
-			modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
-			return vista;
 		
 	
 		
 		
-	}
+	
 	
 	
 	@GetMapping(path="/{id}/edit")
@@ -126,18 +105,6 @@ else {
 		
 		
 	}
-	
-	
-	
-		
-		
-	@GetMapping(path="/{id}/statistics")
-	public String listadoEstadisticas(ModelMap modelMap , @PathVariable("id") int id) {
-		String vista = "achievements/editarLogro";
-		  modelMap.addAttribute("achievement", achievementService.findById(id));
-		  modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
-		
-		return vista;}
 	
 	@GetMapping(path="/new")
 	public String editarLogros(ModelMap modelMap ) {

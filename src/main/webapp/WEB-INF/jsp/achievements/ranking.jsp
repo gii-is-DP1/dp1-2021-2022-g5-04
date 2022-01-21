@@ -8,81 +8,68 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 <c:if test="${admin}">
 <IdusMartii:adminLayout pageName="achievement">
-<h2>Ranking</h2>
+    <h2>Rankings de Jugadores</h2>
 
- <table>
-        <thead>
+
+
+    <table class="table table-striped">
         <tr>
-            <th >Partidas jugadas</th>
-            <td>
-                        </td>
-            
-                        <th >Nombre</th>
+            <th>Top partidas jugadas</th>
+            <td><c:out value="${winners.get(0)}---------->${stats.get(0)}" /></td>
         </tr>
-        </thead>
-            </table>
-                 <table>
+        <tr>
+            <th>Top partidas ganadas</th>
+            <td><c:out value="${winners.get(1)}---------->${stats.get(1)}" /></td>
+        </tr>
+        <tr>
+            <th>Top partidas perdidas</th>
+            <td><c:out value="${winners.get(2)}---------->${stats.get(2)}" /></td>
+        </tr>
+        <tr>
+            <th>Top porcentaje de victorias</th>
+            <td><c:out value="${winners.get(3)}---------->${stats.get(3)} %" /></td>
+        </tr>
+        <tr>
+            <th>Top porcentaje de derrotas</th>
+            <td><c:out value="${winners.get(4)}---------->${stats.get(4)} %" /></td>
+        </tr>
         
-        <tbody>
         
-        <c:forEach items="${map.keySet()}" var="keys">
-            <tr>
-            <td>
-                                    <c:out value="${keys}"/>
-                </td>
-                <td>
-                      
-                        
-                                                <td>
-                
-                    <c:out value="${map.get(keys)}"/>
-                                    </td>
-                    
-              
-            </tr>
-                                  </c:forEach>
-            
-        </tbody>
+    
     </table>
 </IdusMartii:adminLayout>
                 	</c:if>
 
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="achievements">
-    <h2>Ranking</h2>
+    <h2>Rankings de Jugadores</h2>
 
- <table>
-        <thead>
+
+
+    <table class="table table-striped">
         <tr>
-            <th >Partidas jugadas</th>
-            
-                        <th >Nombre</th>
-            
+            <th>Top partidas jugadas</th>
+            <td><c:out value="${winners.get(0)}---------->${stats.get(0)}" /></td>
         </tr>
-        </thead>
-            </table>
-                 <table>
+        <tr>
+            <th>Top partidas ganadas</th>
+            <td><c:out value="${winners.get(1)}---------->${stats.get(1)}" /></td>
+        </tr>
+        <tr>
+            <th>Top partidas perdidas</th>
+            <td><c:out value="${winners.get(2)}---------->${stats.get(2)}" /></td>
+        </tr>
+        <tr>
+            <th>Top porcentaje de victorias</th>
+            <td><c:out value="${winners.get(3)}---------->${stats.get(3)} %" /></td>
+        </tr>
+        <tr>
+            <th>Top porcentaje de derrotas</th>
+            <td><c:out value="${winners.get(4)}---------->${stats.get(4)} %" /></td>
+        </tr>
         
-        <tbody>
         
-        <c:forEach items="${map.keySet()}" var="keys">
-            <tr>
-            <td>
-                                    <c:out value="${keys}"/>
-                </td>
-                <td>
-                      
-                        
-                                                <td>
-                
-                    <c:out value="${map.get(keys)}"/>
-                                    </td>
-                    
-              
-            </tr>
-                                  </c:forEach>
-            
-        </tbody>
+    
     </table>
     
     
