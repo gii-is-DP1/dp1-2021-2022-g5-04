@@ -36,7 +36,6 @@ import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.model.Chat;
 import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
@@ -58,17 +57,19 @@ public class MatchController {
     AchievementUserService achievementUserService;
 	@Autowired
     AchievementService achievementService;
-	@Autowired
-	ChatService chatService;
+	
 	
 
-	
-	
 	@GetMapping()
 	public String matchesList(ModelMap modelMap) {
+		log.info("Accediendo a la lista de partidas...");
 		String vista = "matches/matchesListMenu";
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		log.info("Accediendo al servicio de partidas por el metodo matches()");
+		log.debug("usuario: " + user);
 		List<Match> matches = matchService.matches(user);
+		log.info("Acceso al servicio de partidas por el metodo isAdmin()");
+		log.debug("usuario: " + user);
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		return vista;
@@ -77,9 +78,13 @@ public class MatchController {
 	
 	@GetMapping(path="/finished")
 	public String matchesListFinished(ModelMap modelMap) {
+		log.info("Accediendo a la lista de partidas terminadas...");
 		String vista = "matches/matchesList";
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		log.info("Accediendo al servicio de partidas por el metodo matchesfinished()");
 		List<Match> matches = matchService.matchesFinished();
+		log.info("Acceso al servicio de partidas por el metodo isAdmin()");
+		log.debug("usuario: " + user);
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		modelMap.addAttribute("CorP", "terminadas");
@@ -88,9 +93,12 @@ public class MatchController {
 	
 	@GetMapping(path="/progress")
 	public String matchesListProgress(ModelMap modelMap) {
+		log.info("Accediendo a la lista de partidas en curso...");
 		String vista = "matches/matchesList";
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		log.info("Accediendo al servicio de partidas por el metodo matchesInProgress_NotFinished()");
 		List<Match> matches = matchService.matchesInProgress_NotFinished();
+		log.info("Accediendo al servicio de partidas por el metodo isAdmin()");
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		modelMap.addAttribute("CorP", "en progreso");
@@ -99,9 +107,13 @@ public class MatchController {
 	
 	@GetMapping(path="/created")
 	public String matchesListCreated(ModelMap modelMap) {
+		log.info("Accediendo a la lista de partidas creadas...");
 		String vista = "matches/matchesList";
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		log.info("Accediendo al servicio de partidas por el metodo matchesCreated()");
 		List<Match> matches = matchService.matchesCreated(user);
+		log.info("Acceso al servicio de partidas por el metodo isAdmin()");
+		log.debug("usuario: " + user);
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		modelMap.addAttribute("CorP", "creadas");
@@ -110,9 +122,12 @@ public class MatchController {
 	
 	@GetMapping(path="/lobby")
 	public String matchesListLobby(ModelMap modelMap) {
+		log.info("Accediendo a la lista de partidas en lobby...");
 		String vista = "matches/matchesList";
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		log.info("Accediendo al servicio de partidas por el metodo matchesLobby()");
 		List<Match> matches = matchService.matchesLobby();
+		log.info("Accediendo al servicio de partidas por el metodo isAdmin()");
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		modelMap.addAttribute("CorP", "en lobby");
@@ -121,9 +136,13 @@ public class MatchController {
 	
 	@GetMapping(path="/played")
 	public String matchesListPlayed(ModelMap modelMap) {
+		log.info("Accediendo a la lista de partidas jugadas...");		
 		String vista = "matches/matchesList";
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		log.info("Accediendo al servicio de partidas por el metodo matches()");
 		List<Match> matches = matchService.matches(user);
+		log.info("Acceso al servicio de partidas por el metodo isAdmin()");
+		log.debug("usuario: " + user);
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		modelMap.addAttribute("CorP", "jugadas");
@@ -132,10 +151,14 @@ public class MatchController {
 	
 	@GetMapping(path="/spectator")
 	public String spectatorMode(ModelMap modelMap, HttpServletResponse response) {
+		log.info("Accediendo a la lista de partidas que se pueden espectar...");
 		String vista = "matches/spectatorModeList";
 		response.addHeader("Refresh","30");
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		log.info("Accediendo al servicio de partidas por el metodo matchesInProgress_NotFinished()");
 		List<Match> matches = matchService.matchesInProgress_NotFinished();
+		log.info("Acceso al servicio de partidas por el metodo isAdmin()");
+		log.debug("usuario: " + user);
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		return vista;
@@ -143,8 +166,11 @@ public class MatchController {
 	
 	@GetMapping(path="/{id_match}/spectator")
 	public String spectatorModeMatch(ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
+		log.info("Accediendo a la partida...");
 		String vista = "matches/spectatorMode";
 		response.addHeader("Refresh","20");
+		log.info("Accediendo al servicio de partidas por el metodo findById()");
+		log.debug("id: " + id_match);
 		Match match = this.matchService.findById(id_match);
 		modelMap.addAttribute("match", match);
 		return vista;
@@ -152,15 +178,19 @@ public class MatchController {
 	
 	@GetMapping(path="/new")
 	public String crearPartida(ModelMap modelMap) {
+		log.info("Acceso a formulario de creacion de partida.");
 		String vista = "matches/crearPartida";
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
 		modelMap.addAttribute("match", new Match());
+		log.info("Acceso al servicio de partidas por el metodo isAdmin()");
+		log.debug("usuario: " + user);
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		return vista;
 	}
 	
 	@PostMapping(path="/save")
 	public String guardarPartida(@Valid Match match, BindingResult result, ModelMap modelMap) {
+		log.info("Creando partida...");
 			match.setRound(0);
 			match.setTurn(0);
 			match.setVotesInFavor(0);
@@ -171,27 +201,42 @@ public class MatchController {
 			host.setName("host");
 			host.setRole(Role.CONSUL);
 			host.setMatch(match);
+			log.info("Acceso al servicio de partidas por el metodo saveMatch()");
+			log.debug("partida: " + match);
 			matchService.saveMatch(match);
+			log.info("Acceso al servicio de jugadores por el metodo savePlayer()");
+			log.debug("jugador: " + host);
 			playerService.savePlayer(host);
-			modelMap.addAttribute("message", "¡Jugador guardado correctamente!");
 			return "redirect:/matches/" + match.getId() + "/new";
 	}
 	
 	@PostMapping(path="/{id_match}/{id_invt}/aceptar")
 	public String aceptarPartida(ModelMap modelMap, @PathVariable("id_match") int id_match, @PathVariable("id_invt") int id_invt) {
-			Match match = matchService.findById(id_match);
+		log.info("Aceptando solicitud de invitacion a partida...");
+		log.info("Acceso al servicio de partidas por el metodo findById()");
+		log.debug("Id : " + id_match);
+		Match match = matchService.findById(id_match);
 			User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		log.info("Acceso al servicio de invitaciones de partidas por el metodo acceptInvitation()");
+		log.debug("Id: " + id_invt + ", partida: " + match + ", usuario: "+ user);
 			invitationService.acceptInvitation(id_invt, match, user);
 			return "redirect:/matches/" + match.getId() + "/new";
 	}
 
 	@GetMapping(path="/{id}/new")
 	public String editarPartida(ModelMap modelMap, @PathVariable("id") int id) {
+		log.info("");
 		String vista = "matches/editarPartida";
+		log.info("Acceso al servicio de partidas por el metodo saveMatch()");
+		log.debug("Id : " + id);
 		Match match = this.matchService.findById(id);
 		String currentUser = currentUserService.showCurrentUser();
 		User user = userService.findbyUsername(currentUser);
+		log.info("Acceso al servicio de jugadores por el metodo findByMatchAndUser()");
+		log.debug("partida: " + match + ", usuario: " + user);
 		Player player = playerService.findByMatchAndUser(match, user);
+		log.info("Acceso al servicio de partidas por el metodo noHostPlayers()");
+		log.debug("partida: " + match);
 		List<Player> noHostPlayers = matchService.noHostPlayers(match);
 		modelMap.addAttribute("current", currentUser);
 		modelMap.addAttribute("match", match);
@@ -206,14 +251,19 @@ public class MatchController {
 
 	@GetMapping(path="/{id}/match")
 	public String comenzarPartida(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
+		log.info("Comenzando partida...");
 		String vista = "matches/partidaEnCurso";
-		response.addHeader("Refresh","20"); //Es una decisión de diseño y la otra alternativa es implementar el RestController, pero no la cogimos por falta de tiempo
+		response.addHeader("Refresh","20");
+		log.info("Acceso al servicio de partidas por el metodo findById()");
+		log.debug("Id : " + id);
 		Match match = this.matchService.findById(id);
 		if(match.getRound()==0){
 			match.setRound(1);
 		}
 		String currentuser = currentUserService.showCurrentUser();
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
+		log.info("Acceso al servicio de jugadores por el metodo findByMatchAndUser()");
+		log.debug("partida: " + match + ", usuario: " + usuario);		
 		Player player_actual = playerService.findByMatchAndUser(match, usuario);
 		modelMap.addAttribute("votos", matchService.votes(match));
 		modelMap.addAttribute("votedUser", matchService.votedUser(match));
@@ -236,6 +286,7 @@ public class MatchController {
 		modelMap.addAttribute("pretorSinAsignar", matchService.pretorNotAsigned(match));
 		modelMap.addAttribute("votoAmarilloRevisado", match.getPlays() == Plays.YELLOWEDIL);
 		modelMap.addAttribute("edilAmarilloRevisado", player_actual == playerService.playerYellow(match));
+		modelMap.addAttribute("numeroJugadoresCinco", match.getPlayers().size() == 5);
 		modelMap.addAttribute("current", currentuser);
 		modelMap.addAttribute("match", match);
 		modelMap.addAttribute("ediles", playerService.findByRole(match, Role.EDIL));
@@ -248,6 +299,7 @@ public class MatchController {
 	}
 	@GetMapping(path="/{id}/rolesAsignados")
 	public String rolesAsignados(ModelMap modelMap, @PathVariable("id") int id) {
+		log.info("Acesso al metodo rolesAsignados()");
 		Match match = matchService.findById(id);
 		playerService.rolesAsigned(match);
 		match.setPlays(Plays.EDIL);
@@ -276,22 +328,36 @@ public class MatchController {
 	
 	@PostMapping(path="/{id}/game/save")
 	public String guardarPartidaEmpezada(ModelMap modelMap, @PathVariable("id") int id) {
+		log.info("Acceso al servicio de partidas por el metodo findById()");
+		log.debug("Id : " + id);
 		Match match = this.matchService.findById(id);
+		log.info("Acceso al servicio de partidas por el metodo startMatch()");
+		log.debug("Partida : " + match);
 		matchService.startMatch(match);
+		log.info("Acceso al servicio de jugadores por el metodo jugadoresPartida()");
+		log.debug("Partida : " + match);
 		List<Player> g = playerService.jugadoresPartida(match);
 		for (int i = 0; i<g.size();i++) {
 			User u = g.get(i).getUser();
 			String username = u.getUsername();
+		log.info("Acesso al servicio de jugadores por el metodo findbyUsername()");
+		log.debug("Nombre de usuario: " + username);
 			playerService.findbyUsername(username);
+		log.info("Acesso al servicio de logros por el metodo findByAchievementType()");
+		log.debug("tipo: jugadas");
 			List<Achievement> jugadas = achievementService.findByAchievementType("jugadas");
 			for(int k = 0; k<jugadas.size();k++) {
+				log.info("Acceso a 2 metodos del servicio de logrosJugadores");
 				if (achievementUserService.checkAchievementJugadas(u,jugadas.get(k).getValor()) == true) {
 					achievementUserService.saveAchievementUser(u.getUsername(),jugadas.get(k).getId());
 				}
 			}
 		}
+		log.info("Acesso al servicio de jugadores por el metodo roleAndCardsAsignation()");
+		log.debug("Partida : " + match);
 		playerService.roleAndCardsAsignation(match);
 		match.setRound(1);
+		log.info("Guardando partida...");
 		matchService.saveMatch(match);
 		return  "redirect:/matches/" + id + "/match";
 	}

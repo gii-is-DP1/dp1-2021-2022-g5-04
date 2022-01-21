@@ -42,21 +42,25 @@
 				<petclinic:menuItem active="${name eq 'Invitations'}" url="/invitations"
 					title="Invitations">
 					<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
-					<span>Invitaciones</span>
+					<span>Invitaciones a partida</span>
 				</petclinic:menuItem>
 			
-				<petclinic:menuItem active="${name eq 'Users'}" url="/users/own"
-					title="Usuarios">
+				<petclinic:menuItem active="${name eq 'Users'}" url="/users/find"
+					title="Users">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 					<span>Buscar Usuario</span>
 				</petclinic:menuItem>		
-			
+				<petclinic:menuItem active="${name eq 'Friends'}" url="/friendInvitations"
+					title="Friend Invitations">
+					<span class="glyphicon glyphicon-heart" aria-hidden="true"></span>
+					<span>Solicitudes de amistad</span>
+				</petclinic:menuItem>
 			</ul>
 
 
 
 
-			<ul class="nav navbar-nav navbar-right">
+				<ul class="nav navbar-nav navbar-right">
 				<sec:authorize access="!isAuthenticated()">
 					<li><a href="<c:url value="/login" />">Login</a></li>
 					<li><a href="<c:url value="/users/new" />">Register</a></li>
@@ -70,16 +74,28 @@
 						<ul class="dropdown-menu">
 							<li>
 								<div class="navbar-login">
-									<div class="row">
-										<div class="col-lg-4">
+									<div class="row-lg-6">
+										<div class="row-lg-2">
 											<p class="text-center">
 												<span class="glyphicon glyphicon-user icon-size"></span>
 											</p>
-										</div>
-										<div class="col-lg-8">
 											<p class="text-left">
 												<strong><sec:authentication property="name" /></strong>
 											</p>
+										</div>
+										<div class="row-lg-2">
+											<p class="text-left">
+												<a href="<c:url value="/users/own" />"
+													class="btn btn-primary btn-block btn-sm">Mi perfil</a>
+											</p>
+										</div>
+										<div class="row-lg-2">
+											<p class="text-left">
+												<a href="<c:url value="/users/friends" />"
+													class="btn btn-primary btn-block btn-sm">Amigos</a>
+											</p>
+										</div>
+										<div class="row-lg-2">
 											<p class="text-left">
 												<a href="<c:url value="/logout" />"
 													class="btn btn-primary btn-block btn-sm">Logout</a>

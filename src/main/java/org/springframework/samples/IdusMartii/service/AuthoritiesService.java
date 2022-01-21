@@ -24,6 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.samples.IdusMartii.repository.AuthoritiesRepository;
 import org.springframework.samples.IdusMartii.model.Authorities;
 
@@ -36,16 +39,16 @@ import org.springframework.samples.IdusMartii.model.User;
  *
  * @author Michael Isvy
  */
+@Slf4j
 @Service
 public class AuthoritiesService {
 
 	private AuthoritiesRepository authoritiesRepository;
-	private static UserService userService;
+	private  UserService userService;
 
 	@Autowired
-	public AuthoritiesService(AuthoritiesRepository authoritiesRepository,UserService userService) {
+	public AuthoritiesService(AuthoritiesRepository authoritiesRepository) {
 		this.authoritiesRepository = authoritiesRepository;
-		this.userService = userService;
 	}
 
 	@Transactional
@@ -69,6 +72,8 @@ public class AuthoritiesService {
 	
 	@Transactional
 	public Boolean getAuthorities(String username) throws DataAccessException {
+		log.info("Obteniendo los authorities del usuario...");
+		log.debug("atributo: "+ username);
 		String ret = "";
 		Boolean re  = false;
 		List<Authorities> user = authoritiesRepository.findByUsername(username);
