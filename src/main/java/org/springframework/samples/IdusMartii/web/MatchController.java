@@ -252,49 +252,51 @@ public class MatchController {
 	@GetMapping(path="/{id}/match")
 	public String comenzarPartida(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
 		log.info("Comenzando partida...");
-		//response.addHeader("Refresh","20");
+		response.addHeader("Refresh","5");
 		log.info("Acceso al servicio de partidas por el metodo findById()");
 		log.debug("Id : " + id);
 		Match match = this.matchService.findById(id);
-		if(match.getRound()==0){
-			match.setRound(1);
-		}
-		String currentuser = currentUserService.showCurrentUser();
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
-		log.info("Acceso al servicio de jugadores por el metodo findByMatchAndUser()");
-		log.debug("partida: " + match + ", usuario: " + usuario);		
-		Player player_actual = playerService.findByMatchAndUser(match, usuario);
-		modelMap.addAttribute("votos", matchService.votes(match));
-		modelMap.addAttribute("votedUser", matchService.votedUser(match));
-		modelMap.addAttribute("voteCondition", playerService.showVoteCondition(player_actual.getVote()));
-		modelMap.addAttribute("voteCard", playerService.showVoteCard(player_actual.getVote()));
-		modelMap.addAttribute("playerY", playerService.playerYellow(match));
-		modelMap.addAttribute("mostrarCartas", playerService.showCards(player_actual));
-		modelMap.addAttribute("roleCard", playerService.showCardRole(player_actual));
-		modelMap.addAttribute("card1", playerService.showFactionCard(player_actual.getCard1()));
-		modelMap.addAttribute("card2", playerService.showFactionCard(player_actual.getCard2()));
-		modelMap.addAttribute("votar", playerService.canVote(player_actual, match));
-		modelMap.addAttribute("revisarVoto", playerService.checkVote(player_actual, match));
-		modelMap.addAttribute("elegirFaccion", playerService.chooseFaction(player_actual, match));
-		modelMap.addAttribute("contarVotos", playerService.countVotes(player_actual, match));
-		modelMap.addAttribute("ronda1", matchService.roundI(match));
-		modelMap.addAttribute("ronda2", matchService.roundII(match));
-		modelMap.addAttribute("elegirRol", playerService.chooseRol(player_actual, match));
-		modelMap.addAttribute("jugadoresSinRolConsul", matchService.playersWithNoConsulRole(match));
-		modelMap.addAttribute("edilesSinAsignar", matchService.edilNotAsigned(match));
-		modelMap.addAttribute("pretorSinAsignar", matchService.pretorNotAsigned(match));
-		modelMap.addAttribute("votoAmarilloRevisado", match.getPlays() == Plays.YELLOWEDIL);
-		modelMap.addAttribute("edilAmarilloRevisado", player_actual == playerService.playerYellow(match));
-		modelMap.addAttribute("numeroJugadoresCinco", match.getPlayers().size() == 5);
-		modelMap.addAttribute("current", currentuser);
-		modelMap.addAttribute("match", match);
-		modelMap.addAttribute("ediles", playerService.findByRole(match, Role.EDIL));
 		modelMap.addAttribute("admin", matchService.isAdmin(usuario));
-		if (match.getRound() == 3 || matchService.sufragium(match) != null) {
-			return "redirect:/matches/" + id + "/ganador";
-		} else {
-			return "matches/partidaEnCurso";
-    }
+		if(match.getRound()==0){
+			return matchService.errorNotStartedYet(modelMap);
+		}
+		else {
+			String currentuser = currentUserService.showCurrentUser();
+			log.info("Acceso al servicio de jugadores por el metodo findByMatchAndUser()");
+			log.debug("partida: " + match + ", usuario: " + usuario);		
+			Player player_actual = playerService.findByMatchAndUser(match, usuario);
+			modelMap.addAttribute("votos", matchService.votes(match));
+			modelMap.addAttribute("votedUser", matchService.votedUser(match));
+			modelMap.addAttribute("voteCondition", playerService.showVoteCondition(player_actual.getVote()));
+			modelMap.addAttribute("voteCard", playerService.showVoteCard(player_actual.getVote()));
+			modelMap.addAttribute("playerY", playerService.playerYellow(match));
+			modelMap.addAttribute("mostrarCartas", playerService.showCards(player_actual));
+			modelMap.addAttribute("roleCard", playerService.showCardRole(player_actual));
+			modelMap.addAttribute("card1", playerService.showFactionCard(player_actual.getCard1()));
+			modelMap.addAttribute("card2", playerService.showFactionCard(player_actual.getCard2()));
+			modelMap.addAttribute("votar", playerService.canVote(player_actual, match));
+			modelMap.addAttribute("revisarVoto", playerService.checkVote(player_actual, match));
+			modelMap.addAttribute("elegirFaccion", playerService.chooseFaction(player_actual, match));
+			modelMap.addAttribute("contarVotos", playerService.countVotes(player_actual, match));
+			modelMap.addAttribute("ronda1", matchService.roundI(match));
+			modelMap.addAttribute("ronda2", matchService.roundII(match));
+			modelMap.addAttribute("elegirRol", playerService.chooseRol(player_actual, match));
+			modelMap.addAttribute("jugadoresSinRolConsul", matchService.playersWithNoConsulRole(match));
+			modelMap.addAttribute("edilesSinAsignar", matchService.edilNotAsigned(match));
+			modelMap.addAttribute("pretorSinAsignar", matchService.pretorNotAsigned(match));
+			modelMap.addAttribute("votoAmarilloRevisado", match.getPlays() == Plays.YELLOWEDIL);
+			modelMap.addAttribute("edilAmarilloRevisado", player_actual == playerService.playerYellow(match));
+			modelMap.addAttribute("numeroJugadoresCinco", match.getPlayers().size() == 5);
+			modelMap.addAttribute("current", currentuser);
+			modelMap.addAttribute("match", match);
+			modelMap.addAttribute("ediles", playerService.findByRole(match, Role.EDIL));
+			if (match.getRound() == 3 || matchService.sufragium(match) != null) {
+				return "redirect:/matches/" + id + "/ganador";
+			} else {
+				return "matches/partidaEnCurso";
+			}
+		}
 	}
 	@GetMapping(path="/{id}/rolesAsignados")
 	public String rolesAsignados(ModelMap modelMap, @PathVariable("id") int id) {

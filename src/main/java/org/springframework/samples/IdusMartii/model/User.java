@@ -20,7 +20,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -39,7 +38,7 @@ public class User implements Serializable {
 	@CreatedBy private String creator;
 	@CreatedDate private LocalDateTime createdDate;
 	@LastModifiedBy private String modifier;
-	@LastModifiedDate private LocalDateTime lastModifiedDate; 
+	@LastModifiedDate private LocalDateTime lastModifiedDates; 
 	
 	@Id
 	@NotNull
@@ -51,7 +50,6 @@ public class User implements Serializable {
 	@Email
 	@NotNull
 	String email;
-	@Value("1")
 	Integer victorias;
 	boolean enabled;
 
