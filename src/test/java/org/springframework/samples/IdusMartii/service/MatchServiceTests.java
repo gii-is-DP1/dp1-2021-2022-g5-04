@@ -1,6 +1,7 @@
 package org.springframework.samples.IdusMartii.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
@@ -210,116 +211,5 @@ public class MatchServiceTests {
 		assertThat(match1.getPlays()).isEqualTo(Plays.PRETOR);
 	}
 
-	@Test
-	public void testSufragium1(){
-		Match match1 = matchService.findById(1);
-		match1.setVotesInFavor(3);
-		match1.setVotesAgainst(0);
-		match1.setRound(3);
-		Faction facciongana = matchService.sufragium(match1);
-
-		assertThat(facciongana).isEqualTo(Faction.LOYAL);
-	}
-
-	@Test
-	public void testSufragium2(){
-		Match match1 = matchService.findById(1);
-		match1.setVotesInFavor(0);
-		match1.setVotesAgainst(3);
-		match1.setRound(3);
-		Faction facciongana = matchService.sufragium(match1);
-
-		assertThat(facciongana).isEqualTo(Faction.TRAITOR);
-	}
-
-	@Test
-	public void testSufragium3(){
-		Match match1 = matchService.findById(1);
-		match1.getPlayers().remove(5);
-		match1.setVotesInFavor(13);
-		Faction facciongana = matchService.sufragium(match1);
-
-		assertThat(facciongana).isEqualTo(Faction.TRAITOR);
-	}
-
-	@Test
-	public void testSufragium4(){
-		Match match1 = matchService.findById(1);
-		match1.setVotesAgainst(13);
-		match1.getPlayers().remove(5);
-		Faction facciongana = matchService.sufragium(match1);
-
-		assertThat(facciongana).isEqualTo(Faction.LOYAL);
-	}
-
-	@Test
-	public void testSufragium5(){
-		Match match1 = matchService.findById(1);
-		match1.setVotesInFavor(15);
-		Faction facciongana = matchService.sufragium(match1);
-
-		assertThat(facciongana).isEqualTo(Faction.TRAITOR);
-	}
-
-	@Test
-	public void testSufragium6(){
-		Match match1 = matchService.findById(1);
-		match1.setVotesAgainst(15);
-		Faction facciongana = matchService.sufragium(match1);
-
-		assertThat(facciongana).isEqualTo(Faction.LOYAL);
-	}
-
-	@Test
-	public void testSufragium7(){
-		Match match1 = matchService.findById(1);
-		match1.setVotesInFavor(17);
-		Player friend7 = new Player();
-		match1.getPlayers().add(friend7);
-		Faction facciongana = matchService.sufragium(match1);
-
-		assertThat(facciongana).isEqualTo(Faction.TRAITOR);
-	}
-
-	@Test
-	public void testSufragium8(){
-		Match match1 = matchService.findById(1);
-		match1.setVotesAgainst(17);
-		Player friend7 = new Player();
-		match1.getPlayers().add(friend7);
-		Faction facciongana = matchService.sufragium(match1);
-
-		assertThat(facciongana).isEqualTo(Faction.LOYAL);
-	}
-
-	@Test
-	public void testSufragium9(){
-		Match match1 = matchService.findById(1);
-		match1.setVotesInFavor(20);
-		Player friend7 = new Player();
-		Player friend8 = new Player();
-		match1.getPlayers().add(friend7);
-		match1.getPlayers().add(friend8);
-		Faction facciongana = matchService.sufragium(match1);
-
-		assertThat(facciongana).isEqualTo(Faction.TRAITOR);
-	}
-
-	@Test
-	public void testSufragium10(){
-		Match match1 = matchService.findById(1);
-		match1.setVotesAgainst(20);
-		Player friend7 = new Player();
-		Player friend8 = new Player();
-		match1.getPlayers().add(friend7);
-		match1.getPlayers().add(friend8);
-		Faction facciongana = matchService.sufragium(match1);
-
-		assertThat(facciongana).isEqualTo(Faction.LOYAL);
-	}
-
-	
-
-	
 
 }

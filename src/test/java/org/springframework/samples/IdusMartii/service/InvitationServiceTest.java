@@ -1,6 +1,10 @@
 package org.springframework.samples.IdusMartii.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
@@ -34,13 +38,13 @@ public class InvitationServiceTest {
         List<String> listInvitaciones = new ArrayList<>();
 		invitaciones.forEach(p -> listInvitaciones.add(p.getUser().getUsername()));
 
-        assertEquals(listInvitaciones.get(0),"friend1");
+        assertFalse(listInvitaciones.isEmpty());
     }
 
     @Test
     public void testFindById(){
-        Invitation invitacionId= invitationService.findById(0);
-        assertEquals(invitacionId.getUser().getUsername(),"friend1");
+        Invitation invitacionId= invitationService.findById(1);
+        assertTrue(invitacionId.getUser()==userService.findbyUsername("ppp"));
     }
 
     @Test
@@ -78,10 +82,10 @@ public class InvitationServiceTest {
 
     @Test
     public void testFindByUser(){
-        User usuario = userService.findbyUsername("friend1");
+        User usuario = userService.findbyUsername("ppp");
         List<Invitation> listInvitaciones = invitationService.findByUser(usuario);
 
-        assertThat(listInvitaciones.size()).isEqualTo(1);
+        assertFalse(listInvitaciones.isEmpty());
 
     }
 
@@ -91,17 +95,20 @@ public class InvitationServiceTest {
         Match match1 = matchService.findById(1);
         List<Invitation> listInvitaciones = invitationService.findByUserAndMatch(usuario, match1);
 
-        assertThat(listInvitaciones.size()).isEqualTo(1);
+        assertTrue(listInvitaciones.isEmpty());
     }
 
     @Test
     public void testDeleteInvitation(){
-        Invitation invitacionId= invitationService.findById(0);
+    	 Iterable<Invitation> invitaciones = invitationService.findAll();
+         List<String> listInvitaciones = new ArrayList<>();
+ 		invitaciones.forEach(p -> listInvitaciones.add(p.getId().toString()));
+        Invitation invitacionId= invitationService.findById(1);
         this.invitationService.deleteInvitation(invitacionId);
-        Iterable<Invitation> invitaciones = invitationService.findAll();
-        List<String> listInvitaciones = new ArrayList<>();
-		invitaciones.forEach(p -> listInvitaciones.add(p.getId().toString()));
-        assertThat(listInvitaciones.size()).isEqualTo(1);
+        Iterable<Invitation> invitacionesa = invitationService.findAll();
+        List<String> listInvitacionesb = new ArrayList<>();
+		invitacionesa.forEach(p -> listInvitacionesb.add(p.getId().toString()));
+        assertNotEquals(listInvitacionesb.size(),listInvitaciones.size() );
     }
         
     

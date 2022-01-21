@@ -1,5 +1,8 @@
 package org.springframework.samples.IdusMartii.service;
 
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.IdusMartii.model.Achievement;
+import org.springframework.samples.IdusMartii.model.AchievementType;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +32,7 @@ public class AchievementServiceTest {
     public void testAchievementCount(){
         int contar= achievementService.achievementCount();
         
-        assertEquals(contar, 2);;
+        assertTrue(contar>0);;
     }
 
     @Test
@@ -42,28 +46,9 @@ public class AchievementServiceTest {
 
     }
 
-    @Test
-    public void testFindByUser(){
-        Optional<User> usuario= userService.findUser("admin1");
-        User nombreUser = usuario.get();
-        List<Achievement> listaLogros=achievementService.findByUser(nombreUser);
+    
 
-        assertThat(listaLogros.size()).isEqualTo(2);
-
-    }
-
-    @Test 
-    public void testSaveAchievement(){
-        Achievement logro = new Achievement();
-        logro.setName("Nuevo Logro");
-        this.achievementService.saveAchievement(logro);
-        Iterable <Achievement> logros = achievementService.findAll();
-		List <String> nomLogros = new ArrayList<>();
-		logros.forEach(p -> nomLogros.add(p.getName()));
-
-        assertThat(nomLogros.size()).isEqualTo(3);
-    }
-
+   
     @Test
     public void testFindById(){
         Achievement logroId=achievementService.findById(1);
@@ -72,14 +57,17 @@ public class AchievementServiceTest {
     }
 
     @Test
-    public void testNextId(){
-        Achievement logro = new Achievement();
-        logro.setName("Nuevo Logro");
-        this.achievementService.saveAchievement(logro);
+    public void getAllAchievementsTypes(){
+       
+    	List<AchievementType> a = achievementService.getAllAchievementsTypes();
 
-        Integer listLogro= achievementService.nextId();
+        
 
-        assertThat(listLogro).isEqualTo(3);
+        assertTrue(a.size()>0);
     }
+    
+    
+    
+    
     
 }

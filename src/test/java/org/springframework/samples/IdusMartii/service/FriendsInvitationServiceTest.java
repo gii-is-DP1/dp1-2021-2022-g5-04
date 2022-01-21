@@ -63,7 +63,7 @@ public class FriendsInvitationServiceTest {
         User a = userService.findbyUsername("friend1");
         User b = userService.findbyUsername("friend2");
         fi.setUser_requester(a);
-        fi.setUser_requester(b);
+        fi.setUser_requested(b);
         ModelMap modelMap = new ModelMap();
         fiService.saveFriendInvitation(fi, modelMap);
         Iterable<FriendInvitation> invitaciones2 = fiService.findAll();
@@ -114,7 +114,7 @@ public class FriendsInvitationServiceTest {
     }
     @Test
     public void deleteFriendInvitationsFromUser() {
-        User a = userService.findbyUsername("ppp");
+        User a = userService.findbyUsername("friend1");
        List<FriendInvitation> test1 = friendInvitationRepository.findFriendInvitationsByUserRequester(a);
        
         fiService.deleteFriendInvitationsFromUser(a);
