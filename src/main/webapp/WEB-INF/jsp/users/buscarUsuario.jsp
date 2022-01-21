@@ -21,9 +21,9 @@
 </c:if>
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="usersFinding">
-    <form:form modelAttribute="user" class="form-horizontal" id="find-user-form" action="/users/find" method="GET">
+    <form:form modelAttribute="playerAux" class="form-horizontal" id="find-user-form" action="/users/find">
         <div class="form-group has-feedback">
-            <IdusMartii:inputField label="Username" name="username"/>
+            <IdusMartii:inputField label="Texto" name="name"/>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">

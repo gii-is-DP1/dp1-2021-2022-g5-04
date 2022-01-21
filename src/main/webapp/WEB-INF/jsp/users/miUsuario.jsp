@@ -8,22 +8,27 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 <c:if test="${admin}">
 <IdusMartii:adminLayout pageName="users">
-    <h2>Usuarios encontrados</h2>
-
+    <h2>My profile</h2>
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Nombre de usuario</th>
+            <th style="width: 150px;">Username</th>
+            <th style="width: 200px;">Password</th>
+            <th style="width: 200px;">Email</th>
         </tr>
         </thead>
         <tbody>
-      
-           <c:forEach items="${users}" var="user">
             <tr>
                 <td>
                 	<c:out value="${user.username}"/>
                 </td>
-              <td>
+                <td>
+                    <c:out value="${user.password}"/>
+                </td>
+                <td>
+                    <c:out value="${user.email}"/>
+                </td>
+               <td>
 				<spring:url value="/users/{id}/edit" var="userUrl">
 		    	<spring:param name="id" value="${user.username}"/>
 				</spring:url>
@@ -34,52 +39,41 @@
 		    	<spring:param name="username" value="${user.username}"/>
 				</spring:url> 
                     <a href="${fn:escapeXml(userrUrl)}">Eliminar</a>
-           	   </td>
-           	   <td> 
-  				<spring:url value="/friendInvitations/{usernameRequester}/{usernameRequested}/save" var="friendUrl">
-		    	<spring:param name="usernameRequester" value="${current.username}"/>
-		    	<spring:param name="usernameRequested" value="${user.username}"/>
-				</spring:url> 
-                    <a href="${fn:escapeXml(friendUrl)}">Enviar solicitud de amistad</a>
-           	   </td>
-                                   	
-            </tr>       
-           </c:forEach>
-              
-                
-                	
+           	   </td>                   	
+            </tr>
         </tbody>
     </table>
-    
 </IdusMartii:adminLayout>
 </c:if>
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="users">
-<h2>Usuarios encontrados</h2>
-
+    <h2>Users</h2>
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Nombre de usuario</th>
+            <th style="width: 150px;">Username</th>
+            <th style="width: 200px;">Password</th>
+            <th style="width: 200px;">Email</th>
         </tr>
         </thead>
         <tbody>
-      		<c:forEach items="${users}" var="user">
-           		<tr>
-               		<td>
-                		<c:out value="${user.username}"/>
-               		</td>
-               		<c:if test="${current != user}">
-           	   			<td> 
-  							<spring:url value="/friendInvitations/{usernameRequester}/{usernameRequested}/save" var="friendUrl">
-		    				<spring:param name="usernameRequester" value="${current.username}"/>
-		    				<spring:param name="usernameRequested" value="${user.username}"/>
-							</spring:url> 
-                    			<a href="${fn:escapeXml(friendUrl)}">Enviar solicitud de amistad</a>
-           	   			</td>
-                    </c:if>            	
-            	</tr>       
-           	</c:forEach>  	
+            <tr>
+                <td>
+                	<c:out value="${user.username}"/>
+                </td>
+                <td>
+                    <c:out value="${user.password}"/>
+                </td>
+                <td>
+                    <c:out value="${user.email}"/>
+                </td>
+               <td>
+				<spring:url value="/users/{id}/edit/own" var="userUrl">
+		    	<spring:param name="id" value="${user.username}"/>
+				</spring:url>
+                	<a href= "${fn:escapeXml(userUrl)}">Editar</a>
+               </td>                   	
+            </tr>       
         </tbody>
     </table>
 </IdusMartii:layout>

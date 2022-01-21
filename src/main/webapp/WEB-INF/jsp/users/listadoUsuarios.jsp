@@ -12,8 +12,8 @@
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Username</th>
-            <th style="width: 200px;">Password</th>
+            <th style="width: 150px;">Nombre de usuario</th>
+            <th style="width: 200px;">Contraseña</th>
             <th style="width: 200px;">Email</th>
         </tr>
         </thead>

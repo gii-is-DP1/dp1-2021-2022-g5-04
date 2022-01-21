@@ -38,10 +38,13 @@ public class FriendInvitationService {
 		
 		@Transactional
 		public void saveFriendInvitation(FriendInvitation friendInvitation) throws DataAccessException {
-			log.info("Creando invitación de amistad...");
-			log.debug("Atributo: " + friendInvitation);
-
-			friendInvitationRepository.save(friendInvitation);
+      log.info("Creando invitación de amistad...");
+      log.debug("Atributo: " + friendInvitation);
+			if (friendInvitation.getUser_requested() != friendInvitation.getUser_requester()) {
+				friendInvitationRepository.save(friendInvitation);
+			} else {
+				throw new DataAccessException("Un usuario no puede enviarse una solicitud de amistad a si mismo") {};
+      }
 		}
 	    @Transactional(readOnly = true)
 		public List<FriendInvitation> findFriendInvitationsByUserRequested(User user) throws DataAccessException{
@@ -70,5 +73,12 @@ public class FriendInvitationService {
 				friendInvitationRepository.delete(fi);
 			}
 		}
-
+		@Transactional
+		public boolean letFriendRequest(User userRequester, User userRequested) {
+			if (userRequester.getFriends().contains(userRequested)) {
+				return false;
+			} else {
+				return true;
+			}
+		}
 }
