@@ -131,8 +131,9 @@ public class MatchController {
 	}
 	
 	@GetMapping(path="/spectator")
-	public String spectatorMode(ModelMap modelMap) {
+	public String spectatorMode(ModelMap modelMap, HttpServletResponse response) {
 		String vista = "matches/spectatorModeList";
+		response.addHeader("Refresh","30");
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
 		List<Match> matches = matchService.matchesInProgress_NotFinished();
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
@@ -143,6 +144,7 @@ public class MatchController {
 	@GetMapping(path="/{id_match}/spectator")
 	public String spectatorModeMatch(ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
 		String vista = "matches/spectatorMode";
+		response.addHeader("Refresh","20");
 		Match match = this.matchService.findById(id_match);
 		modelMap.addAttribute("match", match);
 		return vista;

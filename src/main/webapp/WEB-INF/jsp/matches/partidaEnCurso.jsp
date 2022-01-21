@@ -9,6 +9,9 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags"%>
 <c:if test="${admin}">
 	<IdusMartii:adminLayout pageName="matches">
+		<a href="http://localhost:8080/chats/${match.id}" target="_blank">
+			<button class ="btn btn-primary" style="margin-bottom: 10px;">CHAT</button>
+		</a>
 		<table class="table table-striped">
 			<tr>
 				<th>Name</th>
@@ -300,6 +303,9 @@
 </c:if>
 <c:if test="${admin eq false}">
 	<IdusMartii:layout pageName="matches">
+		<a href="http://localhost:8080/chats/${match.id}" target="_blank">
+			<button class ="btn btn-primary" style="margin-bottom: 10px;">CHAT</button>
+		</a>
 		<table class="table table-striped">
 			<tr>
 				<th>Name</th>
