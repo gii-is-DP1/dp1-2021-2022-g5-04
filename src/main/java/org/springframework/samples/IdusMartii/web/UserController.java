@@ -82,6 +82,8 @@ public class UserController {
 		Page<User> completeUserPage = userService.findAllUsersWithPagination(completePageable);
 		Page<User> userPage =  userService.findAllUsersWithPagination(pageable);
 		modelMap.addAttribute("users", userPage.getContent());
+    	modelMap.addAttribute("admin", userService.isAdmin(userService.findbyUsername(currentUserService.showCurrentUser())));
+
         modelMap.addAttribute("user", currentUserService.showCurrentUser());
         modelMap.addAttribute("numberOfPagesList", userService.createNumberOfPagesList(completeUserPage, page));
 		return vista;
@@ -89,14 +91,20 @@ public class UserController {
     
     @GetMapping(path="/own")
    	public String listadoUsuarioPropio(ModelMap modelMap) {
+
     	log.info("Accediendo a los datos de tu perfil...");
-    	String vista = "users/listadoUsuarios";
+   		String vista = "users/miUsuario";
    		User user =  userService.findbyUsername(currentUserService.showCurrentUser());
    		List<User> users = new ArrayList<>();
    		users.add(user);
    		modelMap.addAttribute("users", users);
+    	modelMap.addAttribute("admin", userService.isAdmin(user));
+   		modelMap.addAttribute("user", user);
+   	//	modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
+
    		return vista;
    	}   
+    
     @GetMapping(path="/friends")
 	public String listadoAmigos(ModelMap modelMap) {
     	log.info("Accediendo a los datos del usuario...");
@@ -114,6 +122,7 @@ public class UserController {
         modelMap.addAttribute("user", new User());
         return vista;
     }
+    
     @GetMapping(path="/find")
     public String buscarUsuarios(ModelMap modelMap) {
     	String vista = "users/buscarUsuario";
@@ -127,19 +136,31 @@ public class UserController {
     @PostMapping(path="/find")
     public String buscarUsuariosConUnTexto(@Valid Player player, BindingResult result, ModelMap modelMap) {
     	log.info("Buscando usuario...");
+    	User current = userService.findUser(currentUserService.showCurrentUser()).get();
+    	modelMap.addAttribute("admin", userService.isAdmin(current));
         modelMap.addAttribute("users", userService.findUsersByText(player.getName()));
+        modelMap.addAttribute("current", current);
         return "users/usuariosEncontrados";
     }
     	
     
-    @GetMapping(path="/{id}/edit")
-    public String editarUsuario(@PathVariable("id") String id, ModelMap modelMap) {
+
+    @GetMapping(path="/{username}/edit")
+    public String editarUsuario(@PathVariable("username") String username, ModelMap modelMap) {
     	log.info("Editando usuario...");
         String vista = "users/editarUsuario";
-        modelMap.addAttribute("user", userService.findbyUsername(id));
+        modelMap.addAttribute("user", userService.findbyUsername(username));
         return vista;
     }
-
+    
+    @GetMapping(path="/{username}/edit/own")
+    public String editarUsuarioPropio(@PathVariable("username") String username, ModelMap modelMap) {
+    	String vista = "users/editarUsuario";
+    	User user = userService.findbyUsername(username);
+    	modelMap.addAttribute("user", user);
+    	modelMap.addAttribute("admin", userService.isAdmin(user));
+    	return vista;
+    }
     @PostMapping(path="/save")
     public String guardarUsuario(@Valid User user, BindingResult result, ModelMap modelMap) {
     	log.info("Intentando registrar usuario...");
@@ -156,25 +177,37 @@ public class UserController {
         return "redirect:/";
     }
     
-    @PostMapping(path="/{id}/save")
-    public String guardarUsuarioModificado(@Valid User user, BindingResult result, @PathVariable("id") String id, ModelMap modelMap) {
-    	log.info("Guardando usuario...");
-        User u = userService.findbyUsername(id);
+    @PostMapping(path="/{username}/save")
+    public String guardarUsuarioModificado(@Valid User user, BindingResult result, @PathVariable("username") String username, ModelMap modelMap) {
+      	log.info("Guardando usuario...");
+        User u = userService.findbyUsername(username);
         u.setEmail(user.getEmail());
         u.setPassword(user.getPassword());
         userService.saveUser(u);
         authoritiesService.saveAuthorities(user.getUsername(), "user");
-        modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
+        modelMap.addAttribute("message", "¡Usuario modificado correctamente!");
+        return "redirect:/";
+    }
+    
+    @PostMapping(path="/{username}/save/own")
+    public String guardarUsuarioPropioModificado(@Valid User user, BindingResult result, @PathVariable("username") String username, ModelMap modelMap) {
+        User u = userService.findbyUsername(username);
+        u.setEmail(user.getEmail());
+        u.setPassword(user.getPassword());
+        userService.saveUser(u);
+        authoritiesService.saveAuthorities(user.getUsername(), "user");
+        modelMap.addAttribute("message", "¡Usuario modificado correctamente!");
         return "redirect:/";
     }
   
-    @PostMapping(path="/delete/{username}")
+    @GetMapping(path="/delete/{username}")
     public String eliminarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
     	log.info("Eliminando amigo...");
     	User currentUser = userService.findbyUsername(currentUserService.showCurrentUser());
     	userService.deleteFriend(currentUser, username);
     	return "redirect:/users/friends";
     }
+    
     @GetMapping(path="/{username}/delete")
     public String eliminarUserIntermedio(@PathVariable("username") String username, ModelMap modelMap) {
     	userService.delete(userService.findbyUsername(username));

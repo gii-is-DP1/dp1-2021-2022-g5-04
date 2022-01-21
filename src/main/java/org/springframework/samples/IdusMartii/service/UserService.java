@@ -33,9 +33,11 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.samples.IdusMartii.repository.UserRepository;
 import org.springframework.samples.IdusMartii.web.MatchController;
+
 import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
+import org.springframework.samples.IdusMartii.model.Person;
 import org.springframework.samples.IdusMartii.model.User;
 
 /**
@@ -61,7 +63,9 @@ public class UserService {
 	private AchievementService achievementService;
 	@Autowired
 	private AchievementUserService achievementUserService;
-	
+	@Autowired
+	private FriendInvitationService friendInvitationService;
+
 
 	@Autowired
 	public UserService(UserRepository userRepository) {
@@ -124,11 +128,14 @@ public class UserService {
 	public void deleteFriend(User user, String username) throws DataAccessException {
 		log.debug("Usando metodo deleteFriend()");
 		List<User> friends = user.getFriends();
-		User friendToBeDeleted = this.findbyUsername(username);
+		User friendToBeDeleted = userRepository.findByUsername(username);
+		List<User> friendsFromSecondUser = friendToBeDeleted.getFriends();
 		friends.remove(friendToBeDeleted);
+		friendsFromSecondUser.remove(user);
 		user.setFriends(friends);
+		friendToBeDeleted.setFriends(friendsFromSecondUser);
 		saveUser(user);
-
+		saveUser(friendToBeDeleted);
 	}
 	
 	@Transactional
@@ -142,6 +149,7 @@ public class UserService {
 		if (user.getFriends().size() > 0) {
 			friendsService.deleteAllFriendsFromUser(user);
 		}
+		friendInvitationService.deleteFriendInvitationsFromUser(user);
 		playerService.deleteAllPlayersFromUser(user);
 		userRepository.delete(user);
 	}
@@ -168,14 +176,21 @@ public class UserService {
     			this.saveUser(user);
     		}
     		for(Achievement a : ganadas) {
-				if(user.getVictorias() == a.getValor()) {
-					achievementUserService.saveAchievementUser(user.getUsername(), 2);
-				}
-			}
+				  if(user.getVictorias() == a.getValor()) {
+					  achievementUserService.saveAchievementUser(user.getUsername(), 2);
+				  }
+			  }
     	}
     }
 	
 	
+
+
+	public List<User> findUsers() {
+		// TODO Auto-generated method stub
+		return userRepository.findUsers();}
+
+  
 	@Transactional
 	public boolean isAdmin(User user) throws DataAccessException {
 		if (authoritiesService.getAuthorities(user.getUsername())) {
@@ -184,5 +199,34 @@ public class UserService {
 		} else {
 			return false;
 		}
+	}
+	@Transactional
+	public List<Person> crearAlumnos(){
+		List<Person> people = new ArrayList<Person>();
+        Person person_1 = new Person();
+        person_1.setFirstName("Pablo ");
+        person_1.setLastName("Santos");
+        people.add(person_1);
+        Person person_2 = new Person();
+        person_2.setFirstName("Antonio Roberto ");
+        person_2.setLastName("Serrano");
+        people.add(person_2);
+        Person person_3 = new Person();
+        person_3.setFirstName("David ");
+        person_3.setLastName("Sabugueiro");
+        people.add(person_3);
+        Person person_4 = new Person();
+        person_4.setFirstName("José Ramón ");
+        person_4.setLastName("Arias");
+        people.add(person_4);
+        Person person_5 = new Person();
+        person_5.setFirstName("Juan Carlos ");
+        person_5.setLastName("Moreno");
+        people.add(person_5);
+        Person person_6 = new Person();
+        person_6.setFirstName("Manuel ");
+        person_6.setLastName("Carnero");
+        people.add(person_6);
+        return people;
 	}
 }

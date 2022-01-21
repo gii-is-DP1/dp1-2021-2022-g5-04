@@ -8,37 +8,39 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "matches")
-public class Match extends AuditableEntity {
- 
-		private int round;
-		private int turn;
-		private int votesInFavor;
-		private int votesAgainst;
-		private Plays plays;
-		private boolean finished;
-		private Faction winner;
-		
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "match")
-	  private List<Player> players;
+@Table(name = "chats")
+public class Chat extends BaseEntity {
 
 
-		@OneToOne(cascade = CascadeType.ALL)
-    	private Chat chat;
+        @CreatedDate
+        private LocalDateTime date;
+        @NonNull
+        String text;
+
+        @OneToOne
+        @JoinColumn(name="username")
+        private User user;
+        @OneToOne
+        @JoinColumn(name="match_id")
+        private Match match;
+
     
-
+        
+    
 }
-
-

@@ -10,6 +10,9 @@
 
 <c:if test="${admin}">
 	<IdusMartii:adminLayout pageName="matches">
+		<a href="http://localhost:8080/chats/${match.id}" target="_blank">
+			<button class ="btn btn-primary" style="margin-bottom: 10px;">CHAT</button>
+		</a>
 		<h2>
 		</h2>
 		<table class="table table-striped">
@@ -22,12 +25,10 @@
 				<td><c:out value="${match.players[0].user.username}"/></td>
 			</tr>
 			<tr>
-				<th>Players</th>
-				<td><c:forEach var="x" items="${noHostPlayers}">
-				
-				
-					<li>${x.user.username} </li>
-		<c:if test= "${isHost}" >
+			<th>Players</th>
+			<td><c:forEach var="x" items="${noHostPlayers}">
+			<li>${x.user.username} </li>
+			<c:if test= "${isHost}" >
 			<form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/players/${x.id}/${match.id}/expulsar" >
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
@@ -68,10 +69,10 @@
 	</IdusMartii:adminLayout>
 </c:if>
 <c:if test="${admin eq false}">
-
-
-
 <IdusMartii:layout pageName="matches">
+	<a href="http://localhost:8080/chats/${match.id}" target="_blank">
+		<button class ="btn btn-primary" style="margin-bottom: 10px;">CHAT</button>
+	</a>
     <h2>
 	</h2>
 	<table class="table table-striped">

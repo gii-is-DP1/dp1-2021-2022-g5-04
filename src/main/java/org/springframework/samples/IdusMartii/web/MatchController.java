@@ -23,6 +23,7 @@ import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.AchievementService;
 import org.springframework.samples.IdusMartii.service.AchievementUserService;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
+import org.springframework.samples.IdusMartii.service.ChatService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
 import org.springframework.samples.IdusMartii.IdusMartiiApplication;
@@ -57,9 +58,8 @@ public class MatchController {
 	@Autowired
     AchievementService achievementService;
 	
+	
 
-	
-	
 	@GetMapping()
 	public String matchesList(ModelMap modelMap) {
 		log.info("Accediendo a la lista de partidas...");
@@ -150,9 +150,10 @@ public class MatchController {
 	}
 	
 	@GetMapping(path="/spectator")
-	public String spectatorMode(ModelMap modelMap) {
-		log.info("Accediendo a la lista de partidas que se pueden spectar...");
+	public String spectatorMode(ModelMap modelMap, HttpServletResponse response) {
+		log.info("Accediendo a la lista de partidas que se pueden espectar...");
 		String vista = "matches/spectatorModeList";
+		response.addHeader("Refresh","30");
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
 		log.info("Accediendo al servicio de partidas por el metodo matchesInProgress_NotFinished()");
 		List<Match> matches = matchService.matchesInProgress_NotFinished();
@@ -167,6 +168,7 @@ public class MatchController {
 	public String spectatorModeMatch(ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
 		log.info("Accediendo a la partida...");
 		String vista = "matches/spectatorMode";
+		response.addHeader("Refresh","20");
 		log.info("Accediendo al servicio de partidas por el metodo findById()");
 		log.debug("id: " + id_match);
 		Match match = this.matchService.findById(id_match);
@@ -284,6 +286,7 @@ public class MatchController {
 		modelMap.addAttribute("pretorSinAsignar", matchService.pretorNotAsigned(match));
 		modelMap.addAttribute("votoAmarilloRevisado", match.getPlays() == Plays.YELLOWEDIL);
 		modelMap.addAttribute("edilAmarilloRevisado", player_actual == playerService.playerYellow(match));
+		modelMap.addAttribute("numeroJugadoresCinco", match.getPlayers().size() == 5);
 		modelMap.addAttribute("current", currentuser);
 		modelMap.addAttribute("match", match);
 		modelMap.addAttribute("ediles", playerService.findByRole(match, Role.EDIL));
@@ -358,6 +361,8 @@ public class MatchController {
 		matchService.saveMatch(match);
 		return  "redirect:/matches/" + id + "/match";
 	}
+
+		
 
 }
 

@@ -13,5 +13,6 @@ public interface FriendInvitationRepository extends CrudRepository<FriendInvitat
 	@Query("SELECT i FROM FriendInvitation i WHERE i.user_requested = :user")
     public List<FriendInvitation> findFriendInvitationsByUserRequested(@Param("user") User user);  
 	
-
+	@Query("SELECT i FROM FriendInvitation i WHERE i.user_requester = :user")
+	public List<FriendInvitation> findFriendInvitationsByUserRequester(@Param("user") User user);
 }

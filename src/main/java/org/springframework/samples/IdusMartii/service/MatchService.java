@@ -53,6 +53,7 @@ public class MatchService {
 			return false;
 		}
 	}
+	
     @Transactional
     public List<Match> matches(User user) throws DataAccessException {
     	log.info("Buscando partidas...");
@@ -63,8 +64,8 @@ public class MatchService {
     	} else {
     		return (List<Match>)findAll();
     	}
-    	
     }
+    
 	@Transactional
     public List<Match> matchesCreated(User user) throws DataAccessException {
     	log.info("Buscando partidas...");
@@ -75,21 +76,20 @@ public class MatchService {
     	} else {
     		return (List<Match>)findAll();
     	}
-    	
     }
+	
 	@Transactional
     public boolean matchContainUser(Match match, User user) throws DataAccessException {
     	log.info("Buscando partidas...");
     	log.debug("Usuario: " + user);
 		List<Player> players = match.getPlayers();
-		List<User> users = new ArrayList();
+		List<User> users = new ArrayList<User>();
 		for (Player p:players){
 			users.add(p.getUser());
 		}
-
     	return users.contains(user);
-    	
     }
+	
 	@Transactional
     public List<Match> matchesInProgress_NotFinished() throws DataAccessException {
     	log.info("Buscando partidas...");
@@ -99,13 +99,10 @@ public class MatchService {
 			if(!m.isFinished() && m.getRound()!=0){
 				matchesInProgress_NotFinished.add(m);
 			}
-
 		}
-    	
     	return matchesInProgress_NotFinished;
-    	
-    	
     }
+	
 	@Transactional
     public List<Match> matchesFinished() throws DataAccessException {
     	log.info("Buscando partidas...");
@@ -115,13 +112,10 @@ public class MatchService {
 			if(m.isFinished()){
 				matchesFinished.add(m);
 			}
-
 		}
-    	
     	return matchesFinished;
-    	
-    	
     }
+	
 	@Transactional
     public List<Match> matchesLobby() throws DataAccessException {
     	log.info("Buscando partidas...");
@@ -133,11 +127,9 @@ public class MatchService {
 			}
 
 		}
-    	
     	return matchesFinished;
-    	
-    	
     }
+	
 	@Transactional(readOnly = true)
 	public Match findById(Integer id) throws DataAccessException {
 		log.info("Buscando partida...");
@@ -151,6 +143,7 @@ public class MatchService {
     	log.debug("Partida: " + match);
 		matchRepository.save(match);
 	}
+	
 	@Transactional
 	public boolean isHost(Player player, Match match) throws DataAccessException {
     	log.info("Comprobando si el player es host...");
@@ -164,6 +157,7 @@ public class MatchService {
 			return false;
 		}
 	}
+	
 	@Transactional
 	public List<Vote> votes(Match match) throws DataAccessException {
 		log.info("Generando votos...");
@@ -174,6 +168,7 @@ public class MatchService {
 		}
 		return votes;
 	}
+	
 	@Transactional
 	public String votedUser(Match match) throws DataAccessException {
 		log.info("Obteniendo jugador con voto...");
@@ -185,6 +180,7 @@ public class MatchService {
 		} 
 		return player;
 	}
+	
 	@Transactional
 	public List<Player> noHostPlayers(Match match) throws DataAccessException {
 		List<Player> noHostPlayers = new ArrayList<Player>();
@@ -204,6 +200,7 @@ public class MatchService {
 			return false;
 		}
 	}
+	
 	@Transactional
 	public boolean roundII(Match match) throws DataAccessException {
 		if (match.getRound() == 2) {
@@ -212,6 +209,7 @@ public class MatchService {
 			return false;
 		}
 	}
+	
 	@Transactional
 	public List<Player> playersWithNoConsulRole(Match match) throws DataAccessException {
 		List<Player> resultado = new ArrayList<Player>();
@@ -223,6 +221,7 @@ public class MatchService {
 		}
 		return resultado;
 	}
+	
 	@Transactional
 	public boolean pretorNotAsigned(Match match) throws DataAccessException {
 		boolean resultado = true;
@@ -234,16 +233,16 @@ public class MatchService {
 		}
 		return resultado;
 	}
+	
 	@Transactional
-
 	public boolean startMatchButton(Match match) throws DataAccessException {
-
 		if (match.getPlayers().size() >= 5) {
 			return true;
 		} else {
 			return false;
 		}
 	}
+	
 	@Transactional
 	public void startMatch(Match match) throws DataAccessException {
 		log.info("Empezar partida.");
@@ -251,6 +250,7 @@ public class MatchService {
 		match.setRound(1);
 		saveMatch(match);
 	}
+	
 	@Transactional
 	public boolean HideInvitationButton(Match match) throws DataAccessException {
 		if (match.getPlayers().size() < 8) {
@@ -275,6 +275,7 @@ public class MatchService {
 		}
 		return resultado;
 	}
+	
     @Transactional
     public void avanzarTurno(Match match, List<Player> jugadores) throws DataAccessException {
     	log.info("Avanzar turno.");
@@ -297,6 +298,7 @@ public class MatchService {
 			}
 		}
     }
+    
     @Transactional
     public void votacionCompletada(int votos, Match match) throws DataAccessException {
     	if(votos == 2) {
@@ -316,14 +318,33 @@ public class MatchService {
     	Faction faccion = match.getWinner();
     	return playerRepository.findWinners(match, faccion);
     }
-    
+    @Transactional
+    private boolean checkNumberOfLoyals(Match match) throws DataAccessException {
+    	List<Player> loyals = new ArrayList<Player>();
+    	for (Player p: match.getPlayers()) {
+    		if (p.getCard1() == Faction.LOYAL) {
+    			loyals.add(p);
+    		}
+    	}
+    	return loyals.size() > 0;
+    }
+    @Transactional
+    private boolean checkNumberOfTraitors(Match match) throws DataAccessException {
+    	List<Player> traitors = new ArrayList<Player>();
+    	for (Player p: match.getPlayers()) {
+    		if (p.getCard1() == Faction.TRAITOR) {
+    			traitors.add(p);
+    		}
+    	}
+    	return traitors.size() > 0;
+    }
     @Transactional
     public Faction sufragium(Match match) throws DataAccessException {
     	int numeroJugadores = match.getPlayers().size();
     	Faction faccionGanadora = Faction.MERCHANT;
-    	if (match.getVotesInFavor() - match.getVotesAgainst() >= 2 && match.getRound() == 3) {
+    	if (match.getVotesInFavor() - match.getVotesAgainst() >= 2 && match.getRound() == 3 && checkNumberOfLoyals(match)) {
     		faccionGanadora = Faction.LOYAL;
-    	} else if (match.getVotesAgainst() - match.getVotesInFavor() >= 2 && match.getRound() == 3) {
+    	} else if (match.getVotesAgainst() - match.getVotesInFavor() >= 2 && match.getRound() == 3 && checkNumberOfTraitors(match)) {
     		faccionGanadora = Faction.TRAITOR;
     	} else if (numeroJugadores == 5) {
     		if (match.getVotesInFavor() >= 13) {
@@ -350,7 +371,11 @@ public class MatchService {
     			faccionGanadora = Faction.LOYAL;
     		}
     	}
-    	return faccionGanadora;
+    	if (faccionGanadora == Faction.MERCHANT && match.getRound() != 3) {
+    		throw new DataAccessException("La partida no ha terminado aún") {};
+    	} else {
+    		return faccionGanadora;
+    	}
     }
     
 }

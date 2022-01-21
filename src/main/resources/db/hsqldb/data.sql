@@ -1,3 +1,5 @@
+
+
 INSERT INTO matches (id,name,round,turn,votes_in_favor,votes_against,plays,finished)VALUES (1, 'partida1', 0, 0, 0, 0, 0, false);
 
 INSERT INTO users(email,username,password,enabled) VALUES ('admin@gmail.com','admin1','4dm1n',TRUE);
@@ -27,7 +29,6 @@ INSERT INTO users(email,username,password,enabled) VALUES ('friend5@gmail.com','
 INSERT INTO players(id,name,card1,card2,vote,role,username,match_id,asigned) VALUES (6, 'player6', null, null, null, 3, 'friend5',1,false);
 INSERT INTO authorities(id,username,authority) VALUES (7,'friend5','user');
 
-INSERT INTO invitations(id,match_id,username) VALUES (0,1,'friend1');
 INSERT INTO invitations(id,match_id,username) VALUES (1,1,'ppp');
 
 INSERT INTO achievement_type(id, name) VALUES (1,'jugadas');
@@ -48,6 +49,9 @@ INSERT INTO friends(user_username,friends_username) VALUES ('friend3', 'admin1')
 
 
 INSERT INTO friends_invitations(id,username2,username) VALUES (1,'friend1','ppp');
+
+INSERT INTO chats(id,text,date,username, match_id) VALUES (1,'hola1','2022-01-19','admin1',1);
+
 
 
 
