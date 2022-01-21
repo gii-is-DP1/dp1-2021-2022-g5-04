@@ -136,7 +136,7 @@ public class PlayerController {
 		matchService.avanzarTurno(match, jugadores);
 		matchService.saveMatch(match);
 		Faction sufragium = matchService.sufragium(match);
-		if (match.getRound() == 3 || sufragium != Faction.MERCHANT) {
+		if (match.getRound() == 3 || sufragium != null) {
 			log.info("Partida finalizada, calculando ganador...");
 			return "redirect:/matches/" + idMatch + "/ganador";
 		} else {
@@ -155,7 +155,7 @@ public class PlayerController {
 		playerService.asignarRoles(match, jugadores, roles);
 		matchService.avanzarTurno(match, jugadores);
 		matchService.saveMatch(match);
-		if (match.getRound() == 3 || matchService.sufragium(match) != Faction.MERCHANT) {
+		if (match.getRound() == 3 || matchService.sufragium(match) != null) {
 			log.info("Partida finalizada, calculando ganador...");
 			return "redirect:/matches/" + idMatch + "/ganador";
 		} else {
