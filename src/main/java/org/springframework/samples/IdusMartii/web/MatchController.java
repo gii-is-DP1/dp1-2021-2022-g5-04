@@ -161,12 +161,14 @@ public class MatchController {
 	@GetMapping(path="/{id_match}/spectator")
 	public String spectatorModeMatch(ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
 		log.info("Accediendo a la partida...");
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
 		String vista = "matches/spectatorMode";
 		response.addHeader("Refresh","20");
 		log.info("Accediendo al servicio de partidas por el metodo findById()");
 		log.debug("id: " + id_match);
 		Match match = this.matchService.findById(id_match);
 		modelMap.addAttribute("match", match);
+		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		return vista;
 	}
 	
@@ -297,6 +299,7 @@ public class MatchController {
 				return "matches/partidaEnCurso";
 			}
 		}
+
 	}
 	@GetMapping(path="/{id}/rolesAsignados")
 	public String rolesAsignados(ModelMap modelMap, @PathVariable("id") int id) {
@@ -316,19 +319,18 @@ public class MatchController {
 		Faction faccionGanadora = matchService.sufragium(match);
 		if (faccionGanadora == null && match.getRound() != 3) {
 	    	return matchService.errorNotFinished(modelMap);
-    	}
-		else {
-		Player player_actual = playerService.findByMatchAndUser(match, usuario);
-		modelMap.addAttribute("faccionGanadora", matchService.sufragium(match));
-		modelMap.addAttribute("cartaFaccion", playerService.showFactionCard(matchService.sufragium(match)));
-		modelMap.addAttribute("winner", playerService.winner(player_actual, matchService.sufragium(match)));
-		modelMap.addAttribute("votosAFavor", match.getVotesInFavor());
-		modelMap.addAttribute("votosEnContra", match.getVotesAgainst());
-		match.setFinished(true);
-		match.setWinner(matchService.sufragium(match));
-		matchService.saveMatch(match);
-		userService.registrarVictoria(match, player_actual);
-		return vista;
+    	} else {
+    		Player player_actual = playerService.findByMatchAndUser(match, usuario);
+    		modelMap.addAttribute("faccionGanadora", matchService.sufragium(match));
+    		modelMap.addAttribute("cartaFaccion", playerService.showFactionCard(matchService.sufragium(match)));
+    		modelMap.addAttribute("winner", playerService.winner(player_actual, matchService.sufragium(match)));
+    		modelMap.addAttribute("votosAFavor", match.getVotesInFavor());
+    		modelMap.addAttribute("votosEnContra", match.getVotesAgainst());
+    		match.setFinished(true);
+    		match.setWinner(matchService.sufragium(match));
+    		matchService.saveMatch(match);
+    		userService.registrarVictoria(match, player_actual);
+    		return vista;
 		}
 	}
 	

@@ -14,15 +14,15 @@
 		</a>
 		<table class="table table-striped">
 			<tr>
-				<th>Name</th>
+				<th>Nombre</th>
 				<td><b><c:out value="${match.name} " /></b></td>
 			</tr>
 			<tr>
-				<th>Turn</th>
+				<th>Turno</th>
 				<td><c:out value="${match.turn}" /></td>
 			</tr>
 			<tr>
-				<th>Round</th>
+				<th>Ronda</th>
 				<td><c:out value="${match.round}" /></td>
 			</tr>
 			<tr>
@@ -34,11 +34,11 @@
 				<td><c:out value="${match.votesAgainst}" /></td>
 			</tr>
 			<tr>
-				<th>Host</th>
+				<th>Creador</th>
 				<td><c:out value="${match.players[0].user.username}" /></td>
 			</tr>
 			<tr>
-				<th>Players</th>
+				<th>Jugador</th>
 				<td><c:forEach var="x" items="${match.players}">
 						<li>${x.user.username}---> ${x.role}</li>
 
@@ -279,15 +279,15 @@
 		</a>
 		<table class="table table-striped">
 			<tr>
-				<th>Name</th>
+				<th>Nombre</th>
 				<td><b><c:out value="${match.name} " /></b></td>
 			</tr>
 			<tr>
-				<th>Turn</th>
+				<th>Turno</th>
 				<td><c:out value="${match.turn}" /></td>
 			</tr>
 			<tr>
-				<th>Round</th>
+				<th>Ronda</th>
 				<td><c:out value="${match.round}" /></td>
 			</tr>
 			<tr>
@@ -299,11 +299,11 @@
 				<td><c:out value="${match.votesAgainst}" /></td>
 			</tr>
 			<tr>
-				<th>Host</th>
+				<th>Creador</th>
 				<td><c:out value="${match.players[0].user.username}" /></td>
 			</tr>
 			<tr>
-				<th>Players</th>
+				<th>Jugadores</th>
 				<td><c:forEach var="x" items="${match.players}">
 						<li>${x.user.username}---> ${x.role}</li>
 

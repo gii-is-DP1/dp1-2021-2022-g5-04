@@ -4,6 +4,8 @@ import org.springframework.samples.IdusMartii.repository.ChatRepository;
 
 import org.springframework.samples.IdusMartii.model.Chat;
 import org.springframework.samples.IdusMartii.model.Match;
+import org.springframework.samples.IdusMartii.model.User;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +43,13 @@ public class ChatService {
 		}
 		return chats;
 	}
-	
+	@Transactional
+	public void deleteChatsFromUser(User user) throws DataAccessException {
+		List<Chat> chats = chatRepository.findByUser(user);
+		for (Chat c: chats) {
+			chatRepository.delete(c);
+		}
+	}
    
     
 }

@@ -51,7 +51,7 @@
 
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="achievements">
-    <h2>Achievements</h2>
+    <h2>Logros</h2>
 
     <table id="achievementsTable" class="table table-striped">
         <thead>

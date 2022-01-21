@@ -8,12 +8,12 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 <c:if test="${admin}">
 <IdusMartii:adminLayout pageName="users">
-    <h2>My profile</h2>
+    <h2>Mi perfil</h2>
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Username</th>
-            <th style="width: 200px;">Password</th>
+            <th style="width: 150px;">Nombre de usuario</th>
+            <th style="width: 200px;">Contraseña</th>
             <th style="width: 200px;">Email</th>
         </tr>
         </thead>
@@ -47,12 +47,12 @@
 </c:if>
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="users">
-    <h2>Users</h2>
+    <h2>Mi perfil</h2>
     <table id="usersTable" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 150px;">Username</th>
-            <th style="width: 200px;">Password</th>
+            <th style="width: 150px;">Nombre de usuario</th>
+            <th style="width: 200px;">Contraseña</th>
             <th style="width: 200px;">Email</th>
         </tr>
         </thead>

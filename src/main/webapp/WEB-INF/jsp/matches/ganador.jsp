@@ -12,9 +12,7 @@
 	<div class="row">
 		<div class="col-md-6">
    			<h1>Victoria para los ${faccionGanadora}</h1>
-			
-					<img class="img-responsive" src="/resources/images/${cartaFaccion}.jpg" style="height: 400px; width: 300px;"/>
-			
+				<img class="img-responsive" src="/resources/images/${cartaFaccion}.jpg" style="height: 400px; width: 300px;"/>
 		</div>
 		<div class="col-md-6">	
 			<c:if test="${winner}">

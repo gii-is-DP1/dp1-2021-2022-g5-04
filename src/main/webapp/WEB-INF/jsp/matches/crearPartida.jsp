@@ -9,8 +9,7 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 <c:if test="${admin}">
 <IdusMartii:adminLayout pageName="matches">
-    <h2>
-    </h2>
+   
    
     <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/save" >
         <div class="form-group has-feedback">
@@ -30,8 +29,7 @@
 </c:if>
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="matches">
-    <h2>
-    </h2>
+
    
     <form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/matches/save" >
         <div class="form-group has-feedback">

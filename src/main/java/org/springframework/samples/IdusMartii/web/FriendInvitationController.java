@@ -48,12 +48,13 @@ public class FriendInvitationController {
 		return vista;
 	}
 	@PostMapping(path="/{id_invt}/decline")
-	public String rechazarInvitacion(ModelMap modelMap, @PathVariable("id_invt") int id_invt) {
+	public String rechazarInvitacion(@PathVariable("id_invt") int id_invt, ModelMap modelMap) {
+		User current = userService.findbyUsername(currentUserService.showCurrentUser());
 		log.info("Rechazando invitacion...");
 		log.info("Accediendo al servicio de solicitudes de amistad por el metodo findById()");
 		FriendInvitation friendInvitation = friendInvitationService.findById(id_invt);
-		friendInvitationService.deleteFriendInvitation(friendInvitation);
-		return "redirect:/friendInvitations";
+		String retornar = friendInvitationService.deleteFriendInvitation(friendInvitation, current, modelMap);
+		return retornar;
 	}
 
 	@GetMapping(path="/{usernameRequester}/{usernameRequested}/save")
@@ -67,13 +68,12 @@ public class FriendInvitationController {
 			friendInvitation.setFecha(fecha);
 			friendInvitation.setUser_requested(userRequested);
 			friendInvitation.setUser_requester(userRequester);
-			friendInvitationService.saveFriendInvitation(friendInvitation);
-			modelMap.addAttribute("message", "Petición enviada con éxito al usuario con nombre " + userRequester.getUsername());
+			String retornar = friendInvitationService.saveFriendInvitation(friendInvitation, modelMap);
 			modelMap.addAttribute("admin", authoritiesService.getAuthorities(userRequester.getUsername()));
 			modelMap.put("people", userService.crearAlumnos());
 			modelMap.put("title", "Idus Martii"); 
 			modelMap.put("group", "L5-4");
-			return "/welcome";
+			return retornar;
 		} else if (current != userRequester){
 			modelMap.addAttribute("message", "No puedes mandar una solicitud de amistad de otra persona que no seas tú.");
 			modelMap.addAttribute("admin", authoritiesService.getAuthorities(userRequester.getUsername()));
@@ -88,25 +88,38 @@ public class FriendInvitationController {
 
 	@PostMapping(path="/{userRequester}/{userRequested}/save")
 	public String guardarInvitacion(ModelMap modelMap, @PathVariable("userRequester") User userRequester, @PathVariable("userRequested") User userRequested) {
-		log.info("Creando solicitud de amistad...");
-		log.debug("Usuario1: " + userRequester + ", Usuario2: " + userRequested);
-		FriendInvitation friendInvitation = new FriendInvitation();
-		Date fecha = new Date();
-		friendInvitation.setFecha(fecha);
-		friendInvitation.setUser_requested(userRequested);
-		friendInvitation.setUser_requester(userRequester);
-		log.info("Accediendo al servicio de solicitudes de amistad por el metodo saveFriendInvitation()");
-		friendInvitationService.saveFriendInvitation(friendInvitation);
-		return "redirect:/friendInvitations";
+		User current = userService.findbyUsername(currentUserService.showCurrentUser());
+		if (friendInvitationService.letFriendRequest(userRequester, userRequested) && current == userRequester) {
+			FriendInvitation friendInvitation = new FriendInvitation();
+			Date fecha = new Date();
+			friendInvitation.setFecha(fecha);
+			friendInvitation.setUser_requested(userRequested);
+			friendInvitation.setUser_requester(userRequester);
+			String retornar = friendInvitationService.saveFriendInvitation(friendInvitation, modelMap);
+			modelMap.addAttribute("admin", authoritiesService.getAuthorities(userRequester.getUsername()));
+			modelMap.put("people", userService.crearAlumnos());
+			modelMap.put("title", "Idus Martii"); 
+			modelMap.put("group", "L5-4");
+			return retornar;
+		} else if (current != userRequester){
+			modelMap.addAttribute("message", "No puedes mandar una solicitud de amistad de otra persona que no seas tú.");
+			modelMap.addAttribute("admin", authoritiesService.getAuthorities(userRequester.getUsername()));
+			return "/exception";
+		} else {
+			modelMap.addAttribute("message", "Ya eres amigo de ese usuario");
+			modelMap.addAttribute("admin", authoritiesService.getAuthorities(userRequester.getUsername()));
+			return "/exception";
+		}
 	}
 	
 	@PostMapping(path="/{id_invt}/accept")
-	public String aceptarInvitacion(ModelMap modelMap, @PathVariable("id_invt") int id_invt) {
+	public String aceptarInvitacion( @PathVariable("id_invt") int id_invt, ModelMap modelMap) {
+		User current = userService.findbyUsername(currentUserService.showCurrentUser());
 		log.info("Aceptando Solicitud de amistad...");
 		log.debug("Id de solicitud: " + id_invt);
 		log.info("Accediendo al servicio de solicitudes de amistad por el método acceptFriendInvitatoin()");
-		friendInvitationService.acceptFriendInvitation(id_invt);
-		return "redirect:/friendInvitations";
+		String retornar = friendInvitationService.acceptFriendInvitation(id_invt, current, modelMap);
+		return retornar;
 	}
 	
 }

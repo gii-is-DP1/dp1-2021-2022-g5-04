@@ -9,7 +9,6 @@
 <IdusMartii:adminLayout pageName="Achievements">
     <h2>
     Logros
-    ${achievement.id}
     </h2>
     <form:form modelAttribute="achievement" class="form-horizontal" id="add-user-form" action="/achievements/${achievement.id}/save">
         <div class="form-group has-feedback">
