@@ -27,13 +27,7 @@ public class PlayerService {
 	@Autowired
 	private PlayerRepository playerRepository;
 	@Autowired 
-
-	InvitationService invitationService;
-	@Autowired 
-	MatchService matchService;
-	
-
-	private InvitationRepository invitationRepository;
+	private InvitationService invitationService;
 	@Autowired
 	private MatchService matchService;
 	@Autowired

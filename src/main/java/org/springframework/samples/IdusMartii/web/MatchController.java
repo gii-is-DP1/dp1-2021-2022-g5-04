@@ -293,7 +293,7 @@ public class MatchController {
 		if (match.getRound() == 3 || matchService.sufragium(match) != null) {
 			return "redirect:/matches/" + id + "/ganador";
 		} else {
-			return vista;
+			return "matches/partidaEnCurso";
     }
 	}
 	@GetMapping(path="/{id}/rolesAsignados")
