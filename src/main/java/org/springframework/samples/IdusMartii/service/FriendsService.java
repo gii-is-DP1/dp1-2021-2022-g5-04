@@ -19,7 +19,7 @@ public class FriendsService {
 	@Autowired
 	private UserService userService;
 	
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public void saveFriends(String username1, String username2) throws DataAccessException {
     log.info("Llamada al metodo saveFriends(String, String)");
     log.debug("atributos: " + username1 + ", " + username2);

@@ -1,7 +1,4 @@
 package org.springframework.samples.IdusMartii.web;
-
-
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -39,7 +36,7 @@ public class ChatController {
 	@GetMapping(path="/{id_match}")
 	public String listadoChat(ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
 		String vista = "chats/chat";
-        response.addHeader("Refresh","5");
+        response.addHeader("Refresh","30");
         Match match = matchService.findById(id_match);
         User user = userService.findUser(currentUserService.showCurrentUser()).get();
         List<Chat> chats = chatService.findByMach(match);

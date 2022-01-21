@@ -1,6 +1,5 @@
 package org.springframework.samples.IdusMartii.web;
 
-
 import java.util.List;
 import javax.validation.Valid;
 
@@ -253,8 +252,7 @@ public class MatchController {
 	@GetMapping(path="/{id}/match")
 	public String comenzarPartida(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
 		log.info("Comenzando partida...");
-		String vista = "matches/partidaEnCurso";
-		response.addHeader("Refresh","20");
+		//response.addHeader("Refresh","20");
 		log.info("Acceso al servicio de partidas por el metodo findById()");
 		log.debug("Id : " + id);
 		Match match = this.matchService.findById(id);
@@ -296,7 +294,7 @@ public class MatchController {
 			return "redirect:/matches/" + id + "/ganador";
 		} else {
 			return vista;
-		}
+    }
 	}
 	@GetMapping(path="/{id}/rolesAsignados")
 	public String rolesAsignados(ModelMap modelMap, @PathVariable("id") int id) {
@@ -346,11 +344,11 @@ public class MatchController {
 		for (int i = 0; i<g.size();i++) {
 			User u = g.get(i).getUser();
 			String username = u.getUsername();
-		log.info("Acesso al servicio de jugadores por el metodo findbyUsername()");
-		log.debug("Nombre de usuario: " + username);
+			log.info("Acesso al servicio de jugadores por el metodo findbyUsername()");
+			log.debug("Nombre de usuario: " + username);
 			playerService.findbyUsername(username);
-		log.info("Acesso al servicio de logros por el metodo findByAchievementType()");
-		log.debug("tipo: jugadas");
+			log.info("Acesso al servicio de logros por el metodo findByAchievementType()");
+			log.debug("tipo: jugadas");
 			List<Achievement> jugadas = achievementService.findByAchievementType("jugadas");
 			for(int k = 0; k<jugadas.size();k++) {
 				log.info("Acceso a 2 metodos del servicio de logrosJugadores");
