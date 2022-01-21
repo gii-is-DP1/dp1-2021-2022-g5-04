@@ -1,12 +1,11 @@
 package org.springframework.samples.IdusMartii.web;
 
-
-import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -22,17 +21,12 @@ import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.AchievementService;
 import org.springframework.samples.IdusMartii.service.AchievementUserService;
-import org.springframework.samples.IdusMartii.service.AuthoritiesService;
-import org.springframework.samples.IdusMartii.service.ChatService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
-import org.springframework.samples.IdusMartii.IdusMartiiApplication;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
-import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Achievement;
-import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
@@ -225,13 +219,18 @@ public class MatchController {
 
 	@GetMapping(path="/{id}/new")
 	public String editarPartida(ModelMap modelMap, @PathVariable("id") int id) {
-		log.info("");
 		String vista = "matches/editarPartida";
 		log.info("Acceso al servicio de partidas por el metodo saveMatch()");
 		log.debug("Id : " + id);
 		Match match = this.matchService.findById(id);
 		String currentUser = currentUserService.showCurrentUser();
 		User user = userService.findbyUsername(currentUser);
+		modelMap.addAttribute("admin", matchService.isAdmin(user));
+
+		if(match.getRound()!=0) {
+			return matchService.errorAlreadyStarted(modelMap);
+		}
+		else {
 		log.info("Acceso al servicio de jugadores por el metodo findByMatchAndUser()");
 		log.debug("partida: " + match + ", usuario: " + user);
 		Player player = playerService.findByMatchAndUser(match, user);
@@ -247,13 +246,13 @@ public class MatchController {
 		modelMap.addAttribute("isHost", matchService.isHost(player, match));
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 		return vista;
+		}
 	}
 
 	@GetMapping(path="/{id}/match")
 	public String comenzarPartida(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
 		log.info("Comenzando partida...");
-		String vista = "matches/partidaEnCurso";
-		response.addHeader("Refresh","20");
+		//response.addHeader("Refresh","20");
 		log.info("Acceso al servicio de partidas por el metodo findById()");
 		log.debug("Id : " + id);
 		Match match = this.matchService.findById(id);
@@ -291,11 +290,11 @@ public class MatchController {
 		modelMap.addAttribute("match", match);
 		modelMap.addAttribute("ediles", playerService.findByRole(match, Role.EDIL));
 		modelMap.addAttribute("admin", matchService.isAdmin(usuario));
-		if (match.getRound() == 3 || matchService.sufragium(match) != Faction.MERCHANT) {
+		if (match.getRound() == 3 || matchService.sufragium(match) != null) {
 			return "redirect:/matches/" + id + "/ganador";
 		} else {
 			return vista;
-		}
+    }
 	}
 	@GetMapping(path="/{id}/rolesAsignados")
 	public String rolesAsignados(ModelMap modelMap, @PathVariable("id") int id) {
@@ -307,23 +306,28 @@ public class MatchController {
 		return "redirect:/matches/" + id + "/match";
 	}
 	@GetMapping(path="/{id}/ganador") 
-	public String ganador(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
-		response.addHeader("Refresh","20");
+	public String ganador(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) throws DataAccessException {
 		String vista = "matches/ganador";
-		Match match = this.matchService.findById(id);
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
+		modelMap.addAttribute("admin", matchService.isAdmin(usuario));
+		Match match = this.matchService.findById(id);
+		Faction faccionGanadora = matchService.sufragium(match);
+		if (faccionGanadora == null && match.getRound() != 3) {
+	    	return matchService.errorNotFinished(modelMap);
+    	}
+		else {
 		Player player_actual = playerService.findByMatchAndUser(match, usuario);
 		modelMap.addAttribute("faccionGanadora", matchService.sufragium(match));
 		modelMap.addAttribute("cartaFaccion", playerService.showFactionCard(matchService.sufragium(match)));
 		modelMap.addAttribute("winner", playerService.winner(player_actual, matchService.sufragium(match)));
 		modelMap.addAttribute("votosAFavor", match.getVotesInFavor());
 		modelMap.addAttribute("votosEnContra", match.getVotesAgainst());
-		modelMap.addAttribute("admin", matchService.isAdmin(usuario));
 		match.setFinished(true);
 		match.setWinner(matchService.sufragium(match));
 		matchService.saveMatch(match);
-		matchService.registrarGanadores(match);
+		userService.registrarVictoria(match, player_actual);
 		return vista;
+		}
 	}
 	
 	@PostMapping(path="/{id}/game/save")
@@ -340,11 +344,11 @@ public class MatchController {
 		for (int i = 0; i<g.size();i++) {
 			User u = g.get(i).getUser();
 			String username = u.getUsername();
-		log.info("Acesso al servicio de jugadores por el metodo findbyUsername()");
-		log.debug("Nombre de usuario: " + username);
+			log.info("Acesso al servicio de jugadores por el metodo findbyUsername()");
+			log.debug("Nombre de usuario: " + username);
 			playerService.findbyUsername(username);
-		log.info("Acesso al servicio de logros por el metodo findByAchievementType()");
-		log.debug("tipo: jugadas");
+			log.info("Acesso al servicio de logros por el metodo findByAchievementType()");
+			log.debug("tipo: jugadas");
 			List<Achievement> jugadas = achievementService.findByAchievementType("jugadas");
 			for(int k = 0; k<jugadas.size();k++) {
 				log.info("Acceso a 2 metodos del servicio de logrosJugadores");

@@ -6,7 +6,6 @@ import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
-import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
@@ -17,6 +16,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,16 +47,17 @@ public class MatchService {
 	@Transactional
 	public boolean isAdmin(User user) throws DataAccessException {
 		if (authoritiesService.getAuthorities(user.getUsername())) {
-			log.info("El user es admin");
+			log.info("Eres administrador. Estás haciendo un buen trabajo, sigue así.");
 			return true;
 		} else {
-			log.info("El user no es admin");
 			return false;
 		}
 	}
 	
     @Transactional
     public List<Match> matches(User user) throws DataAccessException {
+    	log.info("Buscando partidas...");
+    	log.debug("Usuario: " + user);
     	if (!isAdmin(user)) {
     		List<Match> matches = playerService.findMatchesFromUser(user);
     		return matches;
@@ -67,6 +68,8 @@ public class MatchService {
     
 	@Transactional
     public List<Match> matchesCreated(User user) throws DataAccessException {
+    	log.info("Buscando partidas...");
+    	log.debug("Usuario: " + user);
     	if (!isAdmin(user)) {
     		List<Match> matches = playerService.findMatchesFromHost(user);
     		return matches;
@@ -77,6 +80,8 @@ public class MatchService {
 	
 	@Transactional
     public boolean matchContainUser(Match match, User user) throws DataAccessException {
+    	log.info("Buscando partidas...");
+    	log.debug("Usuario: " + user);
 		List<Player> players = match.getPlayers();
 		List<User> users = new ArrayList<User>();
 		for (Player p:players){
@@ -87,6 +92,7 @@ public class MatchService {
 	
 	@Transactional
     public List<Match> matchesInProgress_NotFinished() throws DataAccessException {
+    	log.info("Buscando partidas...");
 		List<Match> matchesInProgress_NotFinished = new ArrayList<>();
 		Iterable<Match> matches = matchRepository.findAll();
 		for(Match m:matches){
@@ -99,6 +105,7 @@ public class MatchService {
 	
 	@Transactional
     public List<Match> matchesFinished() throws DataAccessException {
+    	log.info("Buscando partidas...");
 		List<Match> matchesFinished = new ArrayList<>();
 		Iterable<Match> matches = matchRepository.findAll();
 		for(Match m:matches){
@@ -111,6 +118,7 @@ public class MatchService {
 	
 	@Transactional
     public List<Match> matchesLobby() throws DataAccessException {
+    	log.info("Buscando partidas...");
 		List<Match> matchesFinished = new ArrayList<>();
 		Iterable<Match> matches = matchRepository.findAll();
 		for(Match m:matches){
@@ -124,25 +132,35 @@ public class MatchService {
 	
 	@Transactional(readOnly = true)
 	public Match findById(Integer id) throws DataAccessException {
+		log.info("Buscando partida...");
+    	log.debug("Id: " + id);
 		return matchRepository.findById(id).get();
 	}
 	
 	@Transactional
 	public void saveMatch(Match match) throws DataAccessException {
+    	log.info("Guardando partidas...");
+    	log.debug("Partida: " + match);
 		matchRepository.save(match);
 	}
 	
 	@Transactional
 	public boolean isHost(Player player, Match match) throws DataAccessException {
+    	log.info("Comprobando si el player es host...");
+    	log.debug("Jugador: " + player);
+    	log.debug("Partida: " + match);
 		if (match.getPlayers().get(0) == player) {
+			log.info("Es host.");
 			return true;
 		} else {
+			log.info("No es host.");
 			return false;
 		}
 	}
 	
 	@Transactional
 	public List<Vote> votes(Match match) throws DataAccessException {
+		log.info("Generando votos...");
 		List<Vote> votes = new ArrayList<>();
 		votes.add(Vote.GREEN); votes.add(Vote.RED);
 		if (match.getRound() == 2) {
@@ -153,6 +171,7 @@ public class MatchService {
 	
 	@Transactional
 	public String votedUser(Match match) throws DataAccessException {
+		log.info("Obteniendo jugador con voto...");
 		String player = null;
 		for (Player p: match.getPlayers()) {
 			if (p.getVote() != null) {
@@ -226,6 +245,7 @@ public class MatchService {
 	
 	@Transactional
 	public void startMatch(Match match) throws DataAccessException {
+		log.info("Empezar partida.");
 		playerService.roleAndCardsAsignation(match);
 		match.setRound(1);
 		saveMatch(match);
@@ -258,6 +278,7 @@ public class MatchService {
 	
     @Transactional
     public void avanzarTurno(Match match, List<Player> jugadores) throws DataAccessException {
+    	log.info("Avanzar turno.");
     	if ((match.getTurn() + 1) >= jugadores.size()) {
 			match.setRound(match.getRound() + 1);
 			match.setTurn(0);
@@ -293,6 +314,7 @@ public class MatchService {
     
     @Transactional
     public List<Player> findWinners(Match match){
+    	log.info("Buscando ganadores...");
     	Faction faccion = match.getWinner();
     	return playerRepository.findWinners(match, faccion);
     }
@@ -316,63 +338,97 @@ public class MatchService {
     	}
     	return traitors.size() > 0;
     }
+    
+    
     @Transactional
     public Faction sufragium(Match match) throws DataAccessException {
     	int numeroJugadores = match.getPlayers().size();
-    	Faction faccionGanadora = Faction.MERCHANT;
+    	Faction faccionGanadora = null;
     	if (match.getVotesInFavor() - match.getVotesAgainst() >= 2 && match.getRound() == 3 && checkNumberOfLoyals(match)) {
     		faccionGanadora = Faction.LOYAL;
     	} else if (match.getVotesAgainst() - match.getVotesInFavor() >= 2 && match.getRound() == 3 && checkNumberOfTraitors(match)) {
     		faccionGanadora = Faction.TRAITOR;
     	} else if (numeroJugadores == 5) {
     		if (match.getVotesInFavor() >= 13) {
-    			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotesAgainst() == 13) {
+    			if(checkNumberOfTraitors(match)) {
+        			faccionGanadora = Faction.TRAITOR;
+    			}
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
+    		}
+    		else if (match.getVotesAgainst() >= 13) {
+    			if(checkNumberOfLoyals(match)) {
     			faccionGanadora = Faction.LOYAL;
+    			} 
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
     		}
     	} else if (numeroJugadores == 6) {
     		if (match.getVotesInFavor() >= 15) {
-    			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotesAgainst() == 15) {
+    			if(checkNumberOfTraitors(match)) {
+        			faccionGanadora = Faction.TRAITOR;
+    			}
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
+    		}
+    		else if (match.getVotesAgainst() >= 15) {
+    			if(checkNumberOfLoyals(match)) {
     			faccionGanadora = Faction.LOYAL;
+    			} 
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
     		}
     	} else if (numeroJugadores == 7) {
     		if (match.getVotesInFavor() >= 17) {
-    			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotesAgainst() == 17) {
+    			if(checkNumberOfTraitors(match)) {
+        			faccionGanadora = Faction.TRAITOR;
+    			}
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
+    		}
+    		else if (match.getVotesAgainst() >= 17) {
+    			if(checkNumberOfLoyals(match)) {
     			faccionGanadora = Faction.LOYAL;
+    			} 
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
     		}
     	} else if (numeroJugadores == 8) {
     		if (match.getVotesInFavor() >= 20) {
-    			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotesAgainst() == 20) {
+    			if(checkNumberOfTraitors(match)) {
+        			faccionGanadora = Faction.TRAITOR;
+    			}
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
+    		}
+    		else if (match.getVotesAgainst() >= 20) {
+    			if(checkNumberOfLoyals(match)) {
     			faccionGanadora = Faction.LOYAL;
+    			} 
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
     		}
     	}
-    	if (faccionGanadora == Faction.MERCHANT && match.getRound() != 3) {
-    		throw new DataAccessException("La partida no ha terminado aún") {};
-    	} else {
     		return faccionGanadora;
-    	}
     }
     
-    @Transactional
-	public void registrarGanadores(Match match) {
-		List<Player> winners = playerService.findWinners(match);
-		List<Achievement> ganadas = achievementService.findByAchievementType("ganadas");
-		for(Player p : winners) {
-			Integer victorias = 0;
-			if(p.getUser().getVictorias() != null) {
-				victorias = p.getUser().getVictorias();
-			}
-			p.getUser().setVictorias(victorias+1);
-			playerService.savePlayer(p);
-			for(Achievement a : ganadas) {
-				if(p.getUser().getVictorias() == a.getValor()) {
-					achievementUserService.saveAchievementUser(p.getUser().getUsername(), 2);
-				}
-			}
-		}
-	}
-	
+    public String errorNotFinished(ModelMap modelMap) throws DataAccessException{
+    	log.info("Estoy en errorNotFinished()");
+    	modelMap.addAttribute("message", "La partida no ha acabado.");
+    	return "/exception";
+    }
+    
+    public String errorAlreadyStarted(ModelMap modelMap) throws DataAccessException{
+    	log.info("Estoy en errorAlreadyStarted");
+    	modelMap.addAttribute("message", "La partida ya ha empezado.");
+    	return "/exception";
+    }
 }

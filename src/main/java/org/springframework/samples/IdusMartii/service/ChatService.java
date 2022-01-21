@@ -1,13 +1,9 @@
 package org.springframework.samples.IdusMartii.service;
 
 import org.springframework.samples.IdusMartii.repository.ChatRepository;
-import org.springframework.samples.IdusMartii.repository.InvitationRepository;
-import org.springframework.samples.IdusMartii.model.Chat;
-import org.springframework.samples.IdusMartii.model.Invitation;
-import org.springframework.samples.IdusMartii.model.Match;
-import org.springframework.samples.IdusMartii.model.Player;
-import org.springframework.samples.IdusMartii.model.User;
 
+import org.springframework.samples.IdusMartii.model.Chat;
+import org.springframework.samples.IdusMartii.model.Match;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +13,9 @@ import org.springframework.dao.DataAccessException;
 
 @Service
 public class ChatService {
+	
     @Autowired 
-	ChatRepository chatRepository;
+	private ChatRepository chatRepository;
 	
 
 	@Transactional

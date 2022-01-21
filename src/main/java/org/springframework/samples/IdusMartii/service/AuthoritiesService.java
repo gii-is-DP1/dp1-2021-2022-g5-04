@@ -41,6 +41,7 @@ import org.springframework.samples.IdusMartii.model.User;
 @Service
 public class AuthoritiesService {
 
+
     @Autowired
     private AuthoritiesRepository authoritiesRepository;
     @Autowired
@@ -68,6 +69,7 @@ public class AuthoritiesService {
         }else
             throw new DataAccessException("User '"+userService.findUser(username).get().getUsername()+"' not found!") {};
     }
+
 
     
     @Transactional

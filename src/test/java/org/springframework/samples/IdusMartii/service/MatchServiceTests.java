@@ -8,14 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.stereotype.Service;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
@@ -53,7 +51,7 @@ public class MatchServiceTests {
 	public void testMatches(){
 		Match match1 = matchService.findById(1);
 		Optional<User> usNotAdmin= userService.findUser("friend1");
-		List<Match> listaMatchUser= new ArrayList();
+		List<Match> listaMatchUser= new ArrayList<Match>();
 		listaMatchUser.add(match1);
 		List<Match> partidas= matchService.matches(usNotAdmin.get());
 

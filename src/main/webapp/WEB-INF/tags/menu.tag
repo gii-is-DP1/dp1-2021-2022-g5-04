@@ -63,7 +63,7 @@
 				<petclinic:menuItem active="${name eq 'Users'}" url="/users/find"
 					title="Users">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-					<span>Perfil</span>
+					<span>Buscar usuarios</span>
 				</petclinic:menuItem>		
 				<petclinic:menuItem active="${name eq 'Friends'}" url="/friendInvitations"
 					title="Friend Invitations">
