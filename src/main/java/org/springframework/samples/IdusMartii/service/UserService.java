@@ -113,8 +113,8 @@ public class UserService {
 	}
 	@Transactional
 	public User findbyUsername(String username){
-		log.debug("Usando metodo findbyUsername()");
-		log.info("Atributo:" + username);
+		log.info("Usando metodo findbyUsername()");
+		log.debug("Atributo:" + username);
 		return userRepository.findByUsername(username);
 	}
   

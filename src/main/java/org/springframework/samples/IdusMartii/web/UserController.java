@@ -143,7 +143,10 @@ public class UserController {
     public String editarUsuario(@PathVariable("username") String username, ModelMap modelMap) {
     	log.info("Editando usuario...");
         String vista = "users/editarUsuario";
+    	User current = userService.findUser(currentUserService.showCurrentUser()).get();
+    	modelMap.addAttribute("admin", userService.isAdmin(current));
         modelMap.addAttribute("user", userService.findbyUsername(username));
+        log.info("ola");
         return vista;
     }
     
