@@ -10,6 +10,9 @@
 
 <c:if test="${admin}">
 	<IdusMartii:adminLayout pageName="matches">
+		<a href="http://localhost:8080/chats/${match.id}" target="_blank">
+			<button class ="btn btn-primary" style="margin-bottom: 10px;">CHAT</button>
+		</a>
 		<h2>
 		</h2>
 		<table class="table table-striped">
@@ -67,6 +70,9 @@
 </c:if>
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="matches">
+	<a href="http://localhost:8080/chats/${match.id}" target="_blank">
+		<button class ="btn btn-primary" style="margin-bottom: 10px;">CHAT</button>
+	</a>
     <h2>
 	</h2>
 	<table class="table table-striped">

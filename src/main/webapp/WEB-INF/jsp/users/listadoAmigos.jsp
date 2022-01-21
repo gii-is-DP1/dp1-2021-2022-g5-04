@@ -10,46 +10,54 @@
 <c:if test="${admin}">
 <IdusMartii:adminLayout pageName="friends">
     <h2>Listado de amigos</h2>
-    <tbody>
-        <c:forEach items="${friends}" var="user">
-            <tr>
-            	<td>
-                     <p><c:out value="${user.username}"/></p>
-                </td>
-                <td>
-					<form:form modelAttribute="friend" class="form-horizontal" id="add-invitation-form" action="/users/delete/${user.username}">
-						<div class="form-group">
-							<div class="col-sm-offset-2">
-								<button class="btn btn-danger" type="submit">Eliminar</button>
-							</div>
-						</div>
-					</form:form>
-				</td>
-            </tr>
-        </c:forEach>
-    </tbody>
+    <table id="friendsTable" class="table table-striped">
+    	<thead>
+    		<tr>
+    			<th style="width: 150px;">Nombre de usuario</th>
+    		</tr>
+   		</thead>
+    	<tbody>
+        	<c:forEach items="${friends}" var="friend">
+            	<tr>
+            		<td>
+                     	<p><c:out value="${friend.username}"/></p>
+                	</td>
+                	<td>
+						<spring:url value="/users/delete/{username}" var="friendUrl">
+		    			<spring:param name="username" value="${friend.username}"/>
+						</spring:url> 
+                    		<a href="${fn:escapeXml(friendUrl)}">Eliminar</a>
+					</td>
+            	</tr>
+        	</c:forEach>
+    	</tbody>
+    </table>
 </IdusMartii:adminLayout>
 </c:if>
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="friends">
     <h2>Listado de amigos</h2>
-    <tbody>
-        <c:forEach items="${friends}" var="user">
-            <tr>
-            	<td>
-                     <p><c:out value="${user.username}"/></p>
-                </td>
-                <td>
-					<form:form modelAttribute="friend" class="form-horizontal" id="add-invitation-form" action="/users/delete/${user.username}">
-						<div class="form-group">
-							<div class="col-sm-offset-2">
-								<button class="btn btn-danger" type="submit">Eliminar</button>
-							</div>
-						</div>
-					</form:form>
-				</td>
-            </tr>
-        </c:forEach>
-    </tbody>
+    <table id="friendsTable" class="table table-striped">
+    	<thead>
+    		<tr>
+    			<th style="width: 150px;">Nombre de usuario</th>
+    		</tr>
+   		</thead>
+    	<tbody>
+        	<c:forEach items="${friends}" var="friend">
+            	<tr>
+            		<td>
+                     	<p><c:out value="${friend.username}"/></p>
+                	</td>
+                	<td>
+						<spring:url value="/users/delete/{username}" var="friendUrl">
+		    			<spring:param name="username" value="${friend.username}"/>
+						</spring:url> 
+                    		<a href="${fn:escapeXml(friendUrl)}">Eliminar</a>
+					</td>
+            	</tr>
+        	</c:forEach>
+    	</tbody>
+    </table>
 </IdusMartii:layout>
 </c:if>

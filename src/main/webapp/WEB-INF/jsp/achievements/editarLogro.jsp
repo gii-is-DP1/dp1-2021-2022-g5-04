@@ -6,9 +6,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 
-<IdusMartii:adminLayout pageName="usersCreation">
+<IdusMartii:adminLayout pageName="Achievements">
     <h2>
-    Achievements
+    Logros
     ${achievement.id}
     </h2>
     <form:form modelAttribute="achievement" class="form-horizontal" id="add-user-form" action="/achievements/${achievement.id}/save">

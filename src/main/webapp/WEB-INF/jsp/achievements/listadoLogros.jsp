@@ -7,19 +7,19 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 <c:if test="${admin}">
-<IdusMartii:adminLayout pageName="achievement">
-<h2>Achievements</h2>
+<IdusMartii:adminLayout pageName="achievements">
+<h2>Logros</h2>
 
- <spring:url value="/achievements/new" var="userUrl">
+ <spring:url value="/achievements/new" var="achievementUrl">
                 
                     </spring:url>
                     
-                	<a href= "${fn:escapeXml(userUrl)}">Nuevo Logro</a>
+                	<a href= "${fn:escapeXml(achievementUrl)}">Nuevo Logro</a>
 
     <table id="achievementsTable" class="table table-striped">
         <thead>
         <tr>
-            <th >Name</th>
+            <th >Nombre</th>
             <th ></th>
         </tr>
         </thead>
@@ -31,16 +31,16 @@
                     <c:out value="${achievement.name}"/>
                 </td>
                 <td>
-                	<c:out value="${user.getAchievements().contains(achievement) ? 'COMPLETED' : 'X'}"/>	
+                	<c:out value="${user.getAchievements().contains(achievement) ? 'COMPLETADO' : 'NO COMPLETADO'}"/>	
                 	
                 </td>
                 <td>
-                <spring:url value="/achievements/{id}/edit" var="userUrl">
+                <spring:url value="/achievements/{id}/edit" var="achievementsUrl">
                    <spring:param name="id" value="${achievement.id}"/>
                 
                     </spring:url>
                     
-                	<a href= "${fn:escapeXml(userUrl)}">Editar</a>
+                	<a href= "${fn:escapeXml(achievementsUrl)}">Editar</a>
                 	</td>
             </tr>
         </c:forEach>
@@ -56,7 +56,7 @@
     <table id="achievementsTable" class="table table-striped">
         <thead>
         <tr>
-            <th >Name</th>
+            <th >Nombre</th>
             <th ></th>
         </tr>
         </thead>
@@ -71,7 +71,7 @@
                     <c:out value="${achievement.description}"/>
                 </td>
                 <td>
-                	<c:out value="${user.getAchievements().contains(achievement) ? 'COMPLETED' : 'X'}"/>	
+                	<c:out value="${user.getAchievements().contains(achievement) ? 'COMPLETADO' : 'NO COMPLETADO'}"/>	
                 	
                 </td>
                 
