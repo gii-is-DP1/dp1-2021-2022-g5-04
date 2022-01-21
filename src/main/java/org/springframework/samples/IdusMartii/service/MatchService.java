@@ -16,6 +16,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -337,44 +338,97 @@ public class MatchService {
     	}
     	return traitors.size() > 0;
     }
+    
+    
     @Transactional
     public Faction sufragium(Match match) throws DataAccessException {
     	int numeroJugadores = match.getPlayers().size();
-    	Faction faccionGanadora = Faction.MERCHANT;
+    	Faction faccionGanadora = null;
     	if (match.getVotesInFavor() - match.getVotesAgainst() >= 2 && match.getRound() == 3 && checkNumberOfLoyals(match)) {
     		faccionGanadora = Faction.LOYAL;
     	} else if (match.getVotesAgainst() - match.getVotesInFavor() >= 2 && match.getRound() == 3 && checkNumberOfTraitors(match)) {
     		faccionGanadora = Faction.TRAITOR;
     	} else if (numeroJugadores == 5) {
-    		if (match.getVotesInFavor() >= 13 && checkNumberOfTraitors(match)) {
-    			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotesAgainst() == 13 && checkNumberOfLoyals(match)) {
+    		if (match.getVotesInFavor() >= 13) {
+    			if(checkNumberOfTraitors(match)) {
+        			faccionGanadora = Faction.TRAITOR;
+    			}
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
+    		}
+    		else if (match.getVotesAgainst() >= 13) {
+    			if(checkNumberOfLoyals(match)) {
     			faccionGanadora = Faction.LOYAL;
+    			} 
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
     		}
     	} else if (numeroJugadores == 6) {
-    		if (match.getVotesInFavor() >= 15 && checkNumberOfTraitors(match)) {
-    			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotesAgainst() == 15 && checkNumberOfLoyals(match)) {
+    		if (match.getVotesInFavor() >= 15) {
+    			if(checkNumberOfTraitors(match)) {
+        			faccionGanadora = Faction.TRAITOR;
+    			}
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
+    		}
+    		else if (match.getVotesAgainst() >= 15) {
+    			if(checkNumberOfLoyals(match)) {
     			faccionGanadora = Faction.LOYAL;
+    			} 
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
     		}
     	} else if (numeroJugadores == 7) {
-    		if (match.getVotesInFavor() >= 17 && checkNumberOfTraitors(match)) {
-    			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotesAgainst() == 17 && checkNumberOfLoyals(match)) {
+    		if (match.getVotesInFavor() >= 17) {
+    			if(checkNumberOfTraitors(match)) {
+        			faccionGanadora = Faction.TRAITOR;
+    			}
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
+    		}
+    		else if (match.getVotesAgainst() >= 17) {
+    			if(checkNumberOfLoyals(match)) {
     			faccionGanadora = Faction.LOYAL;
+    			} 
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
     		}
     	} else if (numeroJugadores == 8) {
-    		if (match.getVotesInFavor() >= 20 && checkNumberOfTraitors(match)) {
-    			faccionGanadora = Faction.TRAITOR;
-    		} else if (match.getVotesAgainst() == 20 && checkNumberOfLoyals(match)) {
+    		if (match.getVotesInFavor() >= 20) {
+    			if(checkNumberOfTraitors(match)) {
+        			faccionGanadora = Faction.TRAITOR;
+    			}
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
+    		}
+    		else if (match.getVotesAgainst() >= 20) {
+    			if(checkNumberOfLoyals(match)) {
     			faccionGanadora = Faction.LOYAL;
+    			} 
+    			else {
+    				faccionGanadora = Faction.MERCHANT;
+    			}
     		}
     	}
-    	if (faccionGanadora == Faction.MERCHANT && match.getRound() != 3) {
-    		throw new DataAccessException("La partida no ha terminado aún") {};
-    	} else {
     		return faccionGanadora;
-    	}
     }
     
+    public String errorNotFinished(ModelMap modelMap) throws DataAccessException{
+    	log.info("Estoy en errorNotFinished()");
+    	modelMap.addAttribute("message", "La partida no ha acabado.");
+    	return "/exception";
+    }
+    
+    public String errorAlreadyStarted(ModelMap modelMap) throws DataAccessException{
+    	log.info("Estoy en errorAlreadyStarted");
+    	modelMap.addAttribute("message", "La partida ya ha empezado.");
+    	return "/exception";
+    }
 }
