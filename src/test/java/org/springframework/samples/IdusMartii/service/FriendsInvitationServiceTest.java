@@ -25,6 +25,7 @@ import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.repository.FriendInvitationRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class FriendsInvitationServiceTest {
@@ -63,8 +64,8 @@ public class FriendsInvitationServiceTest {
         User b = userService.findbyUsername("friend2");
         fi.setUser_requester(a);
         fi.setUser_requester(b);
-
-        fiService.saveFriendInvitation(fi);
+        ModelMap modelMap = new ModelMap();
+        fiService.saveFriendInvitation(fi, modelMap);
         Iterable<FriendInvitation> invitaciones2 = fiService.findAll();
         List<FriendInvitation> test2 = new ArrayList<>();
         invitaciones2.forEach(v->test2.add(v));
@@ -88,16 +89,13 @@ public class FriendsInvitationServiceTest {
     	 Iterable<FriendInvitation> invitaciones = fiService.findAll();
          List<FriendInvitation> test = new ArrayList<>();
          invitaciones.forEach(v->test.add(v));
-         Integer a = test.get(0).getId();
-    	fiService.deleteFriendInvitation(test.get(0));
+         ModelMap modelMap = new ModelMap();
+         User user = userService.findbyUsername(test.get(0).getUser_requester().getUsername());
+    	 fiService.deleteFriendInvitation(test.get(0), user, modelMap);
     	 Iterable<FriendInvitation> invitaciones2 = fiService.findAll();
          List<FriendInvitation> test2 = new ArrayList<>();
          invitaciones2.forEach(v->test2.add(v));
-      
-    	
-        assertTrue( test2.isEmpty());
-
-
+         assertTrue( test2.isEmpty());
     }
     @Test
     public void  acceptFriendInvitation() {
@@ -105,7 +103,9 @@ public class FriendsInvitationServiceTest {
          List<FriendInvitation> test = new ArrayList<>();
          invitaciones.forEach(v->test.add(v));
          Integer a = test.get(0).getId();
-    	fiService.acceptFriendInvitation(a);
+         ModelMap modelMap = new ModelMap();
+         User user = userService.findbyUsername(test.get(0).getUser_requested().getUsername());
+    	 fiService.acceptFriendInvitation(a, user, modelMap);
     	 Iterable<FriendInvitation> invitaciones2 = fiService.findAll();
          List<FriendInvitation> test2 = new ArrayList<>();
          invitaciones2.forEach(v->test2.add(v));

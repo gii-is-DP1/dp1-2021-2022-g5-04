@@ -574,8 +574,5 @@
 					
 			</div>
 			</c:forEach>
-				
-				
-			</c:if>
 	</IdusMartii:layout>
 </c:if>

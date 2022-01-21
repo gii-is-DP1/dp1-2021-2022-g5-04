@@ -22,8 +22,7 @@ public class AuthoritiesServiceTest {
         usuario.setUsername("friend8");
         auditoria.setUser(usuario);
         auditoria.setAuthority("friend");
-        this.authoritiesService.saveAuthorities(auditoria);
-
+        authoritiesService.saveAuthorities(auditoria);
         assertThat(auditoria.getUser().getUsername()).isEqualTo("friend8");
     }
 
@@ -32,8 +31,7 @@ public class AuthoritiesServiceTest {
         Authorities auditoria = new Authorities();
         User usuario = new User();
         usuario.setUsername("friend8");
-        this.authoritiesService.saveAuthorities("friend8", "consul");
-
+        authoritiesService.saveAuthorities("friend8", "consul");
         assertEquals(auditoria.getUser(), usuario);
     }
 
@@ -41,7 +39,6 @@ public class AuthoritiesServiceTest {
     public void testGetAuthorities(){
         User usuario = userService.findbyUsername("admin1");
         boolean audit= authoritiesService.getAuthorities(usuario.getUsername());
-
         assertThat(audit).isTrue();
     }
 
