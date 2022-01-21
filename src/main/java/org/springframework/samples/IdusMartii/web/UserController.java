@@ -78,6 +78,8 @@ public class UserController {
 		Page<User> completeUserPage = userService.findAllUsersWithPagination(completePageable);
 		Page<User> userPage =  userService.findAllUsersWithPagination(pageable);
 		modelMap.addAttribute("users", userPage.getContent());
+    	modelMap.addAttribute("admin", userService.isAdmin(userService.findbyUsername(currentUserService.showCurrentUser())));
+
         modelMap.addAttribute("user", currentUserService.showCurrentUser());
         modelMap.addAttribute("numberOfPagesList", userService.createNumberOfPagesList(completeUserPage, page));
 		return vista;
@@ -91,7 +93,7 @@ public class UserController {
    		List<User> users = new ArrayList<>();
    		users.add(user);
    		modelMap.addAttribute("users", users);
-        // modelMap.addAttribute("user", currentUserService.showCurrentUser());
+    	modelMap.addAttribute("admin", userService.isAdmin(user));
    		return vista;
    	}   
     @GetMapping(path="/friends")

@@ -40,7 +40,27 @@
 					<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
 					<span>Logros</span>
 				</petclinic:menuItem>
-
+<petclinic:menuItem active="${name eq 'Statistics'}" url="/achievements/statistics"
+					title="Achievements">
+					<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+					<span>
+					Estadisticas</span>
+				</petclinic:menuItem>
+						
+							
+				<petclinic:menuItem active="${name eq 'Ranking'}" url="/achievements/statistics/ranking"
+					title="Achievements">
+					<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+					<span>
+					Ranking partidas jugadas</span>
+									</petclinic:menuItem>
+					
+					<petclinic:menuItem active="${name eq 'Ranking'}" url="/achievements/statistics/rankingWinners"
+					title="Achievements">
+					<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
+					<span>
+					Ranking partidas ganadas</span>
+				</petclinic:menuItem>
 				<petclinic:menuItem active="${name eq 'Auditories'}" url="/auditories"
 					title="Achievements">
 					<span class="glyphicon glyphicon-book" aria-hidden="true"></span>

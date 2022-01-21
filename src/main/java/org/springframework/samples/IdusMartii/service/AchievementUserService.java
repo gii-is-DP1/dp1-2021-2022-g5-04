@@ -50,7 +50,6 @@ public class AchievementUserService {
 	@Transactional
 	public Map<Integer,List< String>> rankingStatistics() throws DataAccessException {
 		Map<Integer, List<String>> rest = new HashMap<>();
-		Iterable<Player> players =  playerService.findAll();
 		List<User> users =  userService.findUsers();
 		Set<Integer> indice = new HashSet<>();
 
@@ -72,13 +71,12 @@ public class AchievementUserService {
 				
 			
 			rest.put(i, tempp);
-			
+		}return rest;
 		}
 		
 		@Transactional
 		public Map<Integer,List< String>> rankingWinners() throws DataAccessException {
 			Map<Integer, List<String>> rest = new HashMap<>();
-			Iterable<Player> players =  playerService.findAll();
 			List<User> users =  userService.findUsers();
 			Set<Integer> indice = new HashSet<>();
 
