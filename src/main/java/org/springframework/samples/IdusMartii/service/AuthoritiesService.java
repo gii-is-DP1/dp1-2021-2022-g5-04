@@ -41,13 +41,12 @@ import org.springframework.samples.IdusMartii.model.User;
 @Service
 public class AuthoritiesService {
 
+	@Autowired
 	private AuthoritiesRepository authoritiesRepository;
+	@Autowired
 	private  UserService userService;
 
-	@Autowired
-	public AuthoritiesService(AuthoritiesRepository authoritiesRepository) {
-		this.authoritiesRepository = authoritiesRepository;
-	}
+
 
 	@Transactional
 	public void saveAuthorities(Authorities authorities) throws DataAccessException {
@@ -56,8 +55,11 @@ public class AuthoritiesService {
 	
 	@Transactional
 	public void saveAuthorities(String username, String role) throws DataAccessException {
+		log.info("Creando authorities...");
 		Authorities authority = new Authorities();
-		Optional<User> user = userService.findUser(username);
+		log.info("Buscando User...");
+		Optional<User> user = Optional.of(userService.findbyUsername(username));
+		log.info("Encontrado");
 		if(user.isPresent()) {
 			authority.setUser(user.get());
 			authority.setAuthority(role);
