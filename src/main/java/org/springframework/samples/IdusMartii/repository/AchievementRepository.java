@@ -13,7 +13,7 @@ import org.springframework.samples.IdusMartii.model.User;
 public interface AchievementRepository extends CrudRepository<Achievement, Integer>{
 	
 	@Modifying
-    @Query(nativeQuery = true, value="SELECT a.* from Achievements a JOIN Achievement_User ap WHERE ap.user_id = ?1 AND ap.achievement_id = a.id")
+    @Query(nativeQuery = true, value="SELECT a.* from Achievements a JOIN Achievement_User ap WHERE ap.user_id = :user AND ap.achievement_id = a.id")
     public List <Achievement> findByUser(@Param("user") User user);
     
     @Query("SELECT t FROM AchievementType t")

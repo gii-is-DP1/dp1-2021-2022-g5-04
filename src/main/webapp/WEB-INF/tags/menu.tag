@@ -47,19 +47,13 @@
 					Estadisticas</span>
 				</petclinic:menuItem>
 						
-				<petclinic:menuItem active="${name eq 'Ranking'}" url="/achievements/statistics/ranking"
+				<petclinic:menuItem active="${name eq 'Ranking'}" url="/achievements/ranking"
 					title="Achievements">
 					<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
 					<span>
-					Ranking partidas jugadas</span>
+					Ranking</span>
 									</petclinic:menuItem>
 					
-					<petclinic:menuItem active="${name eq 'Ranking'}" url="/achievements/statistics/rankingWinners"
-					title="Achievements">
-					<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>
-					<span>
-					Ranking partidas ganadas</span>
-				</petclinic:menuItem>
 				<petclinic:menuItem active="${name eq 'Invitations'}" url="/invitations"
 					title="Invitations">
 					<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>

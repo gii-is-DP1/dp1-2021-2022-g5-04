@@ -113,6 +113,20 @@ public class PlayerService {
 	}
 	
 	@Transactional
+	public List<Player> findbyUsernameMatchFinished(String username) throws DataAccessException {
+		List<Player> players = playerRepository.findByUsername(username);
+		List<Player> result = new ArrayList<Player>();
+		for(Player p : players){
+			if(p.getMatch().isFinished()){
+				result.add(p);
+			}
+
+		}
+		
+		return result;
+	}
+	
+	@Transactional
 	public List<Player> findByRole(Match match, Role role) throws DataAccessException {
 		return playerRepository.findByRole(match, role);
 	}

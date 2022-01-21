@@ -33,6 +33,7 @@ public class MatchService {
     private AuthoritiesService authoritiesService;
     @Autowired
     private PlayerService playerService;
+
     
 	@Transactional
 	public Iterable<Match> findAll(){
@@ -423,8 +424,14 @@ public class MatchService {
     }
     @Transactional
     public String errorAlreadyStarted(ModelMap modelMap) throws DataAccessException{
-    	log.info("Estoy en errorAlreadyStarted");
+    	log.info("Estoy en errorAlreadyStarted()");
     	modelMap.addAttribute("message", "La partida ya ha empezado.");
+    	return "/exception";
+    }
+    
+    public String errorNotStartedYet(ModelMap modelMap) throws DataAccessException{
+    	log.info("Estoy en errorNotStartedYet()");
+    	modelMap.addAttribute("message", "La partida no ha empezado todavía.");
     	return "/exception";
     }
 }

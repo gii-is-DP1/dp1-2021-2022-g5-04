@@ -41,47 +41,49 @@ import org.springframework.samples.IdusMartii.model.User;
 @Service
 public class AuthoritiesService {
 
-	@Autowired
-	private AuthoritiesRepository authoritiesRepository;
-	@Autowired
-	private  UserService userService;
+
+    @Autowired
+    private AuthoritiesRepository authoritiesRepository;
+    @Autowired
+    private  UserService userService;
 
 
 
-	@Transactional
-	public void saveAuthorities(Authorities authorities) throws DataAccessException {
-		authoritiesRepository.save(authorities);
-	}
-	
-	@Transactional
-	public void saveAuthorities(String username, String role) throws DataAccessException {
-		log.info("Creando authorities...");
-		Authorities authority = new Authorities();
-		log.info("Buscando User...");
-		Optional<User> user = Optional.of(userService.findbyUsername(username));
-		log.info("Encontrado");
-		if(user.isPresent()) {
-			authority.setUser(user.get());
-			authority.setAuthority(role);
-			//user.get().getAuthorities().add(authority);
-			authoritiesRepository.save(authority);
-		}else
-			throw new DataAccessException("User '"+userService.findUser(username).get().getUsername()+"' not found!") {};
-	}
+    @Transactional
+    public void saveAuthorities(Authorities authorities) throws DataAccessException {
+        authoritiesRepository.save(authorities);
+    }
+    
+    @Transactional
+    public void saveAuthorities(String username, String role) throws DataAccessException {
+        log.info("Creando authorities...");
+        Authorities authority = new Authorities();
+        log.info("Buscando User...");
+        Optional<User> user = Optional.of(userService.findbyUsername(username));
+        log.info("Encontrado");
+        if(user.isPresent()) {
+            authority.setUser(user.get());
+            authority.setAuthority(role);
+            //user.get().getAuthorities().add(authority);
+            authoritiesRepository.save(authority);
+        }else
+            throw new DataAccessException("User '"+userService.findUser(username).get().getUsername()+"' not found!") {};
+    }
 
-	
-	@Transactional
-	public Boolean getAuthorities(String username) throws DataAccessException {
-		log.info("Obteniendo los authorities del usuario...");
-		log.debug("atributo: "+ username);
-		String ret = "";
-		Boolean re  = false;
-		List<Authorities> user = authoritiesRepository.findByUsername(username);
-			 ret = user.get(0).getAuthority();
-			 if(ret.equals("admin")) {
-				 re = true;
-			 }
-		return re;
-	}
+
+    
+    @Transactional
+    public Boolean getAuthorities(String username) throws DataAccessException {
+        log.info("Obteniendo los authorities del usuario...");
+        log.debug("atributo: "+ username);
+        String ret = "";
+        Boolean re  = false;
+        List<Authorities> user = authoritiesRepository.findByUsername(username);
+             ret = user.get(0).getAuthority();
+             if(ret.equals("admin")) {
+                 re = true;
+             }
+        return re;
+    }
 
 }

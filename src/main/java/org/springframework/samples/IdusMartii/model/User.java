@@ -39,7 +39,7 @@ public class User implements Serializable {
 	@CreatedBy private String creator;
 	@CreatedDate private LocalDateTime createdDate;
 	@LastModifiedBy private String modifier;
-	@LastModifiedDate private LocalDateTime lastModifiedDate; 
+	@LastModifiedDate private LocalDateTime lastModifiedDates; 
 	
 	@Id
 	@NotNull
