@@ -7,21 +7,23 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 
 <c:if test="${admin}">
- 	<h2>
-        Mis datos
-    </h2>
-    <form:form modelAttribute="user" class="form-horizontal" id="add-user-form" action="/users/${user.username}/save">
-        <div class="form-group has-feedback">
-            <IdusMartii:inputField label="Username" name="username"/>
-            <IdusMartii:inputPassword label="Password" name="password"/>
-            <IdusMartii:inputField label="Email" name="email"/>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-            	<button class="btn btn-default" type="submit">Modificar datos</button>
-            </div>
-        </div>
-    </form:form>
+	<IdusMartii:adminLayout pageName="usersEdition">
+	 	<h2>
+	        Mis datos
+	    </h2>
+	    <form:form modelAttribute="user" class="form-horizontal" id="add-user-form" action="/users/${user.username}/save">
+	        <div class="form-group has-feedback">
+	            <IdusMartii:inputField label="Username" name="username"/>
+	            <IdusMartii:inputPassword label="Password" name="password"/>
+	            <IdusMartii:inputField label="Email" name="email"/>
+	        </div>
+	        <div class="form-group">
+	            <div class="col-sm-offset-2 col-sm-10">
+	            	<button class="btn btn-default" type="submit">Modificar datos</button>
+	            </div>
+	        </div>
+	    </form:form>
+    </IdusMartii:adminLayout>
 </c:if>
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="usersEdition">
