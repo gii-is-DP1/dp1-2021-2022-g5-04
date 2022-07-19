@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.samples.IdusMartii.repository.UserRepository;
+import org.springframework.samples.IdusMartii.service.exceptions.DuplicatedUsername;
 import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
@@ -73,8 +74,16 @@ public class UserService {
 
 	
 	@Transactional
-    public void saveUser(User user) throws DataAccessException {
+    public void saveUser(User user) throws DataAccessException, DuplicatedUsername {
         log.debug("usando metodo saveUser()");
+		String username = user.getUsername();
+        List<String> usernameList = new ArrayList<>();
+        for(User u:userRepository.findAll()){
+            usernameList.add(u.getUsername());
+        }
+        if (usernameList.contains(username)){
+			throw new DuplicatedUsername();
+        }
         user.setEnabled(true);
         if(user.getVictorias() == null) {
             user.setVictorias(0);
@@ -137,8 +146,8 @@ public class UserService {
 		friendsFromSecondUser.remove(user);
 		user.setFriends(friends);
 		friendToBeDeleted.setFriends(friendsFromSecondUser);
-		saveUser(user);
-		saveUser(friendToBeDeleted);
+		userRepository.save(user);
+		userRepository.save(friendToBeDeleted);
 	}
 	
 	@Transactional
@@ -173,7 +182,7 @@ public class UserService {
     		log.info("Enhorabuena, has ganado.");
     		User user = player.getUser();
 			user.setVictorias(user.getVictorias()+1);
-			this.saveUser(user);
+			userRepository.save(user);
     		for(Achievement a : ganadas) {
 				  if(user.getVictorias() == a.getValor()) {
 					  achievementUserService.saveAchievementUser(user.getUsername(), 2);

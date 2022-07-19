@@ -187,11 +187,16 @@ public class MatchController {
 	@PostMapping(path="/save")
 	public String guardarPartida(@Valid Match match, BindingResult result, ModelMap modelMap) {
 		log.info("Creando partida...");
+		if (result.hasErrors()) {
+        	log.info("Errores encontrados.");
+            return "users/crearUsuario";
+        } else {
 			match.setRound(0);
 			match.setTurn(0);
 			match.setVotesInFavor(0);
 			match.setVotesAgainst(0);
 			match.setPlays(Plays.EDIL);
+			
 			Player host = new Player();
 			host.setUser(userService.findUser(currentUserService.showCurrentUser()).get());
 			host.setName("host");
@@ -204,6 +209,7 @@ public class MatchController {
 			log.debug("jugador: " + host);
 			playerService.savePlayer(host);
 			return "redirect:/matches/" + match.getId() + "/new";
+		}
 	}
 	
 	@PostMapping(path="/{id_match}/{id_invt}/aceptar")

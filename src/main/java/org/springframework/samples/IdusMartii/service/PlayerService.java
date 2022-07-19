@@ -78,10 +78,10 @@ public class PlayerService {
 	}
 
 	@Transactional
-	public Player findbyId(Integer ID) throws DataAccessException {
+	public Player findbyId(Integer id) throws DataAccessException {
 		log.info("Buscando jugador...");
-		log.debug("ID: " + ID);
-		return playerRepository.findById(ID).get();
+		log.debug("ID: " + id);
+		return playerRepository.findById(id).get();
 	}
 	
 	@Transactional

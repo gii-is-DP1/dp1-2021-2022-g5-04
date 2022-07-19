@@ -28,6 +28,12 @@
 			</c:if>
 			
 		</c:forEach>
+		<c:forEach items="${numberOfPagesList}" var="numberOfPage">
+    	<spring:url value="/chats/${id_match}?page={pageNumber}" var="numberUrl">
+    	<spring:param name="pageNumber" value="${numberOfPage}"/>
+    	</spring:url>
+    		<a href="${fn:escapeXml(numberUrl)}">${numberOfPage}</a>
+    	</c:forEach>
 	</div>
 	<div class="row" style="margin-top: 10px;">
 	

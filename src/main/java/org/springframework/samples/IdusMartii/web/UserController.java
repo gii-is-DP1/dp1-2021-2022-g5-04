@@ -31,9 +31,11 @@ import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.UserService;
+import org.springframework.samples.IdusMartii.service.exceptions.DuplicatedUsername;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -108,9 +110,7 @@ public class UserController {
     @GetMapping(path="/new")
     public String crearUsuario(ModelMap modelMap) {
         String vista = "users/crearUsuario";
-        User user = userService.findUser(currentUserService.showCurrentUser()).get();
         modelMap.addAttribute("user", new User());
-        modelMap.addAttribute("admin", userService.isAdmin(user));
         return vista;
     }
     
@@ -163,11 +163,19 @@ public class UserController {
         } else {
         	log.info("No se encontraron errores");
             modelMap.addAttribute("users", user);
-            userService.saveUser(user);
+            try {
+                this.userService.saveUser(user);
+			}catch (DuplicatedUsername e){
+                result.rejectValue("username", "duplicado", "Ya existe ese nombre de usuario");
+                return "users/crearUsuario";
+            }
+           
             authoritiesService.saveAuthorities(user.getUsername(), "user");
             modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
         }
         return "redirect:/";
+
+        
     }
     
     @PostMapping(path="/{username}/save")
@@ -176,7 +184,12 @@ public class UserController {
         User u = userService.findbyUsername(username);
         u.setEmail(user.getEmail());
         u.setPassword(user.getPassword());
-        userService.saveUser(u);
+        try {
+            this.userService.saveUser(u);
+        }catch (DuplicatedUsername e){
+            result.rejectValue("username", "duplicado", "Ese nombre de usuario ya existe");
+            return "users/crearUsuario";
+        }
         authoritiesService.saveAuthorities(user.getUsername(), "user");
         modelMap.addAttribute("message", "¡Usuario modificado correctamente!");
         return "redirect:/";
@@ -187,7 +200,12 @@ public class UserController {
         User u = userService.findbyUsername(username);
         u.setEmail(user.getEmail());
         u.setPassword(user.getPassword());
-        userService.saveUser(u);
+        try {
+            this.userService.saveUser(u);
+        }catch (DuplicatedUsername e){
+            result.rejectValue("username", "duplicado", "Ese nombre de usuario ya existe");
+            return "users/crearUsuario";
+        }
         authoritiesService.saveAuthorities(user.getUsername(), "user");
         modelMap.addAttribute("message", "¡Usuario modificado correctamente!");
         return "redirect:/";

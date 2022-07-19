@@ -90,15 +90,15 @@
 			
 			
 				<li>${x.user.username} </li>
-	<c:if test= "${isHost}" >
-		<form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/players/${x.id}/${match.id}/expulsar" >
-			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-					<button class="btn btn-danger" type="submit">X</button>
-				</div>
-			</div>
-		</form:form>  
-	</c:if>
+				<c:if test= "${isHost}" >
+					<form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/players/${x.id}/${match.id}/expulsar" >
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button class="btn btn-danger" type="submit">X</button>
+							</div>
+						</div>
+					</form:form>  
+				</c:if>
 			</c:forEach></td>
 			
 		</tr>     

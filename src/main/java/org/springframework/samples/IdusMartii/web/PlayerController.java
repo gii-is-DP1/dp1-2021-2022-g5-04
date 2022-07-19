@@ -30,6 +30,7 @@ import org.springframework.samples.IdusMartii.enumerates.Role;
 import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import org.springframework.samples.IdusMartii.model.Match;
 
 @Slf4j
@@ -47,6 +48,9 @@ public class PlayerController {
 	private CurrentUserService currentUserService;
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private PlayerRepository playerRepository;
 	
 	
 	@GetMapping(path="/{id}/{idMatch}/revisar")
@@ -72,7 +76,9 @@ public class PlayerController {
 	@PostMapping(path="/{idPlayer}/{idMatch}/expulsar")
 	public String expulsarJugador(@PathVariable("idPlayer") int id, @PathVariable("idMatch") int matchId, ModelMap modelMap) {
 		log.info("Expulsando jugador...");
-		Player player = playerService.findbyId(id);
+		log.info("Id: " + id);
+		Player player = playerRepository.findById(id).get();
+		log.info("player: " + player);
 		User user = player.getUser();
 		User current = userService.findUser(currentUserService.showCurrentUser()).get();
 		Match match = matchService.findById(matchId);

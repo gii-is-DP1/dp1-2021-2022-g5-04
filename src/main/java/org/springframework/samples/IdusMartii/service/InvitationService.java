@@ -65,7 +65,7 @@ public class InvitationService {
 		log.info("Aceptando invitacion...");
 		log.debug("Atributos: id invitación-> " + id_invt + "  Partida-> "+ match + "  User-> " + user);
 		Invitation invitation = invitationService.findById(id_invt);
-			invitationService.deleteInvitation(invitation);
+			invitationService.deleteAllInvitationsFromUserInMatch(user, match);
 			Player player = new Player();
 			player.setUser(user);
 			player.setMatch(match);
@@ -78,9 +78,19 @@ public class InvitationService {
 		log.debug("User : "+ user);
 		List<Invitation> invitationsFromUser = invitationRepository.findByUser(user);
 		for (Invitation i: invitationsFromUser) {
-			invitationRepository.delete(i);
+				invitationRepository.delete(i);	
 		}
 	}
-    
+    @Transactional
+	public void deleteAllInvitationsFromUserInMatch(User user, Match match) {
+		log.info("Borrando invitaciones de User");
+		log.debug("User : "+ user);
+		List<Invitation> invitationsFromUser = invitationRepository.findByUser(user);
+		for (Invitation i: invitationsFromUser) {
+			if(i.getMatch().equals(match)){
+				invitationRepository.delete(i);
+			}
+		}
+	}
     
 }
