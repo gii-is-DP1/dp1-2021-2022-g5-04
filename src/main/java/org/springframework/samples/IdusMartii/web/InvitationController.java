@@ -23,6 +23,7 @@ import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
 import org.springframework.samples.IdusMartii.service.UserService;
+import org.springframework.samples.IdusMartii.service.exceptions.PlayerAlreadyInMatch;
 import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
@@ -90,7 +91,13 @@ public class InvitationController {
 			invitation.setFecha(fecha);
 			log.info("Accediendo al servicio de invitaciones de partida por el metodo saveInivtation()");
 			log.debug("Invitacion = " + invitation);
-			invitationService.saveInvitation(invitation);
+			
+			try {
+				invitationService.saveInvitation(invitation, match);
+			}catch (PlayerAlreadyInMatch p){
+				result.rejectValue("username", "invitado", "Ese usuario ya está en la partida");
+				return "redirect:/matches/" + match.getId() + "/new";
+			}
 		}
 		return "redirect:/matches/" + match.getId() + "/new";
 	}

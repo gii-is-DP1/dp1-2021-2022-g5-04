@@ -78,18 +78,20 @@ public class PlayerController {
 		log.info("Expulsando jugador...");
 		log.info("Id: " + id);
 		Player player = playerRepository.findById(id).get();
-		log.info("player: " + player);
+		log.info("qqqppp");
 		User user = player.getUser();
 		User current = userService.findUser(currentUserService.showCurrentUser()).get();
 		Match match = matchService.findById(matchId);
 		log.info("Accediendo al servicio de jugadores...");
 		if (invitationService.findByUser(user).size()==0){
-			return playerService.deletePlayerFromMatch(player, match, current, matchId, modelMap);
+			log.info("Eliminando jugador si no tiene invitaciones");
+			playerService.deletePlayerFromMatch(player, match, current, matchId);
 		} else {
-			log.info("Accediendo al servicio de partias por el metodo findById()");
+			log.info("Eliminando jugadot si tiene invitaciones");
 			log.debug("Id: " + matchId);
-			return playerService.deletePlayerWithInvitaton(player, match, user, current, matchId, modelMap);
+			playerService.deletePlayerWithInvitaton(player, match, user, current, matchId);
 		}
+		return "redirect:/matches/" + matchId + "/new";
 	}
 
 	@PostMapping(path="/{id}/{idMatch}/{voto}")

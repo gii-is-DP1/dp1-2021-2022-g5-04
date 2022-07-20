@@ -1,6 +1,7 @@
 package org.springframework.samples.IdusMartii.service;
 
 import org.springframework.samples.IdusMartii.repository.InvitationRepository;
+import org.springframework.samples.IdusMartii.service.exceptions.PlayerAlreadyInMatch;
 import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
@@ -42,13 +43,18 @@ public class InvitationService {
 	}
 	
 	@Transactional
-	public void saveInvitation(Invitation invitation) throws DataAccessException {
+	public void saveInvitation(Invitation invitation, Match match) throws DataAccessException, PlayerAlreadyInMatch{
 		log.info("Guardando invitación...");
+		User user = invitation.getUser();
+		Player player = playerService.findByMatchAndUser(match, user);
+		 if (match.getPlayers().contains(player)){
+		 	throw new PlayerAlreadyInMatch();
+         }
 		invitationRepository.save(invitation);
 	}
     @Transactional(readOnly = true)
 	public List<Invitation> findByUser(User user) throws DataAccessException{
-    	log.info("Buscando invitaciones a partida deñ usuario");
+    	log.info("Buscando invitaciones a partida del usuario");
     	log.debug("Atributo: "+ user);
 		return invitationRepository.findByUser(user);
 	}
