@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
+import javax.websocket.MessageHandler.Partial;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -55,7 +57,8 @@ public class InvitationServiceTest {
         invitacion.setUser(usuario);
         Match partida = new Match();
         invitacion.setMatch(partida);
-        this.invitationService.saveInvitation(invitacion);
+        this.invitationService.saveInvitation(invitacion, partida);
+        
 
         Invitation invit = invitationService.findById(2);
 

@@ -21,6 +21,6 @@ public interface ChatRepository extends CrudRepository<Chat, Integer>{
     public List<Chat> findByUser(@Param("user") User user);
     
     @Query("SELECT c FROM Chat c WHERE c.match = :match")
-	public Page<Chat> findChatWithPagination(Pageable pageable, Match match);
+	public Page<Chat> findChatWithPagination(Match match, Pageable pageable);
     
 }

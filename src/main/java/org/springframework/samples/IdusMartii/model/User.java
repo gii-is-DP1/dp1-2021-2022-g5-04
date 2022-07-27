@@ -51,7 +51,6 @@ public class User implements Serializable {
 	@Email
 	@NotNull
 	String email;
-	Integer victorias;
 	boolean enabled;
 
 	public boolean isNew() {

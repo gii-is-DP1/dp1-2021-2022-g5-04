@@ -85,9 +85,6 @@ public class UserService {
 			throw new DuplicatedUsername();
         }
         user.setEnabled(true);
-        if(user.getVictorias() == null) {
-            user.setVictorias(0);
-        }
         userRepository.save(user);
     }
 
@@ -173,23 +170,23 @@ public class UserService {
 
 	}
 		
-	@Transactional
-    public void registrarVictoria(Match match, Player player) {
-		log.info("Comprobando si el jugador ha ganado...");
-    	List<Player> ganadores = playerService.findWinners(match);
-    	List<Achievement> ganadas = achievementService.findByAchievementType("ganadas");
-    	if(ganadores.contains(player)) {
-    		log.info("Enhorabuena, has ganado.");
-    		User user = player.getUser();
-			user.setVictorias(user.getVictorias()+1);
-			userRepository.save(user);
-    		for(Achievement a : ganadas) {
-				  if(user.getVictorias() == a.getValor()) {
-					  achievementUserService.saveAchievementUser(user.getUsername(), 2);
-				  }
-			  }
-    	}
-    }
+	// @Transactional
+    // public void registrarVictoria(Match match, Player player) {
+	// 	log.info("Comprobando si el jugador ha ganado...");
+    // 	List<Player> ganadores = playerService.findWinners(match);
+    // 	List<Achievement> ganadas = achievementService.findByAchievementType("ganadas");
+    // 	if(ganadores.contains(player)) {
+    // 		log.info("Enhorabuena, has ganado.");
+    // 		User user = player.getUser();
+	// 		user.setVictorias(user.getVictorias()+1);
+	// 		userRepository.save(user);
+    // 		for(Achievement a : ganadas) {
+	// 			  if(user.getVictorias() == a.getValor()) {
+	// 				  achievementUserService.saveAchievementUser(user.getUsername(), 2);
+	// 			  }
+	// 		  }
+    // 	}
+    // }
 	
 	
 

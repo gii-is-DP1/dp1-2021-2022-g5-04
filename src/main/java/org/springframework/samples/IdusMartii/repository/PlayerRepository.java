@@ -37,5 +37,11 @@ public interface PlayerRepository extends CrudRepository<Player, Integer>{
     
     @Query("SELECT p FROM Player p WHERE p.user = :user")
     public List<Player> findPlayersFromUser(@Param("user") User user);
+
+    // @Query("SELECT p.match FROM Player p WHERE p.user = :user AND p.match.finished = :finished")
+    // public List<Match> findMatchsForPlayers(@Param("user") User user, @Param("finished") boolean finished);
+
+    @Query("SELECT count(p) FROM Player p WHERE p.user = :user AND p.match.finished = :finished AND p.card1 = p.match.winner")
+    public Double findUserWins(@Param("user") User user, @Param("finished") boolean finished);
     
 }

@@ -41,6 +41,10 @@ public class PlayerService {
 	public Iterable<Player> findAll(){
 		return playerRepository.findAll();
 	}
+	@Transactional
+	public Double findUserWins(User user, boolean finished){
+		return playerRepository.findUserWins(user, finished);
+	}
 	
 	@Transactional
 	public void savePlayer(Player player) throws DataAccessException {

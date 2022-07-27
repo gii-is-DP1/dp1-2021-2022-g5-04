@@ -58,14 +58,12 @@ public class ChatController {
         Match match = matchService.findById(id_match);
 		String vista = "chats/chat";
         response.addHeader("Refresh","30");
-		Pageable completePageable = PageRequest.of(0, 999999999, Sort.by("username"));
-		Pageable pageable = PageRequest.of(page-1, 5, Sort.by("username"));
-		Page<Chat> completeUserPage = chatService.findChatWithPagination(completePageable, match);
+		Pageable pageable = PageRequest.of(0, 5, Sort.by("username"));
 		Page<Chat> chatPage =  chatService.findChatWithPagination(pageable, match);
 		modelMap.addAttribute("chats", chatPage.getContent());
         modelMap.addAttribute("id_match", id_match);
         modelMap.addAttribute("user", currentUserService.showCurrentUser());
-        modelMap.addAttribute("numberOfPagesList", chatService.createNumberOfPagesList(completeUserPage, page));
+        //modelMap.addAttribute("numberOfPagesList", chatService.createNumberOfPagesList(completeUserPage, page));
 		return vista;
 	} 
     @PostMapping(path="/{id_match}/save")
