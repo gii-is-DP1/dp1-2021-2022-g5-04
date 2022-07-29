@@ -72,6 +72,11 @@ public class InvitationController {
 		String username = user.getUsername();
 		log.info("Accediendo al servicio  de usuarios por el metodo findUser");
 		log.debug("username del usuario: " + username);
+			log.info("Comprobando si hay errores");
+		if (result.hasErrors()){
+			log.error("Error encontrado");
+			return "matches/editarPartida";
+		}
 		User usuario = userService.findUser(username).get();
 		log.info("Accediendo al servicio de partidas por el metodo findById()");
 		log.debug("id de partida: " + id_match);

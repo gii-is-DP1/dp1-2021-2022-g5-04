@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.dao.DataAccessException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +30,8 @@ public class AchievementController {
 	
 	@Autowired
 	private AchievementService achievementService;
+
+	private static final String VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM = "achievements/editarLogro";
 
 	@Autowired
 	private AchievementUserService achievementUserService;
@@ -118,14 +121,11 @@ public class AchievementController {
 		
 	}
 	@PostMapping(path="/{id}/save")
-	public String guardarLogros(ModelMap modelMap, @Valid Achievement achievement ,BindingResult result, @PathVariable("id") int id) {
+	public String guardarLogros(ModelMap modelMap, @Valid Achievement achievement ,BindingResult result, @PathVariable("id") int id) throws DataAccessException{
 		String vista = "achievements/editarLogro";
 		log.info("Comprobando si hay errores");
 		if (result.hasErrors()){
-			log.error("Error encontrado");
-			modelMap.addAttribute("achievement",achievement);
-			modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
-			return vista;
+			return AchievementController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
 		}
 		else {
 			log.info("No se encontraron errores.");

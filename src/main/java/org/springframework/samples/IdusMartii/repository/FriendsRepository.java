@@ -10,10 +10,6 @@ import org.springframework.samples.IdusMartii.model.User;
 public interface FriendsRepository extends CrudRepository<User, Integer>{
 	
 	@Modifying
-	@Query(value="INSERT INTO FRIENDS(user_username, friends_username) VALUES (:username1,:username2) AND INSERT INTO FRIENDS(user_username, friends_username) VALUES (:username2,:username1)",nativeQuery=true)
-    public void saveFriends(@Param("username") String username1, @Param("username2") String username2);
-	
-	@Modifying
 	@Query(value="INSERT INTO FRIENDS(user_username, friends_username) VALUES (:username1,:username2)", nativeQuery=true)
     public void saveFriends1(@Param("username1") String username1, @Param("username2") String username2);
 	

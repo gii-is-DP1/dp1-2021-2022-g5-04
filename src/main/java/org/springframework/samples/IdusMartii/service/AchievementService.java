@@ -39,13 +39,6 @@ public class AchievementService {
 		return achievementRepository.findByAchievementType(tipoId);
 	}
 	
-
-	@Transactional
-	public List<Achievement> findByUser(User user) throws DataAccessException {
-		log.info("Llamada al metodo findByUser(User)");
-		log.debug("atributo: " + user);
-		return achievementRepository.findByUser(user);
-	}
 	
 
 	@Transactional

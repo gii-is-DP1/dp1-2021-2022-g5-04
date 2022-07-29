@@ -51,6 +51,8 @@ public class MatchController {
     AchievementUserService achievementUserService;
 	@Autowired
     AchievementService achievementService;
+
+	private static final String VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM = "matches/crearPartida";
 	
 	
 
@@ -185,8 +187,14 @@ public class MatchController {
 	}
 	
 	@PostMapping(path="/save")
-	public String guardarPartida(@Valid Match match, BindingResult result, ModelMap modelMap) {
+	public String guardarPartida(@Valid Match match, BindingResult result, ModelMap modelMap){
 		log.info("Creando partida...");
+		log.info("Comprobando si hay errores");
+		if (result.hasErrors()){
+			return MatchController.VIEWS_CREATE_OR_UPDATE_ACHIEVEMENTS_FORM;
+		}
+		else{
+			log.info("No se encontraron errores.");
 			match.setRound(0);
 			match.setTurn(0);
 			match.setVotesInFavor(0);
@@ -204,6 +212,7 @@ public class MatchController {
 			log.debug("jugador: " + host);
 			playerService.savePlayer(host);
 			return "redirect:/matches/" + match.getId() + "/new";
+		}
 	}
 	
 	@PostMapping(path="/{id_match}/{id_invt}/aceptar")

@@ -49,10 +49,7 @@ public class AuthoritiesService {
 
 
 
-    @Transactional
-    public void saveAuthorities(Authorities authorities) throws DataAccessException {
-        authoritiesRepository.save(authorities);
-    }
+    
     
     @Transactional
     public void saveAuthorities(String username, String role) throws DataAccessException {

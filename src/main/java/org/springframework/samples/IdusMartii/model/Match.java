@@ -4,7 +4,6 @@ import javax.persistence.CascadeType;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.samples.IdusMartii.enumerates.Faction;
@@ -33,9 +32,6 @@ public class Match extends AuditableEntity {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "match")
 	  private List<Player> players;
 
-
-		@OneToOne(cascade = CascadeType.ALL)
-    	private Chat chat;
     
 
 }
