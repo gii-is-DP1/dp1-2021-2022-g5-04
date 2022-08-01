@@ -7,7 +7,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.samples.IdusMartii.model.FriendInvitation;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.repository.FriendInvitationRepository;
-import org.springframework.samples.IdusMartii.service.exceptions.FriendInvitationError;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

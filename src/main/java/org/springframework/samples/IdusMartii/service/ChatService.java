@@ -54,7 +54,7 @@ public class ChatService {
 		}
 	}
 	@Transactional
-	public Page<Chat> findChatWithPagination(Pageable pageable, Match match){
+	public List<Chat> findChatWithPagination(Pageable pageable, Match match){
 		return chatRepository.findChatWithPagination(match, pageable);
 	}
 	@Transactional

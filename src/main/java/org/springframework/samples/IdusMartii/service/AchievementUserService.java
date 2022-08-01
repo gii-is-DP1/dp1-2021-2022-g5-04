@@ -1,8 +1,16 @@
 package org.springframework.samples.IdusMartii.service;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+
+import javax.persistence.Tuple;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.IdusMartii.model.User;
@@ -59,6 +67,50 @@ public class AchievementUserService {
         list.add(PorLos);
 		return list;
     }
+    @Transactional
+    public Map<String, Long> rankingRatioWin() throws DataAccessException {
+        Map<String, Long> map = new HashMap<>();
+        for (Tuple i:achievementUserRepository.topMatchPlaying(true)){
+           for(Tuple j:achievementUserRepository.topWins(true)){
+            if(i.get(0).equals(j.get(0))){
+                if((long)i.get(1)==0){
+                    map.put(i.get(0).toString(),((long)0));
+                }
+                else{
+                    map.put(i.get(0).toString(),((long)j.get(1)/(long)i.get(1))*100);
+                }
+            }
+
+           }       
+
+        }
+        Map<String, Long> result = map.entrySet().stream()
+                .sorted(Entry.comparingByValue())
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));	
+        return result;
+    }
+    @Transactional
+    public Map<String, Long> rankingRatioLoss() throws DataAccessException {
+        Map<String, Long> map = new HashMap<>();
+        for (Tuple i:achievementUserRepository.topMatchPlaying(true)){
+           for(Tuple j:achievementUserRepository.topLoss(true)){
+            if(i.get(0).equals(j.get(0))){
+                if((long)i.get(1)==0){
+                    map.put(i.get(0).toString(),((long)0));
+                }
+                else{
+                    map.put(i.get(0).toString(),((long)j.get(1)/(long)i.get(1))*100);
+                }
+            }
+
+           }       
+
+        }
+        Map<String, Long> result = map.entrySet().stream()
+                .sorted(Entry.comparingByValue())
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));	
+        return result;
+    }
     
 
     @Transactional
@@ -67,20 +119,18 @@ public class AchievementUserService {
         result.add(achievementUserRepository.topMatchPlaying(true).get(0).get(0).toString());
         result.add(achievementUserRepository.topWins(true).get(0).get(0).toString());
         result.add(achievementUserRepository.topLoss(true).get(0).get(0).toString());
-        result.add("pp");
-        result.add("pp");
+        result.add(rankingRatioWin().keySet().toArray()[0].toString());
+        result.add(rankingRatioLoss().keySet().toArray()[0].toString());
         return result;
     }
     @Transactional
     public List<Long> rankingStatistics() throws DataAccessException {
         List<Long> result = new ArrayList<>();
-        result.add((long)achievementUserRepository.topMatchPlaying(true).get(0).get(1));
-    
+        result.add((long)achievementUserRepository.topMatchPlaying(true).get(0).get(1));  
         result.add((long)achievementUserRepository.topWins(true).get(0).get(1));
         result.add((long)achievementUserRepository.topLoss(true).get(0).get(1));
-        result.add((long)11);
-        result.add((long)11);
-        
+        result.add((long)rankingRatioWin().get(rankingRatioWin().keySet().toArray()[0].toString()));
+        result.add((long)rankingRatioLoss().get(rankingRatioLoss().keySet().toArray()[0].toString()));
         return result;	
     }        
 }

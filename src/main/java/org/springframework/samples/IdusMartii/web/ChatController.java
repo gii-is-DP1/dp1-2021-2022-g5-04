@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -53,14 +54,16 @@ public class ChatController {
 	// 	return vista;
 	// }
     @GetMapping("/{id_match}")
-	public String listadoChat(@RequestParam("page") int page, ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
+	public String listadoChat(@RequestParam("page") int page, ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response,@PageableDefault(page = 0, size = 5)Pageable pageable){
     	//log.info("Accediendo al listado de usuarios...");
         Match match = matchService.findById(id_match);
 		String vista = "chats/chat";
         response.addHeader("Refresh","30");
-		Pageable pageable = PageRequest.of(0, 5, Sort.by("username"));
-		Page<Chat> chatPage =  chatService.findChatWithPagination(pageable, match);
-		modelMap.addAttribute("chats", chatPage.getContent());
+		List<Chat> chats =  chatService.findChatWithPagination(pageable, match);
+        modelMap.addAttribute("pageNumber", pageable.getPageNumber());
+		modelMap.addAttribute("pageSize", pageable.getPageSize());
+		modelMap.addAttribute("hasPrevious", pageable.hasPrevious());
+		modelMap.addAttribute("chats", chats);
         modelMap.addAttribute("id_match", id_match);
         modelMap.addAttribute("user", currentUserService.showCurrentUser());
         //modelMap.addAttribute("numberOfPagesList", chatService.createNumberOfPagesList(completeUserPage, page));

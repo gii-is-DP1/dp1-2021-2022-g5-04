@@ -26,6 +26,7 @@ public interface AchievementUserRepository extends CrudRepository<Achievement, I
     public List<Tuple> topLoss(@Param("finished") boolean finished);
 
 
+
 	
 
 	
