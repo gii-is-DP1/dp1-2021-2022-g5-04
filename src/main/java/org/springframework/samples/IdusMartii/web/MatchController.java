@@ -232,7 +232,7 @@ public class MatchController {
 		log.debug("Id : " + id);
 		Match match = this.matchService.findById(id);
 		String currentUser = currentUserService.showCurrentUser();
-		User user = userService.findbyUsername(currentUser);
+		User user = userService.findUser(currentUser).get();
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 
 		if(match.getRound()!=0) {

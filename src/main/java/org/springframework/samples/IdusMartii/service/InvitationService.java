@@ -70,7 +70,6 @@ public class InvitationService {
 	public void acceptInvitation(int id_invt, Match match, User user) throws DataAccessException {
 		log.info("Aceptando invitacion...");
 		log.debug("Atributos: id invitación-> " + id_invt + "  Partida-> "+ match + "  User-> " + user);
-		Invitation invitation = invitationService.findById(id_invt);
 			invitationService.deleteAllInvitationsFromUserInMatch(user, match);
 			Player player = new Player();
 			player.setUser(user);

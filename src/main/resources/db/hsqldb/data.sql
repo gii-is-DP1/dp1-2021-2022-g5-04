@@ -4,8 +4,8 @@ INSERT INTO users(email,username,password,enabled) VALUES ('admin@gmail.com','ad
 INSERT INTO authorities(id,username,authority) VALUES (1,'admin1','admin');
 INSERT INTO players(id,name,card1,card2,vote,role,username,match_id,asigned) VALUES (1, 'player1', null, null, null, 0, 'admin1',1,false);
 
-INSERT INTO users(email,username,password,enabled) VALUES ('ppp@gmail.com','ppp','ppp',TRUE);
-INSERT INTO authorities(id,username,authority) VALUES (2,'ppp','admin');
+INSERT INTO users(email,username,password,enabled) VALUES ('ppp@gmail.com','ppppp','ppppp',TRUE);
+INSERT INTO authorities(id,username,authority) VALUES (2,'ppppp','admin');
 
 INSERT INTO users(email,username,password,enabled) VALUES ('friend1@gmail.com','friend1','friend1',TRUE);
 INSERT INTO players(id,name,card1,card2,vote,role,username,match_id,asigned) VALUES (2, 'player2', null, null, null, 1, 'friend1',1,false);
@@ -27,7 +27,7 @@ INSERT INTO users(email,username,password,enabled) VALUES ('friend5@gmail.com','
 INSERT INTO players(id,name,card1,card2,vote,role,username,match_id,asigned) VALUES (6, 'player6', null, null, null, 3, 'friend5',1,false);
 INSERT INTO authorities(id,username,authority) VALUES (7,'friend5','user');
 
-INSERT INTO invitations(id,match_id,username) VALUES (1,1,'ppp');
+INSERT INTO invitations(id,match_id,username) VALUES (1,1,'ppppp');
 
 INSERT INTO achievement_type(id, name) VALUES (1,'jugadas');
 INSERT INTO achievement_type(id, name) VALUES (2,'ganadas');
@@ -46,7 +46,7 @@ INSERT INTO friends(user_username,friends_username) VALUES ('admin1', 'friend3')
 INSERT INTO friends(user_username,friends_username) VALUES ('friend3', 'admin1');
 
 
-INSERT INTO friends_invitations(id,username,username2) VALUES (1,'friend1','ppp');
+INSERT INTO friends_invitations(id,username,username2) VALUES (1,'friend1','ppppp');
 
 INSERT INTO chats(id,text,date,username, match_id) VALUES (1,'hola1','2022-01-19','admin1',1);
 

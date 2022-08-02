@@ -33,9 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.samples.IdusMartii.repository.UserRepository;
 import org.springframework.samples.IdusMartii.service.exceptions.DuplicatedUsername;
-import org.springframework.samples.IdusMartii.model.Achievement;
-import org.springframework.samples.IdusMartii.model.Match;
-import org.springframework.samples.IdusMartii.model.Player;
+
 import org.springframework.samples.IdusMartii.model.Person;
 import org.springframework.samples.IdusMartii.model.User;
 
@@ -60,8 +58,6 @@ public class UserService {
 	private FriendsService friendsService;
 	@Autowired
 	private AchievementService achievementService;
-	@Autowired
-	private AchievementUserService achievementUserService;
 	@Autowired
 	private FriendInvitationService friendInvitationService;
 	@Autowired
@@ -119,12 +115,12 @@ public class UserService {
 	public List<User> findUsersByText(String text){
 		return userRepository.findUsersByText(text);
 	}
-	@Transactional
-	public User findbyUsername(String username){
-		log.info("Usando metodo findbyUsername()");
-		log.debug("Atributo:" + username);
-		return userRepository.findByUsername(username);
-	}
+	// @Transactional
+	// public User findbyUsername(String username){
+	// 	log.info("Usando metodo findbyUsername()");
+	// 	log.debug("Atributo:" + username);
+	// 	return userRepository.findByUsername(username);
+	// }
   
 	@Transactional
 	public List<User> findFriends(String user){

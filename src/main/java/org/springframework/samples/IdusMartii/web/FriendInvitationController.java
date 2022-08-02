@@ -49,7 +49,7 @@ public class FriendInvitationController {
 	}
 	@PostMapping(path="/{id_invt}/decline")
 	public String rechazarInvitacion(@PathVariable("id_invt") int id_invt, ModelMap modelMap) {
-		User current = userService.findbyUsername(currentUserService.showCurrentUser());
+		User current = userService.findUser(currentUserService.showCurrentUser()).get();
 		log.info("Rechazando invitacion...");
 		log.info("Accediendo al servicio de solicitudes de amistad por el metodo findById()");
 		FriendInvitation friendInvitation = friendInvitationService.findById(id_invt);
@@ -59,9 +59,9 @@ public class FriendInvitationController {
 
 	@GetMapping(path="/{usernameRequester}/{usernameRequested}/save")
 	public String guardarInvitacion(ModelMap modelMap, @PathVariable("usernameRequester") String usernameRequester, @PathVariable("usernameRequested") String usernameRequested) {
-		User current = userService.findbyUsername(currentUserService.showCurrentUser());
-		User userRequester = userService.findbyUsername(usernameRequester);
-		User userRequested = userService.findbyUsername(usernameRequested);
+		User current = userService.findUser(currentUserService.showCurrentUser()).get();
+		User userRequester = userService.findUser(usernameRequester).get();
+		User userRequested = userService.findUser(usernameRequested).get();
 		if (friendInvitationService.letFriendRequest(userRequester, userRequested) && current == userRequester) {
 			FriendInvitation friendInvitation = new FriendInvitation();
 			Date fecha = new Date();
@@ -88,7 +88,7 @@ public class FriendInvitationController {
 
 	@PostMapping(path="/{userRequester}/{userRequested}/save")
 	public String guardarInvitacion(ModelMap modelMap, @PathVariable("userRequester") User userRequester, @PathVariable("userRequested") User userRequested) {
-		User current = userService.findbyUsername(currentUserService.showCurrentUser());
+		User current = userService.findUser(currentUserService.showCurrentUser()).get();
 		if (friendInvitationService.letFriendRequest(userRequester, userRequested) && current == userRequester) {
 			FriendInvitation friendInvitation = new FriendInvitation();
 			Date fecha = new Date();
@@ -114,7 +114,7 @@ public class FriendInvitationController {
 	
 	@PostMapping(path="/{id_invt}/accept")
 	public String aceptarInvitacion( @PathVariable("id_invt") int id_invt, ModelMap modelMap) {
-		User current = userService.findbyUsername(currentUserService.showCurrentUser());
+		User current = userService.findUser(currentUserService.showCurrentUser()).get();
 		log.info("Aceptando Solicitud de amistad...");
 		log.debug("Id de solicitud: " + id_invt);
 		log.info("Accediendo al servicio de solicitudes de amistad por el método acceptFriendInvitatoin()");

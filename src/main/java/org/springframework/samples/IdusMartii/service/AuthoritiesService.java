@@ -59,7 +59,7 @@ public class AuthoritiesService {
         log.info("Creando authorities...");
         Authorities authority = new Authorities();
         log.info("Buscando User...");
-        Optional<User> user = Optional.of(userService.findbyUsername(username));
+        Optional<User> user = Optional.of(userService.findUser(username).get());
         log.info("Encontrado");
         if(user.isPresent()) {
             authority.setUser(user.get());

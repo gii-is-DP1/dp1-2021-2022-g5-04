@@ -1,7 +1,6 @@
 package org.springframework.samples.IdusMartii.repository;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Tuple;
 
@@ -10,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.samples.IdusMartii.model.Achievement;
-import org.springframework.samples.IdusMartii.model.User;
 
 public interface AchievementUserRepository extends CrudRepository<Achievement, Integer>{
 	
