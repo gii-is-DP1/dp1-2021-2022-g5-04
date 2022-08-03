@@ -4,6 +4,7 @@ package org.springframework.samples.IdusMartii.web;
 
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.validation.Valid;
 
@@ -68,8 +69,17 @@ public class InvitationController {
 	}
 	@PostMapping(path="/{id_match}/save")
 	public String guardarInvitacion(@Valid User user, BindingResult result, ModelMap modelMap, @PathVariable("id_match") int id_match) {
+		User userRequester = userService.findUser("admin1").get();
+		Iterable<User> users= userService.findAll();
+		List <String> usernames = new ArrayList<>();
+		users.forEach(u -> usernames.add(u.getUsername()));
 		log.info("Creando invitación de partida");
 		String username = user.getUsername();
+		if(!usernames.contains(username)){
+			modelMap.addAttribute("message","El usuario introducido no existe");
+			modelMap.addAttribute("admin", authoritiesService.getAuthorities(userRequester.getUsername()));
+			return "/exception";
+		}
 		log.info("Accediendo al servicio  de usuarios por el metodo findUser");
 		log.debug("username del usuario: " + username);
 		User usuario = userService.findUser(username).get();
@@ -92,7 +102,9 @@ public class InvitationController {
 			log.debug("Invitacion = " + invitation);
 			invitationService.saveInvitation(invitation);
 		}
+	
 		return "redirect:/matches/" + match.getId() + "/new";
 	}
+	
 	
 }

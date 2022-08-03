@@ -120,9 +120,13 @@ public class AchievementController {
 	@PostMapping(path="/{id}/save")
 	public String guardarLogros(ModelMap modelMap, @Valid Achievement achievement ,BindingResult result, @PathVariable("id") int id) {
 		String vista = "achievements/editarLogro";
+		//User userRequester = userService.findUser("admin1").get();
 		log.info("Comprobando si hay errores");
 		if (result.hasErrors()){
 			log.error("Error encontrado");
+			//modelMap.addAttribute("message","Alguno de los campos del formulario es erróneo,revísalo.");
+			//modelMap.addAttribute("admin", authoritiesService.getAuthorities(userRequester.getUsername()));
+			//return "/exception";
 			modelMap.addAttribute("achievement",achievement);
 			modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
 			return vista;
