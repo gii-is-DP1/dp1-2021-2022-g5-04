@@ -29,9 +29,6 @@ public interface PlayerRepository extends CrudRepository<Player, Integer>{
     @Query("SELECT p FROM Player p WHERE p.match = :match AND p.card1 = :faction")
     public List<Player> findByFaction(@Param("match") Match match, @Param("faction") Faction faction);
     
-    @Query("SELECT p.match FROM Player p WHERE p.user = :user")
-    public List<Match> findMatchesFromUser(@Param("user") User user);
-    
     @Query("SELECT p FROM Player p WHERE p.match = :match AND p.card1 = :faction")
     public List<Player> findWinners(@Param("match") Match match, @Param("faction") Faction faction);
     

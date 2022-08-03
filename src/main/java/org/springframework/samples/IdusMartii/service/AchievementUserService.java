@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.repository.AchievementUserRepository;
+import org.springframework.samples.IdusMartii.repository.AchievementRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +18,7 @@ public class AchievementUserService {
 
     
     @Autowired
-    private AchievementUserRepository achievementUserRepository;
+    private AchievementRepository achievementRepository;
     @Autowired
     private PlayerService playerService;
     @Autowired
@@ -26,7 +26,7 @@ public class AchievementUserService {
 	@Transactional
     public void saveAchievementUser(String username, Integer id) throws DataAccessException {
         log.info("Guardando Logro...");
-        achievementUserRepository.saveAchievementUser(username, Integer.valueOf(id));
+        achievementRepository.saveAchievementUser(username, Integer.valueOf(id));
     }
     
     @Transactional

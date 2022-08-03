@@ -24,4 +24,8 @@ public interface AchievementRepository extends CrudRepository<Achievement, Integ
         
     @Query("SELECT a FROM Achievement a WHERE a.achievementType = :tipo")
     public List<Achievement> findByAchievementType(@Param("tipo") AchievementType tipo);
+
+    @Modifying
+	@Query(value="INSERT INTO ACHIEVEMENT_USER(user_username, achievements_id) VALUES (:username,:id)",nativeQuery=true)
+    public void saveAchievementUser(@Param("username") String username, @Param("id") Integer id);
 }
