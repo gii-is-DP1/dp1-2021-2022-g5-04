@@ -64,6 +64,18 @@ public class MatchServiceTests {
 		assertEquals(match.getName(),"partida1");
 		
 	}
+
+	@Test
+	public void testFindMatchesFromUser(){
+		Optional<User> usuario= userService.findUser("friend1");
+		List<Match> listaPart= matchService.findMatchesFromUser(usuario.get());
+
+		List<Match> listaP= new ArrayList<Match>();
+		Match match1 = matchService.findById(1);
+		listaP.add(match1);
+
+		assertThat(listaPart).isEqualTo(listaP);
+	}
 	
 	@Test
 	public void testSaveMatch() { //H13
