@@ -45,11 +45,6 @@ public class FriendInvitationService {
 				return "/welcome";
 			} 
 			return "/welcome";
-			//else {
-				//throw new FriendInvitationError();
-				//modelMap.addAttribute("message", "No puedes enviarte una solicitud de amistad a ti mismo");
-				//return "/exception";
-			//}
 		}
 		
 	    @Transactional(readOnly = true)

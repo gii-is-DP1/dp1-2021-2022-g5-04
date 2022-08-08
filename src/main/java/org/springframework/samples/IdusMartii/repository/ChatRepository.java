@@ -3,6 +3,7 @@ import java.util.List;
 
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -20,6 +21,6 @@ public interface ChatRepository extends CrudRepository<Chat, Integer>{
     public List<Chat> findByUser(@Param("user") User user);
     
     @Query("SELECT c FROM Chat c WHERE c.match = :match")
-	public List<Chat> findChatWithPagination(Match match, Pageable pageable);
+	public Page<Chat> findChatWithPagination(Match match, Pageable pageable);
     
 }

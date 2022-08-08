@@ -5,7 +5,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -51,19 +54,18 @@ public class ChatController {
 	// 	return vista;
 	// }
     @GetMapping("/{id_match}")
-	public String listadoChat(@RequestParam("page") int page, ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response,@PageableDefault(page = 0, size = 5)Pageable pageable){
-    	//log.info("Accediendo al listado de usuarios...");
+	public String listadoChat(@RequestParam("page") int page, ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response){
         Match match = matchService.findById(id_match);
 		String vista = "chats/chat";
         response.addHeader("Refresh","30");
-		List<Chat> chats =  chatService.findChatWithPagination(pageable, match);
-        modelMap.addAttribute("pageNumber", pageable.getPageNumber());
-		modelMap.addAttribute("pageSize", pageable.getPageSize());
-		modelMap.addAttribute("hasPrevious", pageable.hasPrevious());
-		modelMap.addAttribute("chats", chats);
+        Pageable completePageable = PageRequest.of(0, 999999999, Sort.by("id"));
+        Pageable pageable = PageRequest.of(page-1, 5, Sort.by("id"));
+		Page<Chat> chats =  chatService.findChatWithPagination(pageable, match);
+        Page<Chat> completeChatPage = chatService.findChatWithPagination(completePageable, match);
+		modelMap.addAttribute("chats", chats.getContent());
         modelMap.addAttribute("id_match", id_match);
         modelMap.addAttribute("user", currentUserService.showCurrentUser());
-        //modelMap.addAttribute("numberOfPagesList", chatService.createNumberOfPagesList(completeUserPage, page));
+        modelMap.addAttribute("numberOfPagesList", chatService.createNumberOfPagesList(completeChatPage, page));
 		return vista;
 	} 
     @PostMapping(path="/{id_match}/save")
