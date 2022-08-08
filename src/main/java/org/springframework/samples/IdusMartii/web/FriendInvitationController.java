@@ -49,26 +49,26 @@ public class FriendInvitationController {
 	}
 	@PostMapping(path="/{id_invt}/decline")
 	public String rechazarInvitacion(@PathVariable("id_invt") int id_invt, ModelMap modelMap) {
-		User current = userService.findbyUsername(currentUserService.showCurrentUser());
+		User current = userService.findUser(currentUserService.showCurrentUser()).get();
 		log.info("Rechazando invitacion...");
 		log.info("Accediendo al servicio de solicitudes de amistad por el metodo findById()");
 		FriendInvitation friendInvitation = friendInvitationService.findById(id_invt);
-		String retornar = friendInvitationService.deleteFriendInvitation(friendInvitation, current, modelMap);
+		String retornar = friendInvitationService.deleteFriendInvitation(friendInvitation, current);
 		return retornar;
 	}
 
 	@GetMapping(path="/{usernameRequester}/{usernameRequested}/save")
 	public String guardarInvitacion(ModelMap modelMap, @PathVariable("usernameRequester") String usernameRequester, @PathVariable("usernameRequested") String usernameRequested) {
-		User current = userService.findbyUsername(currentUserService.showCurrentUser());
-		User userRequester = userService.findbyUsername(usernameRequester);
-		User userRequested = userService.findbyUsername(usernameRequested);
+		User current = userService.findUser(currentUserService.showCurrentUser()).get();
+		User userRequester = userService.findUser(usernameRequester).get();
+		User userRequested = userService.findUser(usernameRequested).get();
 		if (friendInvitationService.letFriendRequest(userRequester, userRequested) && current == userRequester) {
 			FriendInvitation friendInvitation = new FriendInvitation();
 			Date fecha = new Date();
 			friendInvitation.setFecha(fecha);
 			friendInvitation.setUser_requested(userRequested);
 			friendInvitation.setUser_requester(userRequester);
-			String retornar = friendInvitationService.saveFriendInvitation(friendInvitation, modelMap);
+			String retornar = friendInvitationService.saveFriendInvitation(friendInvitation);
 			modelMap.addAttribute("admin", authoritiesService.getAuthorities(userRequester.getUsername()));
 			modelMap.put("people", userService.crearAlumnos());
 			modelMap.put("title", "Idus Martii"); 
@@ -88,14 +88,14 @@ public class FriendInvitationController {
 
 	@PostMapping(path="/{userRequester}/{userRequested}/save")
 	public String guardarInvitacion(ModelMap modelMap, @PathVariable("userRequester") User userRequester, @PathVariable("userRequested") User userRequested) {
-		User current = userService.findbyUsername(currentUserService.showCurrentUser());
+		User current = userService.findUser(currentUserService.showCurrentUser()).get();
 		if (friendInvitationService.letFriendRequest(userRequester, userRequested) && current == userRequester) {
 			FriendInvitation friendInvitation = new FriendInvitation();
 			Date fecha = new Date();
 			friendInvitation.setFecha(fecha);
 			friendInvitation.setUser_requested(userRequested);
 			friendInvitation.setUser_requester(userRequester);
-			String retornar = friendInvitationService.saveFriendInvitation(friendInvitation, modelMap);
+			String retornar = friendInvitationService.saveFriendInvitation(friendInvitation);
 			modelMap.addAttribute("admin", authoritiesService.getAuthorities(userRequester.getUsername()));
 			modelMap.put("people", userService.crearAlumnos());
 			modelMap.put("title", "Idus Martii"); 
@@ -114,11 +114,11 @@ public class FriendInvitationController {
 	
 	@PostMapping(path="/{id_invt}/accept")
 	public String aceptarInvitacion( @PathVariable("id_invt") int id_invt, ModelMap modelMap) {
-		User current = userService.findbyUsername(currentUserService.showCurrentUser());
+		User current = userService.findUser(currentUserService.showCurrentUser()).get();
 		log.info("Aceptando Solicitud de amistad...");
 		log.debug("Id de solicitud: " + id_invt);
 		log.info("Accediendo al servicio de solicitudes de amistad por el método acceptFriendInvitatoin()");
-		String retornar = friendInvitationService.acceptFriendInvitation(id_invt, current, modelMap);
+		String retornar = friendInvitationService.acceptFriendInvitation(id_invt, current);
 		return retornar;
 	}
 	

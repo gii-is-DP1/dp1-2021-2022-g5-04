@@ -16,7 +16,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -415,23 +414,5 @@ public class MatchService {
     		}
     	}
     		return faccionGanadora;
-    }
-    @Transactional
-    public String errorNotFinished(ModelMap modelMap) throws DataAccessException{
-    	log.info("Estoy en errorNotFinished()");
-    	modelMap.addAttribute("message", "La partida no ha acabado.");
-    	return "/exception";
-    }
-    @Transactional
-    public String errorAlreadyStarted(ModelMap modelMap) throws DataAccessException{
-    	log.info("Estoy en errorAlreadyStarted()");
-    	modelMap.addAttribute("message", "La partida ya ha empezado.");
-    	return "/exception";
-    }
-    
-    public String errorNotStartedYet(ModelMap modelMap) throws DataAccessException{
-    	log.info("Estoy en errorNotStartedYet()");
-    	modelMap.addAttribute("message", "La partida no ha empezado todavía.");
-    	return "/exception";
     }
 }

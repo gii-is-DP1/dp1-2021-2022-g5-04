@@ -1,8 +1,15 @@
 package org.springframework.samples.IdusMartii.service;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+
+import javax.persistence.Tuple;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.IdusMartii.model.User;
@@ -40,7 +47,7 @@ public class AchievementUserService {
     public List<Double> listStatistics(User user) throws DataAccessException {
         List<Double> list =new ArrayList<Double>();
 		Double partidasJugadas = (double) userService.matchesPlayedForUser(user);
-        Double victorias = (double)user.getVictorias();
+        Double victorias = playerService.findUserWins(user, true);
         Double derrotas = partidasJugadas-victorias;
         Double PorWin;
         Double PorLos;
@@ -59,72 +66,70 @@ public class AchievementUserService {
         list.add(PorLos);
 		return list;
     }
+    @Transactional
+    public Map<String, Long> rankingRatioWin() throws DataAccessException {
+        Map<String, Long> map = new HashMap<>();
+        for (Tuple i:achievementUserRepository.topMatchPlaying(true)){
+           for(Tuple j:achievementUserRepository.topWins(true)){
+            if(i.get(0).equals(j.get(0))){
+                if((long)i.get(1)==0){
+                    map.put(i.get(0).toString(),((long)0));
+                }
+                else{
+                    map.put(i.get(0).toString(),((long)j.get(1)/(long)i.get(1))*100);
+                }
+            }
+
+           }       
+
+        }
+        Map<String, Long> result = map.entrySet().stream()
+                .sorted(Entry.comparingByValue())
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));	
+        return result;
+    }
+    @Transactional
+    public Map<String, Long> rankingRatioLoss() throws DataAccessException {
+        Map<String, Long> map = new HashMap<>();
+        for (Tuple i:achievementUserRepository.topMatchPlaying(true)){
+           for(Tuple j:achievementUserRepository.topLoss(true)){
+            if(i.get(0).equals(j.get(0))){
+                if((long)i.get(1)==0){
+                    map.put(i.get(0).toString(),((long)0));
+                }
+                else{
+                    map.put(i.get(0).toString(),((long)j.get(1)/(long)i.get(1))*100);
+                }
+            }
+
+           }       
+
+        }
+        Map<String, Long> result = map.entrySet().stream()
+                .sorted(Entry.comparingByValue())
+                .collect(Collectors.toMap(Entry::getKey, Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));	
+        return result;
+    }
     
 
     @Transactional
     public List<String> ranking() throws DataAccessException {
         List<String> result = new ArrayList<>();
-        
-        Iterable<User> users =  userService.findAll();
-        Double maxPJ=-1.0;
-        Double maxPG=-1.0;
-        Double maxPP=-1.0;
-        Double maxPV=-1.0;
-        Double maxPD=-1.0;
-        String jmaxPJ="";
-        String jmaxPG="";
-        String jmaxPP="";
-        String jmaxPV="";
-        String jmaxPD="";     
-        for(User u: users){
-            List<Double> ranking = listStatistics(u);
-            if(ranking.get(0)>maxPJ){
-                maxPJ=ranking.get(0);
-                jmaxPJ=u.getUsername();
-            }
-            if(ranking.get(1)>maxPG){
-                maxPG=ranking.get(1);
-                jmaxPG=u.getUsername();
-            }
-            if(ranking.get(2)>maxPP){
-                
-                maxPP=ranking.get(2);
-                jmaxPP=u.getUsername();
-            }
-            if(ranking.get(3)>maxPV){
-                
-                maxPV=ranking.get(3);
-                jmaxPV=u.getUsername();
-            }
-            if(ranking.get(4)>maxPD){
-               
-                maxPD=ranking.get(4);
-                jmaxPD=u.getUsername();
-            }
-           
-
-
-        }
-        result.add(jmaxPJ);
-        result.add(jmaxPG);
-        result.add(jmaxPP);
-        result.add(jmaxPV);
-        result.add(jmaxPD);
-        
+        result.add(achievementUserRepository.topMatchPlaying(true).get(0).get(0).toString());
+        result.add(achievementUserRepository.topWins(true).get(0).get(0).toString());
+        result.add(achievementUserRepository.topLoss(true).get(0).get(0).toString());
+        result.add(rankingRatioWin().keySet().toArray()[0].toString());
+        result.add(rankingRatioLoss().keySet().toArray()[0].toString());
         return result;
     }
     @Transactional
-    public List<Double> rankingStatistics() throws DataAccessException {
-        List<String> rankings = ranking();
-        
-        List<Double> result = new ArrayList<>();
-        for(int i = 0; i<rankings.size();i++){
-            String username = rankings.get(i); 
-            
-            List<Double> estadisticas = listStatistics(userService.findUser(username).get());
-            result.add(estadisticas.get(i));
-        }
-        
+    public List<Long> rankingStatistics() throws DataAccessException {
+        List<Long> result = new ArrayList<>();
+        result.add((long)achievementUserRepository.topMatchPlaying(true).get(0).get(1));  
+        result.add((long)achievementUserRepository.topWins(true).get(0).get(1));
+        result.add((long)achievementUserRepository.topLoss(true).get(0).get(1));
+        result.add((long)rankingRatioWin().get(rankingRatioWin().keySet().toArray()[0].toString()));
+        result.add((long)rankingRatioLoss().get(rankingRatioLoss().keySet().toArray()[0].toString()));
         return result;	
     }        
 }

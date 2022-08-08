@@ -39,19 +39,18 @@ public class User implements Serializable {
 	@CreatedBy private String creator;
 	@CreatedDate private LocalDateTime createdDate;
 	@LastModifiedBy private String modifier;
-	@LastModifiedDate private LocalDateTime lastModifiedDates; 
+	@LastModifiedDate private LocalDateTime lastModifiedDate; 
 	
 	@Id
 	@NotNull
 	@Size(min=5, max=25)
-	@Column(unique=true)
+	@Column(name = "username", unique=true)
 	String username;
 	@NotNull
 	String password;
 	@Email
 	@NotNull
 	String email;
-	Integer victorias;
 	boolean enabled;
 
 	public boolean isNew() {

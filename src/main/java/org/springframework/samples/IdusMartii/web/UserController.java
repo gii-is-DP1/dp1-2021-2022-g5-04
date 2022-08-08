@@ -31,6 +31,7 @@ import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.UserService;
+import org.springframework.samples.IdusMartii.service.exceptions.DuplicatedUsername;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -85,7 +86,7 @@ public class UserController {
    	public String listadoUsuarioPropio(ModelMap modelMap) {
     	log.info("Accediendo a los datos de tu perfil...");
    		String vista = "users/miUsuario";
-   		User user =  userService.findbyUsername(currentUserService.showCurrentUser());
+   		User user =  userService.findUser(currentUserService.showCurrentUser()).get();
    		List<User> users = new ArrayList<>();
    		users.add(user);
    		modelMap.addAttribute("users", users);
@@ -108,9 +109,7 @@ public class UserController {
     @GetMapping(path="/new")
     public String crearUsuario(ModelMap modelMap) {
         String vista = "users/crearUsuario";
-        User user = userService.findUser(currentUserService.showCurrentUser()).get();
         modelMap.addAttribute("user", new User());
-        modelMap.addAttribute("admin", userService.isAdmin(user));
         return vista;
     }
     
@@ -142,14 +141,14 @@ public class UserController {
         String vista = "users/editarUsuario";
     	User current = userService.findUser(currentUserService.showCurrentUser()).get();
     	modelMap.addAttribute("admin", userService.isAdmin(current));
-        modelMap.addAttribute("user", userService.findbyUsername(username));
+        modelMap.addAttribute("user", userService.findUser(username).get());
         return vista;
     }
     
     @GetMapping(path="/{username}/edit/own")
     public String editarUsuarioPropio(@PathVariable("username") String username, ModelMap modelMap) {
     	String vista = "users/editarUsuario";
-    	User user = userService.findbyUsername(username);
+    	User user = userService.findUser(username).get();
     	modelMap.addAttribute("user", user);
     	modelMap.addAttribute("admin", userService.isAdmin(user));
     	return vista;
@@ -163,20 +162,33 @@ public class UserController {
         } else {
         	log.info("No se encontraron errores");
             modelMap.addAttribute("users", user);
-            userService.saveUser(user);
+            try {
+                this.userService.saveUser(user);
+			}catch (DuplicatedUsername e){
+                result.rejectValue("username", "duplicado", "Ya existe ese nombre de usuario");
+                return "users/crearUsuario";
+            }
+           
             authoritiesService.saveAuthorities(user.getUsername(), "user");
             modelMap.addAttribute("message", "¡Usuario guardado correctamente!");
         }
         return "redirect:/";
+
+        
     }
     
     @PostMapping(path="/{username}/save")
     public String guardarUsuarioModificado(@Valid User user, BindingResult result, @PathVariable("username") String username, ModelMap modelMap) {
       	log.info("Guardando usuario...");
-        User u = userService.findbyUsername(username);
+        User u = userService.findUser(username).get();
         u.setEmail(user.getEmail());
         u.setPassword(user.getPassword());
-        userService.saveUser(u);
+        try {
+            this.userService.saveUser(u);
+        }catch (DuplicatedUsername e){
+            result.rejectValue("username", "duplicado", "Ese nombre de usuario ya existe");
+            return "users/crearUsuario";
+        }
         authoritiesService.saveAuthorities(user.getUsername(), "user");
         modelMap.addAttribute("message", "¡Usuario modificado correctamente!");
         return "redirect:/";
@@ -184,10 +196,15 @@ public class UserController {
     
     @PostMapping(path="/{username}/save/own")
     public String guardarUsuarioPropioModificado(@Valid User user, BindingResult result, @PathVariable("username") String username, ModelMap modelMap) {
-        User u = userService.findbyUsername(username);
+        User u = userService.findUser(username).get();
         u.setEmail(user.getEmail());
         u.setPassword(user.getPassword());
-        userService.saveUser(u);
+        try {
+            this.userService.saveUser(u);
+        }catch (DuplicatedUsername e){
+            result.rejectValue("username", "duplicado", "Ese nombre de usuario ya existe");
+            return "users/crearUsuario";
+        }
         authoritiesService.saveAuthorities(user.getUsername(), "user");
         modelMap.addAttribute("message", "¡Usuario modificado correctamente!");
         return "redirect:/";
@@ -196,14 +213,14 @@ public class UserController {
     @GetMapping(path="/delete/{username}")
     public String eliminarAmigo(@PathVariable("username") String username, ModelMap modelMap) {
     	log.info("Eliminando amigo...");
-    	User currentUser = userService.findbyUsername(currentUserService.showCurrentUser());
+    	User currentUser = userService.findUser(currentUserService.showCurrentUser()).get();
     	userService.deleteFriend(currentUser, username);
     	return "redirect:/users/friends";
     }
     
     @GetMapping(path="/{username}/delete")
     public String eliminarUserIntermedio(@PathVariable("username") String username, ModelMap modelMap) {
-    	userService.delete(userService.findbyUsername(username));
+    	userService.delete(userService.findUser(username).get());
     	return "redirect:/users?page=1";
     }
     

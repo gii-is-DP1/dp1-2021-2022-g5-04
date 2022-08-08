@@ -187,11 +187,16 @@ public class MatchController {
 	@PostMapping(path="/save")
 	public String guardarPartida(@Valid Match match, BindingResult result, ModelMap modelMap) {
 		log.info("Creando partida...");
+		if (result.hasErrors()) {
+        	log.info("Errores encontrados.");
+            return "users/crearUsuario";
+        } else {
 			match.setRound(0);
 			match.setTurn(0);
 			match.setVotesInFavor(0);
 			match.setVotesAgainst(0);
 			match.setPlays(Plays.EDIL);
+			
 			Player host = new Player();
 			host.setUser(userService.findUser(currentUserService.showCurrentUser()).get());
 			host.setName("host");
@@ -204,6 +209,7 @@ public class MatchController {
 			log.debug("jugador: " + host);
 			playerService.savePlayer(host);
 			return "redirect:/matches/" + match.getId() + "/new";
+		}
 	}
 	
 	@PostMapping(path="/{id_match}/{id_invt}/aceptar")
@@ -226,11 +232,13 @@ public class MatchController {
 		log.debug("Id : " + id);
 		Match match = this.matchService.findById(id);
 		String currentUser = currentUserService.showCurrentUser();
-		User user = userService.findbyUsername(currentUser);
+		User user = userService.findUser(currentUser).get();
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
 
 		if(match.getRound()!=0) {
-			return matchService.errorAlreadyStarted(modelMap);
+			log.info("Estoy en errorAlreadyStarted()");
+    		modelMap.addAttribute("message", "La partida ya ha empezado.");
+    		return "/exception";
 		}
 		else {
 		log.info("Acceso al servicio de jugadores por el metodo findByMatchAndUser()");
@@ -261,7 +269,9 @@ public class MatchController {
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
 		modelMap.addAttribute("admin", matchService.isAdmin(usuario));
 		if(match.getRound()==0){
-			return matchService.errorNotStartedYet(modelMap);
+			log.info("Estoy en errorNotStartedYet()");
+    		modelMap.addAttribute("message", "La partida no ha empezado todavía.");
+    		return "/exception";
 		}
 		else {
 			String currentuser = currentUserService.showCurrentUser();
@@ -318,7 +328,9 @@ public class MatchController {
 		Match match = this.matchService.findById(id);
 		Faction faccionGanadora = matchService.sufragium(match);
 		if (faccionGanadora == null && match.getRound() != 3) {
-	    	return matchService.errorNotFinished(modelMap);
+	    	log.info("Estoy en errorNotFinished()");
+    		modelMap.addAttribute("message", "La partida no ha acabado.");
+    		return "/exception";
     	} else {
     		Player player_actual = playerService.findByMatchAndUser(match, usuario);
     		modelMap.addAttribute("faccionGanadora", matchService.sufragium(match));
@@ -329,7 +341,6 @@ public class MatchController {
     		match.setFinished(true);
     		match.setWinner(matchService.sufragium(match));
     		matchService.saveMatch(match);
-    		userService.registrarVictoria(match, player_actual);
     		return vista;
 		}
 	}

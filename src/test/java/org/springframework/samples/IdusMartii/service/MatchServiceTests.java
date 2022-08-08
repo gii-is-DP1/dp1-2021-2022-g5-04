@@ -1,7 +1,6 @@
 package org.springframework.samples.IdusMartii.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.stereotype.Service;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.enumerates.Faction;
+
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class MatchServiceTests {

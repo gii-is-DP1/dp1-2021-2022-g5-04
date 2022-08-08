@@ -70,15 +70,15 @@ public class AchievementController {
 	@GetMapping(path="/ranking")
 	public String rankingStatistics(ModelMap modelMap) {
 		String vista = "achievements/ranking";
-		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		//User user = userService.findUser(currentUserService.showCurrentUser()).get();
 		List<String> rankingWinners = achievementUserService.ranking();
-		List<Double> rankingStats = achievementUserService.rankingStatistics();
+		List<Long> rankingStats = achievementUserService.rankingStatistics();
 		
 		modelMap.addAttribute("winners", rankingWinners);
 		modelMap.addAttribute("stats", rankingStats);
 
-		modelMap.addAttribute("user", user);
-		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
+		//modelMap.addAttribute("user", user);
+		modelMap.addAttribute("admin", true);
 		return vista;
 	}
 		
