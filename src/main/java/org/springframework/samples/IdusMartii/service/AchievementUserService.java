@@ -13,7 +13,7 @@ import javax.persistence.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.repository.AchievementUserRepository;
+import org.springframework.samples.IdusMartii.repository.AchievementRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +25,7 @@ public class AchievementUserService {
 
     
     @Autowired
-    private AchievementUserRepository achievementUserRepository;
+    private AchievementRepository achievementRepository;
     @Autowired
     private PlayerService playerService;
     @Autowired
@@ -33,7 +33,7 @@ public class AchievementUserService {
 	@Transactional
     public void saveAchievementUser(String username, Integer id) throws DataAccessException {
         log.info("Guardando Logro...");
-        achievementUserRepository.saveAchievementUser(username, Integer.valueOf(id));
+        achievementRepository.saveAchievementUser(username, Integer.valueOf(id));
     }
     
     @Transactional
@@ -69,8 +69,8 @@ public class AchievementUserService {
     @Transactional
     public Map<String, Long> rankingRatioWin() throws DataAccessException {
         Map<String, Long> map = new HashMap<>();
-        for (Tuple i:achievementUserRepository.topMatchPlaying(true)){
-           for(Tuple j:achievementUserRepository.topWins(true)){
+        for (Tuple i:achievementRepository.topMatchPlaying(true)){
+           for(Tuple j:achievementRepository.topWins(true)){
             if(i.get(0).equals(j.get(0))){
                 if((long)i.get(1)==0){
                     map.put(i.get(0).toString(),((long)0));
@@ -91,8 +91,8 @@ public class AchievementUserService {
     @Transactional
     public Map<String, Long> rankingRatioLoss() throws DataAccessException {
         Map<String, Long> map = new HashMap<>();
-        for (Tuple i:achievementUserRepository.topMatchPlaying(true)){
-           for(Tuple j:achievementUserRepository.topLoss(true)){
+        for (Tuple i:achievementRepository.topMatchPlaying(true)){
+           for(Tuple j:achievementRepository.topLoss(true)){
             if(i.get(0).equals(j.get(0))){
                 if((long)i.get(1)==0){
                     map.put(i.get(0).toString(),((long)0));
@@ -115,9 +115,9 @@ public class AchievementUserService {
     @Transactional
     public List<String> ranking() throws DataAccessException {
         List<String> result = new ArrayList<>();
-        result.add(achievementUserRepository.topMatchPlaying(true).get(0).get(0).toString());
-        result.add(achievementUserRepository.topWins(true).get(0).get(0).toString());
-        result.add(achievementUserRepository.topLoss(true).get(0).get(0).toString());
+        result.add(achievementRepository.topMatchPlaying(true).get(0).get(0).toString());
+        result.add(achievementRepository.topWins(true).get(0).get(0).toString());
+        result.add(achievementRepository.topLoss(true).get(0).get(0).toString());
         result.add(rankingRatioWin().keySet().toArray()[0].toString());
         result.add(rankingRatioLoss().keySet().toArray()[0].toString());
         return result;
@@ -125,9 +125,9 @@ public class AchievementUserService {
     @Transactional
     public List<Long> rankingStatistics() throws DataAccessException {
         List<Long> result = new ArrayList<>();
-        result.add((long)achievementUserRepository.topMatchPlaying(true).get(0).get(1));  
-        result.add((long)achievementUserRepository.topWins(true).get(0).get(1));
-        result.add((long)achievementUserRepository.topLoss(true).get(0).get(1));
+        result.add((long)achievementRepository.topMatchPlaying(true).get(0).get(1));  
+        result.add((long)achievementRepository.topWins(true).get(0).get(1));
+        result.add((long)achievementRepository.topLoss(true).get(0).get(1));
         result.add((long)rankingRatioWin().get(rankingRatioWin().keySet().toArray()[0].toString()));
         result.add((long)rankingRatioLoss().get(rankingRatioLoss().keySet().toArray()[0].toString()));
         return result;	

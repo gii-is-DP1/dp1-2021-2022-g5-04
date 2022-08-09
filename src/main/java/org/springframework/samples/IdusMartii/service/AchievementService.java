@@ -41,14 +41,6 @@ public class AchievementService {
 	
 
 	@Transactional
-	public List<Achievement> findByUser(User user) throws DataAccessException {
-		log.info("Llamada al metodo findByUser(User)");
-		log.debug("atributo: " + user);
-		return achievementRepository.findByUser(user);
-	}
-	
-
-	@Transactional
 	public void saveAchievement(Achievement ac) throws DataAccessException {
 		log.info("Guardando Logro...");
 		achievementRepository.save(ac);
