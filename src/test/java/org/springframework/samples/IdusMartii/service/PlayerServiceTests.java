@@ -145,18 +145,6 @@ public class PlayerServiceTests {
 	}
 
 	@Test
-	public void testFindMatchesFromUser(){
-		Optional<User> usuario= userService.findUser("friend1");
-		List<Match> listaPart= playerService.findMatchesFromUser(usuario.get());
-
-		List<Match> listaP= new ArrayList<Match>();
-		Match match1 = matchService.findById(1);
-		listaP.add(match1);
-
-		assertThat(listaPart).isEqualTo(listaP);
-	}
-
-	@Test
 	public void testCanVote(){ //H1
 		Match match1 = matchService.findById(1);
 		match1.setPlays(Plays.EDIL);
