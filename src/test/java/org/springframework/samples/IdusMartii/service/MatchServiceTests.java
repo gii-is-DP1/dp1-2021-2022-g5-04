@@ -40,6 +40,18 @@ public class MatchServiceTests {
 	}
 
 	@Test
+	public void testFindMatchesFromUser(){
+		Optional<User> usuario= userService.findUser("friend1");
+		List<Match> listaPart= matchService.findMatchesFromUser(usuario.get());
+
+		List<Match> listaP= new ArrayList<Match>();
+		Match match1 = matchService.findById(1);
+		listaP.add(match1);
+
+		assertThat(listaPart).isEqualTo(listaP);
+	}
+
+	@Test
 	public void testIsAdmin(){
 		Optional<User> usAdmin= userService.findUser("admin1");
 		boolean esAdmin= matchService.isAdmin(usAdmin.get());

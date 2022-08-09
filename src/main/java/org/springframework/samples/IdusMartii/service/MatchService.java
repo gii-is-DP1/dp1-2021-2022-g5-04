@@ -41,6 +41,22 @@ public class MatchService {
 	}
 
 	@Transactional
+	public List<Match> findMatchesFromUser(User user) throws DataAccessException {
+		return matchRepository.findMatchesFromUser(user);
+	}
+	@Transactional
+	public List<Match> findMatchesFromHost(User user) throws DataAccessException {
+		List<Match> matchesResult = new ArrayList<Match>();
+		List<Match> matchesIterate = matchRepository.findMatchesFromUser(user);
+		for (Match m : matchesIterate){
+			if(m.getPlayers().get(0).getUser()==user){
+				matchesResult.add(m);
+			}
+		}
+		return matchesResult;
+	}
+
+	@Transactional
 	public boolean isAdmin(User user) throws DataAccessException {
 		if (authoritiesService.getAuthorities(user.getUsername())) {
 			log.info("Eres administrador. Estás haciendo un buen trabajo, sigue así.");
@@ -55,7 +71,7 @@ public class MatchService {
     	log.info("Buscando partidas...");
     	log.debug("Usuario: " + user);
     	if (!isAdmin(user)) {
-    		List<Match> matches = playerService.findMatchesFromUser(user);
+    		List<Match> matches = findMatchesFromUser(user);
     		return matches;
     	} else {
     		return (List<Match>)findAll();
@@ -67,7 +83,7 @@ public class MatchService {
     	log.info("Buscando partidas...");
     	log.debug("Usuario: " + user);
     	if (!isAdmin(user)) {
-    		List<Match> matches = playerService.findMatchesFromHost(user);
+    		List<Match> matches = findMatchesFromHost(user);
     		return matches;
     	} else {
     		return (List<Match>)findAll();
