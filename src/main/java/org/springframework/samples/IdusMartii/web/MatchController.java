@@ -194,7 +194,7 @@ public class MatchController {
 	
 	@PostMapping(path="/save")
 	public String guardarPartida(@Valid Match match, BindingResult result, ModelMap modelMap) {
-		String vista = "matches/editarPartida";
+		//String vista = "matches/editarPartida";
 		log.info("Creando partida...");
 			match.setRound(0);
 			match.setTurn(0);
