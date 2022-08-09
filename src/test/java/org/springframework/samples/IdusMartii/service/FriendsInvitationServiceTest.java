@@ -3,25 +3,16 @@ package org.springframework.samples.IdusMartii.service;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.IdusMartii.model.Achievement;
-import org.springframework.samples.IdusMartii.model.Chat;
 import org.springframework.samples.IdusMartii.model.FriendInvitation;
-import org.springframework.samples.IdusMartii.model.Invitation;
-import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.repository.FriendInvitationRepository;
 import org.springframework.stereotype.Service;
@@ -30,8 +21,7 @@ import org.springframework.ui.ModelMap;
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class FriendsInvitationServiceTest {
 
-    @Autowired
-    private MatchService matchService;
+
     
     @Autowired
     private FriendInvitationService fiService;
