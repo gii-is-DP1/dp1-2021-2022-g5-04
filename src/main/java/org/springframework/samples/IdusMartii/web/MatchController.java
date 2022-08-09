@@ -9,7 +9,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.UserService;
+import org.springframework.samples.IdusMartii.validator.MatchValidator;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.AchievementService;
 import org.springframework.samples.IdusMartii.service.AchievementUserService;
@@ -51,6 +54,11 @@ public class MatchController {
     AchievementUserService achievementUserService;
 	@Autowired
     AchievementService achievementService;
+
+	@InitBinder("matches")
+	public void initMatchBinder(WebDataBinder dataBinder){
+		dataBinder.setValidator(new MatchValidator());
+	}
 	
 	
 

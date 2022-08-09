@@ -11,11 +11,14 @@ import org.springframework.samples.IdusMartii.service.AchievementUserService;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.UserService;
+import org.springframework.samples.IdusMartii.validator.AchievementValidator;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +41,13 @@ public class AchievementController {
 	private AuthoritiesService authoritiesService;
 	@Autowired
 	private CurrentUserService currentUserService;
+
+	@InitBinder("achievement")
+	public void initMatchBinder(WebDataBinder dataBinder){
+		dataBinder.setValidator(new AchievementValidator());
+	}
+
+
 	@GetMapping()
 	public String listadoLogros(ModelMap modelMap) {
 		log.info("Llamando al listado de logros...");
@@ -120,12 +130,16 @@ public class AchievementController {
 	@PostMapping(path="/{id}/save")
 	public String guardarLogros(ModelMap modelMap, @Valid Achievement achievement ,BindingResult result, @PathVariable("id") int id) {
 		String vista = "achievements/editarLogro";
+		//User userRequester = userService.findUser("admin1").get();
 		log.info("Comprobando si hay errores");
 		if (result.hasErrors()){
 			log.error("Error encontrado");
 			modelMap.addAttribute("achievement",achievement);
 			modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
 			return vista;
+			//modelMap.addAttribute("message","Alguno de los campos del formulario es erróneo,revísalo.");
+			//modelMap.addAttribute("admin", authoritiesService.getAuthorities(userRequester.getUsername()));
+			//return "/exception";
 		}
 		else {
 			log.info("No se encontraron errores.");
