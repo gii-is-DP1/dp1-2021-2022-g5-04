@@ -125,6 +125,29 @@ public class FriendsInvitationServiceTest {
         	  assertFalse(fiService.letFriendRequest(a, b));
     }
 
+    @Test
+    public void saveFriends(){
+        User a = userService.findUser("friend1").get();
+        User b = userService.findUser("friend2").get();
+        fiService.saveFriends(a.getUsername(), b.getUsername());
+        
+		
+        assertTrue(a.getFriends().contains(b));
+
+    }
+    
+    @Test
+    public void deleteAllFriendsFromUser(){
+        User a = userService.findUser("friend1").get();
+        User b = userService.findUser("friend2").get();
+        User c = userService.findUser("friend3").get();
+
+        fiService.saveFriends(a.getUsername(), b.getUsername());
+        fiService.saveFriends(a.getUsername(), c.getUsername());
+        fiService.deleteAllFriendsFromUser(a);
+		
+        assertTrue(a.getFriends().size()==0);
+
     
     
     
@@ -136,7 +159,7 @@ public class FriendsInvitationServiceTest {
     
     
     
-   
+    }
     
    
    

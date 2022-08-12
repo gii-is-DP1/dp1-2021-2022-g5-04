@@ -21,7 +21,7 @@ public class FriendInvitationService {
 		@Autowired
 		private FriendInvitationService friendInvitationService;
 		@Autowired
-		private FriendsService friendsService;
+		private UserService userService;
 
 		@Transactional
 		public Iterable<FriendInvitation> findAll(){
@@ -68,7 +68,7 @@ public class FriendInvitationService {
 			log.debug("Id de solicitud: " + id_invt);
 			FriendInvitation friendInvitation = friendInvitationService.findById(id_invt);
 			if(current == friendInvitation.getUser_requested()) {
-				friendsService.saveFriends(friendInvitation.getUser_requester().getUsername(), friendInvitation.getUser_requested().getUsername());
+				friendInvitationService.saveFriends(friendInvitation.getUser_requester().getUsername(), friendInvitation.getUser_requested().getUsername());
 				friendInvitationService.deleteFriendInvitation(friendInvitation, current);
 				
 			} 
@@ -93,4 +93,23 @@ public class FriendInvitationService {
 				return true;
 			}
 		}
+		@Transactional(rollbackFor = Exception.class)
+	public void saveFriends(String username1, String username2) throws DataAccessException {
+    log.info("Llamada al metodo saveFriends(String, String)");
+    log.debug("atributos: " + username1 + ", " + username2);
+		if (username1 != username2) {
+			friendInvitationRepository.saveFriends1(username1, username2);
+			friendInvitationRepository.saveFriends2(username2, username1);
+		} else {
+			throw new DataAccessException("Un usuario no puede agregarse a si mismo como amigo") {};
+		}
+	}
+	
+	@Transactional
+	public void deleteAllFriendsFromUser(User user) throws DataAccessException {
+		List<String> friendsFromUser = friendInvitationRepository.findUserFriendsFromUsername(user.getUsername());
+		for (String s: friendsFromUser) {
+			userService.deleteFriend(user, s);
+		}
+	}
 }

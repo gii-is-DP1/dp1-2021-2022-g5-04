@@ -55,8 +55,6 @@ public class UserService {
 	@Autowired
 	private InvitationService invitationService;
 	@Autowired
-	private FriendsService friendsService;
-	@Autowired
 	private AchievementService achievementService;
 	@Autowired
 	private FriendInvitationService friendInvitationService;
@@ -152,7 +150,7 @@ public class UserService {
 		}
 		invitationService.deleteAllInvitationsFromUser(user);
 		if (user.getFriends().size() > 0) {
-			friendsService.deleteAllFriendsFromUser(user);
+			friendInvitationService.deleteAllFriendsFromUser(user);
 		}
 		friendInvitationService.deleteFriendInvitationsFromUser(user);
 		playerService.deleteAllPlayersFromUser(user);

@@ -23,7 +23,6 @@ import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.validator.MatchValidator;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.AchievementService;
-import org.springframework.samples.IdusMartii.service.AchievementUserService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
@@ -33,6 +32,8 @@ import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.IdusMartii.repository.PlayerRepository;
+
 import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
@@ -49,9 +50,9 @@ public class MatchController {
 	@Autowired
 	private PlayerService playerService;
 	@Autowired
-	private InvitationService invitationService;
+	private PlayerRepository playerRepository;
 	@Autowired
-    AchievementUserService achievementUserService;
+	private InvitationService invitationService;
 	@Autowired
     AchievementService achievementService;
 
@@ -206,7 +207,6 @@ public class MatchController {
 			match.setVotesInFavor(0);
 			match.setVotesAgainst(0);
 			match.setPlays(Plays.EDIL);
-			
 			Player host = new Player();
 			host.setUser(userService.findUser(currentUserService.showCurrentUser()).get());
 			host.setName("host");
@@ -377,8 +377,8 @@ public class MatchController {
 			List<Achievement> jugadas = achievementService.findByAchievementType("jugadas");
 			for(int k = 0; k<jugadas.size();k++) {
 				log.info("Acceso a 2 metodos del servicio de logrosJugadores");
-				if (achievementUserService.checkAchievementJugadas(u,jugadas.get(k).getValor()) == true) {
-					achievementUserService.saveAchievementUser(u.getUsername(),jugadas.get(k).getId());
+				if (achievementService.checkAchievementJugadas(u,jugadas.get(k).getValor()) == true) {
+					achievementService.saveAchievementUser(u.getUsername(),jugadas.get(k).getId());
 				}
 			}
 		}

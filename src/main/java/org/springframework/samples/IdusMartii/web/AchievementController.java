@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.service.AchievementService;
-import org.springframework.samples.IdusMartii.service.AchievementUserService;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.UserService;
@@ -32,9 +31,6 @@ public class AchievementController {
 	
 	@Autowired
 	private AchievementService achievementService;
-
-	@Autowired
-	private AchievementUserService achievementUserService;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -71,7 +67,7 @@ public class AchievementController {
 		String vista = "achievements/listadoEstadisticas";
 			
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
-		modelMap.addAttribute("statistics", achievementUserService.listStatistics(user));
+		modelMap.addAttribute("statistics", achievementService.listStatistics(user));
 		modelMap.addAttribute("user", user);
 		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
 		return vista;	
@@ -81,8 +77,8 @@ public class AchievementController {
 	public String rankingStatistics(ModelMap modelMap) {
 		String vista = "achievements/ranking";
 		//User user = userService.findUser(currentUserService.showCurrentUser()).get();
-		List<String> rankingWinners = achievementUserService.ranking();
-		List<Long> rankingStats = achievementUserService.rankingStatistics();
+		List<String> rankingWinners = achievementService.ranking();
+		List<Long> rankingStats = achievementService.rankingStatistics();
 		
 		modelMap.addAttribute("winners", rankingWinners);
 		modelMap.addAttribute("stats", rankingStats);

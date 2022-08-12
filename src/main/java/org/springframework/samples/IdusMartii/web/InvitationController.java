@@ -4,6 +4,7 @@ package org.springframework.samples.IdusMartii.web;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.ArrayList;
 
 import javax.validation.Valid;
@@ -103,8 +104,8 @@ public class InvitationController {
 				return "redirect:/matches/" + match.getId() + "/new";
 			}
 			catch(NotExistingUsername u){
-			result.rejectValue("username", "noExiste", "Este usuario no existe");
-			return "redirect:/matches/" + match.getId() + "/new";
+				result.rejectValue("username", "noExiste", "Este usuario no existe");
+				return "redirect:/matches/" + match.getId() + "/new";
 			}
 		}
 		return "redirect:/matches/" + match.getId() + "/new";

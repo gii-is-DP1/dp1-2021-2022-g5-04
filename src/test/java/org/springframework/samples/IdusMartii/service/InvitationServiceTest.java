@@ -21,6 +21,7 @@ import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.service.exceptions.PlayerAlreadyInMatch;
+import org.springframework.samples.IdusMartii.service.exceptions.NotExistingUsername;
 
 import java.util.ArrayList;
 
@@ -52,7 +53,7 @@ public class InvitationServiceTest {
     }
 
     @Test
-    public void testSaveInvitation() throws DataAccessException, PlayerAlreadyInMatch{
+    public void testSaveInvitation() throws DataAccessException, PlayerAlreadyInMatch, NotExistingUsername{
         Invitation invitacion = new Invitation();
         User usuario = new User();
         usuario.setUsername("friend8");
