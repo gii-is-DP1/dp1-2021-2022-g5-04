@@ -24,4 +24,7 @@ public interface UserRepository extends  CrudRepository<User, String>{
 	@Query("SELECT u FROM User u ")
 	 public List<User>findUsers();
 
+	 @Query("SELECT u.username FROM User u ")
+	 public List<String>findUsernames();
+
 }

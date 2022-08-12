@@ -25,6 +25,7 @@ import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
 import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.samples.IdusMartii.service.exceptions.PlayerAlreadyInMatch;
+import org.springframework.samples.IdusMartii.service.exceptions.NotExistingUsername;
 import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
@@ -71,23 +72,14 @@ public class InvitationController {
 	@PostMapping(path="/{id_match}/save")
 	public String guardarInvitacion(@Valid User user, BindingResult result, ModelMap modelMap, @PathVariable("id_match") int id_match) {
 		User userRequester = userService.findUser("admin1").get();
-		Iterable<User> users= userService.findAll();
-		List <String> usernames = new ArrayList<>();
-		users.forEach(u -> usernames.add(u.getUsername()));
 		log.info("Creando invitación de partida");
 		String username = user.getUsername();
-		if(!usernames.contains(username)){
-			modelMap.addAttribute("message","El usuario introducido no existe");
-			modelMap.addAttribute("admin", authoritiesService.getAuthorities(userRequester.getUsername()));
-			return "/exception";
-		}
 		log.info("Accediendo al servicio  de usuarios por el metodo findUser");
 		log.debug("username del usuario: " + username);
 		User usuario = userService.findUser(username).get();
 		log.info("Accediendo al servicio de partidas por el metodo findById()");
 		log.debug("id de partida: " + id_match);
 		Match match = matchService.findById(id_match);
-		
 		log.info("Accediendo al servicio de partidas por el metodo matchContainUser() y al servicio de invitaciones de partidas por el metodo findByUserAndMatch()");
 		log.debug("partida: " + match + ", usuario: " + usuario);
 		if(matchService.matchContainUser(match, usuario) && (invitationService.findByUserAndMatch(usuario, match).size()!=0)){
@@ -106,7 +98,13 @@ public class InvitationController {
 				invitationService.saveInvitation(invitation, match);
 			}catch (PlayerAlreadyInMatch p){
 				result.rejectValue("username", "invitado", "Ese usuario ya está en la partida");
+				modelMap.addAttribute("match", match);
+				modelMap.addAttribute("admin", userService.isAdmin(userRequester));
 				return "redirect:/matches/" + match.getId() + "/new";
+			}
+			catch(NotExistingUsername u){
+			result.rejectValue("username", "noExiste", "Este usuario no existe");
+			return "redirect:/matches/" + match.getId() + "/new";
 			}
 		}
 		return "redirect:/matches/" + match.getId() + "/new";

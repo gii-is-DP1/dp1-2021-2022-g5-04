@@ -1,7 +1,9 @@
 package org.springframework.samples.IdusMartii.service;
 
 import org.springframework.samples.IdusMartii.repository.InvitationRepository;
+import org.springframework.samples.IdusMartii.repository.UserRepository;
 import org.springframework.samples.IdusMartii.service.exceptions.PlayerAlreadyInMatch;
+import org.springframework.samples.IdusMartii.service.exceptions.NotExistingUsername;
 import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
@@ -23,11 +25,15 @@ public class InvitationService {
     @Autowired 
 	private InvitationRepository invitationRepository;
 	@Autowired
+	private UserRepository userRepository;
+	@Autowired
 	private InvitationService invitationService;
 	@Autowired
 	private MatchService matchService;
 	@Autowired
 	private PlayerService playerService;
+	@Autowired
+	private UserService userService;
 
 	@Transactional
 	public Iterable<Invitation> findAll(){
@@ -43,13 +49,19 @@ public class InvitationService {
 	}
 	
 	@Transactional
-	public void saveInvitation(Invitation invitation, Match match) throws DataAccessException, PlayerAlreadyInMatch{
+	public void saveInvitation(Invitation invitation, Match match) throws DataAccessException, PlayerAlreadyInMatch, NotExistingUsername{
 		log.info("Guardando invitación...");
+		List<User> users = userService.findUsers();
+		List<String> usernames = userRepository.findUsernames();
 		User user = invitation.getUser();
+		String username = user.getUsername();
 		Player player = playerService.findByMatchAndUser(match, user);
 		 if (match.getPlayers().contains(player)){
 		 	throw new PlayerAlreadyInMatch();
          }
+		 if(!usernames.contains(username)){
+			throw new NotExistingUsername();
+		 }
 		invitationRepository.save(invitation);
 	}
     @Transactional(readOnly = true)
