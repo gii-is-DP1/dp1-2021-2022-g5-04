@@ -55,10 +55,10 @@ public class MatchController {
 	@Autowired
     AchievementService achievementService;
 
-	@InitBinder("matches")
+	/*@InitBinder("matches")
 	public void initMatchBinder(WebDataBinder dataBinder){
 		dataBinder.setValidator(new MatchValidator());
-	}
+	}*/
 	
 	
 
@@ -194,10 +194,12 @@ public class MatchController {
 	
 	@PostMapping(path="/save")
 	public String guardarPartida(@Valid Match match, BindingResult result, ModelMap modelMap) {
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
 		log.info("Creando partida...");
 		if (result.hasErrors()) {
         	log.info("Errores encontrados.");
-            return "users/crearUsuario";
+			modelMap.addAttribute("admin", userService.isAdmin(user));
+           	return "matches/crearPartida";
         } else {
 			match.setRound(0);
 			match.setTurn(0);
