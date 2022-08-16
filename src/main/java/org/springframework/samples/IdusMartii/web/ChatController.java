@@ -39,44 +39,49 @@ public class ChatController {
     @Autowired
     private CurrentUserService currentUserService;
 		
-	// @GetMapping(path="/{id_match}")
-	// public String listadoChatss(ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
-	// 	String vista = "chats/chat";
-    //     response.addHeader("Refresh","30");
-    //     Match match = matchService.findById(id_match);
+	@GetMapping(path="/{id_match}")
+	 public String listadoChats(@RequestParam("page") int page, ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
+	 	String vista = "chats/chat";
+        response.addHeader("Refresh","30");
+        Match match = matchService.findById(id_match);
+        User user = userService.findUser(currentUserService.showCurrentUser()).get();
+        Pageable completePageable = PageRequest.of(0, 999999999, Sort.by("id"));
+		Pageable pageable = PageRequest.of(page-1, 5, Sort.by("id"));
+		Page<Chat> completeChatPage = chatService.findChatWithPagination(completePageable, match);
+		Page<Chat> chatPage =  chatService.findChatWithPagination(pageable, match);
+		modelMap.addAttribute("chats", chatPage.getContent());
+        modelMap.addAttribute("numberOfPagesList", chatService.createNumberOfPagesList(completeChatPage, page));
+        modelMap.addAttribute("numberOfPagesLast", chatService.createNumberOfPagesList(completeChatPage, page).size()+1);
+        modelMap.addAttribute("msg", new Chat());
+        modelMap.addAttribute("admin", matchService.isAdmin(user));
+	 	
+        modelMap.addAttribute("match_id", match.getId());
+        modelMap.addAttribute("currentUser", user);
+	 	return vista;
+	 }
+
+    //  @GetMapping(path="/{id_match}")
+	//  public String listadoChatss(ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
+	//  	String vista = "chats/chat";
+    //      response.addHeader("Refresh","30");
+    //      Match match = matchService.findById(id_match);
     //     User user = userService.findUser(currentUserService.showCurrentUser()).get();
     //     List<Chat> chats = chatService.findByMach(match);
     //     modelMap.addAttribute("msg", new Chat());
-    //     modelMap.addAttribute("admin", matchService.isAdmin(user));
-	// 	modelMap.addAttribute("chats", chats);
-    //     modelMap.addAttribute("match_id", match.getId());
-    //     modelMap.addAttribute("currentUser", user);
-	// 	return vista;
-	// }
-    @GetMapping("/{id_match}")
-	public String listadoChat(@RequestParam("page") int page, ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response){
-        Match match = matchService.findById(id_match);
-		String vista = "chats/chat";
-        response.addHeader("Refresh","30");
-        Pageable completePageable = PageRequest.of(0, 999999999, Sort.by("id"));
-        Pageable pageable = PageRequest.of(page-1, 5, Sort.by("id"));
-		Page<Chat> chats =  chatService.findChatWithPagination(pageable, match);
-        Page<Chat> completeChatPage = chatService.findChatWithPagination(completePageable, match);
-		modelMap.addAttribute("chats", chats.getContent());
-        modelMap.addAttribute("id_match", id_match);
-        modelMap.addAttribute("user", currentUserService.showCurrentUser());
-        modelMap.addAttribute("numberOfPagesList", chatService.createNumberOfPagesList(completeChatPage, page));
-		return vista;
-	} 
+    //      modelMap.addAttribute("admin", matchService.isAdmin(user));
+	//  	modelMap.addAttribute("chats", chats);
+    //      modelMap.addAttribute("match_id", match.getId());
+    //      modelMap.addAttribute("currentUser", user);
+	//  	return vista;
+	//  }
     @PostMapping(path="/{id_match}/save")
-	public String saveChat(ModelMap modelMap, @PathVariable("id_match") int id_match, @Valid Chat chat) {
+	public String saveChat(@RequestParam("page") int page, ModelMap modelMap, @PathVariable("id_match") int id_match, @Valid Chat chat) {
         Match match = matchService.findById(id_match);
         chat.setMatch(match);
         User user = userService.findUser(currentUserService.showCurrentUser()).get();
         chat.setUser(user);
         chatService.save(chat);
-       
-        return "redirect:/chats/" + match.getId();
+        return "redirect:/chats/" + match.getId() + "?page=" + page;
 		
 	}
 	

@@ -244,7 +244,11 @@ public class MatchController {
 		String currentUser = currentUserService.showCurrentUser();
 		User user = userService.findUser(currentUser).get();
 		modelMap.addAttribute("admin", matchService.isAdmin(user));
-
+		if (match.isFinished()==true) {
+	    	log.info("Estoy en errorNotFinished()");
+    		modelMap.addAttribute("message", "La partida ya ha acabado.");
+    		return "/exception";
+		}
 		if(match.getRound()!=0) {
 			log.info("Estoy en errorAlreadyStarted()");
     		modelMap.addAttribute("message", "La partida ya ha empezado.");
@@ -278,6 +282,11 @@ public class MatchController {
 		Match match = this.matchService.findById(id);
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
 		modelMap.addAttribute("admin", matchService.isAdmin(usuario));
+		if (match.isFinished()==true) {
+	    	log.info("Estoy en errorNotFinished()");
+    		modelMap.addAttribute("message", "La partida ya ha acabado.");
+    		return "/exception";
+		}
 		if(match.getRound()==0){
 			log.info("Estoy en errorNotStartedYet()");
     		modelMap.addAttribute("message", "La partida no ha empezado todavía.");

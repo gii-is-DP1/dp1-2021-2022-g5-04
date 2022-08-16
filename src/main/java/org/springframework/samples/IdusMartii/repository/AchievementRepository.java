@@ -31,10 +31,10 @@ public interface AchievementRepository extends CrudRepository<Achievement, Integ
 	@Query(value="INSERT INTO ACHIEVEMENT_USER(user_username, achievements_id) VALUES (:username,:id)",nativeQuery=true)
     public void saveAchievementUser(@Param("username") String username, @Param("id") Integer id);
 
-	@Query("SELECT p.user.username, count(p) FROM Player p WHERE p.match.finished = :finished ORDER BY count(p) DESC")
+	@Query("SELECT p.user.username, count(p) FROM Player p WHERE p.match.finished = :finished GROUP BY p.user.username ORDER BY count(p) DESC")
     public List<Tuple> topMatchPlaying(@Param("finished") boolean finished);
-	@Query("SELECT p.user.username, count(p) FROM Player p WHERE p.match.finished = :finished AND p.card1 = p.match.winner ORDER BY count(p) DESC")
+	@Query("SELECT p.user.username, count(p) FROM Player p WHERE p.match.finished = :finished AND p.card1 = p.match.winner GROUP BY p.user.username ORDER BY count(p) DESC")
     public List<Tuple> topWins(@Param("finished") boolean finished);
-	@Query("SELECT p.user.username, count(p) FROM Player p WHERE p.match.finished = :finished AND p.card1 != p.match.winner ORDER BY count(p) DESC")
+	@Query("SELECT p.user.username, count(p) FROM Player p WHERE p.match.finished = :finished AND p.card1 != p.match.winner GROUP BY p.user.username ORDER BY count(p) DESC")
     public List<Tuple> topLoss(@Param("finished") boolean finished);
 }

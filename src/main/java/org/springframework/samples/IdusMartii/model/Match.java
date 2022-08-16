@@ -30,8 +30,8 @@ public class Match extends AuditableEntity {
 		private boolean finished;
 		private Faction winner;
 		
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "match")
-	  private List<Player> players;
+    	@OneToMany(cascade = CascadeType.ALL, mappedBy = "match")
+	  	private List<Player> players;
 
 
 		@OneToOne(cascade = CascadeType.ALL)

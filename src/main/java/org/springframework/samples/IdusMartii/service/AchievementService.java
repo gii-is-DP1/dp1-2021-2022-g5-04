@@ -142,6 +142,7 @@ public class AchievementService {
     @Transactional
     public Map<String, Long> rankingRatioWin() throws DataAccessException {
         Map<String, Long> map = new HashMap<>();
+        
         for (Tuple i:achievementRepository.topMatchPlaying(true)){
            for(Tuple j:achievementRepository.topWins(true)){
             if(i.get(0).equals(j.get(0))){
@@ -188,6 +189,10 @@ public class AchievementService {
     @Transactional
     public List<String> ranking() throws DataAccessException {
         List<String> result = new ArrayList<>();
+        log.info("infojob");
+        log.info(""+achievementRepository.topMatchPlaying(true).size());
+        log.info("infojob");
+        
         result.add(achievementRepository.topMatchPlaying(true).get(0).get(0).toString());
         result.add(achievementRepository.topWins(true).get(0).get(0).toString());
         result.add(achievementRepository.topLoss(true).get(0).get(0).toString());
