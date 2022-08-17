@@ -70,10 +70,10 @@ public class MatchController {
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
 		log.info("Accediendo al servicio de partidas por el metodo matches()");
 		log.debug("usuario: " + user);
-		List<Match> matches = matchService.matches(user);
+		List<Match> matches = matchService.findMatchesFromUser(user);
 		log.info("Acceso al servicio de partidas por el metodo isAdmin()");
 		log.debug("usuario: " + user);
-		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("admin", userService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		return vista;
 		
@@ -88,7 +88,7 @@ public class MatchController {
 		List<Match> matches = matchService.matchesFinished();
 		log.info("Acceso al servicio de partidas por el metodo isAdmin()");
 		log.debug("usuario: " + user);
-		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("admin", userService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		modelMap.addAttribute("CorP", "terminadas");
 		return vista;
@@ -102,7 +102,7 @@ public class MatchController {
 		log.info("Accediendo al servicio de partidas por el metodo matchesInProgress_NotFinished()");
 		List<Match> matches = matchService.matchesInProgress_NotFinished();
 		log.info("Accediendo al servicio de partidas por el metodo isAdmin()");
-		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("admin", userService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		modelMap.addAttribute("CorP", "en progreso");
 		return vista;
@@ -117,7 +117,7 @@ public class MatchController {
 		List<Match> matches = matchService.matchesCreated(user);
 		log.info("Acceso al servicio de partidas por el metodo isAdmin()");
 		log.debug("usuario: " + user);
-		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("admin", userService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		modelMap.addAttribute("CorP", "creadas");
 		return vista;
@@ -131,7 +131,7 @@ public class MatchController {
 		log.info("Accediendo al servicio de partidas por el metodo matchesLobby()");
 		List<Match> matches = matchService.matchesLobby();
 		log.info("Accediendo al servicio de partidas por el metodo isAdmin()");
-		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("admin", userService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		modelMap.addAttribute("CorP", "en lobby");
 		return vista;
@@ -143,10 +143,10 @@ public class MatchController {
 		String vista = "matches/matchesList";
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
 		log.info("Accediendo al servicio de partidas por el metodo matches()");
-		List<Match> matches = matchService.matches(user);
+		List<Match> matches = matchService.findMatchesFromUser(user);
 		log.info("Acceso al servicio de partidas por el metodo isAdmin()");
 		log.debug("usuario: " + user);
-		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("admin", userService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		modelMap.addAttribute("CorP", "jugadas");
 		return vista;
@@ -162,7 +162,7 @@ public class MatchController {
 		List<Match> matches = matchService.matchesInProgress_NotFinished();
 		log.info("Acceso al servicio de partidas por el metodo isAdmin()");
 		log.debug("usuario: " + user);
-		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("admin", userService.isAdmin(user));
 		modelMap.addAttribute("matches", matches);
 		return vista;
 	}
@@ -177,7 +177,7 @@ public class MatchController {
 		log.debug("id: " + id_match);
 		Match match = this.matchService.findById(id_match);
 		modelMap.addAttribute("match", match);
-		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("admin", userService.isAdmin(user));
 		return vista;
 	}
 	
@@ -189,7 +189,7 @@ public class MatchController {
 		modelMap.addAttribute("match", new Match());
 		log.info("Acceso al servicio de partidas por el metodo isAdmin()");
 		log.debug("usuario: " + user);
-		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("admin", userService.isAdmin(user));
 		return vista;
 	}
 	
@@ -243,7 +243,7 @@ public class MatchController {
 		Match match = this.matchService.findById(id);
 		String currentUser = currentUserService.showCurrentUser();
 		User user = userService.findUser(currentUser).get();
-		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("admin", userService.isAdmin(user));
 		if (match.isFinished()==true) {
 	    	log.info("Estoy en errorNotFinished()");
     		modelMap.addAttribute("message", "La partida ya ha acabado.");
@@ -268,7 +268,7 @@ public class MatchController {
 		modelMap.addAttribute("startMatch", matchService.startMatchButton(match));
 		modelMap.addAttribute("hideInvitationButton", matchService.HideInvitationButton(match));
 		modelMap.addAttribute("isHost", matchService.isHost(player, match));
-		modelMap.addAttribute("admin", matchService.isAdmin(user));
+		modelMap.addAttribute("admin", userService.isAdmin(user));
 		return vista;
 		}
 	}
@@ -281,7 +281,7 @@ public class MatchController {
 		log.debug("Id : " + id);
 		Match match = this.matchService.findById(id);
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
-		modelMap.addAttribute("admin", matchService.isAdmin(usuario));
+		modelMap.addAttribute("admin", userService.isAdmin(usuario));
 		if (match.isFinished()==true) {
 	    	log.info("Estoy en errorNotFinished()");
     		modelMap.addAttribute("message", "La partida ya ha acabado.");
@@ -343,7 +343,7 @@ public class MatchController {
 	public String ganador(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) throws DataAccessException {
 		String vista = "matches/ganador";
 		User usuario = userService.findUser(currentUserService.showCurrentUser()).get();
-		modelMap.addAttribute("admin", matchService.isAdmin(usuario));
+		modelMap.addAttribute("admin", userService.isAdmin(usuario));
 		Match match = this.matchService.findById(id);
 		Faction faccionGanadora = matchService.sufragium(match);
 		if (faccionGanadora == null && match.getRound() != 3) {

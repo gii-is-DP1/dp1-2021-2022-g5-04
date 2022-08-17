@@ -63,7 +63,7 @@ public class PlayerController {
 		modelMap.addAttribute("voteCard", playerService.showVoteCard(player.getVote()));
         modelMap.addAttribute("player", player);
         modelMap.addAttribute("idMatch", idMatch);
-        modelMap.addAttribute("admin", matchService.isAdmin(user));
+        modelMap.addAttribute("admin", userService.isAdmin(user));
         if (player.getVote() == Vote.YELLOW) {
         	log.info("Se ha encontrado un voto nulo");
         	return "redirect:/players/" + id + "/" + idMatch + "/revisarVotoYellow";
