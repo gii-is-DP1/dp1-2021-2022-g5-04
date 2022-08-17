@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
@@ -19,6 +19,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
+import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.service.exceptions.PlayerAlreadyInMatch;
 import org.springframework.samples.IdusMartii.service.exceptions.NotExistingUsername;
@@ -49,46 +50,27 @@ public class InvitationServiceTest {
     @Test
     public void testFindById(){
         Invitation invitacionId= invitationService.findById(1);
-        assertTrue(invitacionId.getUser()==userService.findUser("ppp").get());
+        assertTrue(invitacionId.getUser()==userService.findUser("ppppp").get());
     }
 
     @Test
     public void testSaveInvitation() throws DataAccessException, PlayerAlreadyInMatch, NotExistingUsername{
         Invitation invitacion = new Invitation();
-        User usuario = new User();
-        usuario.setUsername("friend8");
-        invitacion.setUser(usuario);
-        Match partida = new Match();
-        invitacion.setMatch(partida);
-        this.invitationService.saveInvitation(invitacion, partida);
+        Match match = matchService.findById(2);
+        User user = userService.findUser("friend2").get();
+        invitacion.setMatch(match);
+        invitacion.setUser(user);
+        this.invitationService.saveInvitation(invitacion, match);
         
 
         Invitation invit = invitationService.findById(2);
 
-        assertThat(invit.getUser().getUsername()).isEqualTo("friend8");
+        assertThat(invit.getUser().getUsername()).isEqualTo("friend2");
     }
-    // @Test
-    // public void testAcceptInvitation(){
-    //     User user = userService.findbyUsername("ppp");
-    //     Match match = matchService.findById(1);
-    //     Iterable <Player> players = playerService.findAll();
-	// 	List <String> nombres = new ArrayList<>();
-	// 	players.forEach(p -> nombres.add(p.getName()));
-    //     int found = nombres.size();
-    //     Invitation invitation = invitationService.findByUserAndMatch(user, match).get(0);
-        
-        
-        
-    //     this.invitationService.acceptInvitation(1, match, user);
-    //     Iterable <Player> players2 = playerService.findAll();
-	// 	List <String> nombres2 = new ArrayList<>();
-	// 	players2.forEach(p -> nombres2.add(p.getName()));
-    //     assertThat(nombres2).isEqualTo(found+1);
-    // }
-
+   
     @Test
     public void testFindByUser(){
-        User usuario = userService.findUser("ppp").get();
+        User usuario = userService.findUser("ppppp").get();
         List<Invitation> listInvitaciones = invitationService.findByUser(usuario);
 
         assertFalse(listInvitaciones.isEmpty());
@@ -116,6 +98,22 @@ public class InvitationServiceTest {
 		invitacionesa.forEach(p -> listInvitacionesb.add(p.getId().toString()));
         assertNotEquals(listInvitacionesb.size(),listInvitaciones.size() );
     }
-        
+    @Test
+    public void testDeleteAllInvitationsFromUser(){
+        User user = userService.findUser("ppppp").get();
+    	List<Invitation> invitaciones = invitationService.findByUser(user);
+        this.invitationService.deleteAllInvitationsFromUser(user);
+        List<Invitation> invitaciones2 = invitationService.findByUser(user);
+        assertNotEquals(invitaciones.size(), invitaciones2.size());
+    } 
+    @Test
+    public void testDeleteAllInvitationsFromUserInMatch(){
+        User user = userService.findUser("ppppp").get();
+        Match match = matchService.findById(1);
+    	List<Invitation> invitaciones = invitationService.findByUser(user);
+        this.invitationService.deleteAllInvitationsFromUserInMatch(user, match);
+        List<Invitation> invitaciones2 = invitationService.findByUser(user);
+        assertNotEquals(invitaciones.size(), invitaciones2.size());
+    }   
     
 }
