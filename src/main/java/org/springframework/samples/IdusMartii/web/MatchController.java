@@ -374,7 +374,7 @@ public class MatchController {
 		matchService.startMatch(match);
 		log.info("Acceso al servicio de jugadores por el metodo jugadoresPartida()");
 		log.debug("Partida : " + match);
-		List<Player> g = playerService.jugadoresPartida(match);
+		List<Player> g = match.getPlayers();
 		for (int i = 0; i<g.size();i++) {
 			User u = g.get(i).getUser();
 			String username = u.getUsername();

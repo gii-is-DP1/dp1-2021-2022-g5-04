@@ -58,21 +58,21 @@ public class PlayerService {
 	}
 	
 	@Transactional
-	public String deletePlayerFromMatch(Player player, Match match, User current, int matchId) throws DataAccessException {
+	public String deletePlayerFromMatch(Player player, Match match) throws DataAccessException {
 		log.info("Eliminando jugador de una partida...");
 			match.getPlayers().remove(player);
 			deletePlayer(player);
 			matchService.saveMatch(match);
-			return "redirect:/matches/" + matchId + "/new";		
+			return "redirect:/matches/" + match.getId() + "/new";		
 	}
 	
 	@Transactional
-	public String deletePlayerWithInvitaton(Player player, Match match, User user, User current, int matchId) throws DataAccessException {
+	public String deletePlayerWithInvitaton(Player player, Match match, User user) throws DataAccessException {
 		List<Invitation> invitations = invitationRepository.findByUserAndMatch(user, match);
 		for(Invitation invitation:invitations){
 			invitationRepository.delete(invitation);
 		}
-		return deletePlayerFromMatch(player, match, current, matchId);
+		return deletePlayerFromMatch(player, match);
 	}
 
 	@Transactional
@@ -89,12 +89,12 @@ public class PlayerService {
 		return playerRepository.findByUsername(username);
 	}
 	
-	@Transactional
-	public List<Player> jugadoresPartida(Match match) throws DataAccessException {
-		log.info("Buscando jugadores de la partida...");
-		log.debug("Partida: " + match);
-		return playerRepository.findByMatchId(match);
-	}
+	// @Transactional
+	// public List<Player> jugadoresPartida(Match match) throws DataAccessException {
+	// 	log.info("Buscando jugadores de la partida...");
+	// 	log.debug("Partida: " + match);
+	// 	return playerRepository.findByMatchId(match);
+	// }
 	@Transactional
 	public void changeVote(Player player) throws DataAccessException {
 		if (player.getVote() == Vote.RED) {
@@ -394,14 +394,5 @@ public class PlayerService {
 			playerRepository.delete(p);
 		}
 	}
-	@Transactional
-	public boolean isAdmin(User user) throws DataAccessException {
-		if (authoritiesService.getAuthorities(user.getUsername())) {
-			log.info("El user es admin");
-			return true;
-		} else {
-			log.info("El user no es admin");
-			return false;
-		}
-	}
+	
 }
