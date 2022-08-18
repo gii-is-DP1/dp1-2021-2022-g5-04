@@ -63,7 +63,7 @@ public class PlayerController {
 		modelMap.addAttribute("voteCard", playerService.showVoteCard(player.getVote()));
         modelMap.addAttribute("player", player);
         modelMap.addAttribute("idMatch", idMatch);
-        modelMap.addAttribute("admin", matchService.isAdmin(user));
+        modelMap.addAttribute("admin", userService.isAdmin(user));
         if (player.getVote() == Vote.YELLOW) {
         	log.info("Se ha encontrado un voto nulo");
         	return "redirect:/players/" + id + "/" + idMatch + "/revisarVotoYellow";
@@ -85,11 +85,11 @@ public class PlayerController {
 		log.info("Accediendo al servicio de jugadores...");
 		if (invitationService.findByUser(user).size()==0){
 			log.info("Eliminando jugador si no tiene invitaciones");
-			playerService.deletePlayerFromMatch(player, match, current, matchId);
+			playerService.deletePlayerFromMatch(player, match);
 		} else {
 			log.info("Eliminando jugadot si tiene invitaciones");
 			log.debug("Id: " + matchId);
-			playerService.deletePlayerWithInvitaton(player, match, user, current, matchId);
+			playerService.deletePlayerWithInvitaton(player, match, user);
 		}
 		return "redirect:/matches/" + matchId + "/new";
 	}

@@ -2,6 +2,7 @@ package org.springframework.samples.IdusMartii.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
+import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.stereotype.Service;
 import org.springframework.samples.IdusMartii.model.Player;
@@ -36,40 +39,72 @@ public class MatchServiceTests {
 		List <String> nombres = new ArrayList<>();
 		matches.forEach(m -> nombres.add(m.getName()));
 		assertEquals(nombres.get(0),"partida1");
+		assertEquals(nombres.get(1),"partida2");
 		
 	}
 
 	@Test
 	public void testFindMatchesFromUser(){
-		Optional<User> usuario= userService.findUser("friend1");
+		Optional<User> usuario= userService.findUser("admin1");
 		List<Match> listaPart= matchService.findMatchesFromUser(usuario.get());
 
-		List<Match> listaP= new ArrayList<Match>();
-		Match match1 = matchService.findById(1);
-		listaP.add(match1);
-
-		assertThat(listaPart).isEqualTo(listaP);
+		assertEquals(listaPart.size(), 2);
 	}
-
 	@Test
-	public void testIsAdmin(){
-		Optional<User> usAdmin= userService.findUser("admin1");
-		boolean esAdmin= matchService.isAdmin(usAdmin.get());
+	public void testFindMatchesFromHost(){
+		Optional<User> usuario= userService.findUser("admin1");
+		List<Match> listaPart= matchService.findMatchesFromHost(usuario.get());
 
-		assertThat(esAdmin).isTrue();
+		assertEquals(listaPart.size(), 2);
 	}
+
 
 	@Test
 	public void testMatches(){
-		Match match1 = matchService.findById(1);
-		Optional<User> usNotAdmin= userService.findUser("friend1");
-		List<Match> listaMatchUser= new ArrayList<Match>();
-		listaMatchUser.add(match1);
-		List<Match> partidas= matchService.matches(usNotAdmin.get());
+		User usNotAdmin= userService.findUser("friend1").get();
+		User admin= userService.findUser("admin1").get();
+		Iterable<Match> matchesAdmin = matchService.findAll();
+		List<Match> listaPart= matchService.findMatchesFromUser(usNotAdmin);
+		List<Match> listaPartMatchs= matchService.matches(usNotAdmin);
+		List<Match> matchesAdminList = new ArrayList<>();
+		matchesAdmin.forEach(m -> matchesAdminList.add(m));
+		List<Match> partidas= matchService.matches(admin);
 
-		assertThat(partidas).isEqualTo(listaMatchUser);
+		assertEquals(matchesAdminList.size(), partidas.size());
+		assertEquals(listaPart.size(), listaPartMatchs.size());
 	}
-	
+	@Test
+	public void testMatchesCreated(){
+		User usNotAdmin= userService.findUser("friend1").get();
+		User admin= userService.findUser("admin1").get();
+		Iterable<Match> matchesAdmin = matchService.findAll();
+		List<Match> listaPart= matchService.findMatchesFromHost(usNotAdmin);
+		List<Match> listaPartMatchs= matchService.matchesCreated(usNotAdmin);
+		List<Match> matchesAdminList = new ArrayList<>();
+		matchesAdmin.forEach(m -> matchesAdminList.add(m));
+		List<Match> partidas= matchService.matchesCreated(admin);
+
+		assertEquals(matchesAdminList.size(), partidas.size());
+		assertEquals(listaPart.size(), listaPartMatchs.size());
+	}
+	@Test
+	public void testMatchContainUser(){
+		User user = userService.findUser("friend1").get();
+		Match match = matchService.findById(1);
+		assertTrue(matchService.matchContainUser(match, user));	
+	}
+	@Test
+	public void testMatchesInProgressNotFinished(){	
+		assertEquals(0, matchService.matchesInProgress_NotFinished().size());	
+	}
+	@Test
+	public void testMatchesFinished(){	
+		assertEquals(1, matchService.matchesFinished().size());	
+	}
+	@Test
+	public void testMatchesLobby(){	
+		assertEquals(1, matchService.matchesLobby().size());	
+	}
 	@Test
 	public void testFindById() {
 		Match match = matchService.findById(1);
@@ -97,16 +132,43 @@ public class MatchServiceTests {
                                 
                 
 		assertThat(nombres2.size()).isEqualTo(found + 1);
-		
 	}
 	@Test
-	public void testStartMatch(){
+	public void testIsHost() { 
 		Match match = matchService.findById(1);
-		matchService.startMatch(match);
-		//assertThat(match.getPlays()).isEqualTo(Plays.EDIL);
-		assertThat(match.getRound()).isEqualTo(1);
+		Player player = match.getPlayers().get(0);
+		assertTrue(matchService.isHost(player, match));
+	}
+	@Test
+	public void testVotes() { 
+		Match match = matchService.findById(1);
+		match.setRound(1);
+		assertEquals(2, matchService.votes(match).size());
+		match.setRound(2);
+		assertEquals(3, matchService.votes(match).size());
+	}
+	@Test
+	public void testVotedUser() {
+		Match match = matchService.findById(1);
+		Player player = match.getPlayers().get(0);
+		player.setVote(Vote.GREEN);
+		String votedUser = matchService.votedUser(match);
+		assertEquals("admin1", votedUser);
 	}
 
+	@Test
+	public void testNoHostPlayers(){
+		Match match = matchService.findById(1);
+		List<Player> test = matchService.noHostPlayers(match);
+		List<Player> players = match.getPlayers();
+		players.remove(0);
+		for(int i=0;i<players.size();i++){
+			assertEquals(players.get(i), test.get(i));
+		}
+		
+
+		
+	}
 	@Test
 	public void testRoundI(){
 		Match match1 = matchService.findById(1);
@@ -149,7 +211,7 @@ public class MatchServiceTests {
 	}
 
 	@Test
-	public void testStarMatch(){
+	public void testStartMatch(){
 		Match match1 = matchService.findById(1);
 		boolean empezarPartida= matchService.startMatchButton(match1);
 		assertThat(empezarPartida).isTrue();
@@ -221,6 +283,28 @@ public class MatchServiceTests {
 
 		assertThat(match1.getPlays()).isEqualTo(Plays.PRETOR);
 	}
+	@Test
+	public void testSufragium(){
+		Match match = matchService.findById(1);
+		Player player = match.getPlayers().get(0);
+		player.setCard1(Faction.LOYAL);
+		match.setRound(3);
+		match.setVotesInFavor(7);
+		match.setVotesAgainst(4);
+		assertEquals(Faction.LOYAL, matchService.sufragium(match));
 
+		player.setCard1(Faction.TRAITOR);
+		match.setRound(3);
+		match.setVotesInFavor(4);
+		match.setVotesAgainst(7);
+		assertEquals(Faction.TRAITOR, matchService.sufragium(match));
+
+		player.setCard1(Faction.TRAITOR);
+		match.setRound(4);
+		match.setVotesInFavor(15);
+		match.setVotesAgainst(14);
+		assertEquals(Faction.TRAITOR, matchService.sufragium(match));
+
+	}
 
 }

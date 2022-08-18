@@ -113,12 +113,7 @@ public class UserService {
 	public List<User> findUsersByText(String text){
 		return userRepository.findUsersByText(text);
 	}
-	// @Transactional
-	// public User findbyUsername(String username){
-	// 	log.info("Usando metodo findbyUsername()");
-	// 	log.debug("Atributo:" + username);
-	// 	return userRepository.findByUsername(username);
-	// }
+	
   
 	@Transactional
 	public List<User> findFriends(String user){
@@ -164,30 +159,9 @@ public class UserService {
 
 	}
 		
-	// @Transactional
-    // public void registrarVictoria(Match match, Player player) {
-	// 	log.info("Comprobando si el jugador ha ganado...");
-    // 	List<Player> ganadores = playerService.findWinners(match);
-    // 	List<Achievement> ganadas = achievementService.findByAchievementType("ganadas");
-    // 	if(ganadores.contains(player)) {
-    // 		log.info("Enhorabuena, has ganado.");
-    // 		User user = player.getUser();
-	// 		user.setVictorias(user.getVictorias()+1);
-	// 		userRepository.save(user);
-    // 		for(Achievement a : ganadas) {
-	// 			  if(user.getVictorias() == a.getValor()) {
-	// 				  achievementUserService.saveAchievementUser(user.getUsername(), 2);
-	// 			  }
-	// 		  }
-    // 	}
-    // }
-	
-	
-
-
-	public List<User> findUsers() {
+	// public List<User> findUsers() {
 		
-		return userRepository.findUsers();}
+	// 	return userRepository.findUsers();}
 
   
 	@Transactional

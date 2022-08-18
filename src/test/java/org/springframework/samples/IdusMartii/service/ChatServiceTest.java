@@ -3,11 +3,10 @@ package org.springframework.samples.IdusMartii.service;
 import static org.junit.Assert.assertNotNull;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 import org.springframework.samples.IdusMartii.model.Chat;
 import org.springframework.samples.IdusMartii.model.Match;
-
+import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -27,6 +26,9 @@ public class ChatServiceTest {
     
     @Autowired
     private ChatService ChatService;
+
+    @Autowired
+    private UserService userService;
 
     
 
@@ -67,6 +69,21 @@ public class ChatServiceTest {
     	List<Chat> chatT = ChatService.findByMach(m);
     	
     	assertNotNull(chatT);
+
+
+    }
+    @Test
+    public void testDeleteChatFromUser() {
+    	User user = userService.findUser("admin1").get();
+    	Iterable<Chat> chatT= ChatService.findAll();
+        List <Integer> chat = new ArrayList<>();
+		chatT.forEach(l -> chat.add(l.getId()));
+        this.ChatService.deleteChatsFromUser(user);
+        Iterable<Chat> chatT2= ChatService.findAll();
+        List <Integer> chat2 = new ArrayList<>();
+		chatT2.forEach(l -> chat2.add(l.getId()));
+    	
+    	assertNotEquals(chat.size(), chat2.size());
 
 
     }

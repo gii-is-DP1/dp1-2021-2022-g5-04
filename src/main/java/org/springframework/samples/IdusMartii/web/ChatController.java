@@ -53,7 +53,7 @@ public class ChatController {
         modelMap.addAttribute("numberOfPagesList", chatService.createNumberOfPagesList(completeChatPage, page));
         modelMap.addAttribute("numberOfPagesLast", chatService.createNumberOfPagesList(completeChatPage, page).size()+1);
         modelMap.addAttribute("msg", new Chat());
-        modelMap.addAttribute("admin", matchService.isAdmin(user));
+        modelMap.addAttribute("admin", userService.isAdmin(user));
 	 	
         modelMap.addAttribute("match_id", match.getId());
         modelMap.addAttribute("currentUser", user);

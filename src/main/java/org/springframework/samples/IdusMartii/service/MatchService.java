@@ -28,6 +28,8 @@ public class MatchService {
     private MatchRepository matchRepository;
     @Autowired
     private PlayerRepository playerRepository;
+	@Autowired
+    private UserService userService;
     @Autowired
     private AuthoritiesService authoritiesService;
     @Autowired
@@ -56,21 +58,12 @@ public class MatchService {
 		return matchesResult;
 	}
 
-	@Transactional
-	public boolean isAdmin(User user) throws DataAccessException {
-		if (authoritiesService.getAuthorities(user.getUsername())) {
-			log.info("Eres administrador. Estás haciendo un buen trabajo, sigue así.");
-			return true;
-		} else {
-			return false;
-		}
-	}
 	
     @Transactional
     public List<Match> matches(User user) throws DataAccessException {
     	log.info("Buscando partidas...");
     	log.debug("Usuario: " + user);
-    	if (!isAdmin(user)) {
+    	if (!userService.isAdmin(user)) {
     		List<Match> matches = findMatchesFromUser(user);
     		return matches;
     	} else {
@@ -82,7 +75,7 @@ public class MatchService {
     public List<Match> matchesCreated(User user) throws DataAccessException {
     	log.info("Buscando partidas...");
     	log.debug("Usuario: " + user);
-    	if (!isAdmin(user)) {
+    	if (!userService.isAdmin(user)) {
     		List<Match> matches = findMatchesFromHost(user);
     		return matches;
     	} else {
@@ -134,7 +127,7 @@ public class MatchService {
 		List<Match> matchesFinished = new ArrayList<>();
 		Iterable<Match> matches = matchRepository.findAll();
 		for(Match m:matches){
-			if(m.getRound()==0){
+			if(m.getRound()==0 && !m.isFinished()){
 				matchesFinished.add(m);
 			}
 
@@ -324,12 +317,7 @@ public class MatchService {
 		}
     }
     
-    @Transactional
-    public List<Player> findWinners(Match match){
-    	log.info("Buscando ganadores...");
-    	Faction faccion = match.getWinner();
-    	return playerRepository.findWinners(match, faccion);
-    }
+  
     @Transactional
     private boolean checkNumberOfLoyals(Match match) throws DataAccessException {
     	List<Player> loyals = new ArrayList<Player>();
@@ -361,7 +349,7 @@ public class MatchService {
     	} else if (match.getVotesAgainst() - match.getVotesInFavor() >= 2 && match.getRound() == 3 && checkNumberOfTraitors(match)) {
     		faccionGanadora = Faction.TRAITOR;
     	} else if (numeroJugadores == 5) {
-    		if (match.getVotesInFavor() >= 13) {
+    		if (match.getVotesInFavor() >= 13 ) {
     			if(checkNumberOfTraitors(match)) {
         			faccionGanadora = Faction.TRAITOR;
     			}
