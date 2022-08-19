@@ -50,8 +50,6 @@ public class MatchController {
 	@Autowired
 	private PlayerService playerService;
 	@Autowired
-	private PlayerRepository playerRepository;
-	@Autowired
 	private InvitationService invitationService;
 	@Autowired
     AchievementService achievementService;

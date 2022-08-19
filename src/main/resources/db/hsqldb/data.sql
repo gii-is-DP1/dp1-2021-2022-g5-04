@@ -40,6 +40,7 @@ INSERT INTO achievements(id,name,description, valor, achievement_type) VALUES (1
 INSERT INTO achievements(id,name,description, valor, achievement_type) VALUES (2,'5 Partidas', 'Juega 5 partidas de Idus Martii', 5, 1);
 INSERT INTO achievements(id,name,description, valor, achievement_type) VALUES (3,'Primera Victoria', 'Gana tu partidas de Idus Martii', 1, 2);
 
+INSERT INTO achievement_user(user_username, achievements_id) VALUES ('admin1',1);
 
 INSERT INTO friends(user_username,friends_username) VALUES ('admin1','friend1');
 INSERT INTO friends(user_username,friends_username) VALUES ('friend1','admin1');

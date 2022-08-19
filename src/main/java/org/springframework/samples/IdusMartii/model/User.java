@@ -17,10 +17,12 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.eclipse.jdt.internal.compiler.ast.TrueLiteral;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -61,7 +63,7 @@ public class User implements Serializable {
 	private Set<Authorities> authorities;
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "achievement_user")
+	@JoinTable(name = "achievement_user",  uniqueConstraints = @UniqueConstraint(columnNames = {"user_username", "achievements_id"}))
 	private List<Achievement> achievements;
 
 	@ManyToMany(cascade = CascadeType.ALL)
