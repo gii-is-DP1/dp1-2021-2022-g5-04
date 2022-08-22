@@ -98,6 +98,10 @@ public class UserService {
 		return userRepository.findAllUsersWithPagination(pageable);
 	}
 	@Transactional
+	public Page<User> findUsersWithPagination(Pageable pageable, String text){
+		return userRepository.findUsersWithPagination(pageable, text);
+	}
+	@Transactional
 	public List<Integer> createNumberOfPagesList(Page<User> userPage, int pageNumber){
 		int numberOfPages = (userPage.getNumberOfElements()/5) + 1;
 		List<Integer> numberOfPagesList = new ArrayList<Integer>();

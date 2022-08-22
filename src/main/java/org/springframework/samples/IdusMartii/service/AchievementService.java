@@ -93,15 +93,12 @@ public class AchievementService {
 	@Transactional
 	public void deleteAllAchievementsFromUser(User user) throws DataAccessException {
 		log.info("Intentando borrar los logros del usuario: " + user);
-		if (achievementRepository.findByUser(user).isEmpty()) {
-			log.info("Usuario no encontrado, nada que borrar.");
-		} else {
-			log.info("User encontrado");
-			List<Achievement> achievementsFromUser = achievementRepository.findByUser(user);
-			for (Achievement a: achievementsFromUser) {
-				achievementRepository.delete(a);
-			}
+		log.info("User encontrado");
+		List<Achievement> achievementsFromUser = user.getAchievements();
+		for (int i=0; i<achievementsFromUser.size();i++) {
+            achievementsFromUser.remove(user.getAchievements().get(i));
 		}
+	
 	}
 	@Transactional
     public void saveAchievementUser(String username, Integer id) throws DataAccessException {
@@ -112,9 +109,13 @@ public class AchievementService {
     @Transactional
     public boolean checkAchievementJugadas(User user, Integer valor) throws DataAccessException {
         log.info("Comparando partidas jugadas con el valor del logro...");
-        return playerService.findbyUsername(user.getUsername()).size() == valor ;
+        return playerService.findbyUsername(user.getUsername()).size() >= valor ;
     }
-    
+    @Transactional
+    public boolean checkAchievementGanadas(User user, Double valor) throws DataAccessException {
+        log.info("Comparando partidas jugadas con el valor del logro...");
+        return playerService.findUserWins(user, true) >= valor;
+    }
 
     @Transactional
     public List<Double> listStatistics(User user) throws DataAccessException {
@@ -189,9 +190,7 @@ public class AchievementService {
     @Transactional
     public List<String> ranking() throws DataAccessException {
         List<String> result = new ArrayList<>();
-        log.info("infojob");
         log.info(""+achievementRepository.topMatchPlaying(true).size());
-        log.info("infojob");
         
         result.add(achievementRepository.topMatchPlaying(true).get(0).get(0).toString());
         result.add(achievementRepository.topWins(true).get(0).get(0).toString());

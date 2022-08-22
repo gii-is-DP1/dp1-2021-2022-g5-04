@@ -50,9 +50,17 @@ public class AchievementController {
 		String vista = "achievements/listadoLogros";
 		log.info("Llamada al servicio de logros por el metodo findAll()");
 		Iterable<Achievement> achievements = achievementService.findAll();
-		String userName = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+		
 		log.info("Llamada al servicio de usuarios por el método  findUser()");
-		User user = userService.findUser(userName).orElse(null);
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		for(Achievement a: achievements){
+			if(!user.getAchievements().contains(a) && a.getAchievementType().getName().equals("ganadas") && achievementService.checkAchievementGanadas(user, (double) a.getValor())){
+				achievementService.saveAchievementUser(user.getUsername(), a.getId());
+			}
+			if(!user.getAchievements().contains(a) && a.getAchievementType().getName().equals("jugadas") && achievementService.checkAchievementJugadas(user, a.getValor())){
+				achievementService.saveAchievementUser(user.getUsername(), a.getId());
+			}
+		}
 		modelMap.addAttribute("achievements", achievements);
 		modelMap.addAttribute("user", user);
 		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));

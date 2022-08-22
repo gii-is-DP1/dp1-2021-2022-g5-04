@@ -42,6 +42,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page.*;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -113,7 +114,7 @@ public class UserController {
         return vista;
     }
     
-    @GetMapping(path="/find")
+    @GetMapping(path="/find/user")
     public String buscarUsuarios(ModelMap modelMap) {
     	String vista = "users/buscarUsuario";
     	Player playerAux = new Player();
@@ -122,17 +123,31 @@ public class UserController {
     	modelMap.addAttribute("playerAux", playerAux);
     	return vista;
     }
-    
-    @PostMapping(path="/find")
-    public String buscarUsuariosConUnTexto(@Valid Player player, BindingResult result, ModelMap modelMap) {
-    	log.info("Buscando usuario...");
+
+    @GetMapping(path="/find")
+	public String listadoUsuariosEncontradosPorNombre(@RequestParam("page") int page, ModelMap modelMap, @RequestParam("username") String username) {
+    	log.info("Accediendo al listado de usuarios...");
+		String vista = "users/usuariosEncontrados";
+		Pageable completePageable = PageRequest.of(0, 999999999, Sort.by("username"));
+		Pageable pageable = PageRequest.of(page-1, 5, Sort.by("username"));
+		Page<User> completeUserPage = userService.findUsersWithPagination(completePageable, username);
+		Page<User> userPage =  userService.findUsersWithPagination(pageable, username);
+		modelMap.addAttribute("users", userPage.getContent());
+        modelMap.addAttribute("numberOfPagesList", userService.createNumberOfPagesList(completeUserPage, page));
     	User current = userService.findUser(currentUserService.showCurrentUser()).get();
     	modelMap.addAttribute("admin", userService.isAdmin(current));
-        modelMap.addAttribute("users", userService.findUsersByText(player.getName()));
         modelMap.addAttribute("current", current);
-        return "users/usuariosEncontrados";
+        modelMap.addAttribute("username", username);
+		return vista;
+	}  
+    
+    @PostMapping(path="/finded")
+    public String buscarUsuariosConUnTexto(@Valid Player player, BindingResult result, ModelMap modelMap) {
+    	log.info("Buscando usuario...");
+        return "redirect:/users/find?page=1&username=" + player.getName();
     }
-    	
+    
+    
     
 
     @GetMapping(path="/{username}/edit")

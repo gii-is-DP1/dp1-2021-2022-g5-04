@@ -60,7 +60,7 @@
 					<span>Invitaciones a partida</span>
 				</petclinic:menuItem>
 			
-				<petclinic:menuItem active="${name eq 'Users'}" url="/users/find"
+				<petclinic:menuItem active="${name eq 'Users'}" url="/users/find/user"
 					title="Users">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 					<span>Buscar usuarios</span>
