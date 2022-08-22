@@ -14,6 +14,8 @@ public interface UserRepository extends  CrudRepository<User, String>{
     
 	@Query("SELECT u FROM User u")
 	public Page<User> findAllUsersWithPagination(Pageable pageable);
+	@Query("SELECT u FROM User u WHERE u.username LIKE %:text%")
+	public Page<User> findUsersWithPagination(Pageable pageable, String text);
 	@Query("SELECT u FROM User u where u.username = :username")
 	public User findByUsername(@Param("username") String username);
 	@Query("SELECT u FROM User u WHERE u.username LIKE %:text%")

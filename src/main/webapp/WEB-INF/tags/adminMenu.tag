@@ -69,7 +69,7 @@
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 					<span>Usuarios</span>
 				</petclinic:menuItem>
-				<petclinic:menuItem active="${name eq 'Find Users'}" url="/users/find"
+				<petclinic:menuItem active="${name eq 'Find Users'}" url="/users/find/user"
 					title="Buscar Usuarios">
 					<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 					<span>Buscar Usuarios</span>
