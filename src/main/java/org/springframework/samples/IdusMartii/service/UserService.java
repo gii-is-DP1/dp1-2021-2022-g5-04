@@ -94,6 +94,11 @@ public class UserService {
 		return userRepository.findAll();
 	}
 	@Transactional
+	public List<String> findUsernames(){
+		log.info("Buscando lista de usuarios");
+		return userRepository.findUsernames();
+	}
+	@Transactional
 	public Page<User> findAllUsersWithPagination(Pageable pageable){
 		return userRepository.findAllUsersWithPagination(pageable);
 	}

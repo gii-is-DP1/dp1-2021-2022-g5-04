@@ -49,6 +49,7 @@
 							<IdusMartii:inputField label="Username" name="username"/>
 						</div>
 					</div>
+					<p>${message}</p>
 					<div class="form-group">
 						<button class="btn btn-warning" type="submit">Enviar invitacion</button>
 					</div>
@@ -111,6 +112,7 @@
 					<div class="col-md-7">
 						<IdusMartii:inputField label="Username" name="username"/>
 					</div>
+					<p>${message}</p>
 					<div class="col-md-3">
 						<button class="btn btn-warning" type="submit">Enviar invitacion</button>
 					</div>

@@ -51,7 +51,7 @@ public class InvitationService {
 	@Transactional
 	public void saveInvitation(Invitation invitation, Match match) throws DataAccessException, PlayerAlreadyInMatch, NotExistingUsername{
 		log.info("Guardando invitación...");
-		List<String> usernames = userRepository.findUsernames();
+		List<String> usernames = userService.findUsernames();
 		User user = invitation.getUser();
 		String username = user.getUsername();
 		Player player = playerService.findByMatchAndUser(match, user);

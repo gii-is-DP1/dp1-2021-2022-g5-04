@@ -97,11 +97,7 @@ public class FriendsInvitationServiceTest {
          Integer a = test.get(0).getId();
          User user = userService.findUser(test.get(0).getUser_requested().getUsername()).get();
     	 fiService.acceptFriendInvitation(a, user);
-    	 Iterable<FriendInvitation> invitaciones2 = fiService.findAll();
-         List<FriendInvitation> test2 = new ArrayList<>();
-         invitaciones2.forEach(v->test2.add(v));
-      
-    	  assertTrue( test2.isEmpty());
+    	assertTrue(test.get(0).getUser_requested().getFriends().contains(test.get(0).getUser_requester()));
     }
     @Test
     public void deleteFriendInvitationsFromUser() {
