@@ -131,23 +131,26 @@ public class AchievementController {
 
 		
 	}
-	@PostMapping(path="/{id}/save")
-	public String guardarLogros(ModelMap modelMap, @Valid Achievement achievement ,BindingResult result, @PathVariable("id") int id) {
+	@PostMapping(path="/save")
+	public String guardarLogros(ModelMap modelMap, @Valid Achievement achievement ,BindingResult result) {
 		String vista = "achievements/editarLogro";
-		//User userRequester = userService.findUser("admin1").get();
+		String currentUser = currentUserService.showCurrentUser();
+		User user = userService.findUser(currentUser).get();
+		modelMap.addAttribute("admin", userService.isAdmin(user));
+		modelMap.addAttribute("achievement",achievement);
+			modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
 		log.info("Comprobando si hay errores");
 		if (result.hasErrors()){
 			log.error("Error encontrado");
-			modelMap.addAttribute("achievement",achievement);
-			modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
+			if(result.getFieldError("valor").getDefaultMessage().contains("Failed to convert property value")){
+				modelMap.addAttribute("message", "El atributo valor debe de ser un número mayor que 1");
+    			return "/exception";
+			}
+			
 			return vista;
-			//modelMap.addAttribute("message","Alguno de los campos del formulario es erróneo,revísalo.");
-			//modelMap.addAttribute("admin", authoritiesService.getAuthorities(userRequester.getUsername()));
-			//return "/exception";
 		}
 		else {
 			log.info("No se encontraron errores.");
-			achievement.setId(id);
 			log.info("Guardando logro...");
 			achievementService.saveAchievement(achievement);
 			vista = "redirect:/achievements";
