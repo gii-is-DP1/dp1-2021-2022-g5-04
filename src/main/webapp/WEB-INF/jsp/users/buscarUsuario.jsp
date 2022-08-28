@@ -7,7 +7,7 @@
 <%@ taglib prefix="IdusMartii" tagdir="/WEB-INF/tags" %>
 <c:if test="${admin}">
 <IdusMartii:adminLayout pageName="usersFinding">
-    <form:form modelAttribute="playerAux" class="form-horizontal" id="find-user-form" action="/users/find">
+    <form:form modelAttribute="playerAux" class="form-horizontal" id="find-user-form" action="/users/finded">
         <div class="form-group has-feedback">
             <IdusMartii:inputField label="Nombre de usuario:" name="name"/>
         </div>
@@ -21,7 +21,7 @@
 </c:if>
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="usersFinding">
-    <form:form modelAttribute="playerAux" class="form-horizontal" id="find-user-form" action="/users/find">
+    <form:form modelAttribute="playerAux" class="form-horizontal" id="find-user-form" action="/users/finded">
         <div class="form-group has-feedback">
             <IdusMartii:inputField label="Nombre de usuario:" name="name"/>
         </div>

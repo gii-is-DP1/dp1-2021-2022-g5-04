@@ -7,15 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.service.AchievementService;
-import org.springframework.samples.IdusMartii.service.AchievementUserService;
 import org.springframework.samples.IdusMartii.service.AuthoritiesService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.UserService;
+import org.springframework.samples.IdusMartii.validator.AchievementValidator;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,24 +31,36 @@ public class AchievementController {
 	
 	@Autowired
 	private AchievementService achievementService;
-
-	@Autowired
-	private AchievementUserService achievementUserService;
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private AuthoritiesService authoritiesService;
 	@Autowired
 	private CurrentUserService currentUserService;
+
+	@InitBinder("achievement")
+	public void initMatchBinder(WebDataBinder dataBinder){
+		dataBinder.setValidator(new AchievementValidator());
+	}
+
+
 	@GetMapping()
 	public String listadoLogros(ModelMap modelMap) {
 		log.info("Llamando al listado de logros...");
 		String vista = "achievements/listadoLogros";
 		log.info("Llamada al servicio de logros por el metodo findAll()");
 		Iterable<Achievement> achievements = achievementService.findAll();
-		String userName = ((org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+		
 		log.info("Llamada al servicio de usuarios por el método  findUser()");
-		User user = userService.findUser(userName).orElse(null);
+		User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		for(Achievement a: achievements){
+			if(!user.getAchievements().contains(a) && a.getAchievementType().getName().equals("ganadas") && achievementService.checkAchievementGanadas(user, (double) a.getValor())){
+				achievementService.saveAchievementUser(user.getUsername(), a.getId());
+			}
+			if(!user.getAchievements().contains(a) && a.getAchievementType().getName().equals("jugadas") && achievementService.checkAchievementJugadas(user, a.getValor())){
+				achievementService.saveAchievementUser(user.getUsername(), a.getId());
+			}
+		}
 		modelMap.addAttribute("achievements", achievements);
 		modelMap.addAttribute("user", user);
 		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
@@ -61,7 +75,7 @@ public class AchievementController {
 		String vista = "achievements/listadoEstadisticas";
 			
 		User user = userService.findUser(currentUserService.showCurrentUser()).get();
-		modelMap.addAttribute("statistics", achievementUserService.listStatistics(user));
+		modelMap.addAttribute("statistics", achievementService.listStatistics(user));
 		modelMap.addAttribute("user", user);
 		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
 		return vista;	
@@ -70,15 +84,15 @@ public class AchievementController {
 	@GetMapping(path="/ranking")
 	public String rankingStatistics(ModelMap modelMap) {
 		String vista = "achievements/ranking";
-		User user = userService.findUser(currentUserService.showCurrentUser()).get();
-		List<String> rankingWinners = achievementUserService.ranking();
-		List<Double> rankingStats = achievementUserService.rankingStatistics();
+		//User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		List<String> rankingWinners = achievementService.ranking();
+		List<Long> rankingStats = achievementService.rankingStatistics();
 		
 		modelMap.addAttribute("winners", rankingWinners);
 		modelMap.addAttribute("stats", rankingStats);
 
-		modelMap.addAttribute("user", user);
-		modelMap.addAttribute("admin", authoritiesService.getAuthorities(user.getUsername()));
+		//modelMap.addAttribute("user", user);
+		modelMap.addAttribute("admin", true);
 		return vista;
 	}
 		
@@ -117,19 +131,26 @@ public class AchievementController {
 
 		
 	}
-	@PostMapping(path="/{id}/save")
-	public String guardarLogros(ModelMap modelMap, @Valid Achievement achievement ,BindingResult result, @PathVariable("id") int id) {
+	@PostMapping(path="/save")
+	public String guardarLogros(ModelMap modelMap, @Valid Achievement achievement ,BindingResult result) {
 		String vista = "achievements/editarLogro";
+		String currentUser = currentUserService.showCurrentUser();
+		User user = userService.findUser(currentUser).get();
+		modelMap.addAttribute("admin", userService.isAdmin(user));
+		modelMap.addAttribute("achievement",achievement);
+			modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
 		log.info("Comprobando si hay errores");
 		if (result.hasErrors()){
 			log.error("Error encontrado");
-			modelMap.addAttribute("achievement",achievement);
-			modelMap.addAttribute("achievementType", achievementService.getAllAchievementsTypes());
+			if(result.getFieldError("valor").getDefaultMessage().contains("Failed to convert property value")){
+				modelMap.addAttribute("message", "El atributo valor debe de ser un número mayor que 1");
+    			return "/exception";
+			}
+			
 			return vista;
 		}
 		else {
 			log.info("No se encontraron errores.");
-			achievement.setId(id);
 			log.info("Guardando logro...");
 			achievementService.saveAchievement(achievement);
 			vista = "redirect:/achievements";

@@ -16,7 +16,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,6 +28,8 @@ public class MatchService {
     private MatchRepository matchRepository;
     @Autowired
     private PlayerRepository playerRepository;
+	@Autowired
+    private UserService userService;
     @Autowired
     private AuthoritiesService authoritiesService;
     @Autowired
@@ -42,21 +43,28 @@ public class MatchService {
 	}
 
 	@Transactional
-	public boolean isAdmin(User user) throws DataAccessException {
-		if (authoritiesService.getAuthorities(user.getUsername())) {
-			log.info("Eres administrador. Estás haciendo un buen trabajo, sigue así.");
-			return true;
-		} else {
-			return false;
-		}
+	public List<Match> findMatchesFromUser(User user) throws DataAccessException {
+		return matchRepository.findMatchesFromUser(user);
 	}
+	@Transactional
+	public List<Match> findMatchesFromHost(User user) throws DataAccessException {
+		List<Match> matchesResult = new ArrayList<Match>();
+		List<Match> matchesIterate = matchRepository.findMatchesFromUser(user);
+		for (Match m : matchesIterate){
+			if(m.getPlayers().get(0).getUser()==user){
+				matchesResult.add(m);
+			}
+		}
+		return matchesResult;
+	}
+
 	
     @Transactional
     public List<Match> matches(User user) throws DataAccessException {
     	log.info("Buscando partidas...");
     	log.debug("Usuario: " + user);
-    	if (!isAdmin(user)) {
-    		List<Match> matches = playerService.findMatchesFromUser(user);
+    	if (!userService.isAdmin(user)) {
+    		List<Match> matches = findMatchesFromUser(user);
     		return matches;
     	} else {
     		return (List<Match>)findAll();
@@ -67,8 +75,8 @@ public class MatchService {
     public List<Match> matchesCreated(User user) throws DataAccessException {
     	log.info("Buscando partidas...");
     	log.debug("Usuario: " + user);
-    	if (!isAdmin(user)) {
-    		List<Match> matches = playerService.findMatchesFromHost(user);
+    	if (!userService.isAdmin(user)) {
+    		List<Match> matches = findMatchesFromHost(user);
     		return matches;
     	} else {
     		return (List<Match>)findAll();
@@ -119,7 +127,7 @@ public class MatchService {
 		List<Match> matchesFinished = new ArrayList<>();
 		Iterable<Match> matches = matchRepository.findAll();
 		for(Match m:matches){
-			if(m.getRound()==0){
+			if(m.getRound()==0 && !m.isFinished()){
 				matchesFinished.add(m);
 			}
 
@@ -309,12 +317,7 @@ public class MatchService {
 		}
     }
     
-    @Transactional
-    public List<Player> findWinners(Match match){
-    	log.info("Buscando ganadores...");
-    	Faction faccion = match.getWinner();
-    	return playerRepository.findWinners(match, faccion);
-    }
+  
     @Transactional
     private boolean checkNumberOfLoyals(Match match) throws DataAccessException {
     	List<Player> loyals = new ArrayList<Player>();
@@ -346,7 +349,7 @@ public class MatchService {
     	} else if (match.getVotesAgainst() - match.getVotesInFavor() >= 2 && match.getRound() == 3 && checkNumberOfTraitors(match)) {
     		faccionGanadora = Faction.TRAITOR;
     	} else if (numeroJugadores == 5) {
-    		if (match.getVotesInFavor() >= 13) {
+    		if (match.getVotesInFavor() >= 13 ) {
     			if(checkNumberOfTraitors(match)) {
         			faccionGanadora = Faction.TRAITOR;
     			}
@@ -415,23 +418,5 @@ public class MatchService {
     		}
     	}
     		return faccionGanadora;
-    }
-    @Transactional
-    public String errorNotFinished(ModelMap modelMap) throws DataAccessException{
-    	log.info("Estoy en errorNotFinished()");
-    	modelMap.addAttribute("message", "La partida no ha acabado.");
-    	return "/exception";
-    }
-    @Transactional
-    public String errorAlreadyStarted(ModelMap modelMap) throws DataAccessException{
-    	log.info("Estoy en errorAlreadyStarted()");
-    	modelMap.addAttribute("message", "La partida ya ha empezado.");
-    	return "/exception";
-    }
-    
-    public String errorNotStartedYet(ModelMap modelMap) throws DataAccessException{
-    	log.info("Estoy en errorNotStartedYet()");
-    	modelMap.addAttribute("message", "La partida no ha empezado todavía.");
-    	return "/exception";
     }
 }

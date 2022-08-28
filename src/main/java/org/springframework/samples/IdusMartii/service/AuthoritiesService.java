@@ -47,19 +47,13 @@ public class AuthoritiesService {
     @Autowired
     private  UserService userService;
 
-
-
-    @Transactional
-    public void saveAuthorities(Authorities authorities) throws DataAccessException {
-        authoritiesRepository.save(authorities);
-    }
     
     @Transactional
     public void saveAuthorities(String username, String role) throws DataAccessException {
         log.info("Creando authorities...");
         Authorities authority = new Authorities();
         log.info("Buscando User...");
-        Optional<User> user = Optional.of(userService.findbyUsername(username));
+        Optional<User> user = Optional.of(userService.findUser(username).get());
         log.info("Encontrado");
         if(user.isPresent()) {
             authority.setUser(user.get());

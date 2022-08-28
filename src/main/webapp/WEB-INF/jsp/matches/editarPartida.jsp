@@ -10,7 +10,7 @@
 
 <c:if test="${admin}">
 	<IdusMartii:adminLayout pageName="matches">
-		<a href="http://localhost:8080/chats/${match.id}" target="_blank">
+		<a href="http://localhost:8080/chats/${match.id}?page=1" target="_blank">
 			<button class ="btn btn-primary" style="margin-bottom: 10px;">CHAT</button>
 		</a>
 		<h2>
@@ -48,9 +48,11 @@
 						<div class="col-md-7">
 							<IdusMartii:inputField label="Username" name="username"/>
 						</div>
-						<div class="col-md-3">
-							<button class="btn btn-warning" type="submit">Enviar invitacion</button>
-						</div>
+					</div>
+					<p>${message}</p>
+					<div class="form-group">
+						<button class="btn btn-warning" type="submit">Enviar invitacion</button>
+					</div>
 					</div>
 				</form:form>
 			</div>
@@ -70,7 +72,7 @@
 </c:if>
 <c:if test="${admin eq false}">
 <IdusMartii:layout pageName="matches">
-	<a href="http://localhost:8080/chats/${match.id}" target="_blank">
+	<a href="http://localhost:8080/chats/${match.id}?page=1" target="_blank">
 		<button class ="btn btn-primary" style="margin-bottom: 10px;">CHAT</button>
 	</a>
     <h2>
@@ -90,15 +92,15 @@
 			
 			
 				<li>${x.user.username} </li>
-	<c:if test= "${isHost}" >
-		<form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/players/${x.id}/${match.id}/expulsar" >
-			<div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-					<button class="btn btn-danger" type="submit">X</button>
-				</div>
-			</div>
-		</form:form>  
-	</c:if>
+				<c:if test= "${isHost}" >
+					<form:form modelAttribute="match" class="form-horizontal" id="add-match-form" action="/players/${x.id}/${match.id}/expulsar" >
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button class="btn btn-danger" type="submit">X</button>
+							</div>
+						</div>
+					</form:form>  
+				</c:if>
 			</c:forEach></td>
 			
 		</tr>     
@@ -110,6 +112,7 @@
 					<div class="col-md-7">
 						<IdusMartii:inputField label="Username" name="username"/>
 					</div>
+					<p>${message}</p>
 					<div class="col-md-3">
 						<button class="btn btn-warning" type="submit">Enviar invitacion</button>
 					</div>

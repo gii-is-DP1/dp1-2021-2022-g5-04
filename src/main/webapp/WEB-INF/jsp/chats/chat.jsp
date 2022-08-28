@@ -28,11 +28,23 @@
 			</c:if>
 			
 		</c:forEach>
+		<!-- <c:forEach items="${numberOfPagesList}" var="numberOfPage">
+    	<spring:url value="/chats/${id_match}?page={pageNumber}" var="numberUrl">
+    	<spring:param name="pageNumber" value="${numberOfPage}"/>
+    	</spring:url>
+    		<a href="${fn:escapeXml(numberUrl)}">${numberOfPage}</a>
+    	</c:forEach> -->
+		<c:forEach items="${numberOfPagesList}" var="numberOfPage">
+    	<spring:url value="/chats/${match_id}?page={pageNumber}" var="numberUrl">
+    	<spring:param name="pageNumber" value="${numberOfPage}"/>
+    	</spring:url>
+    		<a href="${fn:escapeXml(numberUrl)}">${numberOfPage}</a>
+    </c:forEach>
 	</div>
 	<div class="row" style="margin-top: 10px;">
 	
 		
-		<form:form modelAttribute="msg" class="form-horizontal" id="add-user-form" action="/chats/${match_id}/save">
+		<form:form modelAttribute="msg" class="form-horizontal" id="add-user-form" action="/chats/${match_id}/save?page=${numberOfPagesLast}">
 			
 				<div class="col-md-10">
 					<IdusMartii:inputField label="Escribe un mensaje" name="text"/>
@@ -68,10 +80,16 @@
 			
 		</c:forEach>
 	</div>
+	<c:forEach items="${numberOfPagesList}" var="numberOfPage">
+    	<spring:url value="/chats/${match_id}?page={pageNumber}" var="numberUrl">
+    	<spring:param name="pageNumber" value="${numberOfPage}"/>
+    	</spring:url>
+    		<a href="${fn:escapeXml(numberUrl)}">${numberOfPage}</a>
+    </c:forEach>
 	<div class="row" style="margin-top: 10px;">
 	
 		
-		<form:form modelAttribute="msg" class="form-horizontal" id="add-user-form" action="/chats/${match_id}/save">
+		<form:form modelAttribute="msg" class="form-horizontal" id="add-user-form" action="/chats/${match_id}/save?page=${numberOfPagesLast}">
 			
 				<div class="col-md-10">
 					<IdusMartii:inputField label="Escribe un mensaje" name="text"/>

@@ -29,13 +29,16 @@ public interface PlayerRepository extends CrudRepository<Player, Integer>{
     @Query("SELECT p FROM Player p WHERE p.match = :match AND p.card1 = :faction")
     public List<Player> findByFaction(@Param("match") Match match, @Param("faction") Faction faction);
     
-    @Query("SELECT p.match FROM Player p WHERE p.user = :user")
-    public List<Match> findMatchesFromUser(@Param("user") User user);
-    
     @Query("SELECT p FROM Player p WHERE p.match = :match AND p.card1 = :faction")
     public List<Player> findWinners(@Param("match") Match match, @Param("faction") Faction faction);
     
     @Query("SELECT p FROM Player p WHERE p.user = :user")
     public List<Player> findPlayersFromUser(@Param("user") User user);
+
+    @Query("SELECT count(p) FROM Player p WHERE p.user = :user AND p.match.finished = :finished AND p.card1 = p.match.winner")
+    public Double findUserWins(@Param("user") User user, @Param("finished") boolean finished);
+
+    @Query("SELECT count(p) FROM Player p")
+    public Integer countPlayers();
     
 }

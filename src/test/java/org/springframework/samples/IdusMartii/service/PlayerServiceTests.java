@@ -2,6 +2,8 @@ package org.springframework.samples.IdusMartii.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +37,7 @@ public class PlayerServiceTests {
 	@Test
 	public void testCount() {
 		int count=playerService.playerCount();
-		assertEquals(count,6);
+		assertEquals(count,8);
 	}
 	
 	@Test
@@ -50,6 +52,12 @@ public class PlayerServiceTests {
 		assertEquals(nombres.get(4),"player5");
 		assertEquals(nombres.get(5),"player6");
 	
+	}
+	@Test
+	public void testFindUserWins() {
+		User user = userService.findUser("admin1").get();
+		Double wins = playerService.findUserWins(user, true);	
+		assertEquals(1, wins);
 	}
 	
 	@Test
@@ -94,12 +102,38 @@ public class PlayerServiceTests {
 
 		assertThat(nombres3.size()).isEqualTo(found-1);
 	}
-
+	@Test
+	public void testDeletePlayerFromMatch(){
+		Match match = matchService.findById(2);
+		int count = match.getPlayers().size();
+		Player player = match.getPlayers().get(1);
+		playerService.deletePlayerFromMatch(player, match);
+		Match match2 = matchService.findById(2);
+		int count2 = match2.getPlayers().size();
+		assertEquals(count2, count-1);
+	}
+	@Test
+	public void testDeletePlayerWithInvitation(){
+		Match match = matchService.findById(2);
+		int count = match.getPlayers().size();
+		Player player = match.getPlayers().get(1);
+		playerService.deletePlayerWithInvitaton(player, match, match.getPlayers().get(0).getUser());
+		Match match2 = matchService.findById(2);
+		int count2 = match2.getPlayers().size();
+		assertEquals(count2, count-1);
+	}
 	@Test
 	public void testFindById() {
 		Player player = playerService.findbyId(1);
 		
 		assertEquals(player.getName(),"player1");
+		
+	}
+	@Test
+	public void testFindByUsername() {
+		List<Player> players = playerService.findbyUsername("admin1");
+		
+		assertEquals(2,players.size());
 		
 	}
 	@Test
@@ -112,17 +146,17 @@ public class PlayerServiceTests {
 		
 	}
 
-	@Test
-	public void testJugadoresPartida(){
-		Match match1 = matchService.findById(1);
-		List<Player> listaJug= playerService.jugadoresPartida(match1);
+	// @Test
+	// public void testJugadoresPartida(){
+	// 	Match match1 = matchService.findById(1);
+	// 	List<Player> listaJug= playerService.jugadoresPartida(match1);
 
-		Iterable<Player> players = playerService.findAll();
-		List<Player> listJ= new ArrayList<Player>();
-		players.forEach(p -> listJ.add(p));
+	// 	Iterable<Player> players = playerService.findAll();
+	// 	List<Player> listJ= new ArrayList<Player>();
+	// 	players.forEach(p -> listJ.add(p));
 		
-		assertThat(listaJug).isEqualTo(listJ);
-	}
+	// 	assertThat(listaJug).isEqualTo(listJ);
+	// }
 
 	@Test
 	public void testFindByMatchAndUsername(){
@@ -133,6 +167,11 @@ public class PlayerServiceTests {
 		Player playerTest = playerService.findByMatchAndUser(partida,nombreUsuario);
 		assertThat(playerTest.getUser().getUsername()).isEqualTo("friend1");
 		assertThat(playerTest.getMatch().getName()).isEqualTo("partida1");
+	}
+	@Test
+	public void testFindByUsernameFinishedMatch(){
+		List<Player> playerTest = playerService.findbyUsernameMatchFinished("admin1");
+		assertEquals(1, playerTest.size());
 	}
 
 	@Test
@@ -145,18 +184,6 @@ public class PlayerServiceTests {
 	}
 
 	@Test
-	public void testFindMatchesFromUser(){
-		Optional<User> usuario= userService.findUser("friend1");
-		List<Match> listaPart= playerService.findMatchesFromUser(usuario.get());
-
-		List<Match> listaP= new ArrayList<Match>();
-		Match match1 = matchService.findById(1);
-		listaP.add(match1);
-
-		assertThat(listaPart).isEqualTo(listaP);
-	}
-
-	@Test
 	public void testCanVote(){ //H1
 		Match match1 = matchService.findById(1);
 		match1.setPlays(Plays.EDIL);
@@ -165,6 +192,18 @@ public class PlayerServiceTests {
 
 		assertThat(voto1).isFalse();
 		assertThat(voto2).isTrue();
+
+	}
+
+	@Test
+	public void testRoleAndCardAsignation(){
+		Match match = matchService.findById(1);
+		playerService.roleAndCardsAsignation(match);
+		for(Player p:match.getPlayers()){
+			assertNotNull(p.getCard1());
+			assertNotNull(p.getCard2());
+			assertNotNull(p.getRole());
+		}
 
 	}
 
@@ -263,19 +302,17 @@ public class PlayerServiceTests {
 	@Test
 	public void testAsignarRoles(){
 		Match match1 = matchService.findById(1);
-		List<Player> listJugadores= playerService.jugadoresPartida(match1);
+		List<Player> listJugadores= match1.getPlayers();
 		List<Role> listRoles= new ArrayList<Role>();
 		this.playerService.asignarRoles(match1, listJugadores, listRoles);
 
 		assertThat(listJugadores.get(0).getRole()).isEqualTo(Role.CONSUL);
-		// assertThat(listJugadores.get(1).getRole()).isEqualTo(Role.CONSUL);
-		// assertThat(listJugadores.get(5).getRole()).isEqualTo(Role.NO_ROL);
 	}
 
 	@Test
 	public void testAsignarRoles2(){
 		Match match1 = matchService.findById(1);
-		List<Player> listJugadores= playerService.jugadoresPartida(match1);
+		List<Player> listJugadores= match1.getPlayers();
 		match1.setRound(1);
 		List<Role> listRoles= new ArrayList<Role>();
 		this.playerService.asignarRoles(match1, listJugadores, listRoles);
@@ -287,7 +324,7 @@ public class PlayerServiceTests {
 	@Test
 	public void testCalcularVotos(){
 		Match match1 = matchService.findById(1);
-		List<Player> listJugadores= playerService.jugadoresPartida(match1);
+		List<Player> listJugadores= match1.getPlayers();
 		match1.getPlayers().get(0).setVote(Vote.RED);
 		match1.getPlayers().get(1).setVote(Vote.GREEN);
 		match1.getPlayers().get(2).setVote(Vote.RED);
@@ -315,7 +352,57 @@ public class PlayerServiceTests {
 		assertThat(match1.getPlayers().get(1).getRole()).isEqualTo(Role.NO_ROL);
 	}
 
-
+	@Test
+	public void testFindWinners(){
+		Match match = matchService.findById(1);
+		Player player = this.playerService.findWinners(match).get(0);
+		assertEquals(match.getWinner(), player.getCard1());
+	}
+	@Test
+	public void testshowCardRole(){
+		Match match = matchService.findById(1);
+		Player player = match.getPlayers().get(0);
+		String role = playerService.showCardRole(player);
+		assertEquals("consul", role);
+	}
+	@Test
+	public void testshowFactionCard(){
+		String loyal = playerService.showFactionCard(Faction.LOYAL);
+		String traitor = playerService.showFactionCard(Faction.TRAITOR);
+		String merchant = playerService.showFactionCard(Faction.MERCHANT);
+		assertEquals("loyal", loyal);
+		assertEquals("traitor", traitor);
+		assertEquals("merchant", merchant);
+	}
+	@Test
+	public void testshowVoteCondition(){
+		Match match = matchService.findById(1);
+		Player player = match.getPlayers().get(0);
+		player.setVote(Vote.GREEN);
+		Boolean vote = playerService.showVoteCondition(player.getVote());
+		assertTrue(vote);
+	}
+	@Test
+	public void testshowVoteCard(){
+		Match match = matchService.findById(1);
+		Player player = match.getPlayers().get(0);
+		player.setVote(Vote.GREEN);
+		String vote = playerService.showVoteCard(player.getVote());
+		assertEquals("green", vote);
+	}
+	@Test
+	public void testFindPlayersFromUser(){
+		User user=userService.findUser("admin1").get();
+		List<Player> players = playerService.findPlayersFromUser(user);
+		assertEquals(2, players.size());
+	}
+	@Test
+	public void testDeletePlayersFromUser(){
+		User user=userService.findUser("admin1").get();
+		playerService.deleteAllPlayersFromUser(user);
+		List<Player> players = playerService.findPlayersFromUser(user);
+		assertEquals(0, players.size());
+	}
 
 	
 }

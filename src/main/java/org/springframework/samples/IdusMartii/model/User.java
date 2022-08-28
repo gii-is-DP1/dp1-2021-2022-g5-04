@@ -17,10 +17,12 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.eclipse.jdt.internal.compiler.ast.TrueLiteral;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -39,19 +41,18 @@ public class User implements Serializable {
 	@CreatedBy private String creator;
 	@CreatedDate private LocalDateTime createdDate;
 	@LastModifiedBy private String modifier;
-	@LastModifiedDate private LocalDateTime lastModifiedDates; 
+	@LastModifiedDate private LocalDateTime lastModifiedDate; 
 	
 	@Id
 	@NotNull
 	@Size(min=5, max=25)
-	@Column(unique=true)
+	@Column(name = "username", unique=true)
 	String username;
 	@NotNull
 	String password;
 	@Email
 	@NotNull
 	String email;
-	Integer victorias;
 	boolean enabled;
 
 	public boolean isNew() {
@@ -62,7 +63,7 @@ public class User implements Serializable {
 	private Set<Authorities> authorities;
 
 	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "achievement_user")
+	@JoinTable(name = "achievement_user",  uniqueConstraints = @UniqueConstraint(columnNames = {"user_username", "achievements_id"}))
 	private List<Achievement> achievements;
 
 	@ManyToMany(cascade = CascadeType.ALL)

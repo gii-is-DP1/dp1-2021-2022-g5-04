@@ -6,12 +6,15 @@ import org.springframework.samples.IdusMartii.model.Chat;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class ChatService {
@@ -49,6 +52,22 @@ public class ChatService {
 		for (Chat c: chats) {
 			chatRepository.delete(c);
 		}
+	}
+	@Transactional
+	public Page<Chat> findChatWithPagination(Pageable pageable, Match match){
+		return chatRepository.findChatWithPagination(match, pageable);
+	}
+	@Transactional
+	public List<Integer> createNumberOfPagesList(Page<Chat> chatPage, int pageNumber){
+		int numberOfPages = (chatPage.getNumberOfElements()/5) + 1;
+		List<Integer> numberOfPagesList = new ArrayList<Integer>();
+		int i = 1;
+		while(i != numberOfPages + 1) {
+			numberOfPagesList.add(i);
+			i++;
+		}
+		numberOfPagesList.remove(numberOfPagesList.indexOf(pageNumber));
+		return numberOfPagesList;
 	}
    
     

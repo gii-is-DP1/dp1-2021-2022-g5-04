@@ -10,9 +10,8 @@
     <h2>
     Logros
     </h2>
-    <form:form modelAttribute="achievement" class="form-horizontal" id="add-user-form" action="/achievements/${achievement.id}/save">
+    <form:form modelAttribute="achievement" class="form-horizontal" id="add-user-form" action="/achievements/save">
         <div class="form-group has-feedback">
-            <input type="hidden" name="id" value="${achievement.id}"/>
             <IdusMartii:inputField label="name" name="name"/>
             <IdusMartii:inputField label="description" name="description"/>
             <IdusMartii:inputField label="valor" name="valor"/>

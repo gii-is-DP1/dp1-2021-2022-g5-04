@@ -32,9 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.samples.IdusMartii.repository.UserRepository;
-import org.springframework.samples.IdusMartii.model.Achievement;
-import org.springframework.samples.IdusMartii.model.Match;
-import org.springframework.samples.IdusMartii.model.Player;
+import org.springframework.samples.IdusMartii.service.exceptions.DuplicatedUsername;
+
 import org.springframework.samples.IdusMartii.model.Person;
 import org.springframework.samples.IdusMartii.model.User;
 
@@ -56,11 +55,7 @@ public class UserService {
 	@Autowired
 	private InvitationService invitationService;
 	@Autowired
-	private FriendsService friendsService;
-	@Autowired
 	private AchievementService achievementService;
-	@Autowired
-	private AchievementUserService achievementUserService;
 	@Autowired
 	private FriendInvitationService friendInvitationService;
 	@Autowired
@@ -73,12 +68,17 @@ public class UserService {
 
 	
 	@Transactional
-    public void saveUser(User user) throws DataAccessException {
+    public void saveUser(User user) throws DataAccessException, DuplicatedUsername {
         log.debug("usando metodo saveUser()");
-        user.setEnabled(true);
-        if(user.getVictorias() == null) {
-            user.setVictorias(0);
+		String username = user.getUsername();
+        List<String> usernameList = new ArrayList<>();
+        for(User u:userRepository.findAll()){
+            usernameList.add(u.getUsername());
         }
+        if (usernameList.contains(username)){
+			throw new DuplicatedUsername();
+        }
+        user.setEnabled(true);
         userRepository.save(user);
     }
 
@@ -94,8 +94,17 @@ public class UserService {
 		return userRepository.findAll();
 	}
 	@Transactional
+	public List<String> findUsernames(){
+		log.info("Buscando lista de usuarios");
+		return userRepository.findUsernames();
+	}
+	@Transactional
 	public Page<User> findAllUsersWithPagination(Pageable pageable){
 		return userRepository.findAllUsersWithPagination(pageable);
+	}
+	@Transactional
+	public Page<User> findUsersWithPagination(Pageable pageable, String text){
+		return userRepository.findUsersWithPagination(pageable, text);
 	}
 	@Transactional
 	public List<Integer> createNumberOfPagesList(Page<User> userPage, int pageNumber){
@@ -113,12 +122,7 @@ public class UserService {
 	public List<User> findUsersByText(String text){
 		return userRepository.findUsersByText(text);
 	}
-	@Transactional
-	public User findbyUsername(String username){
-		log.info("Usando metodo findbyUsername()");
-		log.debug("Atributo:" + username);
-		return userRepository.findByUsername(username);
-	}
+	
   
 	@Transactional
 	public List<User> findFriends(String user){
@@ -137,8 +141,8 @@ public class UserService {
 		friendsFromSecondUser.remove(user);
 		user.setFriends(friends);
 		friendToBeDeleted.setFriends(friendsFromSecondUser);
-		saveUser(user);
-		saveUser(friendToBeDeleted);
+		userRepository.save(user);
+		userRepository.save(friendToBeDeleted);
 	}
 	
 	@Transactional
@@ -150,7 +154,7 @@ public class UserService {
 		}
 		invitationService.deleteAllInvitationsFromUser(user);
 		if (user.getFriends().size() > 0) {
-			friendsService.deleteAllFriendsFromUser(user);
+			friendInvitationService.deleteAllFriendsFromUser(user);
 		}
 		friendInvitationService.deleteFriendInvitationsFromUser(user);
 		playerService.deleteAllPlayersFromUser(user);
@@ -164,30 +168,9 @@ public class UserService {
 
 	}
 		
-	@Transactional
-    public void registrarVictoria(Match match, Player player) {
-		log.info("Comprobando si el jugador ha ganado...");
-    	List<Player> ganadores = playerService.findWinners(match);
-    	List<Achievement> ganadas = achievementService.findByAchievementType("ganadas");
-    	if(ganadores.contains(player)) {
-    		log.info("Enhorabuena, has ganado.");
-    		User user = player.getUser();
-			user.setVictorias(user.getVictorias()+1);
-			this.saveUser(user);
-    		for(Achievement a : ganadas) {
-				  if(user.getVictorias() == a.getValor()) {
-					  achievementUserService.saveAchievementUser(user.getUsername(), 2);
-				  }
-			  }
-    	}
-    }
-	
-	
-
-
-	public List<User> findUsers() {
+	// public List<User> findUsers() {
 		
-		return userRepository.findUsers();}
+	// 	return userRepository.findUsers();}
 
   
 	@Transactional

@@ -1,6 +1,9 @@
 package org.springframework.samples.IdusMartii.service;
 
 import org.springframework.samples.IdusMartii.repository.InvitationRepository;
+import org.springframework.samples.IdusMartii.repository.UserRepository;
+import org.springframework.samples.IdusMartii.service.exceptions.PlayerAlreadyInMatch;
+import org.springframework.samples.IdusMartii.service.exceptions.NotExistingUsername;
 import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
@@ -22,11 +25,15 @@ public class InvitationService {
     @Autowired 
 	private InvitationRepository invitationRepository;
 	@Autowired
+	private UserRepository userRepository;
+	@Autowired
 	private InvitationService invitationService;
 	@Autowired
 	private MatchService matchService;
 	@Autowired
 	private PlayerService playerService;
+	@Autowired
+	private UserService userService;
 
 	@Transactional
 	public Iterable<Invitation> findAll(){
@@ -42,13 +49,23 @@ public class InvitationService {
 	}
 	
 	@Transactional
-	public void saveInvitation(Invitation invitation) throws DataAccessException {
+	public void saveInvitation(Invitation invitation, Match match) throws DataAccessException, PlayerAlreadyInMatch, NotExistingUsername{
 		log.info("Guardando invitación...");
+		List<String> usernames = userService.findUsernames();
+		User user = invitation.getUser();
+		String username = user.getUsername();
+		Player player = playerService.findByMatchAndUser(match, user);
+		 if (match.getPlayers().contains(player)){
+		 	throw new PlayerAlreadyInMatch();
+         }
+		 if(!usernames.contains(username)){
+			throw new NotExistingUsername();
+		 }
 		invitationRepository.save(invitation);
 	}
     @Transactional(readOnly = true)
 	public List<Invitation> findByUser(User user) throws DataAccessException{
-    	log.info("Buscando invitaciones a partida deñ usuario");
+    	log.info("Buscando invitaciones a partida del usuario");
     	log.debug("Atributo: "+ user);
 		return invitationRepository.findByUser(user);
 	}
@@ -64,8 +81,7 @@ public class InvitationService {
 	public void acceptInvitation(int id_invt, Match match, User user) throws DataAccessException {
 		log.info("Aceptando invitacion...");
 		log.debug("Atributos: id invitación-> " + id_invt + "  Partida-> "+ match + "  User-> " + user);
-		Invitation invitation = invitationService.findById(id_invt);
-			invitationService.deleteInvitation(invitation);
+			invitationService.deleteAllInvitationsFromUserInMatch(user, match);
 			Player player = new Player();
 			player.setUser(user);
 			player.setMatch(match);
@@ -78,9 +94,19 @@ public class InvitationService {
 		log.debug("User : "+ user);
 		List<Invitation> invitationsFromUser = invitationRepository.findByUser(user);
 		for (Invitation i: invitationsFromUser) {
-			invitationRepository.delete(i);
+				invitationRepository.delete(i);	
 		}
 	}
-    
+    @Transactional
+	public void deleteAllInvitationsFromUserInMatch(User user, Match match) {
+		log.info("Borrando invitaciones de User");
+		log.debug("User : "+ user);
+		List<Invitation> invitationsFromUser = invitationRepository.findByUser(user);
+		for (Invitation i: invitationsFromUser) {
+			if(i.getMatch().equals(match)){
+				invitationRepository.delete(i);
+			}
+		}
+	}
     
 }
