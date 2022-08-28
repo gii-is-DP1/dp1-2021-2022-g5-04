@@ -15,13 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.idusmartii.model.Invitation;
+import org.springframework.samples.idusmartii.model.Match;
+import org.springframework.samples.idusmartii.model.User;
+import org.springframework.samples.idusmartii.service.InvitationService;
+import org.springframework.samples.idusmartii.service.MatchService;
+import org.springframework.samples.idusmartii.service.UserService;
+import org.springframework.samples.idusmartii.service.exceptions.NotExistingUsername;
+import org.springframework.samples.idusmartii.service.exceptions.PlayerAlreadyInMatch;
 import org.springframework.stereotype.Service;
-import org.springframework.samples.IdusMartii.model.Invitation;
-import org.springframework.samples.IdusMartii.model.Match;
-import org.springframework.samples.IdusMartii.model.Player;
-import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.service.exceptions.PlayerAlreadyInMatch;
-import org.springframework.samples.IdusMartii.service.exceptions.NotExistingUsername;
 
 import java.util.ArrayList;
 

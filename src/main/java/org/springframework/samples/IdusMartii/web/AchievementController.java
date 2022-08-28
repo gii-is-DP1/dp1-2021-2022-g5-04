@@ -1,17 +1,16 @@
-package org.springframework.samples.IdusMartii.web;
+package org.springframework.samples.idusmartii.web;
 
 import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.IdusMartii.model.Achievement;
-import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.service.AchievementService;
-import org.springframework.samples.IdusMartii.service.AuthoritiesService;
-import org.springframework.samples.IdusMartii.service.CurrentUserService;
-import org.springframework.samples.IdusMartii.service.UserService;
-import org.springframework.samples.IdusMartii.validator.AchievementValidator;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.samples.idusmartii.model.Achievement;
+import org.springframework.samples.idusmartii.model.User;
+import org.springframework.samples.idusmartii.service.AchievementService;
+import org.springframework.samples.idusmartii.service.AuthoritiesService;
+import org.springframework.samples.idusmartii.service.CurrentUserService;
+import org.springframework.samples.idusmartii.service.UserService;
+import org.springframework.samples.idusmartii.validator.AchievementValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;

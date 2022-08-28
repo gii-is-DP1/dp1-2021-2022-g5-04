@@ -1,4 +1,4 @@
-package org.springframework.samples.IdusMartii.model;
+package org.springframework.samples.idusmartii.model;
 
 import javax.persistence.CascadeType;
 
@@ -7,8 +7,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.samples.IdusMartii.enumerates.Faction;
-import org.springframework.samples.IdusMartii.enumerates.Plays;
+import org.springframework.samples.idusmartii.enumerates.Faction;
+import org.springframework.samples.idusmartii.enumerates.Plays;
 
 import java.util.List;
 

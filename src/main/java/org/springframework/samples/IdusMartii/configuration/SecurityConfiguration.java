@@ -1,4 +1,4 @@
-package org.springframework.samples.IdusMartii.configuration;
+package org.springframework.samples.idusmartii.configuration;
 
 import javax.sql.DataSource;
 

@@ -1,4 +1,4 @@
-package org.springframework.samples.IdusMartii.enumerates;
+package org.springframework.samples.idusmartii.enumerates;
 
 public enum Role {
 	CONSUL, PRETOR, EDIL, NO_ROL

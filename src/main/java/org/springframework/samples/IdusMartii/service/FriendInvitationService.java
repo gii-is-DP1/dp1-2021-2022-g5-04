@@ -1,12 +1,12 @@
-package org.springframework.samples.IdusMartii.service;
+package org.springframework.samples.idusmartii.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.IdusMartii.model.FriendInvitation;
-import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.repository.FriendInvitationRepository;
+import org.springframework.samples.idusmartii.model.FriendInvitation;
+import org.springframework.samples.idusmartii.model.User;
+import org.springframework.samples.idusmartii.repository.FriendInvitationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +18,6 @@ public class FriendInvitationService {
 	
 	 	@Autowired 
 		FriendInvitationRepository friendInvitationRepository;
-		@Autowired
-		private FriendInvitationService friendInvitationService;
 		@Autowired
 		private UserService userService;
 
@@ -66,10 +64,10 @@ public class FriendInvitationService {
 		public String acceptFriendInvitation(int id_invt, User current) throws DataAccessException {
 			log.info("Aceptando solicitud de amistad...");
 			log.debug("Id de solicitud: " + id_invt);
-			FriendInvitation friendInvitation = friendInvitationService.findById(id_invt);
+			FriendInvitation friendInvitation = this.findById(id_invt);
 			if(current == friendInvitation.getUser_requested()) {
-				friendInvitationService.saveFriends(friendInvitation.getUser_requester().getUsername(), friendInvitation.getUser_requested().getUsername());
-				friendInvitationService.deleteFriendInvitation(friendInvitation, current);
+				this.saveFriends(friendInvitation.getUser_requester().getUsername(), friendInvitation.getUser_requested().getUsername());
+				this.deleteFriendInvitation(friendInvitation, current);
 				
 			} 
 			return "redirect:/friendInvitations";

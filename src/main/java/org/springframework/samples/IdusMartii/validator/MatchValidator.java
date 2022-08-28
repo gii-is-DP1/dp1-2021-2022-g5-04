@@ -1,8 +1,8 @@
-package org.springframework.samples.IdusMartii.validator;
+package org.springframework.samples.idusmartii.validator;
 
 
-import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.validation.Validator;
+import org.springframework.samples.idusmartii.model.Match;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 

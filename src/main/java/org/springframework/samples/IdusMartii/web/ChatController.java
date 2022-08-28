@@ -1,5 +1,4 @@
-package org.springframework.samples.IdusMartii.web;
-import java.util.List;
+package org.springframework.samples.idusmartii.web;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -9,7 +8,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.samples.idusmartii.model.Chat;
+import org.springframework.samples.idusmartii.model.Match;
+import org.springframework.samples.idusmartii.model.User;
+import org.springframework.samples.idusmartii.service.ChatService;
+import org.springframework.samples.idusmartii.service.CurrentUserService;
+import org.springframework.samples.idusmartii.service.MatchService;
+import org.springframework.samples.idusmartii.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +22,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.samples.IdusMartii.service.ChatService;
-import org.springframework.samples.IdusMartii.service.CurrentUserService;
-import org.springframework.samples.IdusMartii.service.MatchService;
-import org.springframework.samples.IdusMartii.service.UserService;
-import org.springframework.samples.IdusMartii.model.Chat;
-import org.springframework.samples.IdusMartii.model.Match;
-import org.springframework.samples.IdusMartii.model.User;
 
 @Controller
 @RequestMapping("/chats")

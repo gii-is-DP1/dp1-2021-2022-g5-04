@@ -1,13 +1,9 @@
-package org.springframework.samples.IdusMartii.validator;
+package org.springframework.samples.idusmartii.validator;
 
 import org.springframework.validation.Validator;
-
-
-
-
-import org.springframework.samples.IdusMartii.model.Achievement;
-import org.springframework.samples.IdusMartii.model.AchievementType;
 import org.springframework.validation.Errors;
+import org.springframework.samples.idusmartii.model.Achievement;
+import org.springframework.samples.idusmartii.model.AchievementType;
 import org.springframework.util.StringUtils;
 
 public class AchievementValidator implements Validator{

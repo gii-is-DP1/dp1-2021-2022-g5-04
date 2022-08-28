@@ -1,4 +1,4 @@
-package org.springframework.samples.IdusMartii.configuration;
+package org.springframework.samples.idusmartii.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.FormatterRegistry;

@@ -1,10 +1,4 @@
-package org.springframework.samples.IdusMartii.service;
-
-import org.springframework.samples.IdusMartii.repository.ChatRepository;
-
-import org.springframework.samples.IdusMartii.model.Chat;
-import org.springframework.samples.IdusMartii.model.Match;
-import org.springframework.samples.IdusMartii.model.User;
+package org.springframework.samples.idusmartii.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.samples.idusmartii.model.Chat;
+import org.springframework.samples.idusmartii.model.Match;
+import org.springframework.samples.idusmartii.model.User;
+import org.springframework.samples.idusmartii.repository.ChatRepository;
 
 @Service
 public class ChatService {

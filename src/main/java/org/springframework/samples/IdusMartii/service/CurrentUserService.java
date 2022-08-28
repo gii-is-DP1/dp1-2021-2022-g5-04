@@ -1,4 +1,4 @@
-package org.springframework.samples.IdusMartii.service;
+package org.springframework.samples.idusmartii.service;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

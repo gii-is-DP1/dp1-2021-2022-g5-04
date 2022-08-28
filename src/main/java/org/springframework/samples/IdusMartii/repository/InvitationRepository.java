@@ -1,11 +1,12 @@
-package org.springframework.samples.IdusMartii.repository;
+package org.springframework.samples.idusmartii.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.samples.IdusMartii.model.Invitation;
-import org.springframework.samples.IdusMartii.model.Match;
-import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.samples.idusmartii.model.Invitation;
+import org.springframework.samples.idusmartii.model.Match;
+import org.springframework.samples.idusmartii.model.User;
+
 import java.util.List;
 
 public interface InvitationRepository extends CrudRepository<Invitation, Integer>{

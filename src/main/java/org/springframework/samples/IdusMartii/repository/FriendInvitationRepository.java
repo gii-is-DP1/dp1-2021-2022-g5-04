@@ -1,4 +1,4 @@
-package org.springframework.samples.IdusMartii.repository;
+package org.springframework.samples.idusmartii.repository;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.samples.IdusMartii.model.FriendInvitation;
-import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.idusmartii.model.FriendInvitation;
+import org.springframework.samples.idusmartii.model.User;
 
 public interface FriendInvitationRepository extends CrudRepository<FriendInvitation, Integer>{
 	

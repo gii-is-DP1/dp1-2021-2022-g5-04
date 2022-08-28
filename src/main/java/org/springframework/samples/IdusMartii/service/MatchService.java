@@ -1,14 +1,4 @@
-package org.springframework.samples.IdusMartii.service;
-
-import org.springframework.samples.IdusMartii.repository.MatchRepository;
-import org.springframework.samples.IdusMartii.repository.PlayerRepository;
-import org.springframework.samples.IdusMartii.enumerates.Faction;
-import org.springframework.samples.IdusMartii.enumerates.Plays;
-import org.springframework.samples.IdusMartii.enumerates.Role;
-import org.springframework.samples.IdusMartii.enumerates.Vote;
-import org.springframework.samples.IdusMartii.model.Match;
-import org.springframework.samples.IdusMartii.model.Player;
-import org.springframework.samples.IdusMartii.model.User;
+package org.springframework.samples.idusmartii.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,18 +10,22 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.idusmartii.enumerates.Faction;
+import org.springframework.samples.idusmartii.enumerates.Plays;
+import org.springframework.samples.idusmartii.enumerates.Role;
+import org.springframework.samples.idusmartii.enumerates.Vote;
+import org.springframework.samples.idusmartii.model.Match;
+import org.springframework.samples.idusmartii.model.Player;
+import org.springframework.samples.idusmartii.model.User;
+import org.springframework.samples.idusmartii.repository.MatchRepository;
 
 @Slf4j
 @Service
 public class MatchService {
     @Autowired 
     private MatchRepository matchRepository;
-    @Autowired
-    private PlayerRepository playerRepository;
 	@Autowired
     private UserService userService;
-    @Autowired
-    private AuthoritiesService authoritiesService;
     @Autowired
     private PlayerService playerService;
 

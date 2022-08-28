@@ -1,4 +1,4 @@
-package org.springframework.samples.IdusMartii;
+package org.springframework.samples.idusmartii;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

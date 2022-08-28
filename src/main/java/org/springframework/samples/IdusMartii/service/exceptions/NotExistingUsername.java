@@ -1,4 +1,4 @@
-package org.springframework.samples.IdusMartii.service.exceptions;
+package org.springframework.samples.idusmartii.service.exceptions;
 
 public class NotExistingUsername extends Exception{
     

@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.IdusMartii.util;
+package org.springframework.samples.idusmartii.util;
 
 import java.util.Collection;
 
 import org.springframework.orm.ObjectRetrievalFailureException;
-import org.springframework.samples.IdusMartii.model.BaseEntity;
+import org.springframework.samples.idusmartii.model.BaseEntity;
 
 /**
  * Utility methods for handling entities. Separate from the BaseEntity class mainly
@@ -27,7 +27,7 @@ import org.springframework.samples.IdusMartii.model.BaseEntity;
  *
  * @author Juergen Hoeller
  * @author Sam Brannen
- * @see org.springframework.samples.IdusMartii.model.BaseEntity
+ * @see org.springframework.samples.idusmartii.model.BaseEntity
  * @since 29.10.2003
  */
 public abstract class EntityUtils {

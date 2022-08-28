@@ -1,14 +1,14 @@
-package org.springframework.samples.IdusMartii.web;
+package org.springframework.samples.idusmartii.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.IdusMartii.model.Achievement;
-import org.springframework.samples.IdusMartii.model.Match;
-import org.springframework.samples.IdusMartii.model.Player;
-import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.service.MatchService;
-import org.springframework.samples.IdusMartii.service.PlayerService;
-import org.springframework.samples.IdusMartii.service.AchievementService;
-import org.springframework.samples.IdusMartii.service.UserService;
+import org.springframework.samples.idusmartii.model.Achievement;
+import org.springframework.samples.idusmartii.model.Match;
+import org.springframework.samples.idusmartii.model.Player;
+import org.springframework.samples.idusmartii.model.User;
+import org.springframework.samples.idusmartii.service.AchievementService;
+import org.springframework.samples.idusmartii.service.MatchService;
+import org.springframework.samples.idusmartii.service.PlayerService;
+import org.springframework.samples.idusmartii.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;

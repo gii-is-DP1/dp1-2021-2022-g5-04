@@ -1,4 +1,4 @@
-package org.springframework.samples.IdusMartii.configuration;
+package org.springframework.samples.idusmartii.configuration;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,7 +11,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.core.convert.support.DefaultConversionService;
-import org.springframework.samples.IdusMartii.model.BaseEntity;
+import org.springframework.samples.idusmartii.model.BaseEntity;
 import org.springframework.stereotype.Component;
 
 @Component()

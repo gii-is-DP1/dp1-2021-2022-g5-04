@@ -1,4 +1,4 @@
-package org.springframework.samples.IdusMartii.model;
+package org.springframework.samples.idusmartii.model;
 
 
 import javax.persistence.Entity;

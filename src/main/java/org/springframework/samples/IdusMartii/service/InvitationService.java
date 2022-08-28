@@ -1,13 +1,4 @@
-package org.springframework.samples.IdusMartii.service;
-
-import org.springframework.samples.IdusMartii.repository.InvitationRepository;
-import org.springframework.samples.IdusMartii.repository.UserRepository;
-import org.springframework.samples.IdusMartii.service.exceptions.PlayerAlreadyInMatch;
-import org.springframework.samples.IdusMartii.service.exceptions.NotExistingUsername;
-import org.springframework.samples.IdusMartii.model.Invitation;
-import org.springframework.samples.IdusMartii.model.Match;
-import org.springframework.samples.IdusMartii.model.Player;
-import org.springframework.samples.IdusMartii.model.User;
+package org.springframework.samples.idusmartii.service;
 
 import java.util.List;
 
@@ -18,14 +9,19 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.samples.idusmartii.model.Invitation;
+import org.springframework.samples.idusmartii.model.Match;
+import org.springframework.samples.idusmartii.model.Player;
+import org.springframework.samples.idusmartii.model.User;
+import org.springframework.samples.idusmartii.repository.InvitationRepository;
+import org.springframework.samples.idusmartii.service.exceptions.NotExistingUsername;
+import org.springframework.samples.idusmartii.service.exceptions.PlayerAlreadyInMatch;
 
 @Slf4j
 @Service
 public class InvitationService {
     @Autowired 
 	private InvitationRepository invitationRepository;
-	@Autowired
-	private UserRepository userRepository;
 	@Autowired
 	private InvitationService invitationService;
 	@Autowired

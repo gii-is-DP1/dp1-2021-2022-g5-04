@@ -2,7 +2,6 @@ package org.springframework.samples.IdusMartii.service;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,9 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.IdusMartii.model.Achievement;
-import org.springframework.samples.IdusMartii.model.AchievementType;
-import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.idusmartii.model.Achievement;
+import org.springframework.samples.idusmartii.model.AchievementType;
+import org.springframework.samples.idusmartii.model.User;
+import org.springframework.samples.idusmartii.service.AchievementService;
+import org.springframework.samples.idusmartii.service.UserService;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
