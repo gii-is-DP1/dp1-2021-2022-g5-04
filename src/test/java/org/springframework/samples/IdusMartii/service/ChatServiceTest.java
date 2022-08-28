@@ -21,6 +21,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 import org.springframework.samples.IdusMartii.model.Chat;
 import org.springframework.samples.IdusMartii.model.Match;
+import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))

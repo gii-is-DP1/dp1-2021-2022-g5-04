@@ -54,10 +54,10 @@ public class MatchController {
 	@Autowired
     AchievementService achievementService;
 
-	/*@InitBinder("matches")
+	@InitBinder("match")
 	public void initMatchBinder(WebDataBinder dataBinder){
 		dataBinder.setValidator(new MatchValidator());
-	}*/
+	}
 	
 	
 

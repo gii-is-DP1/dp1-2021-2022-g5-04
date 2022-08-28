@@ -89,7 +89,7 @@
         </tbody>
     </table>
     <c:forEach items="${numberOfPagesList}" var="numberOfPage">
-    	<spring:url value="/users/find?page={pageNumber}" var="numberUrl">
+    	<spring:url value="/users/find?page={pageNumber}&username=${username}" var="numberUrl">
     	<spring:param name="pageNumber" value="${numberOfPage}"/>
     	</spring:url>
     		<a href="${fn:escapeXml(numberUrl)}">${numberOfPage}</a>

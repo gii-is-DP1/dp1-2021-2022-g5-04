@@ -14,10 +14,10 @@ public class MatchValidator implements Validator{
     @Override
     public void validate(Object obj,Errors errors){
 
-        Match match = new Match();
+        Match match = (Match) obj;
         String name = match.getName();
 
-        if (!StringUtils.hasLength(name) || name.length()>50 || name.length()<3) {
+        if (!StringUtils.hasLength(name) || name.length()>50 || name.length()<3 ) {
 			errors.rejectValue("name"," entre_3_y_50_caracteres"," El nombre tiene que tener entre 3 y 50 caracteres");
 		}
 
