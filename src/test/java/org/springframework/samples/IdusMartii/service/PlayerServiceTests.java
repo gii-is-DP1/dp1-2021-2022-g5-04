@@ -20,9 +20,6 @@ import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.service.MatchService;
-import org.springframework.samples.IdusMartii.service.PlayerService;
-import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
@@ -149,18 +146,6 @@ public class PlayerServiceTests {
 		
 	}
 
-	// @Test
-	// public void testJugadoresPartida(){
-	// 	Match match1 = matchService.findById(1);
-	// 	List<Player> listaJug= playerService.jugadoresPartida(match1);
-
-	// 	Iterable<Player> players = playerService.findAll();
-	// 	List<Player> listJ= new ArrayList<Player>();
-	// 	players.forEach(p -> listJ.add(p));
-		
-	// 	assertThat(listaJug).isEqualTo(listJ);
-	// }
-
 	@Test
 	public void testFindByMatchAndUsername(){
 		Match partida = matchService.findById(1);
@@ -187,7 +172,7 @@ public class PlayerServiceTests {
 	}
 
 	@Test
-	public void testCanVote(){ //H1
+	public void testCanVote(){
 		Match match1 = matchService.findById(1);
 		match1.setPlays(Plays.EDIL);
 		boolean voto1 = playerService.canVote(match1.getPlayers().get(1), match1);
@@ -229,7 +214,7 @@ public class PlayerServiceTests {
 	}
 
 	@Test 
-	public void testCheckVote(){  //H2
+	public void testCheckVote(){ 
 		Match match1 = matchService.findById(1);
 		match1.setPlays(Plays.PRETOR);
 		match1.getPlayers().get(2).setRole(Role.PRETOR);
@@ -239,7 +224,7 @@ public class PlayerServiceTests {
 	}
 
 	@Test
-	public void testChooseFaction1(){ //H4
+	public void testChooseFaction1(){
 		Match match1 = matchService.findById(1);
         match1.setPlays(Plays.CONSUL);
         boolean selectfaccT1= playerService.chooseFaction(match1.getPlayers().get(2), match1);

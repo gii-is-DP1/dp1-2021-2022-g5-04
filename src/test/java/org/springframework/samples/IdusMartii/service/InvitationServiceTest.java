@@ -18,9 +18,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.samples.IdusMartii.model.Invitation;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.service.InvitationService;
-import org.springframework.samples.IdusMartii.service.MatchService;
-import org.springframework.samples.IdusMartii.service.UserService;
+
 import org.springframework.samples.IdusMartii.service.exceptions.NotExistingUsername;
 import org.springframework.samples.IdusMartii.service.exceptions.PlayerAlreadyInMatch;
 import org.springframework.stereotype.Service;

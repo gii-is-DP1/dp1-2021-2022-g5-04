@@ -14,7 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.samples.IdusMartii.repository.UserRepository;
-import org.springframework.samples.IdusMartii.service.UserService;
+
 import org.springframework.samples.IdusMartii.service.exceptions.DuplicatedUsername;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +36,7 @@ public class UserServiceTests {
 
     @Test
     @Transactional
-    public void testSaveUser() throws DataAccessException, DuplicatedUsername{ //H6
+    public void testSaveUser() throws DataAccessException, DuplicatedUsername{
 
 
         User usuario = new User();

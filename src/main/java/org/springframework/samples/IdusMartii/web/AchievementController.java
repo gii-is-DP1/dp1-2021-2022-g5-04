@@ -83,14 +83,12 @@ public class AchievementController {
 	@GetMapping(path="/ranking")
 	public String rankingStatistics(ModelMap modelMap) {
 		String vista = "achievements/ranking";
-		//User user = userService.findUser(currentUserService.showCurrentUser()).get();
+		
 		List<String> rankingWinners = achievementService.ranking();
 		List<Long> rankingStats = achievementService.rankingStatistics();
 		
 		modelMap.addAttribute("winners", rankingWinners);
 		modelMap.addAttribute("stats", rankingStats);
-
-		//modelMap.addAttribute("user", user);
 		modelMap.addAttribute("admin", true);
 		return vista;
 	}
@@ -145,6 +143,7 @@ public class AchievementController {
 				modelMap.addAttribute("message", "El atributo valor debe de ser un número mayor que 1");
     			return "/exception";
 			}
+			
 			
 			return vista;
 		}

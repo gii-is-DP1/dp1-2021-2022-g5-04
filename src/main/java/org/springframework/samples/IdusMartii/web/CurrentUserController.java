@@ -4,7 +4,6 @@ package org.springframework.samples.IdusMartii.web;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-// import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.stereotype.Controller;
 
 @Controller

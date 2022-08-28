@@ -58,20 +58,6 @@ public class ChatController {
 	 	return vista;
 	 }
 
-    //  @GetMapping(path="/{id_match}")
-	//  public String listadoChatss(ModelMap modelMap, @PathVariable("id_match") int id_match, HttpServletResponse response) {
-	//  	String vista = "chats/chat";
-    //      response.addHeader("Refresh","30");
-    //      Match match = matchService.findById(id_match);
-    //     User user = userService.findUser(currentUserService.showCurrentUser()).get();
-    //     List<Chat> chats = chatService.findByMach(match);
-    //     modelMap.addAttribute("msg", new Chat());
-    //      modelMap.addAttribute("admin", matchService.isAdmin(user));
-	//  	modelMap.addAttribute("chats", chats);
-    //      modelMap.addAttribute("match_id", match.getId());
-    //      modelMap.addAttribute("currentUser", user);
-	//  	return vista;
-	//  }
     @PostMapping(path="/{id_match}/save")
 	public String saveChat(@RequestParam("page") int page, ModelMap modelMap, @PathVariable("id_match") int id_match, @Valid Chat chat) {
         Match match = matchService.findById(id_match);

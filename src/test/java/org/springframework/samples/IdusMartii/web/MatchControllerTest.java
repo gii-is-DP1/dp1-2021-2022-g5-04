@@ -16,7 +16,6 @@ import org.springframework.samples.IdusMartii.service.InvitationService;
 import org.springframework.samples.IdusMartii.service.MatchService;
 import org.springframework.samples.IdusMartii.service.PlayerService;
 import org.springframework.samples.IdusMartii.service.UserService;
-import org.springframework.samples.IdusMartii.web.MatchController;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.junit.jupiter.api.Test;
 

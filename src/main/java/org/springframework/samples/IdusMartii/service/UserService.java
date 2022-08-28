@@ -166,11 +166,6 @@ public class UserService {
 
 	}
 		
-	// public List<User> findUsers() {
-		
-	// 	return userRepository.findUsers();}
-
-  
 	@Transactional
 	public boolean isAdmin(User user) throws DataAccessException {
 		if (authoritiesService.getAuthorities(user.getUsername())) {

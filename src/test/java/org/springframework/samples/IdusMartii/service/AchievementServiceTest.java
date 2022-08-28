@@ -15,8 +15,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.AchievementType;
 import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.service.AchievementService;
-import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))

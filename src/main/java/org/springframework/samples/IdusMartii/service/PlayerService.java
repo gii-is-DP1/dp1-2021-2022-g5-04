@@ -85,13 +85,6 @@ public class PlayerService {
 		log.debug("username: " + username);
 		return playerRepository.findByUsername(username);
 	}
-	
-	// @Transactional
-	// public List<Player> jugadoresPartida(Match match) throws DataAccessException {
-	// 	log.info("Buscando jugadores de la partida...");
-	// 	log.debug("Partida: " + match);
-	// 	return playerRepository.findByMatchId(match);
-	// }
 	@Transactional
 	public void changeVote(Player player) throws DataAccessException {
 		if (player.getVote() == Vote.RED) {

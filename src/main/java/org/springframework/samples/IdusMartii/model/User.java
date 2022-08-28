@@ -20,9 +20,9 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import org.eclipse.jdt.internal.compiler.ast.TrueLiteral;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -49,9 +49,11 @@ public class User implements Serializable {
 	@Column(name = "username", unique=true)
 	String username;
 	@NotNull
+	@NotEmpty
 	String password;
 	@Email
 	@NotNull
+	@NotEmpty
 	String email;
 	boolean enabled;
 

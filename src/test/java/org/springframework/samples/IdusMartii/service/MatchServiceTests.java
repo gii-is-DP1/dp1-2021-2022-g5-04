@@ -18,8 +18,6 @@ import org.springframework.samples.IdusMartii.enumerates.Vote;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.service.MatchService;
-import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.stereotype.Service;
 
 
@@ -116,7 +114,7 @@ public class MatchServiceTests {
 	}
 	
 	@Test
-	public void testSaveMatch() { //H13
+	public void testSaveMatch() { 
 		Iterable <Match> matches = matchService.findAll();
 		List <String> nombres = new ArrayList<>();
 		matches.forEach(p -> nombres.add(p.getName()));

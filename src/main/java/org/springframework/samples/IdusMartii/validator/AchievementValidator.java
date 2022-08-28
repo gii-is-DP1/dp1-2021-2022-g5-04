@@ -13,6 +13,7 @@ public class AchievementValidator implements Validator{
         Achievement achv = (Achievement) obj;
         String name = achv.getName();
         AchievementType type = achv.getAchievementType();
+        
 
         if (!StringUtils.hasLength(name) || name.length()>50 || name.length()<3 ) {
 			errors.rejectValue("name"," entre_3_y_50_caracteres"," El nombre tiene que tener entre 3 y 50 caracteres");
