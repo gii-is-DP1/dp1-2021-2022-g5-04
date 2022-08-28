@@ -1,11 +1,11 @@
-package org.springframework.samples.idusmartii.model;
+package org.springframework.samples.IdusMartii.model;
 
 import java.text.ParseException;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
-import org.springframework.samples.idusmartii.service.AchievementService;
+import org.springframework.samples.IdusMartii.service.AchievementService;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -17,11 +17,11 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.idusmartii.model.FriendInvitation;
-import org.springframework.samples.idusmartii.model.User;
-import org.springframework.samples.idusmartii.repository.FriendInvitationRepository;
-import org.springframework.samples.idusmartii.service.FriendInvitationService;
-import org.springframework.samples.idusmartii.service.UserService;
+import org.springframework.samples.IdusMartii.model.FriendInvitation;
+import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.IdusMartii.repository.FriendInvitationRepository;
+import org.springframework.samples.IdusMartii.service.FriendInvitationService;
+import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.stereotype.Service;
 
 

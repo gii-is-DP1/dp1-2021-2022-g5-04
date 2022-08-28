@@ -1,17 +1,17 @@
-package org.springframework.samples.idusmartii.service;
+package org.springframework.samples.IdusMartii.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.idusmartii.enumerates.Faction;
-import org.springframework.samples.idusmartii.enumerates.Plays;
-import org.springframework.samples.idusmartii.enumerates.Role;
-import org.springframework.samples.idusmartii.enumerates.Vote;
-import org.springframework.samples.idusmartii.model.Invitation;
-import org.springframework.samples.idusmartii.model.Match;
-import org.springframework.samples.idusmartii.model.Player;
-import org.springframework.samples.idusmartii.model.User;
-import org.springframework.samples.idusmartii.repository.InvitationRepository;
-import org.springframework.samples.idusmartii.repository.PlayerRepository;
+import org.springframework.samples.IdusMartii.enumerates.Faction;
+import org.springframework.samples.IdusMartii.enumerates.Plays;
+import org.springframework.samples.IdusMartii.enumerates.Role;
+import org.springframework.samples.IdusMartii.enumerates.Vote;
+import org.springframework.samples.IdusMartii.model.Invitation;
+import org.springframework.samples.IdusMartii.model.Match;
+import org.springframework.samples.IdusMartii.model.Player;
+import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.IdusMartii.repository.InvitationRepository;
+import org.springframework.samples.IdusMartii.repository.PlayerRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

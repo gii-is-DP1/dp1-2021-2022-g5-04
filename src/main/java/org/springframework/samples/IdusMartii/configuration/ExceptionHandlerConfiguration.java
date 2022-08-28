@@ -1,4 +1,4 @@
-package org.springframework.samples.idusmartii.configuration;
+package org.springframework.samples.IdusMartii.configuration;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

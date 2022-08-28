@@ -15,12 +15,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.samples.idusmartii.model.Chat;
-import org.springframework.samples.idusmartii.model.Match;
-import org.springframework.samples.idusmartii.model.User;
-import org.springframework.samples.idusmartii.service.ChatService;
-import org.springframework.samples.idusmartii.service.MatchService;
-import org.springframework.samples.idusmartii.service.UserService;
+import org.springframework.samples.IdusMartii.model.Chat;
+import org.springframework.samples.IdusMartii.model.Match;
+import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.IdusMartii.service.ChatService;
+import org.springframework.samples.IdusMartii.service.MatchService;
+import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))

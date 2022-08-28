@@ -1,4 +1,4 @@
-package org.springframework.samples.idusmartii.web;
+package org.springframework.samples.IdusMartii.web;
 
 
 
@@ -19,16 +19,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.idusmartii.model.Invitation;
-import org.springframework.samples.idusmartii.model.Match;
-import org.springframework.samples.idusmartii.model.User;
-import org.springframework.samples.idusmartii.service.AuthoritiesService;
-import org.springframework.samples.idusmartii.service.CurrentUserService;
-import org.springframework.samples.idusmartii.service.InvitationService;
-import org.springframework.samples.idusmartii.service.MatchService;
-import org.springframework.samples.idusmartii.service.UserService;
-import org.springframework.samples.idusmartii.service.exceptions.NotExistingUsername;
-import org.springframework.samples.idusmartii.service.exceptions.PlayerAlreadyInMatch;
+import org.springframework.samples.IdusMartii.model.Invitation;
+import org.springframework.samples.IdusMartii.model.Match;
+import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.IdusMartii.service.AuthoritiesService;
+import org.springframework.samples.IdusMartii.service.CurrentUserService;
+import org.springframework.samples.IdusMartii.service.InvitationService;
+import org.springframework.samples.IdusMartii.service.MatchService;
+import org.springframework.samples.IdusMartii.service.UserService;
+import org.springframework.samples.IdusMartii.service.exceptions.NotExistingUsername;
+import org.springframework.samples.IdusMartii.service.exceptions.PlayerAlreadyInMatch;
 
 @Slf4j
 @Controller

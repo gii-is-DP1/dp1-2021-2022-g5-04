@@ -1,4 +1,4 @@
-package org.springframework.samples.idusmartii.model;
+package org.springframework.samples.IdusMartii.model;
 
 
 import java.io.Serializable;

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.idusmartii.web;
+package org.springframework.samples.IdusMartii.web;
 
 
 import java.util.ArrayList;
@@ -36,12 +36,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.samples.idusmartii.model.Player;
-import org.springframework.samples.idusmartii.model.User;
-import org.springframework.samples.idusmartii.service.AuthoritiesService;
-import org.springframework.samples.idusmartii.service.CurrentUserService;
-import org.springframework.samples.idusmartii.service.UserService;
-import org.springframework.samples.idusmartii.service.exceptions.DuplicatedUsername;
+import org.springframework.samples.IdusMartii.model.Player;
+import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.IdusMartii.service.AuthoritiesService;
+import org.springframework.samples.IdusMartii.service.CurrentUserService;
+import org.springframework.samples.IdusMartii.service.UserService;
+import org.springframework.samples.IdusMartii.service.exceptions.DuplicatedUsername;
 
 import lombok.extern.slf4j.Slf4j;
 

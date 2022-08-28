@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.idusmartii.service;
+package org.springframework.samples.IdusMartii.service;
 
 
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.idusmartii.model.Authorities;
-import org.springframework.samples.idusmartii.model.User;
-import org.springframework.samples.idusmartii.repository.AuthoritiesRepository;
+import org.springframework.samples.IdusMartii.model.Authorities;
+import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.IdusMartii.repository.AuthoritiesRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,4 +1,4 @@
-package org.springframework.samples.idusmartii.repository;
+package org.springframework.samples.IdusMartii.repository;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -6,9 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.samples.idusmartii.model.Chat;
-import org.springframework.samples.idusmartii.model.Match;
-import org.springframework.samples.idusmartii.model.User;
+import org.springframework.samples.IdusMartii.model.Chat;
+import org.springframework.samples.IdusMartii.model.Match;
+import org.springframework.samples.IdusMartii.model.User;
 
 
 

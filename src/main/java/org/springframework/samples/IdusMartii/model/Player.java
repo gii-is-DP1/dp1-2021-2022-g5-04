@@ -1,4 +1,4 @@
-package org.springframework.samples.idusmartii.model;
+package org.springframework.samples.IdusMartii.model;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -6,7 +6,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.samples.idusmartii.enumerates.*;
+import org.springframework.samples.IdusMartii.enumerates.*;
 
 import lombok.Getter;
 import lombok.Setter;

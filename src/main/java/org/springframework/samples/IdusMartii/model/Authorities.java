@@ -1,4 +1,4 @@
-package org.springframework.samples.idusmartii.model;
+package org.springframework.samples.IdusMartii.model;
 
 import javax.persistence.Entity;
 
@@ -8,8 +8,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
-
-// import org.springframework.samples.IdusMartii.model.BaseEntity;
 
 import lombok.Getter;
 import lombok.Setter;

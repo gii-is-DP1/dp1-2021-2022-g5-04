@@ -1,12 +1,12 @@
-package org.springframework.samples.idusmartii.repository;
+package org.springframework.samples.IdusMartii.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.samples.idusmartii.enumerates.Faction;
-import org.springframework.samples.idusmartii.enumerates.Role;
-import org.springframework.samples.idusmartii.model.Match;
-import org.springframework.samples.idusmartii.model.Player;
-import org.springframework.samples.idusmartii.model.User;
+import org.springframework.samples.IdusMartii.enumerates.Faction;
+import org.springframework.samples.IdusMartii.enumerates.Role;
+import org.springframework.samples.IdusMartii.model.Match;
+import org.springframework.samples.IdusMartii.model.Player;
+import org.springframework.samples.IdusMartii.model.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

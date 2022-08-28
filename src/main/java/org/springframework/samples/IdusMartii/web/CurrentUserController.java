@@ -1,4 +1,4 @@
-package org.springframework.samples.idusmartii.web;
+package org.springframework.samples.IdusMartii.web;
 
 
 import org.springframework.security.core.Authentication;

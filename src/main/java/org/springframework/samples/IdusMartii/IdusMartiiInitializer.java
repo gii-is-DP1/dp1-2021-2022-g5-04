@@ -1,4 +1,4 @@
-package org.springframework.samples.idusmartii;
+package org.springframework.samples.IdusMartii;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

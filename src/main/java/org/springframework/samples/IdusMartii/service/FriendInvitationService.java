@@ -1,12 +1,12 @@
-package org.springframework.samples.idusmartii.service;
+package org.springframework.samples.IdusMartii.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.idusmartii.model.FriendInvitation;
-import org.springframework.samples.idusmartii.model.User;
-import org.springframework.samples.idusmartii.repository.FriendInvitationRepository;
+import org.springframework.samples.IdusMartii.model.FriendInvitation;
+import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.IdusMartii.repository.FriendInvitationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

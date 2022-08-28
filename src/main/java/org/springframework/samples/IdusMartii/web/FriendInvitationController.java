@@ -1,14 +1,14 @@
-package org.springframework.samples.idusmartii.web;
+package org.springframework.samples.IdusMartii.web;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.idusmartii.model.FriendInvitation;
-import org.springframework.samples.idusmartii.model.User;
-import org.springframework.samples.idusmartii.service.AuthoritiesService;
-import org.springframework.samples.idusmartii.service.CurrentUserService;
-import org.springframework.samples.idusmartii.service.FriendInvitationService;
-import org.springframework.samples.idusmartii.service.UserService;
+import org.springframework.samples.IdusMartii.model.FriendInvitation;
+import org.springframework.samples.IdusMartii.model.User;
+import org.springframework.samples.IdusMartii.service.AuthoritiesService;
+import org.springframework.samples.IdusMartii.service.CurrentUserService;
+import org.springframework.samples.IdusMartii.service.FriendInvitationService;
+import org.springframework.samples.IdusMartii.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
