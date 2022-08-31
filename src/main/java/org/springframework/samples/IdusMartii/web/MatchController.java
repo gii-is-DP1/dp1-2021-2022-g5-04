@@ -9,11 +9,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.samples.IdusMartii.enumerates.Faction;
 import org.springframework.samples.IdusMartii.enumerates.Plays;
 import org.springframework.samples.IdusMartii.enumerates.Role;
-import org.springframework.samples.IdusMartii.model.Achievement;
 import org.springframework.samples.IdusMartii.model.Match;
 import org.springframework.samples.IdusMartii.model.Player;
 import org.springframework.samples.IdusMartii.model.User;
-import org.springframework.samples.IdusMartii.service.AchievementService;
 import org.springframework.samples.IdusMartii.service.CurrentUserService;
 import org.springframework.samples.IdusMartii.service.InvitationService;
 import org.springframework.samples.IdusMartii.service.MatchService;
@@ -49,8 +47,6 @@ public class MatchController {
 	private PlayerService playerService;
 	@Autowired
 	private InvitationService invitationService;
-	@Autowired
-    AchievementService achievementService;
 
 	@InitBinder("match")
 	public void initMatchBinder(WebDataBinder dataBinder){
@@ -232,7 +228,8 @@ public class MatchController {
 	}
 
 	@GetMapping(path="/{id}/new")
-	public String editarPartida(ModelMap modelMap, @PathVariable("id") int id) {
+	public String editarPartida(ModelMap modelMap, @PathVariable("id") int id, HttpServletResponse response) {
+		response.addHeader("Refresh","10");
 		String vista = "matches/editarPartida";
 		log.info("Acceso al servicio de partidas por el metodo saveMatch()");
 		log.debug("Id : " + id);
@@ -248,7 +245,7 @@ public class MatchController {
 		if(match.getRound()!=0) {
 			log.info("Estoy en errorAlreadyStarted()");
     		modelMap.addAttribute("message", "La partida ya ha empezado.");
-    		return "/exception";
+    		return "redirect:/matches/" + id + "/match";
 		}
 		else {
 		log.info("Acceso al servicio de jugadores por el metodo findByMatchAndUser()");
@@ -370,23 +367,6 @@ public class MatchController {
 		matchService.startMatch(match);
 		log.info("Acceso al servicio de jugadores por el metodo jugadoresPartida()");
 		log.debug("Partida : " + match);
-		List<Player> g = match.getPlayers();
-		for (int i = 0; i<g.size();i++) {
-			User u = g.get(i).getUser();
-			String username = u.getUsername();
-			log.info("Acesso al servicio de jugadores por el metodo findbyUsername()");
-			log.debug("Nombre de usuario: " + username);
-			playerService.findbyUsername(username);
-			log.info("Acesso al servicio de logros por el metodo findByAchievementType()");
-			log.debug("tipo: jugadas");
-			List<Achievement> jugadas = achievementService.findByAchievementType("jugadas");
-			for(int k = 0; k<jugadas.size();k++) {
-				log.info("Acceso a 2 metodos del servicio de logrosJugadores");
-				if (achievementService.checkAchievementJugadas(u,jugadas.get(k).getValor()) == true) {
-					achievementService.saveAchievementUser(u.getUsername(),jugadas.get(k).getId());
-				}
-			}
-		}
 		log.info("Acesso al servicio de jugadores por el metodo roleAndCardsAsignation()");
 		log.debug("Partida : " + match);
 		playerService.roleAndCardsAsignation(match);

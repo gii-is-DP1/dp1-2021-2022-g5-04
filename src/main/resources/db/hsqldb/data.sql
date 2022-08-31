@@ -1,4 +1,4 @@
-INSERT INTO matches (id,name,round,turn,votes_in_favor,votes_against,plays,finished, winner)VALUES (1, 'partida1', 0, 0, 0, 0, 0, true, 0);
+INSERT INTO matches (id,name,round,turn,votes_in_favor,votes_against,plays,finished, winner)VALUES (1, 'partida1', 3, 0, 0, 0, 0, true, 0);
 INSERT INTO matches (id,name,round,turn,votes_in_favor,votes_against,plays,finished)VALUES (2, 'partida2', 0, 0, 0, 0, 0, false);
 
 INSERT INTO users(email,username,password,enabled) VALUES ('admin@gmail.com','admin1','4dm1n',TRUE);
